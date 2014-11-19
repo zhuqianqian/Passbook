@@ -24,3 +24,9 @@ proguard/
 
 # Log Files
 *.log
+
+# Android libs
+/libs/android-support-v4.jar
+
+# IDs.
+*/values/ids.xml
