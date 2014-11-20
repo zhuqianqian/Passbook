@@ -70,8 +70,19 @@
     <string name="unlock">Unlock</string>
     <string name="get_started">Get Started</string>
     <string name="select">TAP TO SELECT FILE</string>
+    <string name="option_label">Options to deeal with duplicates:</string>
+    <string name="option_ignore">Ignore</string>
+    <string name="option_keepall">Keep Both</string>
+    <string name="option_overwrite">Overwrite Existing</string>
+    <string name="copy">Copy</string>
+    <string name="auto_gen">Password Generator</string>
+    <string name="other">Other</string>
+    <string name="accept">Accept</string>
+    <string name="refresh">Refresh</string>
+    <string name="length">Length: %d</string>
     
     <!-- Tips/Messages -->
+    <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>
     <string name="also_del_account">Also delete the accounts under the category.</string>
     <string name="no_file_explorer">File explorer not available.</string>
     <string name="no_accounts">You have not added anything.\n\nTap to add one.</string>
@@ -85,9 +96,70 @@
     <string name="pwd_unmatch">You have given different passwords.</string>
     <string name="export_failed">Failed to export data.</string>
     <string name="import_failed">Failed to import data.</string>
-    <string name="text_copoed">Text copied to clipboard.</string>
+    <string name="sync_failed">Failed to sync data.</string>
+    <string name="text_copied">Text copied to clipboard.</string>
     <string name="export_success">Data exported to %s.</string>
     <string name="import_success">Data successfully imported.</string>
+    <string name="sync_success_local">Data successfully retrieved from server.</string>
+    <string name="sync_success_server">Data sent to server.</string>
     <string name="invalid_file">Please select a valid file to continue.</string>    
-  
+    <string name="remember_choice">Remember my choice and do not ask again.</string>
+    <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
+    <string name="credits">Many thanks to <u>Xu, Xuechen</u> for French translations!</string>
+    <string name="icon8_lisense">Some of the icons used in this app are from <a href="http://icon8.com">Icon8</a> under licence <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-NoDerivs 3.0 Unported</a>.</string>
+    <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
+    
+    <!-- String arrays -->    
+    <string-array name="theme_names">
+        <item>Default Light Theme</item>
+        <item>Default Dark Theme</item>
+        <item>Indigo Light</item>
+        <item>Indigo Dark</item>
+        <item>Purple Light</item>
+        <item>Purple Dark</item>
+        <item>Blue-Grey Light</item>
+        <item>Blue-Grey Dark</item>
+        <item>Teal Light</item>
+        <item>Teal Dark</item>
+    </string-array>
+    
+    <string-array name="category_names">
+        <item>Bank Account</item>       
+        <item>Credit Cards</item>
+        <item>Devices</item>
+        <item>E-Bank</item>
+        <item>Email Account</item>
+        <item>Web Account</item>
+    </string-array>
+    
+    <string-array name="field_types">
+        <item>Text</item>
+        <item>Password</item>
+        <item>Web Link</item>
+        <item>Email</item>
+        <item>PIN</item>
+    </string-array>
+    
+    <string-array name="file_types">
+        <item>Passbook data file (encrypted)</item>
+        <item>Passbook CSV file (plain text)</item>  
+    </string-array>
+    
+    <string-array name="file_types_import">
+        <item>Passbook data file (encrypted)</item>
+        <item>Passbook CSV file (plain text)</item>  
+        <item>aWallet CSV File (plain text)</item>
+    </string-array>
+    
+    <string-array name="def_field_names">
+        <item>Username</item>
+        <item>Password</item>
+        <item>Email</item>
+        <item>Web address</item>
+        <item>Card No.</item>
+        <item>PIN</item>
+        <item>Note</item>
+        <item>Bank Name</item>
+        <item>CVC</item>
+    </string-array>
 </resources>
