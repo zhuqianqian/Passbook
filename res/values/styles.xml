@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="atButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button</item>
+    </style>
+
+</resources>
