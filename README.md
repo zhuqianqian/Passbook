@@ -28,7 +28,7 @@ PwdBook was originally called Passbook. After I realized many other apps also us
 
 Download
 -------
-[![image]](<a href="https://play.google.com/store/apps/details?id=com.z299studio.pbfree)
+[![image]](https://play.google.com/store/apps/details?id=com.z299studio.pbfree")
 [image]: https://developer.android.com/images/brand/en_generic_rgb_wo_60.png "Get it on Google Play" 
 
 License
