@@ -14,7 +14,6 @@
 * limitations under the License.
 */
 
-
 package com.z299studio.pb;
 
 import java.security.GeneralSecurityException;
