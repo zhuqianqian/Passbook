@@ -22,26 +22,26 @@ package com.z299studio.pb;
  * use just 'C' as the class name.
  */
 public final class C {
-	
-	public static final int APP_VERSION = 2;
-	
-	public static final class Keys {
-		public static final String AUTO_LOCK = "AutoLock";
-		public static final String ENABLE_COPY = "EnableCopy";
-		public static final String SHOW_OTHER = "ShowUngrouped";
-		public static final String SHOW_PWD = "ShowPassword";
-		public static final String THEME = "Theme";
-		public static final String TOUR = "AppTour";
-		public static final String WARN_COPY = "WarningCopy";		
-	}
-	
-	public static final class Sync {
-		public static final String SERVER = "SyncServer";
-		public static final String MSG = "SyncMessage";
-		public static final String VERSION = "LastSyncVersion";
-		public static final int NONE = 0;
-		public static final int GPGS = 1;
-		public static final int GDRIVE = 2;	
-	}
+    
+    public static final int APP_VERSION = 2;
+    
+    public static final class Keys {
+        public static final String AUTO_LOCK = "AutoLock";
+        public static final String ENABLE_COPY = "EnableCopy";
+        public static final String SHOW_OTHER = "ShowUngrouped";
+        public static final String SHOW_PWD = "ShowPassword";
+        public static final String THEME = "Theme";
+        public static final String TOUR = "AppTour";
+        public static final String WARN_COPY = "WarningCopy";        
+    }
+    
+    public static final class Sync {
+        public static final String SERVER = "SyncServer";
+        public static final String MSG = "SyncMessage";
+        public static final String VERSION = "LastSyncVersion";
+        public static final int NONE = 0;
+        public static final int GPGS = 1;
+        public static final int GDRIVE = 2;    
+    }
 
 }

@@ -27,62 +27,61 @@ import com.google.android.gms.drive.Drive;
 
 public class DriveSyncService extends SyncService implements 
 ConnectionCallbacks, OnConnectionFailedListener {
-	
-	public static final int REQ_RESOLUTION = 299;
-	
-	private GoogleApiClient mGoogleApiClient;
-	
-	@Override
-	public SyncService initialize() {
-		mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-	    	.addApi(Drive.API)
-	    	.addScope(Drive.SCOPE_APPFOLDER)
-	    	.addConnectionCallbacks(this)
-	    	.addOnConnectionFailedListener(this)
-	    	.build();
-		return this;
-	}
+    
+    public static final int REQ_RESOLUTION = 299;
+    
+    private GoogleApiClient mGoogleApiClient;
+    
+    @Override
+    public SyncService initialize() {
+        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+            .addApi(Drive.API)
+            .addScope(Drive.SCOPE_APPFOLDER)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .build();
+        return this;
+    }
 
-	@Override
-	public SyncService connect() {
-		mGoogleApiClient.connect();
-		return this;
-	}
+    @Override
+    public SyncService connect() {
+        mGoogleApiClient.connect();
+        return this;
+    }
 
-	@Override
-	public void disconnect() {
-		mGoogleApiClient.disconnect();
-	}
-	
-	@Override
-	public byte[] read() {
-		return null;
-	}
-	
-	@Override
-	public void send(byte[] data) {
-		
-	}
-	
-	@Override
-	public boolean onActivityResult(final int requestCode, final int resultCode, 
-			final Intent data){
-		return false;
-	}
+    @Override
+    public void disconnect() {
+        mGoogleApiClient.disconnect();
+    }
+    
+    @Override
+    public void read() {
+        
+    }
+    
+    @Override
+    public void send(byte[] data) {
+        
+    }
+    
+    @Override
+    public boolean onActivityResult(final int requestCode, final int resultCode, 
+            final Intent data){
+        return false;
+    }
 
-	@Override
-	public void onConnectionFailed(ConnectionResult result) {
-		
-	}
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        
+    }
 
-	@Override
-	public void onConnected(Bundle connectionHint) {
-			
-	}
+    @Override
+    public void onConnected(Bundle connectionHint) {
+            
+    }
 
-	@Override
-	public void onConnectionSuspended(int cause) {
-		
-	}
-
+    @Override
+    public void onConnectionSuspended(int cause) {
+        
+    }
 }

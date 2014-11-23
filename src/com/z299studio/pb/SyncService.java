@@ -24,43 +24,48 @@ import android.content.Intent;
  * upcoming versions (like Dropbox?).
  */
 public abstract class SyncService {
-	
-	public static class CA {
-		public static final int DATA_SENT = 1;
-		public static final int DATA_RECEIVED = 2;
-		public static final int CONNECTED = 3;
-		public static final int AUTH = 4;
-	}
-	
-	public interface SyncListener {
-		public void onSyncFailed(int errorCode);
-		public void onSyncProgress(int actionCode);
-	}
-	
-	private static SyncService __instance;
-	
-	protected SyncListener mListener;
-	protected Activity mContext;
-	
-	public static SyncService getInstance(Activity context, int server) {
-		return __instance;
-	}
-	
-	public static SyncService getInstance() {
-		return __instance;
-	}
-	
-	public abstract SyncService initialize();
-	
-	public abstract SyncService connect();
-	
-	public abstract void disconnect();
-	
-	public abstract byte[] read();
-	
-	public abstract void send(byte[] data);
-	
-	public abstract boolean onActivityResult(final int requestCode, final int resultCode, 
-			final Intent data);
+    
+    public static class CA {
+        public static final int DATA_SENT = 1;
+        public static final int DATA_RECEIVED = 2;
+        public static final int CONNECTED = 3;
+        public static final int AUTH = 4;
+    }
+    
+    public interface SyncListener {
+        public void onSyncFailed(int errorCode);
+        public void onSyncProgress(int actionCode);
+    }
+    
+    private static SyncService __instance;
+    
+    protected SyncListener mListener;
+    protected Activity mContext;
+    protected byte[] mData;
+    
+    public static SyncService getInstance(Activity context, int server) {
+        return __instance;
+    }
+    
+    public static SyncService getInstance() {
+        return __instance;
+    }
+    
+    public abstract SyncService initialize();
+    
+    public abstract SyncService connect();
+    
+    public abstract void disconnect();
+    
+    public abstract void read();
+    
+    public abstract void send(byte[] data);
+    
+    public byte[] requestData() {
+        return mData;
+    }
+    
+    public abstract boolean onActivityResult(final int requestCode, final int resultCode, 
+        final Intent data);
 
 }
