@@ -21,10 +21,10 @@ PwdBook Features:
 
 ### About Synchronization
 
-Currently the synchronization uses Google Play Games snapshot service and the integration with Google Drive is under development. It is to be available in 2.0.
+Synchronization before version 2 uses Google Play Games snapshot service, which can save up to 3MB data. The integration with Google Drive is underdevelopment and it is to be available in version 2.0.
 
 ### About the Name
-PwdBook was originally called Passbook. After I realized many other apps also use this name, I decided to change it to PwdBook, another abbreviation form of <Password Book>. For all releases before version 2.0, the name was Passbook.
+PwdBook was originally called Passbook. After I realized many other apps also use this name, I decided to change it to PwdBook, another abbreviation form of "Password Book". For all releases before version 2.0, the name was Passbook.
 
 Download
 -------
@@ -33,4 +33,4 @@ Download
 
 License
 -------
-PwdBook is licensed under [Apache License 2.0](LICENSE)
+PwdBook is licensed under [Apache License 2.0](LICENSE).
