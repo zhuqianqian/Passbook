@@ -16,12 +16,15 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -193,21 +196,46 @@ ConnectionCallbacks, OnConnectionFailedListener {
     @Override
     public boolean onActivityResult(final int requestCode, final int resultCode, 
             final Intent data) {
+    	if(requestCode == REQ_RESOLUTION) {
+		    if (resultCode == Activity.RESULT_OK) {
+	        	mGoogleApiClient.connect();
+	        	mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						mListener.onSyncProgress(CA.AUTH);
+					}});
+	        }
+		    else {
+		    	mHandler.post(new Runnable(){
+					@Override
+					public void run() {
+						mListener.onSyncFailed(CA.AUTH);
+					}});
+		    }
+		    return true;
+    	}
         return false;
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        
+		if (!result.hasResolution()) {
+			GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mContext, 0).show();
+			mListener.onSyncFailed(CA.CONNECTION);
+			return;
+		}
+		try {
+			result.startResolutionForResult(mContext, REQ_RESOLUTION);
+		} catch (SendIntentException e) {
+			mListener.onSyncFailed(CA.CONNECTION);
+		}
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-            
+    	read();
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
-        
-    }
+    public void onConnectionSuspended(int cause) {}
 }

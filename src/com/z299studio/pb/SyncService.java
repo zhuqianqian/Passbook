@@ -28,7 +28,7 @@ public abstract class SyncService {
     public static class CA {
         public static final int DATA_SENT = 1;
         public static final int DATA_RECEIVED = 2;
-        public static final int CONNECTED = 3;
+        public static final int CONNECTION = 3;
         public static final int AUTH = 4;
     }
     
