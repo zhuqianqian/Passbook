@@ -196,44 +196,44 @@ ConnectionCallbacks, OnConnectionFailedListener {
     @Override
     public boolean onActivityResult(final int requestCode, final int resultCode, 
             final Intent data) {
-    	if(requestCode == REQ_RESOLUTION) {
-		    if (resultCode == Activity.RESULT_OK) {
-	        	mGoogleApiClient.connect();
-	        	mHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						mListener.onSyncProgress(CA.AUTH);
-					}});
-	        }
-		    else {
-		    	mHandler.post(new Runnable(){
-					@Override
-					public void run() {
-						mListener.onSyncFailed(CA.AUTH);
-					}});
-		    }
-		    return true;
-    	}
+        if(requestCode == REQ_RESOLUTION) {
+            if (resultCode == Activity.RESULT_OK) {
+                mGoogleApiClient.connect();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mListener.onSyncProgress(CA.AUTH);
+                    }});
+            }
+            else {
+                mHandler.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        mListener.onSyncFailed(CA.AUTH);
+                    }});
+            }
+            return true;
+        }
         return false;
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-		if (!result.hasResolution()) {
-			GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mContext, 0).show();
-			mListener.onSyncFailed(CA.CONNECTION);
-			return;
-		}
-		try {
-			result.startResolutionForResult(mContext, REQ_RESOLUTION);
-		} catch (SendIntentException e) {
-			mListener.onSyncFailed(CA.CONNECTION);
-		}
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mContext, 0).show();
+            mListener.onSyncFailed(CA.CONNECTION);
+            return;
+        }
+        try {
+            result.startResolutionForResult(mContext, REQ_RESOLUTION);
+        } catch (SendIntentException e) {
+            mListener.onSyncFailed(CA.CONNECTION);
+        }
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-    	read();
+        read();
     }
 
     @Override
