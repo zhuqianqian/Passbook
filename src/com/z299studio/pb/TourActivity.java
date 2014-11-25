@@ -46,7 +46,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     private ImageView[] mIndicators = new ImageView[NUM_PAGES];
     private Button mSkip;
     private Button mNext;
-    private boolean mReady = false;
+    private boolean mReady;
     private LinearLayout mContainer;
     private int mFromActivity;
 
@@ -57,11 +57,13 @@ public class TourActivity extends Activity implements AnimatorListener{
             mFromActivity = savedInstanceState.getInt(
                     C.Names.ACTIVITY, C.Activity.HOME);
             mCurrent = savedInstanceState.getInt(C.Names.PAGE_NUM, 0);
+            mReady = savedInstanceState.getBoolean("ready", false);
         }
         else {
             Bundle bundle = getIntent().getExtras();
             mFromActivity = bundle.getInt(C.Names.ACTIVITY, C.Activity.HOME);
             mCurrent = 0;
+            mReady = false;
         }
         setContentView(R.layout.activity_welcome);
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -77,7 +79,13 @@ public class TourActivity extends Activity implements AnimatorListener{
         mNext = (Button)findViewById(R.id.next);
         mContainer = (LinearLayout)findViewById(R.id.container);
         mAppText = (TextView)findViewById(R.id.app);
-        mAppText.animate().alpha(1.0f).setDuration(400).setListener(this);
+        if(mReady == false) {
+            mAppText.animate().alpha(1.0f).setDuration(400).setListener(this);
+        }
+        else {
+            mPager.setAlpha(1.0f);
+            mContainer.setAlpha(1.0f);
+        }
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -149,6 +157,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(C.Names.ACTIVITY, mFromActivity);
         outState.putInt(C.Names.PAGE_NUM, mCurrent);
+        outState.putBoolean("ready", mReady);
     }
     
     private void finishTour() {
