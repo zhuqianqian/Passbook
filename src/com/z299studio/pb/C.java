@@ -53,8 +53,9 @@ public final class C {
     
     public static final class Names {
         public static final String ACTIVITY = "activity";
+        public static final String PAGE_NUM = "page";
     }
     public static final int THEMES[] = {
-        
+        R.style.AppTheme
     };
 }

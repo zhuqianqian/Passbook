@@ -85,7 +85,7 @@ public class HomeActivity extends Activity {
     }
     
     private void popInput() {
-        mPwdEdit = (EditText)findViewById(R.id.et_password);
+        mPwdEdit = (EditText)findViewById(R.id.password);
         if(mPwdEdit!=null) {
             mPwdEdit.postDelayed(new Runnable() {
                 @Override
@@ -107,7 +107,7 @@ public class HomeActivity extends Activity {
                 }
             };
             mPwdEdit.setOnEditorActionListener(eal);
-            EditText et_confirm = (EditText)findViewById(R.id.et_confirm);
+            EditText et_confirm = (EditText)findViewById(R.id.confirm);
             if(et_confirm !=null) {
                 et_confirm.setOnEditorActionListener(eal);
             }

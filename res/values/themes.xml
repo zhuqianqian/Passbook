@@ -1,5 +1,11 @@
 <resources>
 
     <style name="AppTourTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+    </style>
 
 </resources>

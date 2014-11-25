@@ -1,7 +1,10 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="atButtonStyle" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">#deffffff</item>
     </style>
 
 </resources>

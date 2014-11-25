@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="title_accounts">
-        <item quantity="zero">No Accounts</item>
         <item quantity="one">%d Account</item>
         <item quantity="other">%d Accounts</item>
     </plurals>
-    
     <plurals name="info_deleted">
         <item quantity="one">%d item deleted.</item>
         <item quantity="other">%d items deleted.</item>
     </plurals>
-    
     <!-- App strings -->
     <string name="app_name">PwdBook</string>
     <string name="app_about">%1$s\nVersion %2$s</string>
     <string name="app_copy">Copyright &#169; 299Studio 2014</string>
     <string name="app_welcome">Welcome to PwdBook</string>
     <string name="app_intro">Your central place to securely store your sensitive data and synchronize among devices.\n\nChoose where you want to sync your data</string>
-    
     <!-- Action/Menu/Button/Label/Title strings -->
     <string name="edit_category">Edit Category</string>
     <string name="del_category">Delete Category</string>
@@ -44,7 +40,7 @@
     <string name="sync_gdrive">Google Drive</string>
     <string name="sync_server">Sync Server</string>
     <string name="sync_msg">Show Sync Message</string>
-    <string name="show_password">Always Show Password</string>
+    <string name="show_password">Always Show Passwords</string>
     <string name="show_ungrouped">Show \'Other\' Category</string>
     <string name="auto_lock">Lock on Entering Background</string>
     <string name="warn_copy">Warn on Copying Passwords</string>
@@ -69,8 +65,8 @@
     <string name="delete">Delete</string>
     <string name="unlock">Unlock</string>
     <string name="get_started">Get Started</string>
-    <string name="select">TAP TO SELECT FILE</string>
-    <string name="option_label">Options to deeal with duplicates:</string>
+    <string name="select">TAP TO SELECT A FILE</string>
+    <string name="option_label">Options to deal with duplicates:</string>
     <string name="option_ignore">Ignore</string>
     <string name="option_keepall">Keep Both</string>
     <string name="option_overwrite">Overwrite Existing</string>
@@ -80,7 +76,6 @@
     <string name="accept">Accept</string>
     <string name="refresh">Refresh</string>
     <string name="length">Length: %d</string>
-    
     <!-- Tips/Messages -->
     <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>
     <string name="also_del_account">Also delete the accounts under the category.</string>
@@ -89,8 +84,6 @@
     <string name="contacting_gpg">Contacting Google Play Services…</string>
     <string name="loading">Loading data from Google Play Services…</string>
     <string name="pwd_changed">Password changed.</string>
-    <string name="category_added">Category added.</string>
-    <string name="category_changed">Category changed.</string>
     <string name="category_deleted">Category deleted.</string>
     <string name="pwd_wrong">Wrong password.</string>
     <string name="pwd_unmatch">You have given different passwords.</string>
@@ -102,14 +95,13 @@
     <string name="import_success">Data successfully imported.</string>
     <string name="sync_success_local">Data successfully retrieved from server.</string>
     <string name="sync_success_server">Data sent to server.</string>
-    <string name="invalid_file">Please select a valid file to continue.</string>    
+    <string name="invalid_file">Please select a valid file to continue.</string>
     <string name="remember_choice">Remember my choice and do not ask again.</string>
     <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
     <string name="credits">Many thanks to <u>Xu, Xuechen</u> for French translations!</string>
-    <string name="icon8_lisense">Some of the icons used in this app are from <a href="http://icon8.com">Icon8</a> under licence <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-NoDerivs 3.0 Unported</a>.</string>
+    <string name="icon8_lisense">Some of the icons used in this app are from &lt;a href=\"http://icon8.com\"&gt;Icon8&lt;/a&gt; under license &lt;a href=\"http://creativecommons.org/licenses/by-nd/3.0/\"&gt;Creative Commons Attribution-NoDerivs 3.0 Unported&lt;/a&gt;.</string>
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
-    
-    <!-- String arrays -->    
+    <!-- String arrays -->
     <string-array name="theme_names">
         <item>Default Light Theme</item>
         <item>Default Dark Theme</item>
@@ -122,16 +114,14 @@
         <item>Teal Light</item>
         <item>Teal Dark</item>
     </string-array>
-    
     <string-array name="category_names">
-        <item>Bank Account</item>       
+        <item>Bank Accounts</item>
         <item>Credit Cards</item>
         <item>Devices</item>
-        <item>E-Bank</item>
-        <item>Email Account</item>
-        <item>Web Account</item>
+        <item>E-Banking</item>
+        <item>Email Accounts</item>
+        <item>Web Accounts</item>
     </string-array>
-    
     <string-array name="field_types">
         <item>Text</item>
         <item>Password</item>
@@ -139,18 +129,15 @@
         <item>Email</item>
         <item>PIN</item>
     </string-array>
-    
     <string-array name="file_types">
-        <item>Passbook data file (encrypted)</item>
-        <item>Passbook CSV file (plain text)</item>  
+        <item>PwdBook data file (encrypted)</item>
+        <item>PwdBook CSV file (plain text)</item>
     </string-array>
-    
     <string-array name="file_types_import">
-        <item>Passbook data file (encrypted)</item>
-        <item>Passbook CSV file (plain text)</item>  
+        <item>PwdBook data file (encrypted)</item>
+        <item>PwdBook CSV file (plain text)</item>
         <item>aWallet CSV File (plain text)</item>
     </string-array>
-    
     <string-array name="def_field_names">
         <item>Username</item>
         <item>Password</item>
@@ -162,4 +149,14 @@
         <item>Bank Name</item>
         <item>CVC</item>
     </string-array>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="title_tour0">Keep Securely</string>
+    <string name="title_tour1">Access Anywhere</string>
+    <string name="title_tour2">Password Generation</string>
+    <string name="desc_tour0">Data in PwdBook are encrypted and kept safe so you will not lose them</string>
+    <string name="desc_tour1">Data can be saved in your Google Drive so you can access on any Android devices.</string>
+    <string name="desc_tour2">Strong passwords are no longer a difficult thing for you to manage.</string>
+    <string name="category_saved">Category saved.</string>
 </resources>
