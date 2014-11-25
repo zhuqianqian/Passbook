@@ -6,5 +6,23 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:textColor">#deffffff</item>
     </style>
-
+    
+    <style name="Button" parent="@android:style/Widget.Button">
+        <item name="android:minWidth">88dp</item>
+        <item name="android:background">?attr/defaultButtonDrawable</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+    </style>
+    
+    <style name="Button.Accent">
+        <item name="android:background">?attr/accentButtonDrawable</item>
+    </style>
+    
+    <style name="Button.Flat">
+        <item name="android:background">?attr/flatButtonDrawable</item>
+    </style>
+    
+    <style name="Button.Flat.Accent">
+        <item name="android:textColor">?attr/accentTextColor</item>
+    </style>
 </resources>
