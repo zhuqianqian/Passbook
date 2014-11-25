@@ -21,7 +21,6 @@ import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -48,20 +47,15 @@ public class TourActivity extends Activity implements AnimatorListener{
     private Button mNext;
     private boolean mReady;
     private LinearLayout mContainer;
-    private int mFromActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null) {
-            mFromActivity = savedInstanceState.getInt(
-                    C.Names.ACTIVITY, C.Activity.HOME);
             mCurrent = savedInstanceState.getInt(C.Names.PAGE_NUM, 0);
             mReady = savedInstanceState.getBoolean("ready", false);
         }
         else {
-            Bundle bundle = getIntent().getExtras();
-            mFromActivity = bundle.getInt(C.Names.ACTIVITY, C.Activity.HOME);
             mCurrent = 0;
             mReady = false;
         }
@@ -72,6 +66,7 @@ public class TourActivity extends Activity implements AnimatorListener{
         mBackground.getDrawable(0).setAlpha(255);
         mBackground.getDrawable(1).setAlpha(0);
         mBackground.getDrawable(2).setAlpha(0);
+        mBackground.getDrawable(3).setAlpha(0);
         for(int i = 0; i < NUM_PAGES; ++i) {
             mIndicators[i] = (ImageView)findViewById(ids[i]);
         }
@@ -130,6 +125,9 @@ public class TourActivity extends Activity implements AnimatorListener{
             mSkip.setVisibility(View.INVISIBLE);
             mNext.setText(R.string.done);
         }
+        else if(position == NUM_PAGES) {
+        	finishTour();
+        }
         else {
             mSkip.setVisibility(View.VISIBLE);
             mNext.setText(R.string.next);
@@ -155,7 +153,6 @@ public class TourActivity extends Activity implements AnimatorListener{
     
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(C.Names.ACTIVITY, mFromActivity);
         outState.putInt(C.Names.PAGE_NUM, mCurrent);
         outState.putBoolean("ready", mReady);
     }
@@ -163,13 +160,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     private void finishTour() {
         Application.Options.mTour = true;
         Application.getInstance().mSP.edit().putBoolean(C.Keys.TOUR, true).commit();
-        Class<?> cls = null;
-        if(mFromActivity == C.Activity.HOME){
-            cls = HomeActivity.class;
-        }
-        Intent intent = new Intent(this, cls);
-        startActivity(intent);
-        finish();
+        this.finish();
     }
     
     @Override
@@ -189,7 +180,7 @@ public class TourActivity extends Activity implements AnimatorListener{
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return NUM_PAGES+1;
         }
 
         @Override

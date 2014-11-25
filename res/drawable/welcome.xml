@@ -9,4 +9,7 @@
     <item>
       <shape><solid android:color="@android:color/holo_orange_light"/></shape>
     </item>
+    <item>
+      <shape><solid android:color="@android:color/transparent"/></shape>
+    </item>
 </layer-list>

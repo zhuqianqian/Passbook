@@ -41,13 +41,6 @@ public class HomeActivity extends Activity {
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
-        if(Application.Options.mTour == false){
-            Intent intent = new Intent(this, TourActivity.class);
-            intent.putExtra(C.Names.ACTIVITY, C.Activity.HOME);
-            this.startActivity(intent);
-            this.finish();
-            return;
-        }
         setContentView(R.layout.activity_home);
         if(mApp.hasDataFile()) {
             HomeFragment.mLayout = R.layout.fragment_startup;
@@ -57,6 +50,11 @@ public class HomeActivity extends Activity {
         }
         getFragmentManager().beginTransaction().add(R.id.container,
             new HomeFragment()).commit();
+        if(Application.Options.mTour == false){
+            Intent intent = new Intent(this, TourActivity.class);
+            this.startActivity(intent);
+            this.finish();
+        }
     }
     
     @Override
