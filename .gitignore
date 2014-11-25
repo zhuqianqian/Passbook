@@ -27,6 +27,7 @@ proguard/
 
 # Android libs
 /libs/android-support-v4.jar
+/libs/android-support-v13.jar
 
 # IDs.
 */values/ids.xml
