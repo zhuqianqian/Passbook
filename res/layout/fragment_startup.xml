@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+    
+    <TextView android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_welcome"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:drawableTop="@drawable/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/intro_0" 
+        android:layout_width="match_parent"
+        android:layout_below="@id/icon"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:layout_marginTop="24dp"
+        android:text="@string/app_intro"/>
+    
+    <Button android:id="@+id/btn_gdrive"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        style="@style/Button.Accent"
+        android:text="@string/sync_gdrive"
+        android:layout_below="@id/intro_0"
+        android:layout_marginTop="48dp"
+        android:onClick="onSyncSelected"
+        />
+    
+    <Button android:id="@+id/btn_gpg"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        style="@style/Button.Accent"
+        android:text="@string/sync_gpg"
+        android:layout_below="@id/btn_gdrive"        
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:onClick="onSyncSelected"
+        />
+    
+    <Button android:id="@+id/btn_local"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        style="@style/Button.Accent"
+        android:text="@string/sync_none"
+        android:layout_below="@id/btn_gpg"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:onClick="onSyncSelected"/>
+    
+    <ProgressBar android:id="@+id/pb"
+        android:layout_width="match_parent" 
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_alignBottom="@id/btn_gpg"/>
+    <TextView android:id="@+id/caption"        
+        android:layout_width="match_parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pb"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="@string/contacting_gpg"/>
+</RelativeLayout>

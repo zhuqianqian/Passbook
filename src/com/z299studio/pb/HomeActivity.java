@@ -42,7 +42,7 @@ public class HomeActivity extends Activity {
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if(mApp.hasDataFile()) {
+        if(!mApp.hasDataFile()) {
             HomeFragment.mLayout = R.layout.fragment_startup;
         }
         else {
@@ -78,7 +78,7 @@ public class HomeActivity extends Activity {
         
     }
     
-    public void onSyncChoosed(View view) {
+    public void onSyncSelected(View view) {
         
     }
     
