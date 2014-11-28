@@ -49,11 +49,13 @@ public class HomeActivity extends Activity {
             HomeFragment.mLayout = R.layout.fragment_home;
         }
         getFragmentManager().beginTransaction().add(R.id.container,
-            new HomeFragment()).commit();
+            HomeFragment.create()).commit();
         if(Application.Options.mTour == false){
             Intent intent = new Intent(this, TourActivity.class);
+            intent.putExtra(C.Names.ACTIVITY, C.Activity.HOME);
             this.startActivity(intent);
             this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
     
@@ -112,9 +114,14 @@ public class HomeActivity extends Activity {
         }        
     }
     
-    private static class HomeFragment extends Fragment {
+    public static class HomeFragment extends Fragment {
         public static int mLayout;
         
+        public static HomeFragment create() {
+        	return new HomeFragment();
+        }
+        
+        public HomeFragment() {}
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {

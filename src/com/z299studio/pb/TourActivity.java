@@ -21,6 +21,7 @@ import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     private Button mSkip;
     private Button mNext;
     private boolean mReady;
+    private int mFromActivity;
     private LinearLayout mContainer;
 
     @Override
@@ -54,10 +56,14 @@ public class TourActivity extends Activity implements AnimatorListener{
         if(savedInstanceState!=null) {
             mCurrent = savedInstanceState.getInt(C.Names.PAGE_NUM, 0);
             mReady = savedInstanceState.getBoolean("ready", false);
+            mFromActivity = savedInstanceState.getInt(C.Names.ACTIVITY);
         }
         else {
             mCurrent = 0;
             mReady = false;
+            mFromActivity = getIntent().getExtras().getInt(C.Names.ACTIVITY,
+            		C.Activity.SETTINGS);
+            
         }
         setContentView(R.layout.activity_welcome);
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -154,13 +160,19 @@ public class TourActivity extends Activity implements AnimatorListener{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(C.Names.PAGE_NUM, mCurrent);
+        outState.putInt(C.Names.ACTIVITY, mFromActivity);
         outState.putBoolean("ready", mReady);
     }
     
     private void finishTour() {
         Application.Options.mTour = true;
         Application.getInstance().mSP.edit().putBoolean(C.Keys.TOUR, true).commit();
+        if(mFromActivity == C.Activity.HOME){
+        	Intent intent = new Intent(this, HomeActivity.class);
+            this.startActivity(intent);
+        }
         this.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
     
     @Override
