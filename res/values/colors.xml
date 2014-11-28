@@ -21,4 +21,6 @@
     <color name="shadow_2">#d0111111</color>
     <color name="shadow_3">#e0000000</color>
     
+    <color name="text_hint">#42000000</color>
+    
 </resources>
