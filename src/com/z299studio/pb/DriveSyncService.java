@@ -44,7 +44,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
 
     @Override
-    public SyncService connect() {
+    public SyncService connect(int localVersion) {
+        mLocalVersion = localVersion;
         mGoogleApiClient.connect();
         return this;
     }
@@ -55,8 +56,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     @Override
-    public void read(int minVersion) {
-        super.read(minVersion);
+    public void read() {
     }
     
     @Override

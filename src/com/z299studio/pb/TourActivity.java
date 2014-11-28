@@ -62,7 +62,7 @@ public class TourActivity extends Activity implements AnimatorListener{
             mCurrent = 0;
             mReady = false;
             mFromActivity = getIntent().getExtras().getInt(C.Names.ACTIVITY,
-            		C.Activity.SETTINGS);
+                    C.Activity.SETTINGS);
             
         }
         setContentView(R.layout.activity_welcome);
@@ -132,7 +132,7 @@ public class TourActivity extends Activity implements AnimatorListener{
             mNext.setText(R.string.done);
         }
         else if(position == NUM_PAGES) {
-        	finishTour();
+            finishTour();
         }
         else {
             mSkip.setVisibility(View.VISIBLE);
@@ -168,7 +168,7 @@ public class TourActivity extends Activity implements AnimatorListener{
         Application.Options.mTour = true;
         Application.getInstance().mSP.edit().putBoolean(C.Keys.TOUR, true).commit();
         if(mFromActivity == C.Activity.HOME){
-        	Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             this.startActivity(intent);
         }
         this.finish();

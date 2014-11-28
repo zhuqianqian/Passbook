@@ -34,7 +34,7 @@ public class Application{
     public SharedPreferences mSP;
     
     public static class Options {
-    	public static int mSync;
+        public static int mSync;
         public static int mTheme;
         public static boolean mTour;  
     }
@@ -140,11 +140,11 @@ public class Application{
     }
     
     public int getLocalVersion() {
-    	int version = 0;
-    	if(mFileHeader!=null) {
-    		version = mFileHeader.revision;
-    	}
-    	return version;
+        int version = 0;
+        if(mFileHeader!=null) {
+            version = mFileHeader.revision;
+        }
+        return version;
     }
     
     public void saveData() {

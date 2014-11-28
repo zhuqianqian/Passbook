@@ -60,7 +60,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
 
     @Override
-    public SyncService connect() {
+    public SyncService connect(int localVersion) {
+        mLocalVersion = localVersion;
         mGoogleApiClient.connect();
         return this;
     }
@@ -71,8 +72,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     @Override
-    public void read(int minVersion) {
-    	super.read(minVersion);
+    public void read() {
         AsyncTask<Void, Void, Integer> task = new AsyncTask<Void, Void, Integer>() {    
             @Override
             protected Integer doInBackground(Void... params) {
@@ -234,7 +234,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        read(0);
+        read();
     }
 
     @Override
