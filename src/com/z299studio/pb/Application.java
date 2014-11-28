@@ -38,36 +38,38 @@ public class Application{
         public static boolean mTour;        
     }
     
-    private static class FileParser {
-        public static int version;  // 1 byte
-        public static int iterationCount; // 1 byte
-        public static int keyLength;  //1 byte
-        public static int ivLength;  // 1 byte
-        public static int revision;  // 10 bytes
-        public static int size;    
-        private static final int V1_HEADER_SIZE = 16;
-        private static final int REV_SIZE = 10;
-            
-        public static boolean parse(byte[] buffer) {
-            boolean valid = false;
+    public static class FileHeader {
+        public int version;  // 1 byte
+        public int iterationCount; // 1 byte
+        public int keyLength;  //1 byte
+        public int ivLength;  // 1 byte
+        public int revision;  // 10 bytes
+        public int size;
+        public boolean valid;
+        public static final int HEADER_SIZE = 16;
+        public static final int RESERVED = 10;
+        
+        public static FileHeader parse(byte[] buffer) {
+            FileHeader fh = new FileHeader();
+            fh.valid = false;
             if(buffer!=null) {
                 if(buffer[0] == 0x50 && buffer[1] == 0x42) {
                     int i = 2;
-                    valid = true;
-                    version = buffer[i++];
-                    iterationCount = 100 * (buffer[i++]);
-                    keyLength = buffer[i++];
-                    ivLength =  buffer[i++];
-                    revision = Integer.parseInt(new String(buffer, i, REV_SIZE).trim());
-                    i += REV_SIZE;
-                    size = i;                
+                    fh.valid = true;
+                    fh.version = buffer[i++];
+                    fh.iterationCount = 100 * (buffer[i++]);
+                    fh.keyLength = buffer[i++];
+                    fh.ivLength =  buffer[i++];
+                    fh.revision = Integer.parseInt(new String(buffer, i, RESERVED).trim());
+                    i += RESERVED;
+                    fh.size = i;                
                 }
             }
-            return valid;
-        }    
+            return fh;
+        }
         
         public static byte[] build(int version, int count, int keyLength, int ivLength, int revision) {
-            byte[] header = new byte[V1_HEADER_SIZE];
+            byte[] header = new byte[HEADER_SIZE];
             int i = 0;
             header[i++] = 0x50; header[i++] = 0x42;
             header[i++] = (byte) version;
@@ -76,7 +78,7 @@ public class Application{
             header[i++] = (byte) ivLength;
             byte[] revBytes = String.format(Locale.ENGLISH, "%10d", revision).getBytes();
             System.arraycopy(revBytes, 0, header, i, revBytes.length);
-            i += REV_SIZE;
+            i += RESERVED;
             return header;
         }
     }
@@ -84,6 +86,7 @@ public class Application{
     private Activity mContext;
     private byte[] mBuffer;
     private long mDataSize;
+    private FileHeader mFileHeader;
     
     public static Application getInstance(Activity context) {
         if(__instance == null) {
@@ -127,7 +130,7 @@ public class Application{
             mBuffer = new byte[(int) mDataSize];
             FileInputStream fis = mContext.openFileInput(DATA_FILE);
             fis.read(mBuffer, 0, (int) mDataSize);
-            FileParser.parse(mBuffer);
+            mFileHeader = FileHeader.parse(mBuffer);
             fis.close();
         }
         catch (IOException e) {
