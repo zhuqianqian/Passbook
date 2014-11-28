@@ -71,7 +71,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     @Override
-    public void read() {
+    public void read(int minVersion) {
+    	super.read(minVersion);
         AsyncTask<Void, Void, Integer> task = new AsyncTask<Void, Void, Integer>() {    
             @Override
             protected Integer doInBackground(Void... params) {
@@ -233,7 +234,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        read();
+        read(0);
     }
 
     @Override

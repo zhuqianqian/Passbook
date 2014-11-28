@@ -55,8 +55,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     @Override
-    public void read() {
-        
+    public void read(int minVersion) {
+        super.read(minVersion);
     }
     
     @Override

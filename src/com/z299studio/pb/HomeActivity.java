@@ -16,10 +16,13 @@
 
 package com.z299studio.pb;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,14 +30,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends Activity implements AnimatorListener{
 
     protected Application mApp;
     protected EditText mPwdEdit;
+    protected TextView mSyncText;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,45 @@ public class HomeActivity extends Activity {
     }
     
     public void onSyncSelected(View view) {
-        
+        switch(view.getId()) {
+        case R.id.btn_gdrive:
+        case R.id.btn_gpg:
+        	startSync(view.getId());
+        	break;
+        case R.id.btn_local:
+        	Application.Options.mSync = C.Sync.NONE;
+        	mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).commit();
+        	startHome();
+        	break;
+        }
+    }
+    
+    private void startSync(int id) {
+    	Resources r = getResources();
+    	Button options[]= new Button[3];
+    	int ids[] = {R.id.btn_gdrive, R.id.btn_gpg, R.id.btn_local};
+    	for(int i = 0; i < options.length; ++i) {
+    		options[i] = (Button)findViewById(ids[i]);
+    		options[i].animate().scaleY(0.0f).setListener(this);
+    	}
+    	mSyncText = (TextView)findViewById(R.id.sync_hint);
+    	Application.Options.mSync = id == R.id.btn_gdrive ? C.Sync.GDRIVE : C.Sync.GPGS;
+    	mSyncText.setText(r.getString(R.string.contacting, 
+    		id == R.id.btn_gdrive ? r.getString(R.string.sync_gdrive) :
+    			r.getString(R.string.sync_gpg)));
+    	ProgressBar pb = (ProgressBar)findViewById(R.id.pb);
+    	pb.animate().alpha(1.0f).setStartDelay(300);
+    	mSyncText.animate().alpha(1.0f).setStartDelay(300);
+    	SyncService ss = SyncService.getInstance(this, Application.Options.mSync);
+    	ss.initialize().connect();
+    }
+    
+    private void startHome() {
+    	HomeFragment.mLayout = R.layout.fragment_home;
+    	getFragmentManager().beginTransaction()
+    		.replace(R.id.container, HomeFragment.create())
+    		.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+    		.commit();
     }
     
     private void popInput() {
@@ -126,7 +170,29 @@ public class HomeActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(mLayout, container, false);
+            EditText confirm = (EditText)rootView.findViewById(R.id.confirm);
+            if(Application.getInstance().hasDataFile()) {
+            	confirm.setVisibility(View.GONE);
+            }
+            else {
+            	
+            }
             return rootView;
         }
     }
+
+	@Override
+	public void onAnimationStart(Animator animation) {}
+
+	@Override
+	public void onAnimationEnd(Animator animation) {
+		
+		
+	}
+
+	@Override
+	public void onAnimationCancel(Animator animation) {}
+
+	@Override
+	public void onAnimationRepeat(Animator animation) {}
 }

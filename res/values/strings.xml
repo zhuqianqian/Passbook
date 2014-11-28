@@ -81,8 +81,7 @@
     <string name="also_del_account">Also delete the accounts under the category.</string>
     <string name="no_file_explorer">File explorer not available.</string>
     <string name="no_accounts">You have not added anything.\n\nTap to add one.</string>
-    <string name="contacting_gpg">Contacting Google Play Services…</string>
-    <string name="loading">Loading data from Google Play Services…</string>
+    <string name="loading">Loading data from %s…</string>
     <string name="pwd_changed">Password changed.</string>
     <string name="category_deleted">Category deleted.</string>
     <string name="pwd_wrong">Wrong password.</string>
@@ -99,7 +98,7 @@
     <string name="remember_choice">Remember my choice and do not ask again.</string>
     <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
     <string name="credits">Many thanks to <u>Xu, Xuechen</u> for French translations!</string>
-    <string name="icon8_lisense">Some of the icons used in this app are from &lt;a href=\"http://icon8.com\"&gt;Icon8&lt;/a&gt; under license &lt;a href=\"http://creativecommons.org/licenses/by-nd/3.0/\"&gt;Creative Commons Attribution-NoDerivs 3.0 Unported&lt;/a&gt;.</string>
+    <string name="icon8_lisense">Some of the icons used in this app are from <a href="http://icon8.com">Icon8</a> under license <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-NoDerivs 3.0 Unported</a>.</string>
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
     <!-- String arrays -->
     <string-array name="theme_names">
@@ -152,11 +151,12 @@
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="done">Done</string>
-    <string name="title_tour0">Keep Securely</string>
+    <string name="title_tour0">Stay Secure</string>
     <string name="title_tour1">Access Anywhere</string>
-    <string name="title_tour2">Password Generation</string>
-    <string name="desc_tour0">Data in PwdBook are encrypted and kept safe so you will not lose them</string>
-    <string name="desc_tour1">Data can be saved in your Google Drive so you can access on any Android devices.</string>
-    <string name="desc_tour2">Strong passwords are no longer a difficult thing for you to manage.</string>
+    <string name="title_tour2">Keep Easy</string>
+    <string name="desc_tour0">PwdBook encrypts everything so your data are kept safe.</string>
+    <string name="desc_tour1">You can check your passwords on any devices with PwdBook.</string>
+    <string name="desc_tour2">Strong passwords are easy to get and to use with little effort.</string>
+    <string name="contacting">Contacting %s…</string>
     <string name="category_saved">Category saved.</string>
 </resources>

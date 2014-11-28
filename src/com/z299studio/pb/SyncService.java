@@ -41,9 +41,19 @@ public abstract class SyncService {
     
     protected SyncListener mListener;
     protected Activity mContext;
+    protected int mLocalVersion;
     protected byte[] mData;
     
     public static SyncService getInstance(Activity context, int server) {
+    	switch(server) {
+    	case C.Sync.GDRIVE:
+    		__instance = new DriveSyncService();
+    		break;
+    	case C.Sync.GPGS:
+    		__instance = new GameSyncService();
+    		break;
+    	}
+    	__instance.mContext = context;
         return __instance;
     }
     
@@ -57,7 +67,9 @@ public abstract class SyncService {
     
     public abstract void disconnect();
     
-    public abstract void read();
+    public void read(int minVersion) {
+    	mLocalVersion = minVersion;
+    }
     
     public abstract void send(byte[] data);
     
