@@ -27,6 +27,7 @@ public final class C {
     
     public static final class Keys {
         public static final String AUTO_LOCK = "AutoLock";
+        public static final String AUTO_LOCK_TIME = "AutoLockTime";
         public static final String ENABLE_COPY = "EnableCopy";
         public static final String SHOW_OTHER = "ShowUngrouped";
         public static final String SHOW_PWD = "ShowPassword";

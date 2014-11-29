@@ -16,12 +16,15 @@
 
 package com.z299studio.pb;
 
+import java.security.GeneralSecurityException;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -39,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class HomeActivity extends FragmentActivity implements 
 AnimatorListener, SyncService.SyncListener{
@@ -117,7 +121,29 @@ AnimatorListener, SyncService.SyncListener{
     }
     
     public void onConfirm(View view) {
-        
+		String password = mPwdEdit.getText().toString();
+		if(mStage == SET_PWD) {
+			EditText et_confirm = (EditText) findViewById(R.id.confirm);
+			if(password.equals(et_confirm.getText().toString())) {
+				mApp.setPassword(password, true);
+				String[] defCategories = getResources().getStringArray(R.array.category_names);
+				int i = 0;
+				AccountManager am = AccountManager.getInstance();
+				for(String s : defCategories) {
+					am.addCategory(i++, s);
+				}
+				startMain();
+			}
+			else {
+				mPwdEdit.setText("");
+				et_confirm.setText("");
+				Application.showToast(this, R.string.pwd_unmatch, Toast.LENGTH_SHORT);
+				return;
+			}
+		}
+		else {
+			new DecryptTask().execute(password);
+		}
     }
     
     public void onSyncSelected(View view) {
@@ -178,6 +204,15 @@ AnimatorListener, SyncService.SyncListener{
 			}
         	
         },300);
+    }
+    
+    public void startMain() {
+		System.gc();
+		Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+		mApp.ignoreNextPause();
+		AccountManager.getInstance().setDefaultCategory(-1, getString(R.string.def_category));
+		startActivity(intent);
+		this.finish();
     }
     
     @Override
@@ -313,4 +348,42 @@ AnimatorListener, SyncService.SyncListener{
         	startHome();
         }
     }
+    
+	private class DecryptTask extends AsyncTask<String, Void, String> {
+		Button mOK;
+		ProgressBar mProgress;
+		
+		@Override
+		protected void onPreExecute() {
+			mOK = (Button)HomeActivity.this.findViewById(R.id.unlock);
+			mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+			mOK.setEnabled(false);
+			mProgress.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			try{
+				mApp.onStart();
+				mApp.setPassword(params[0], false);
+				mApp.decrypt();
+			}
+			catch(GeneralSecurityException e) {
+				return null;
+			}
+			return "OK";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			if(result== null) {
+				mProgress.setVisibility(View.INVISIBLE);
+				mPwdEdit.setText("");
+				Application.showToast(HomeActivity.this, R.string.pwd_wrong, Toast.LENGTH_SHORT);
+			}
+			else {
+				startMain();
+			}
+		}
+	}
 }
