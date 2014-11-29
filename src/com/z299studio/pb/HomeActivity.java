@@ -18,12 +18,16 @@ package com.z299studio.pb;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,12 +40,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class HomeActivity extends Activity implements 
+public class HomeActivity extends FragmentActivity implements 
 AnimatorListener, SyncService.SyncListener{
 
     protected Application mApp;
     protected EditText mPwdEdit;
     protected TextView mSyncText;
+    protected View mButtonContainer;
+    private static int mStage;
+    private static final int SELECT_SYNC = 0;
+    private static final int LOADING = 1;
+    private static final int SET_PWD = 2;
+    private static final int AUTH = 3;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +59,20 @@ AnimatorListener, SyncService.SyncListener{
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if(!mApp.hasDataFile()) {
-            HomeFragment.mLayout = R.layout.fragment_startup;
+        if(savedInstanceState==null) {
+        	Log.d("pb", "null!");
+            if(!mApp.hasDataFile()) {
+                mStage = SELECT_SYNC;
+            }
+            else {
+                mStage = AUTH;
+            }
+		    getSupportFragmentManager().beginTransaction().add(R.id.container,
+		        HomeFragment.create()).commit();
         }
         else {
-            HomeFragment.mLayout = R.layout.fragment_home;
+        	mStage = savedInstanceState.getInt("home_stage");
         }
-        getFragmentManager().beginTransaction().add(R.id.container,
-            HomeFragment.create()).commit();
         if(Application.Options.mTour == false){
             Intent intent = new Intent(this, TourActivity.class);
             intent.putExtra(C.Names.ACTIVITY, C.Activity.HOME);
@@ -64,6 +80,23 @@ AnimatorListener, SyncService.SyncListener{
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	if(mStage == LOADING) {
+    		startSync(false);
+    	}
+    	else {
+            mPwdEdit = (EditText)findViewById(R.id.password);
+    	}
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	outState.putInt("home_stage", mStage);
+    	super.onSaveInstanceState(outState);
     }
     
     @Override
@@ -88,45 +121,63 @@ AnimatorListener, SyncService.SyncListener{
     }
     
     public void onSyncSelected(View view) {
-        switch(view.getId()) {
+    	int id = view.getId();
+        switch(id) {
         case R.id.btn_gdrive:
         case R.id.btn_gpg:
-            startSync(view.getId());
+        	mStage = LOADING;
+        	 Application.Options.mSync = id == R.id.btn_gdrive ? C.Sync.GDRIVE : C.Sync.GPGS;
+            startSync(true);
             break;
         case R.id.btn_local:
             Application.Options.mSync = C.Sync.NONE;
             mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).commit();
+            mStage = SET_PWD;
             startHome();
             break;
         }
     }
     
-    private void startSync(int id) {
+    private void startSync(boolean animationOn) {
         Resources r = getResources();
-        Button options[]= new Button[3];
-        int ids[] = {R.id.btn_gdrive, R.id.btn_gpg, R.id.btn_local};
-        for(int i = 0; i < options.length; ++i) {
-            options[i] = (Button)findViewById(ids[i]);
-            options[i].animate().scaleY(0.0f).setListener(this);
+        int strRes[] = {R.string.sync_none, R.string.sync_gpg, R.string.sync_gdrive};
+        mButtonContainer = findViewById(R.id.btn_container);
+        if(animationOn) {
+	        mButtonContainer.animate().scaleY(0.0f).setListener(this);
+        }
+        else {
+        	mButtonContainer.setVisibility(View.INVISIBLE);
         }
         mSyncText = (TextView)findViewById(R.id.sync_hint);
-        Application.Options.mSync = id == R.id.btn_gdrive ? C.Sync.GDRIVE : C.Sync.GPGS;
         mSyncText.setText(r.getString(R.string.contacting, 
-            id == R.id.btn_gdrive ? r.getString(R.string.sync_gdrive) :
-                r.getString(R.string.sync_gpg)));
+        		r.getString(strRes[Application.Options.mSync])));
         ProgressBar pb = (ProgressBar)findViewById(R.id.pb);
-        pb.animate().alpha(1.0f).setStartDelay(300);
-        mSyncText.animate().alpha(1.0f).setStartDelay(300);
+        if(animationOn) {
+	        pb.animate().alpha(1.0f).setStartDelay(300);
+	        mSyncText.animate().alpha(1.0f).setStartDelay(300);
+        }
+        else {
+        	pb.setAlpha(1.0f);
+        	mSyncText.setAlpha(1.0f);
+        }
         SyncService ss = SyncService.getInstance(this, Application.Options.mSync);
-        ss.initialize().connect(0);
+        ss.initialize().setListener(this).connect(0);
     }
     
     private void startHome() {
-        HomeFragment.mLayout = R.layout.fragment_home;
-        getFragmentManager().beginTransaction()
-            .replace(R.id.container, HomeFragment.create())
-            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+        getSupportFragmentManager().beginTransaction()                        
+            .setCustomAnimations(R.anim.expand_from_right, R.anim.collapse_to_left)
+            .replace(R.id.container, HomeFragment.create(), null)            
             .commit();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mPwdEdit = (EditText)findViewById(R.id.password);
+				popInput();
+			}
+        	
+        },300);
     }
     
     @Override
@@ -135,7 +186,6 @@ AnimatorListener, SyncService.SyncListener{
     }
     
     private void popInput() {
-        mPwdEdit = (EditText)findViewById(R.id.password);
         if(mPwdEdit!=null) {
             mPwdEdit.postDelayed(new Runnable() {
                 @Override
@@ -156,16 +206,17 @@ AnimatorListener, SyncService.SyncListener{
                     return false;
                 }
             };
-            mPwdEdit.setOnEditorActionListener(eal);
             EditText et_confirm = (EditText)findViewById(R.id.confirm);
             if(et_confirm !=null) {
                 et_confirm.setOnEditorActionListener(eal);
+            }
+            else {
+            	mPwdEdit.setOnEditorActionListener(eal);
             }
         }        
     }
     
     public static class HomeFragment extends Fragment {
-        public static int mLayout;
         
         public static HomeFragment create() {
             return new HomeFragment();
@@ -175,14 +226,48 @@ AnimatorListener, SyncService.SyncListener{
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(mLayout, container, false);
-            EditText confirm = (EditText)rootView.findViewById(R.id.confirm);
-            if(Application.getInstance().hasDataFile()) {
-                confirm.setVisibility(View.GONE);
-            }
-            else {
-                
-            }
+        	int layout = 0;
+        	if(mStage == LOADING || mStage == SELECT_SYNC) {
+        		layout = R.layout.fragment_startup;
+        	}
+        	else {
+        		layout = R.layout.fragment_home;
+        	}
+            
+        	View rootView = inflater.inflate(layout, container, false);
+        	
+        	if(layout == R.layout.fragment_home) {
+        		final Button unlock = (Button)rootView.findViewById(R.id.unlock);	            
+        		TextWatcher tw = new TextWatcher() {      
+					@Override
+					public void afterTextChanged(Editable s) {
+						if(s.toString().length() < 1) {
+							unlock.setEnabled(false);
+						}
+						else {
+							unlock.setEnabled(true);
+						}
+					}	
+					@Override
+					public void beforeTextChanged(CharSequence s, int start,
+							int count, int after) {	}
+	
+					@Override
+					public void onTextChanged(CharSequence s, int start,
+							int before, int count) { }
+        		};        		
+        		EditText password = (EditText)rootView.findViewById(R.id.password);
+        		password.addTextChangedListener(tw);
+	        	if(mStage == AUTH) {
+	        		EditText confirm = (EditText)rootView.findViewById(R.id.confirm);
+		            confirm.setVisibility(View.GONE);
+	        	}
+	        	else if(mStage == SET_PWD) {
+		            TextView tv = (TextView)rootView.findViewById(R.id.title);
+		            tv.setText(R.string.set_pwd);
+		            unlock.setText(R.string.get_started);
+		        }
+        	}
             return rootView;
         }
     }
@@ -192,8 +277,7 @@ AnimatorListener, SyncService.SyncListener{
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        
-        
+        mButtonContainer.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -204,7 +288,8 @@ AnimatorListener, SyncService.SyncListener{
 
     @Override
     public void onSyncFailed(int errorCode) {
-        
+        mStage = SET_PWD;
+        startHome();
     }
 
     @Override
@@ -214,6 +299,18 @@ AnimatorListener, SyncService.SyncListener{
             mSyncText.setText(r.getString(R.string.loading, 
                  Application.Options.mSync == C.Sync.GDRIVE ? 
                      r.getString(R.string.sync_gdrive) : r.getString(R.string.sync_gpg)));
+        }
+        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+        	byte[] data = SyncService.getInstance().requestData();
+        	Application.FileHeader fh = Application.FileHeader.parse(data);
+        	if(fh.valid) {
+        		mApp.saveData(data);
+        		mStage = AUTH;
+        	}
+        	else {
+        		mStage = SET_PWD;
+        	}
+        	startHome();
         }
     }
 }

@@ -18,10 +18,12 @@ package com.z299studio.pb;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -148,7 +150,17 @@ public class Application{
     }
     
     public void saveData() {
-        
+
+    }
+    
+    public void saveData(byte[] data) {
+    	try {
+			FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
+			fos.write(data);
+			fos.close();
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
     }
     
     public void onDataReceived(byte[] data) {

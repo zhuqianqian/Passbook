@@ -22,13 +22,18 @@
         android:textColor="@color/text_hint"
         android:text="@string/app_intro"/>
     
+    <LinearLayout android:id="@+id/btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="48dp"
+        android:layout_below="@id/intro_0"
+        >
     <Button android:id="@+id/btn_gdrive"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         style="@style/Button.Accent"
         android:text="@string/sync_gdrive"
-        android:layout_below="@id/intro_0"
-        android:layout_marginTop="48dp"
         android:onClick="onSyncSelected"
         />
     
@@ -36,8 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         style="@style/Button.Accent"
-        android:text="@string/sync_gpg"
-        android:layout_below="@id/btn_gdrive"        
+        android:text="@string/sync_gpg"   
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:onClick="onSyncSelected"
         />
@@ -47,15 +51,17 @@
         android:layout_width="match_parent"
         style="@style/Button.Accent"
         android:text="@string/sync_none"
-        android:layout_below="@id/btn_gpg"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:onClick="onSyncSelected"/>
+    </LinearLayout>
     
     <ProgressBar android:id="@+id/pb"
         android:layout_width="match_parent" 
         android:layout_height="48dp"
         android:alpha="0"
-        android:layout_alignBottom="@id/btn_gpg"/>
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/intro_0"/>
+    
     <TextView android:id="@+id/sync_hint"        
         android:layout_width="match_parent"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
