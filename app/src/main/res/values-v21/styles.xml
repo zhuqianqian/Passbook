@@ -4,8 +4,7 @@
 
     <style name="Button" parent="@android:style/Widget.Material.Button"/>
     <style name="Button.Accent" parent="@android:style/Widget.Material.Button">
-        <item name="android:backgroundTint">?attr/colorAccent</item>
-        <item name="android:backgroundTintMode">src_in</item>
+        <item name="android:tint">?attr/colorAccent</item>
     </style>
     <style name="Button.Flat" parent="@android:style/Widget.Material.Button.Borderless"/>
     <style name="Button.Flat.Accent" parent="@android:style/Widget.Material.Button.Borderless.Colored"/>
