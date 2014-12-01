@@ -16,8 +16,30 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
+    private boolean mDetailAvailable;
+    private Application mApp;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if(savedInstanceState!=null && AccountManager.getInstance() == null) {
+            super.onCreate(savedInstanceState);
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        mApp = Application.getInstance(this);
+        this.setTheme(C.THEMES[Application.Options.mTheme]);
+        super.onCreate(savedInstanceState);
+        this.setContentView(R.layout.activity_main);
+        View detail = findViewById(R.id.panel_detail);
+        mDetailAvailable = detail != null;
+    }
 
 }
