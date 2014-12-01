@@ -191,10 +191,7 @@ AnimatorListener, SyncService.SyncListener{
     public void onAnimationStart(Animator animation) {}
 
     @Override
-    public void onAnimationEnd(Animator animation) {
-        
-        
-    }
+    public void onAnimationEnd(Animator animation) {     }
 
     @Override
     public void onAnimationCancel(Animator animation) {}
