@@ -75,6 +75,11 @@ public abstract class SyncService {
         return mData;
     }
     
+    public SyncService setListener(SyncListener l) {
+    	this.mListener = l;
+    	return this;
+    }
+    
     public abstract boolean onActivityResult(final int requestCode, final int resultCode, 
         final Intent data);
 
