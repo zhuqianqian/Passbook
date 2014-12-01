@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="Theme">
-        <attr name="defaultButtonDrawable" format="reference"/>
-        <attr name="accentButtonDrawable" format="reference"/>
-        <attr name="flatButtonDrawable" format="reference"/>
-        <attr name="accentTextColor" format="reference|color"/>
-    </declare-styleable>    
-</resources>

@@ -1,8 +1,0 @@
-<resources>
-
-    <style name="AppTourTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    	<item name="android:fitsSystemWindows">false</item>
-    </style>
-
-</resources>
