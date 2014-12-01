@@ -13,7 +13,9 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 package com.z299studio.pb;
+
 import java.security.GeneralSecurityException;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -24,7 +26,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,7 +42,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-public class HomeActivity extends FragmentActivity implements 
+
+public class HomeActivity extends ActionBarActivity implements
 AnimatorListener, SyncService.SyncListener{
     protected Application mApp;
     protected EditText mPwdEdit;
