@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sync_methods">
+        <item>@string/sync_none</item>
+        <item>@string/sync_gpg</item>
+        <item>@string/sync_gdrive</item>
+    </string-array>
+
+    <integer-array name="def_field_types">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>3</item>
+        <item>1</item>
+        <item>5</item>
+        <item>1</item>
+        <item>1</item>
+        <item>5</item>
+    </integer-array>
+    
+    <integer-array name="index_0">
+        <!-- Bank Account --> 
+        <item>7</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </integer-array>
+    
+    <integer-array name="index_1">
+        <!-- Credit Card --> 
+        <item>7</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>8</item>
+    </integer-array>
+    
+    <integer-array name="index_2">
+        <!-- Device --> 
+        <item>0</item>
+        <item>1</item>
+        <item>6</item>
+    </integer-array>
+    
+    <integer-array name="index_3">
+        <!-- E-Bank --> 
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>6</item>
+    </integer-array>
+    
+    <integer-array name="index_4">
+        <!-- Email --> 
+        <item>2</item>
+        <item>1</item>
+        <item>6</item>
+    </integer-array>
+    
+    <integer-array name="index_5">
+        <!-- Web Account/Default -->
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>6</item>
+    </integer-array>
+</resources>

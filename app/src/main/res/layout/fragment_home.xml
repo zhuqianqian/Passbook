@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".PwdActivity$PlaceholderFragment" >
+
+<TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:text="@string/enter_pwd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    
+    <EditText android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+        android:hint="@string/enter_pwd"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"/>    
+    
+    <EditText android:id="@+id/confirm"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+		android:layout_height="wrap_content"
+        android:hint="@string/repeat_pwd"
+        android:imeOptions="actionDone"
+        android:layout_marginTop="8dp"/>
+    
+    <Button android:id="@+id/unlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Button.Accent"
+        android:onClick="onConfirm"
+        android:layout_marginTop="8dp"
+        android:text="@string/unlock"
+        android:enabled="false"/>
+</LinearLayout>

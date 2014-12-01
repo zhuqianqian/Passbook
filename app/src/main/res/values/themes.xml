@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="AppTourTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    
+    <style name="AppDark" parent="Theme.AppCompat">
+        <item name="flatButtonDrawable">@drawable/button_flat_mtrl</item>
+        <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+    </style>
+    
+    <style name="AppLight" parent="Theme.AppCompat.Light">
+        <item name="flatButtonDrawable">@drawable/button_flat_mtrl_light</item>
+        <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+    </style>
+    
+    <style name="AppDark.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl</item>
+    </style>
+    
+    <style name="AppLight.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl_light</item>
+    </style>
+
+</resources>
