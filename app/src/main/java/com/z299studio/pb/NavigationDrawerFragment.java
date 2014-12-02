@@ -16,7 +16,47 @@
 
 package com.z299studio.pb;
 
-import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
 public class NavigationDrawerFragment extends Fragment {
+
+    private static final String SELECTION_KEY = "current_selection";
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerListView;
+    private View mFragmentContainerView;
+    private int mCurrentSelection;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            mCurrentSelection = savedInstanceState.getInt(SELECTION_KEY);
+        }
+        else {
+            mCurrentSelection = 1;
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+        View rootView = null;
+        return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SELECTION_KEY, mCurrentSelection);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+
+    }
 }

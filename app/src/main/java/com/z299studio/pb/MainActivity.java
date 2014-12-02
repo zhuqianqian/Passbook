@@ -18,12 +18,17 @@ package com.z299studio.pb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class MainActivity extends ActionBarActivity {
     private boolean mDetailAvailable;
     private Application mApp;
+    private Toolbar mToolbar;
+    private NavigationDrawerFragment mNavigationDrawer;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,16 @@ public class MainActivity extends ActionBarActivity {
         this.setContentView(R.layout.activity_main);
         View detail = findViewById(R.id.panel_detail);
         mDetailAvailable = detail != null;
+        setupToolbar();
+        mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.navigation_drawer);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mNavigationDrawer.setUp(R.id.navigation_drawer, mDrawerLayout);
+    }
+
+    private void setupToolbar() {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
     }
 
 }
