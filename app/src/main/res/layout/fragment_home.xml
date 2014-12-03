@@ -20,6 +20,7 @@
         android:inputType="textPassword"
         android:hint="@string/enter_pwd"
 		android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
 		android:layout_marginTop="8dp"/>    
     
     <EditText android:id="@+id/confirm"
@@ -38,4 +39,10 @@
         android:layout_marginTop="8dp"
         android:text="@string/unlock"
         android:enabled="false"/>
+
+    <ProgressBar android:id="@+id/pb"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignBottom="@id/unlock"
+        android:visibility="invisible"/>
 </LinearLayout>

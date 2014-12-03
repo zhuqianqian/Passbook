@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_activated="true">
+        <ripple android:color="?android:attr/colorControlHighlight">
+        <item>
+            <shape><solid android:color="?android:attr/colorPrimary"/>
+            </shape></item>
+        </ripple></item>
+    <item>
+        <ripple android:color="?android:attr/colorControlHighlight">
+        <item>
+            <shape><solid android:color="?android:attr/windowBackground"/>
+            </shape></item>
+        </ripple></item>
+</selector>

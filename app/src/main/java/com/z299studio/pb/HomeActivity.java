@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -126,15 +127,15 @@ AnimatorListener, SyncService.SyncListener{
                 mApp.setPassword(password, true);
                 String[] defCategories = getResources().getStringArray(R.array.category_names);
                 int i = 0;
-                AccountManager am = AccountManager.getInstance();
+                AccountManager am = AccountManager.getInstance(null);
                 for(String s : defCategories) {
                     am.addCategory(i++, s);
                 }
                 startMain();
             }
             else {
-                mPwdEdit.setText("");
                 et_confirm.setText("");
+                mPwdEdit.setText("");
                 Application.showToast(this, R.string.pwd_unmatch, Toast.LENGTH_SHORT);
                 return;
             }
@@ -240,7 +241,8 @@ AnimatorListener, SyncService.SyncListener{
                 }
             };
             EditText et_confirm = (EditText)findViewById(R.id.confirm);
-            if(et_confirm !=null) {
+            if(et_confirm.getVisibility() == View.VISIBLE) {
+                mPwdEdit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
                 et_confirm.setOnEditorActionListener(eal);
             }
             else {
