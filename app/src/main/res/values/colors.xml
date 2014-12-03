@@ -20,7 +20,17 @@
     <color name="shadow_1">#c0222222</color>
     <color name="shadow_2">#d0111111</color>
     <color name="shadow_3">#e0000000</color>
-    
-    <color name="text_hint">#42000000</color>
+
+    <color name="text_black">#000</color>
+    <color name="text_black_std">#de000000</color>
+    <color name="text_black_sec">#8a000000</color>
+    <color name="text_black_hint">#42000000</color>
+    <color name="text_black_div">#1f000000</color>
+
+    <color name="text_white">#fff</color>
+    <color name="text_white_std">#deffffff</color>
+    <color name="text_white_sec">#8affffff</color>
+    <color name="text_white_hint">#42ffffff</color>
+    <color name="text_white_div">#1fffffff</color>
     
 </resources>

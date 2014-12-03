@@ -6,7 +6,7 @@
     
     <TextView android:id="@+id/menu_text"
         android:layout_width="match_parent"
-        android:layout_height="navigation_menu_height"
+        android:layout_height="@dimen/navigation_menu_height"
         android:textAppearance="@style/TextAppearance.AppCompat.Menu"
         android:textStyle="bold"
         android:textAllCaps="true"

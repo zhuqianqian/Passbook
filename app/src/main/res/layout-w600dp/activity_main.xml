@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity" >
-    <include android:layout="@layout/toolbar"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_size"/>
+
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"

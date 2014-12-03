@@ -4,7 +4,7 @@
         <shape><solid android:color="#656565"/>
         </shape></item>
     <item android:state_activated="true">
-        <shape><solid android:color="656565"/>
+        <shape><solid android:color="#656565"/>
         </shape></item>
     <item>
         <shape><solid android:color="@android:color/transparent"/>
