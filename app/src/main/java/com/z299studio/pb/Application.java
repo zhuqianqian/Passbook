@@ -287,4 +287,27 @@ public class Application{
             toast.show();
         }
     }
+
+    public static int[] getThemedIcons() {
+        int[] light = {
+            R.drawable.ic_bank_1, R.drawable.ic_creditcard_1, R.drawable.ic_device_1,
+            R.drawable.ic_shop_1, R.drawable.ic_email_1, R.drawable.ic_web_1,
+            R.drawable.ic_wallet_1, R.drawable.ic_atm_1, R.drawable.ic_bag_1,
+            R.drawable.ic_gift_1, R.drawable.ic_school_1, R.drawable.ic_folder_1,
+            R.drawable.ic_briefcase_1, R.drawable.ic_chat_1, R.drawable.ic_lock_1,
+            R.drawable.ic_user_1
+        };
+        int[] dark = {
+            R.drawable.ic_bank_0, R.drawable.ic_creditcard_0, R.drawable.ic_device_0,
+            R.drawable.ic_shop_0, R.drawable.ic_email_0, R.drawable.ic_web_0,
+            R.drawable.ic_wallet_0, R.drawable.ic_atm_0, R.drawable.ic_bag_0,
+            R.drawable.ic_gift_0, R.drawable.ic_school_0, R.drawable.ic_folder_0,
+            R.drawable.ic_briefcase_0, R.drawable.ic_chat_0, R.drawable.ic_lock_0,
+            R.drawable.ic_user_0
+        };
+        if((Options.mTheme & 0x01) == 0x01) {
+            return light;
+        }
+        return dark;
+    }
 }

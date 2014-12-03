@@ -24,7 +24,52 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class MainActivity extends ActionBarActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends ActionBarActivity implements
+        NavigationDrawerFragment.NavigationDrawerCallbacks{
+
+    private static String[] sCategoryNames;
+    private static int[] sCategoryIcons;
+    private static int[] sCategoryIds;
+    public static String[] getSortedCategoryNames() {
+        if(sCategoryNames == null) {
+            int size;
+            ArrayList<AccountManager.Category> categories = AccountManager.getInstance()
+                    .getCategoryList(false, true);
+            size = categories.size() + 1;
+            sCategoryNames = new String[size];
+            sCategoryIds = new int[size];
+            sCategoryIcons = new int[size];
+            int i = 0;
+            AccountManager.Category defaultCategory = AccountManager.getInstance()
+                    .getCategory(AccountManager.DEFAULT_CATEGORY_ID);
+            sCategoryNames[i] = defaultCategory.mName;
+            sCategoryIds[i] = defaultCategory.mId;
+            sCategoryIcons[i++] = defaultCategory.mImgCode;
+
+            for(AccountManager.Category category : categories) {
+                sCategoryNames[i] = category.mName;
+                sCategoryIds[i] = category.mId;
+                sCategoryIcons[i++] = category.mImgCode;
+            }
+        }
+        return sCategoryNames;
+    }
+
+    public static int[] getSortedCategoryIds() {
+        if(sCategoryIds == null) {
+            getSortedCategoryNames();
+        }
+        return sCategoryIds;
+    }
+
+    public static int[] getSortedCatregoryIcons() {
+        if(sCategoryIcons == null) {
+            getSortedCategoryNames();
+        }
+        return sCategoryIcons;
+    }
 
     private Application mApp;
     private Toolbar mToolbar;
@@ -58,4 +103,8 @@ public class MainActivity extends ActionBarActivity {
         ViewCompat.setElevation(mToolbar, elevation);
     }
 
+    @Override
+    public void onNavigationDrawerItemSelected(int type, int id) {
+
+    }
 }
