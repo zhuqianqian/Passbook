@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -43,6 +44,7 @@ public class Application{
     
     public static class Options {
         public static int mAutoLock;
+        public static boolean mShowOther;
         public static int mSync;
         public static boolean mSyncMsg;
         public static int mSyncVersion;
@@ -133,6 +135,7 @@ public class Application{
                 Options.mAutoLock = 1 * 1000000000;
             }
         }
+        Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, true);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);
         Options.mSyncVersion = mSP.getInt(C.Sync.VERSION, 0);
@@ -309,5 +312,47 @@ public class Application{
             return light;
         }
         return dark;
+    }
+
+    private static String[] sCategoryNames;
+    private static int[] sCategoryIcons;
+    private static int[] sCategoryIds;
+    public static String[] getSortedCategoryNames() {
+        if(sCategoryNames == null) {
+            int size;
+            ArrayList<AccountManager.Category> categories = AccountManager.getInstance()
+                    .getCategoryList(false, true);
+            size = categories.size() + 1;
+            sCategoryNames = new String[size];
+            sCategoryIds = new int[size];
+            sCategoryIcons = new int[size];
+            int i = 0;
+            AccountManager.Category defaultCategory = AccountManager.getInstance()
+                    .getCategory(AccountManager.DEFAULT_CATEGORY_ID);
+            sCategoryNames[i] = defaultCategory.mName;
+            sCategoryIds[i] = defaultCategory.mId;
+            sCategoryIcons[i++] = defaultCategory.mImgCode;
+
+            for(AccountManager.Category category : categories) {
+                sCategoryNames[i] = category.mName;
+                sCategoryIds[i] = category.mId;
+                sCategoryIcons[i++] = category.mImgCode;
+            }
+        }
+        return sCategoryNames;
+    }
+
+    public static int[] getSortedCategoryIds() {
+        if(sCategoryIds == null) {
+            getSortedCategoryNames();
+        }
+        return sCategoryIds;
+    }
+
+    public static int[] getSortedCatregoryIcons() {
+        if(sCategoryIcons == null) {
+            getSortedCategoryNames();
+        }
+        return sCategoryIcons;
     }
 }

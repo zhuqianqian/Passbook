@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import com.z299studio.pb.NavigationDrawerAdapter.NavMenuItem;
 
@@ -54,6 +56,7 @@ public class NavigationDrawerFragment extends Fragment implements
     public ActionBarDrawerToggle mDrawerToggle;
     private NavigationDrawerAdapter mAdapter;
     private int mCurrentSelection;
+    private Hashtable<Integer, Integer> mCategory2Navigation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,13 +66,15 @@ public class NavigationDrawerFragment extends Fragment implements
         } else {
             mCurrentSelection = 1;
         }
+        mCategory2Navigation = new Hashtable<Integer, Integer>();
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
-        mMenuList = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mMenuList = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer,
+                container, false);
         mAdapter = new NavigationDrawerAdapter(getActivity(), buildMenuItems());
         mMenuList.setAdapter(mAdapter);
         mMenuList.setOnItemClickListener(this);
@@ -178,8 +183,99 @@ public class NavigationDrawerFragment extends Fragment implements
         }
     }
 
+    /*
+     * Changes are required for icon selection, if tint is available and primary color should be
+     * applied upon press/selection.
+     */
     private ArrayList<NavMenuItem> buildMenuItems() {
+        Resources r = getResources();
+        AccountManager am = AccountManager.getInstance();
         ArrayList<NavMenuItem> result = new ArrayList<NavMenuItem>();
+        int icons[] = Application.getThemedIcons();
+        int themeIdx = Application.Options.mTheme & 0x01;
+        String[] categoryNames = Application.getSortedCategoryNames();
+        int[] categoryIcons = Application.getSortedCatregoryIcons();
+        int[] categoryIds = Application.getSortedCategoryIds();
+
+        int pos = 0, i;
+        result.add(new NavMenuItem(0, r.getString(R.string.categories),
+                0, 0, NavMenuItem.MENU_SEPARATOR));
+        pos++;
+        result.add(new NavMenuItem(themeIdx == 0 ? R.drawable.ic_all_0 : R.drawable.ic_all_1,
+                r.getString(R.string.all_accounts),
+                am.getAccountsCountByCategory(AccountManager.ALL_CATEGORY_ID),
+                AccountManager.ALL_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
+        mCategory2Navigation.put(AccountManager.ALL_CATEGORY_ID, pos++);
+        if(Application.Options.mShowOther) {
+            result.add(new NavMenuItem(themeIdx == 0 ?
+                    R.drawable.ic_unknown_0 : R.drawable.ic_unknown_1,
+                    r.getString(R.string.def_category),
+                    am.getAccountsCountByCategory(AccountManager.DEFAULT_CATEGORY_ID),
+                    AccountManager.DEFAULT_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
+            mCategory2Navigation.put(AccountManager.DEFAULT_CATEGORY_ID, pos++);
+        }
+        for(i = 0; i < categoryIcons.length; ++i) {
+            result.add(new NavMenuItem(icons[categoryIcons[i]], categoryNames[i],
+                    am.getAccountsCountByCategory(categoryIds[i]), categoryIds[i],
+                    NavMenuItem.MENU_SELECTION));
+            mCategory2Navigation.put(categoryIds[i], pos++);
+        }
+        if(mDrawerLayout!=null) {
+            result.add(new NavMenuItem(0, r.getString(R.string.settings), 0, 0,
+                    NavMenuItem.MENU_SEPARATOR));
+            int stringIds[] = {R.string.help, R.string.settings, R.string.about};
+            int iconIds[][] = {{R.drawable.ic_help, R.drawable.ic_settings, R.drawable.ic_info},
+                    {R.drawable.ic_help_1, R.drawable.ic_settings_1, R.drawable.ic_info_1}};
+            for(i = 0; i < stringIds.length; ++i) {
+                result.add(new NavMenuItem(iconIds[themeIdx][i], r.getString(stringIds[i]),
+                        0, stringIds[i], NavMenuItem.MENU_ACTION));
+            }
+        }
         return result;
+    }
+
+    public int getNavigationPosition(int categoryId) {
+        return mCategory2Navigation.get(categoryId);
+    }
+
+    public void remove(int category) {
+        if(category < 0) {
+            mAdapter.setList(buildMenuItems());
+            mAdapter.notifyDataSetChanged();
+        }
+        else {
+            Integer pos = mCategory2Navigation.get(category);
+            if(pos!=null) {
+                mAdapter.remove(pos);
+                for(int p = pos; p < mAdapter.getCount(); ++p) {
+                    NavMenuItem nmi = (NavMenuItem) mAdapter.getItem(p);
+                    if(nmi.mType == NavMenuItem.MENU_SELECTION) {
+                        mCategory2Navigation.put(nmi.mId, p);
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateCounterInMenu(int category, int delta) {
+        Integer pos = mCategory2Navigation.get(category);
+        if(pos!=null) {
+            mAdapter.updateCounterInMenu(pos, delta);
+        }
+    }
+
+    public void updateCategoryCounter(int category, int value) {
+        Integer pos = mCategory2Navigation.get(category);
+        if(pos!=null) {
+            mAdapter.updateCategoryCounter(pos, value);
+        }
+    }
+
+    public int getCurrentCount(){
+        return mAdapter.getCounterInMenu(mCurrentSelection);
+    }
+
+    public void updateUi() {
+        mAdapter.notifyDataSetChanged();
     }
 }
