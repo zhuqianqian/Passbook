@@ -6,5 +6,6 @@
         <attr name="flatButtonDrawable" format="reference"/>
         <attr name="accentTextColor" format="reference|color"/>
         <attr name="navigationMenuSeparator" format="reference"/>
+        <attr name="listItemBackground" format="reference"/>
     </declare-styleable>    
 </resources>

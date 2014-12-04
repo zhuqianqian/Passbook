@@ -319,6 +319,9 @@ public class AccountManager {
     }
     
     public ArrayList<Account> getAccountsByCategory(int categoryId) {
+        if(categoryId == ALL_CATEGORY_ID) {
+            return getAllAccounts(true);
+        }
         ArrayList<Integer> intList = mMap.get(Integer.valueOf(categoryId));
         ArrayList<Account> accounts = new ArrayList<Account>();
         

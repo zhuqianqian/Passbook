@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_list_height"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" 
+    android:background="?attr/listItemBackground"
+    android:gravity="center_vertical" >
+    
+	<ImageButton
+	    android:id="@+id/item_icon"
+	    android:layout_width="@dimen/list_avatar_size"
+	    android:layout_height="@dimen/list_avatar_size"
+	    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+	    android:contentDescription="@null"/>
+	
+	<TextView android:id="@+id/item_name"
+	    android:gravity="center_vertical"
+	    android:layout_width="match_parent"
+	    android:background="?attr/navigationMenuSeparator"
+        android:layout_height="@dimen/main_list_height"
+	    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+</LinearLayout>

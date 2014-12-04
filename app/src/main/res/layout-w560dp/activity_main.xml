@@ -18,14 +18,18 @@
 
         <fragment android:id="@+id/navigation_drawer"
             android:name="com.z299studio.pb.NavigationDrawerFragment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:tag="wide"
-            android:layout_weight="3"/>
-        <FrameLayout
-            android:id="@+id/panel_main"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_weight="4"/>
+        <View android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="#808080"/>
+        <fragment
+            android:id="@+id/panel_main"
+            android:name="com.z299studio.pb.MainListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5" />
     </LinearLayout>
 </LinearLayout>
