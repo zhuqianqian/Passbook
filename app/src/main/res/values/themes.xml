@@ -5,11 +5,13 @@
     <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
         <item name="flatButtonDrawable">@drawable/button_flat_mtrl</item>
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+        <item name="navigationMenuSeparator">@drawable/div</item>
     </style>
     
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="flatButtonDrawable">@drawable/button_flat_mtrl_light</item>
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+        <item name="navigationMenuSeparator">@drawable/div_light</item>
     </style>
     
     <style name="AppDark.Default">

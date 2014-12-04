@@ -4,5 +4,6 @@
     android:layout_height="0dp"
     android:layout_weight="1"
     android:choiceMode="singleChoice"
-    android:dividerHeight="0dp"
+    android:divider="@null"
+    android:background="?android:attr/windowBackground"
     tools:context=".NavigationDrawerFragment"/>

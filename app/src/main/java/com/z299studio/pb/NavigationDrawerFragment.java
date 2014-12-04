@@ -26,6 +26,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -214,13 +215,14 @@ public class NavigationDrawerFragment extends Fragment implements
                     AccountManager.DEFAULT_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
             mCategory2Navigation.put(AccountManager.DEFAULT_CATEGORY_ID, pos++);
         }
-        for(i = 0; i < categoryIcons.length; ++i) {
+        for(i = 1; i < categoryIcons.length; ++i) {
             result.add(new NavMenuItem(icons[categoryIcons[i]], categoryNames[i],
                     am.getAccountsCountByCategory(categoryIds[i]), categoryIds[i],
                     NavMenuItem.MENU_SELECTION));
             mCategory2Navigation.put(categoryIds[i], pos++);
         }
-        if(mDrawerLayout!=null) {
+        String tag = getTag();
+        if(tag.equals("narrow")) {
             result.add(new NavMenuItem(0, r.getString(R.string.settings), 0, 0,
                     NavMenuItem.MENU_SEPARATOR));
             int stringIds[] = {R.string.help, R.string.settings, R.string.about};
