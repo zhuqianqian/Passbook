@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity implements
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawer;
     private DrawerLayout mDrawerLayout;
+    private MainListFragment mMainList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class MainActivity extends ActionBarActivity implements
                 .findFragmentById(R.id.navigation_drawer);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mNavigationDrawer.setUp(R.id.navigation_drawer, mDrawerLayout);
+        mMainList = (MainListFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.panel_main);
     }
 
     private void setupToolbar() {
@@ -63,6 +66,8 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void onNavigationDrawerItemSelected(int type, int id) {
-
+        if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
+            mMainList.selectCategory(id);
+        }
     }
 }

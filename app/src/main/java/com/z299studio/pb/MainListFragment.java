@@ -83,7 +83,8 @@ public class MainListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mListView = (ListView)inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        mListView = (ListView)rootView.findViewById(android.R.id.list);
         if((mAdapter = getAdapter(mCategoryId)) == null) {
             mAdapter = new MainListAdapter(getActivity(),
                     AccountManager.getInstance().getAllAccounts(true),
@@ -93,8 +94,8 @@ public class MainListFragment extends Fragment{
             cacheAdapter(mCategoryId, mAdapter);
         }
         mListView.setAdapter(mAdapter);
-        mListView.setEmptyView(inflater.inflate(R.layout.empty_view, container, false));
-        return mListView;
+        mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+        return rootView;
     }
 
     public void updateData() {

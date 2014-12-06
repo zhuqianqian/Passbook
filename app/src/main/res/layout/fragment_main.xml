@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_list"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@null"
-    android:choiceMode="multipleChoice"
-    android:longClickable="true"/>
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:choiceMode="multipleChoice"
+        android:longClickable="true"/>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/no_accounts" />
+
+</FrameLayout>

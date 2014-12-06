@@ -162,7 +162,10 @@ public class MainListAdapter extends BaseAdapter {
         mDeleted = new ArrayList<Boolean>();
         int id;
         AccountManager am = AccountManager.getInstance();
-        for(AccountManager.Account a : accounts) {
+        if(accounts==null) {
+            mEntries = new ArrayList<AccountManager.Account>();
+        }
+        for(AccountManager.Account a : mEntries) {
             id = am.getCategory(a.getCategoryId()).mImgCode;
             if(id == -1) {
                 mIcons.add(mDefaultDrawableId);
