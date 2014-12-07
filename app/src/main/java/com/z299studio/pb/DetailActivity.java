@@ -33,8 +33,8 @@ public class DetailActivity extends ActionBarActivity{
             mAction = savedInstanceState.getInt(C.ACTION);
         } else {
             Bundle extras = getIntent().getExtras();
-            mAccountId = extras.getInt(C.ACCOUNT, -1);
-            mAction = extras.getInt(C.ACTION, C.ACTION_VIEW);
+            mAction = extras.getInt(C.ACTION);
+            mAccountId = extras.getInt(C.ACCOUNT);
             if(mAction == C.ACTION_VIEW) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.detail_panel,
                         DetailFragment.create(mAccountId), null);

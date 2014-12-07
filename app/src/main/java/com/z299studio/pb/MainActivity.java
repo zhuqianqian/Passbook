@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onSelectAccount(long id) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(C.ACCOUNT, id);
+        intent.putExtra(C.ACCOUNT, (int)id);
         intent.putExtra(C.ACTION, C.ACTION_VIEW);
         startActivity(intent);
     }
