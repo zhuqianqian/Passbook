@@ -16,6 +16,7 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,12 +24,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.Hashtable;
 
-public class MainListFragment extends Fragment{
+public class MainListFragment extends Fragment implements AdapterView.OnItemClickListener{
 
+    public interface ItemSelectionInterface {
+        public void onSelectAccount(long id);
+    }
+
+    private ItemSelectionInterface mListener;
     private ListView mListView;
     private MainListAdapter mAdapter;
     private int mCategoryId;
@@ -39,6 +46,7 @@ public class MainListFragment extends Fragment{
     }
     private static Hashtable<Integer, AdapterHolder> cachedAdapters =
             new Hashtable<Integer, AdapterHolder>();
+
     private static MainListAdapter getAdapter( int category_id) {
         AdapterHolder ah = cachedAdapters.get(category_id);
         if(ah!=null && ah.mUpToDate) {
@@ -56,10 +64,6 @@ public class MainListFragment extends Fragment{
         ah.mUpToDate = true;
         ah.mAdapter = adapter;
     }
-
-//    public static MainListFragment getFragment(int category_id) {
-//        return null;
-//    }
 
     public MainListFragment() {   }
 
@@ -95,7 +99,18 @@ public class MainListFragment extends Fragment{
         }
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+        mListView.setOnItemClickListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ItemSelectionInterface) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement ItemSelectionInterface.");
+        }
     }
 
     public void updateData() {
@@ -115,6 +130,13 @@ public class MainListFragment extends Fragment{
             }
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+        if(mListener != null) {
+            mListener.onSelectAccount(id);
         }
     }
 }

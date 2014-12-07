@@ -54,14 +54,14 @@ public class TourActivity extends Activity implements AnimatorListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null) {
-            mCurrent = savedInstanceState.getInt(C.Names.PAGE_NUM, 0);
+            mCurrent = savedInstanceState.getInt(C.PAGE_NUM, 0);
             mReady = savedInstanceState.getBoolean("ready", false);
-            mFromActivity = savedInstanceState.getInt(C.Names.ACTIVITY);
+            mFromActivity = savedInstanceState.getInt(C.ACTIVITY);
         }
         else {
             mCurrent = 0;
             mReady = false;
-            mFromActivity = getIntent().getExtras().getInt(C.Names.ACTIVITY,
+            mFromActivity = getIntent().getExtras().getInt(C.ACTIVITY,
                     C.Activity.SETTINGS);
             
         }
@@ -159,8 +159,8 @@ public class TourActivity extends Activity implements AnimatorListener{
     
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(C.Names.PAGE_NUM, mCurrent);
-        outState.putInt(C.Names.ACTIVITY, mFromActivity);
+        outState.putInt(C.PAGE_NUM, mCurrent);
+        outState.putInt(C.ACTIVITY, mFromActivity);
         outState.putBoolean("ready", mReady);
     }
     

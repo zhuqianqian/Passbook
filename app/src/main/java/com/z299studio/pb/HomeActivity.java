@@ -78,7 +78,7 @@ AnimatorListener, SyncService.SyncListener{
         }
         if(Application.Options.mTour == false){
             Intent intent = new Intent(this, TourActivity.class);
-            intent.putExtra(C.Names.ACTIVITY, C.Activity.HOME);
+            intent.putExtra(C.ACTIVITY, C.Activity.HOME);
             this.startActivity(intent);
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

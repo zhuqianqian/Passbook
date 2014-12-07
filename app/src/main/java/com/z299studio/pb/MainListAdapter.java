@@ -138,7 +138,9 @@ public class MainListAdapter extends BaseAdapter {
     public Object getItem(int position) { return mEntries.get(position); }
 
     @Override
-    public long getItemId(int position) { return position;  }
+    public long getItemId(int position) {
+        return mEntries.get(position).mId;
+    }
 
     public void addList(ArrayList<AccountManager.Account> itemList, boolean reset) {
         if(reset) {

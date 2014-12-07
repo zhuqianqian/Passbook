@@ -27,7 +27,8 @@ import android.view.View;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks{
+        NavigationDrawerFragment.NavigationDrawerCallbacks,
+        MainListFragment.ItemSelectionInterface{
 
     private Application mApp;
     private Toolbar mToolbar;
@@ -69,5 +70,13 @@ public class MainActivity extends ActionBarActivity implements
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
             mMainList.selectCategory(id);
         }
+    }
+
+    @Override
+    public void onSelectAccount(long id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(C.ACCOUNT, id);
+        intent.putExtra(C.ACTION, C.ACTION_VIEW);
+        startActivity(intent);
     }
 }

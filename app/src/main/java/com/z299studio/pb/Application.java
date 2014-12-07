@@ -43,6 +43,7 @@ public class Application{
     public SharedPreferences mSP;
     
     public static class Options {
+        public static boolean mAlwaysShowPwd;
         public static int mAutoLock;
         public static boolean mShowOther;
         public static int mSync;
@@ -135,6 +136,7 @@ public class Application{
                 Options.mAutoLock = 1 * 1000000000;
             }
         }
+        Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, true);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);

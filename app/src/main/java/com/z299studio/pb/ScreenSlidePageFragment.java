@@ -30,7 +30,7 @@ public class ScreenSlidePageFragment extends Fragment {
     public static ScreenSlidePageFragment create(int pageNumber) {
         ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
         Bundle args = new Bundle();
-        args.putInt(C.Names.PAGE_NUM, pageNumber);
+        args.putInt(C.PAGE_NUM, pageNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +41,7 @@ public class ScreenSlidePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPageNumber = getArguments().getInt(C.Names.PAGE_NUM);
+        mPageNumber = getArguments().getInt(C.PAGE_NUM);
     }
 
     @Override

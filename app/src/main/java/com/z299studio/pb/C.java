@@ -24,6 +24,12 @@ package com.z299studio.pb;
 public final class C {
     
     public static final int APP_VERSION = 2;
+    public static final String ACTIVITY = "activity";
+    public static final String PAGE_NUM = "page";
+    public static final String ACTION = "action";
+    public static final String ACCOUNT = "account";
+    public static final int ACTION_VIEW = 0;
+    public static final int ACTION_EDIT = 1;
     
     public static final class Keys {
         public static final String AUTO_LOCK = "AutoLock";
@@ -43,11 +49,6 @@ public final class C {
         public static final int NONE = 0;
         public static final int GPGS = 1;
         public static final int GDRIVE = 2;    
-    }
-    
-    public static final class Names {
-        public static final String ACTIVITY = "activity";
-        public static final String PAGE_NUM = "page";
     }
     
     public static final class Activity {
