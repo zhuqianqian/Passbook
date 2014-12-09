@@ -37,7 +37,7 @@ public class DetailActivity extends ActionBarActivity{
             mAccountId = extras.getInt(C.ACCOUNT);
             if(mAction == C.ACTION_VIEW) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.detail_panel,
-                        DetailFragment.create(mAccountId), null);
+                        DetailFragment.create(mAccountId), null).commit();
             }
         }
     }

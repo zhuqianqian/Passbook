@@ -35,6 +35,8 @@ import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.games.snapshot.Snapshots;
 
+import java.io.IOException;
+
 public class GameSyncService extends SyncService implements 
 ConnectionCallbacks, OnConnectionFailedListener {
     
@@ -83,22 +85,25 @@ ConnectionCallbacks, OnConnectionFailedListener {
                 status = result.getStatus().getStatusCode();
                 if (status == GamesStatusCodes.STATUS_OK) {
                     Snapshot snapshot = result.getSnapshot();
-                    mData = snapshot.readFully();
-                    if(mData!=null) {
-                        mHandler.post(new Runnable(){
-                            @Override
-                            public void run() {
-                                mListener.onSyncProgress(CA.DATA_RECEIVED);
-                            }
-                        });
-                    }
-                    else {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mListener.onSyncFailed(CA.DATA_RECEIVED);
-                            }
-                        });
+                    try {
+                        mData = snapshot.getSnapshotContents().readFully();
+                        if (mData != null) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mListener.onSyncProgress(CA.DATA_RECEIVED);
+                                }
+                            });
+                        } else {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mListener.onSyncFailed(CA.DATA_RECEIVED);
+                                }
+                            });
+                        }
+                    } catch(IOException e) {
+                        e.printStackTrace();
                     }
                 }
                 else{
@@ -139,7 +144,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
                      try{
                          Snapshot toWrite = processSnapshotOpenResult(result, 0);
                          if(toWrite!=null) {
-                             toWrite.writeBytes(data);
+                             toWrite.getSnapshotContents().writeBytes(data);
                              SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
                                      .setDescription(SAVED_DATA)
                                       .build();
