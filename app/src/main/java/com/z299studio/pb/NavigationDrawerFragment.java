@@ -79,6 +79,7 @@ public class NavigationDrawerFragment extends Fragment implements
         mAdapter = new NavigationDrawerAdapter(getActivity(), buildMenuItems());
         mMenuList.setAdapter(mAdapter);
         mMenuList.setOnItemClickListener(this);
+        mMenuList.setItemChecked(mCurrentSelection, true);
         return mMenuList;
     }
 

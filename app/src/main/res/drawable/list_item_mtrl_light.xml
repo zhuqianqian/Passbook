@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_pressed="true">
-        <shape><solid android:color="#979797"/>
+        <shape><solid android:color="@color/ripple_material_light"/>
         </shape></item>
     <item android:state_activated="true">
-        <shape><solid android:color="#979797"/>
+        <shape><solid android:color="@color/ripple_material_light"/>
         </shape></item>
     <item>
         <shape><solid android:color="@android:color/transparent"/>
