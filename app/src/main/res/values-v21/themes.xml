@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="navigationMenuSeparator">@drawable/div</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl</item>
+    </style>
+
+    <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="navigationMenuSeparator">@drawable/div_light</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl</item>
+    </style>
+
+    <style name="AppDark.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+    </style>
+
+    <style name="AppLight.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+    </style>
+</resources>

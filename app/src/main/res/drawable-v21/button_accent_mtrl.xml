@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <inset
+            android:insetLeft="@dimen/button_inset_horizontal_material"
+            android:insetTop="@dimen/button_inset_vertical_material"
+            android:insetRight="@dimen/button_inset_horizontal_material"
+            android:insetBottom="@dimen/button_inset_vertical_material">
+            <shape android:shape="rectangle">
+                <corners android:radius="@dimen/control_corner_material" />
+                <solid android:color="?android:attr/colorControlHighlight" />
+                <padding android:left="@dimen/button_padding_horizontal_material"
+                    android:top="@dimen/button_padding_vertical_material"
+                    android:right="@dimen/button_padding_horizontal_material"
+                    android:bottom="@dimen/button_padding_vertical_material" />
+            </shape>
+        </inset>
+    </item>
+    <item><ripple xmlns:android="http://schemas.android.com/apk/res/android"
+        android:color="?android:attr/colorControlHighlight">
+        <item><inset
+             android:insetLeft="@dimen/button_inset_horizontal_material"
+             android:insetTop="@dimen/button_inset_vertical_material"
+             android:insetRight="@dimen/button_inset_horizontal_material"
+             android:insetBottom="@dimen/button_inset_vertical_material">
+             <shape android:shape="rectangle">
+                 <corners android:radius="@dimen/control_corner_material" />
+                 <solid android:color="?android:attr/colorAccent" />
+                 <padding android:left="@dimen/button_padding_horizontal_material"
+                      android:top="@dimen/button_padding_vertical_material"
+                      android:right="@dimen/button_padding_horizontal_material"
+                      android:bottom="@dimen/button_padding_vertical_material" />
+                 </shape>
+        </inset></item>
+    </ripple></item>
+</selector>

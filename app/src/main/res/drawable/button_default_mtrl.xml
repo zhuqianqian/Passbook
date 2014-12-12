@@ -1,28 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_pressed="true">
-        <layer-list >
-            <item><shape>
-                <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp" />
-                <solid android:color="@color/shadow_0" />
-                <corners android:radius="2dp" /></shape></item>
-            <item><shape>
-                <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp" />
-                <solid android:color="@color/shadow_1" />
-                <corners android:radius="2dp" /></shape></item>
-            <item><shape>
-                <padding android:left="1dp" android:right="1dp" android:bottom="1dp" />
-                <solid android:color="@color/shadow_2" />
-                <corners android:radius="2dp" /></shape></item>
-            <item><shape>
-                <padding android:bottom="1dp" />
-                <solid android:color="@color/shadow_3" />
-                <corners android:radius="2dp" /></shape></item>
-        
-            <item><shape><solid android:color="@color/ripple_material_dark" />
-                <corners android:radius="2dp"/></shape></item>
-        </layer-list>
-    </item>
     <item android:state_focused="true">
         <layer-list >
             <item><shape>
@@ -41,14 +18,29 @@
                 <padding android:bottom="1dp" />
                 <solid android:color="@color/shadow_3" />
                 <corners android:radius="2dp" /></shape></item>
-        
-            <item><shape><solid android:color="@color/ripple_material_dark" />
-                <corners android:radius="2dp"/></shape></item>
+
+            <item><shape android:shape="rectangle">
+                <corners android:radius="@dimen/control_corner_material" />
+                <solid android:color="@color/ripple_material_dark" />
+                <padding android:left="@dimen/button_padding_horizontal_material"
+                    android:top="@dimen/button_padding_vertical_material"
+                    android:right="@dimen/button_padding_horizontal_material"
+                    android:bottom="@dimen/button_padding_vertical_material" />
+            </shape></item>
         </layer-list>
     </item>
+
     <item android:state_enabled="false">
-        <shape><solid android:color="@color/btn_disabled_dark" />
-                <corners android:radius="2dp"/></shape></item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/control_corner_material" />
+            <solid android:color="@color/btn_disabled_dark" />
+            <padding android:left="@dimen/button_padding_horizontal_material"
+                android:top="@dimen/button_padding_vertical_material"
+                android:right="@dimen/button_padding_horizontal_material"
+                android:bottom="@dimen/button_padding_vertical_material" />
+        </shape>
+    </item>
+
     <item>
         <layer-list >
             <item><shape>
@@ -67,9 +59,15 @@
                 <padding android:bottom="1dp" />
                 <solid android:color="@color/shadow_3" />
                 <corners android:radius="2dp" /></shape></item>
-            
-            <item><shape><solid android:color="@color/button_material_dark" />
-                <corners android:radius="2dp"/></shape></item>
+
+            <item><shape android:shape="rectangle">
+                <corners android:radius="@dimen/control_corner_material" />
+                <solid android:color="@color/button_material_dark" />
+                <padding android:left="@dimen/button_padding_horizontal_material"
+                    android:top="@dimen/button_padding_vertical_material"
+                    android:right="@dimen/button_padding_horizontal_material"
+                    android:bottom="@dimen/button_padding_vertical_material" />
+            </shape></item>
         </layer-list>
     </item>
 </selector>

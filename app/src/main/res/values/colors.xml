@@ -11,15 +11,10 @@
     <color name="button_material_light">#eeeeee</color>
     <color name="btn_disabled_light">#1a999999</color>
     <color name="btn_disabled_dark">#1acccccc</color>
-    <color name="shadow_0_light">#10cccccc</color>
-    <color name="shadow_1_light">#20bbbbbb</color>
-    <color name="shadow_2_light">#30aaaaaa</color>
-    <color name="shadow_3_light">#40999999</color>
-    
-    <color name="shadow_0">#b0333333</color>
-    <color name="shadow_1">#c0222222</color>
-    <color name="shadow_2">#d0111111</color>
-    <color name="shadow_3">#e0000000</color>
+    <color name="shadow_0">#10cccccc</color>
+    <color name="shadow_1">#20bbbbbb</color>
+    <color name="shadow_2">#30aaaaaa</color>
+    <color name="shadow_3">#40999999</color>
 
     <color name="text_black">#000</color>
     <color name="text_black_std">#de000000</color>

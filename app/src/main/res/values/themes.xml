@@ -7,11 +7,12 @@
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+
     </style>
     
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="flatButtonDrawable">@drawable/button_flat_mtrl_light</item>
-        <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+        <item name="defaultButtonDrawable">@drawable/button_default_mtrl_light</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
         <item name="listItemBackground">@drawable/list_item_mtrl_light</item>
     </style>
