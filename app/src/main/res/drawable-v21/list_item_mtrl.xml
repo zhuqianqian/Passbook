@@ -4,7 +4,7 @@
     <item>
         <selector>
             <item android:state_activated="true">
-                <shape><solid android:color="?android:attr/colorControlHighlight"/>
+                <shape><solid android:color="?android:attr/colorButtonNormal"/>
                 </shape>
             </item>
 

@@ -20,7 +20,6 @@
             android:name="com.z299studio.pb.NavigationDrawerFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:tag="wide"
             android:layout_weight="4"/>
         <View android:layout_width="2dp"
             android:layout_height="match_parent"

@@ -26,6 +26,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,6 +59,7 @@ public class NavigationDrawerFragment extends Fragment implements
     private NavigationDrawerAdapter mAdapter;
     private int mCurrentSelection;
     private Hashtable<Integer, Integer> mCategory2Navigation;
+    private boolean mDrawerHidden;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +76,17 @@ public class NavigationDrawerFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
+        mDrawerHidden = getResources().getBoolean(R.bool.hide_drawer);
         mMenuList = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer,
                 container, false);
         mAdapter = new NavigationDrawerAdapter(getActivity(), buildMenuItems());
         mMenuList.setAdapter(mAdapter);
+        mAdapter.selectItem(null, mCurrentSelection);
         mMenuList.setOnItemClickListener(this);
         mMenuList.setItemChecked(mCurrentSelection, true);
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
         return mMenuList;
     }
 
@@ -127,9 +134,13 @@ public class NavigationDrawerFragment extends Fragment implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         NavMenuItem item = null;
+        if(position == mCurrentSelection) {
+            return;
+        }
         if(mMenuList!=null) {
             item = (NavMenuItem)mMenuList.getItemAtPosition(position);
             if(item.mType == NavMenuItem.MENU_SELECTION) {
+                mAdapter.selectItem(view, position);
                 mCurrentSelection = position;
             }
             mMenuList.setItemChecked(mCurrentSelection,  true);
@@ -222,8 +233,7 @@ public class NavigationDrawerFragment extends Fragment implements
                     NavMenuItem.MENU_SELECTION));
             mCategory2Navigation.put(categoryIds[i], pos++);
         }
-        String tag = getTag();
-        if(tag.equals("narrow")) {
+        if(mDrawerHidden) {
             result.add(new NavMenuItem(0, r.getString(R.string.settings), 0, 0,
                     NavMenuItem.MENU_SEPARATOR));
             int stringIds[] = {R.string.help, R.string.settings, R.string.about};

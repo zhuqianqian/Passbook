@@ -7,5 +7,7 @@
         <attr name="accentTextColor" format="reference|color"/>
         <attr name="navigationMenuSeparator" format="reference"/>
         <attr name="listItemBackground" format="reference"/>
+        <attr name="iconColorNormal" format="color|reference"/>
+        <attr name="textColorNormal" format="color|reference"/>
     </declare-styleable>    
 </resources>

@@ -310,10 +310,10 @@ public class Application{
             R.drawable.ic_briefcase_0, R.drawable.ic_chat_0, R.drawable.ic_lock_0,
             R.drawable.ic_user_0
         };
-        if((Options.mTheme & 0x01) == 0x01) {
-            return light;
-        }
-        return dark;
+//        if((Options.mTheme & 0x01) == 0x01) {
+//            return light;
+//        }
+        return light;
     }
 
     private static String[] sCategoryNames;

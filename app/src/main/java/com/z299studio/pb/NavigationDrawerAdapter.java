@@ -18,6 +18,14 @@ package com.z299studio.pb;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +58,11 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     private ArrayList<NavMenuItem> mItemList;
     private Context mContext;
+    private NavItemHolder mSelected;
+    private int mSelection;
+    private int mTintColor;
+    private int mIconColor;
+    private ColorStateList mTextColor;
 
     private static class NavItemHolder {
         public ImageView mIconView;
@@ -90,8 +103,27 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     public NavigationDrawerAdapter(Context context, ArrayList<NavMenuItem> menuList) {
         this.mItemList = menuList;
         this.mContext = context;
+        int[] primaryColors = {R.attr.colorPrimary, R.attr.iconColorNormal, R.attr.textColorNormal};
+        TypedArray ta = mContext.obtainStyledAttributes(primaryColors);
+        mTintColor = ta.getColor(0, 0);
+        mIconColor = ta.getColor(1, 0);
+        int colorText = ta.getColor(2, 0);
+        mTextColor = new ColorStateList(new int[][]{
+                new int[]{android.R.attr.state_activated},
+                new int[]{}},
+                new int[]{mTintColor, colorText});
+        ta.recycle();
     }
 
+    public void selectItem(View view, int position) {
+        if(mSelected!=null) {
+            mSelected.mIconView.setColorFilter(mIconColor);
+        }
+        if(view!=null) {
+            mSelected = (NavItemHolder)view.getTag();
+        }
+        mSelection = position;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -122,8 +154,10 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             holder = (NavItemHolder) v.getTag();
         }
         holder.mTitleView.setText(menuItem.mTitle);
+        holder.mTitleView.setTextColor(mTextColor);
         if(menuItem.mIcon != 0 && holder.mIconView != null) {
             holder.mIconView.setImageResource(menuItem.mIcon);
+            holder.mIconView.setColorFilter(position == mSelection ? mTintColor : mIconColor);
         }
         if(menuItem.mCount > 0) {
             if(holder.mCounterView!=null) {

@@ -57,12 +57,12 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
 
     private static void cacheAdapter(int category_id, MainListAdapter adapter) {
         AdapterHolder ah = cachedAdapters.get(category_id);
-
         if(ah==null) {
             ah = new AdapterHolder();
         }
         ah.mUpToDate = true;
         ah.mAdapter = adapter;
+        cachedAdapters.put(category_id, ah);
     }
 
     public MainListFragment() {   }
@@ -91,7 +91,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
         mListView = (ListView)rootView.findViewById(android.R.id.list);
         if((mAdapter = getAdapter(mCategoryId)) == null) {
             mAdapter = new MainListAdapter(getActivity(),
-                    AccountManager.getInstance().getAllAccounts(true),
+                    AccountManager.getInstance().getAccountsByCategory(mCategoryId),
                     Application.getThemedIcons(),
                     (Application.Options.mTheme & 0x01) == 0 ?
                             R.drawable.ic_unknown_0 : R.drawable.ic_unknown_1);
@@ -123,9 +123,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
             if((mAdapter = getAdapter(mCategoryId)) == null) {
                 mAdapter = new MainListAdapter(getActivity(),
                         AccountManager.getInstance().getAccountsByCategory(mCategoryId),
-                        Application.getThemedIcons(),
-                        (Application.Options.mTheme & 0x01) == 0 ?
-                                R.drawable.ic_unknown_0 : R.drawable.ic_unknown_1);
+                        Application.getThemedIcons(), R.drawable.ic_unknown_1);
                 cacheAdapter(mCategoryId, mAdapter);
             }
             mListView.setAdapter(mAdapter);
