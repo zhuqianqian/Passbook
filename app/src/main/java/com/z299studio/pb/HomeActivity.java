@@ -66,7 +66,7 @@ AnimatorListener, SyncService.SyncListener{
         setContentView(R.layout.activity_home);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.activity_root);
-            int[] primaryColors = {R.attr.colorPrimaryDark};
+            int[] primaryColors = {R.attr.colorPrimary};
             TypedArray ta = obtainStyledAttributes(primaryColors);
             v.setBackgroundColor(ta.getColor(0, 0));
             ta.recycle();
