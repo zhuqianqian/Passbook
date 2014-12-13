@@ -27,7 +27,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -84,9 +83,6 @@ public class NavigationDrawerFragment extends Fragment implements
         mAdapter.selectItem(null, mCurrentSelection);
         mMenuList.setOnItemClickListener(this);
         mMenuList.setItemChecked(mCurrentSelection, true);
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
         return mMenuList;
     }
 

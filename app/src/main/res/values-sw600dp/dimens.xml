@@ -4,5 +4,5 @@
     <dimen name="action_bar_size">64dp</dimen>
     <dimen name="navigation_icon_margin">24dp</dimen>
     <dimen name="navigation_text_margin">84dp</dimen>
-    
+    <dimen name="navigation_drawer_width">320dp</dimen>
 </resources>
