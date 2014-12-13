@@ -265,7 +265,7 @@ public class Application{
             LayoutInflater inflater = context.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast,
                     (ViewGroup)context.findViewById(R.id.toast_layout_root));
-            TextView desc = (TextView)layout.findViewById(R.id.desciption);
+            TextView desc = (TextView)layout.findViewById(R.id.description);
             desc.setText(stringId);
             Toast toast = new Toast(context.getApplicationContext());
             //toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, mTopMargin);
@@ -283,7 +283,7 @@ public class Application{
             LayoutInflater inflater = context.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast,
                     (ViewGroup)context.findViewById(R.id.toast_layout_root));
-            TextView desc = (TextView)layout.findViewById(R.id.desciption);
+            TextView desc = (TextView)layout.findViewById(R.id.description);
             desc.setText(text);
             Toast toast = new Toast(context.getApplicationContext());
             //toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, mTopMargin);
@@ -295,24 +295,13 @@ public class Application{
 
     public static int[] getThemedIcons() {
         int[] light = {
-            R.drawable.ic_bank_1, R.drawable.ic_creditcard_1, R.drawable.ic_device_1,
-            R.drawable.ic_shop_1, R.drawable.ic_email_1, R.drawable.ic_web_1,
-            R.drawable.ic_wallet_1, R.drawable.ic_atm_1, R.drawable.ic_bag_1,
-            R.drawable.ic_gift_1, R.drawable.ic_school_1, R.drawable.ic_folder_1,
-            R.drawable.ic_briefcase_1, R.drawable.ic_chat_1, R.drawable.ic_lock_1,
-            R.drawable.ic_user_1
+            R.drawable.pb_bank, R.drawable.pb_creditcard, R.drawable.pb_desktop,
+            R.drawable.pb_shop, R.drawable.pb_email, R.drawable.pb_web,
+            R.drawable.pb_wallet, R.drawable.pb_atm, R.drawable.pb_bag,
+            R.drawable.pb_gift, R.drawable.pb_school, R.drawable.pb_folder,
+            R.drawable.pb_briefcase, R.drawable.pb_chat, R.drawable.pb_lock,
+            R.drawable.pb_user
         };
-        int[] dark = {
-            R.drawable.ic_bank_0, R.drawable.ic_creditcard_0, R.drawable.ic_device_0,
-            R.drawable.ic_shop_0, R.drawable.ic_email_0, R.drawable.ic_web_0,
-            R.drawable.ic_wallet_0, R.drawable.ic_atm_0, R.drawable.ic_bag_0,
-            R.drawable.ic_gift_0, R.drawable.ic_school_0, R.drawable.ic_folder_0,
-            R.drawable.ic_briefcase_0, R.drawable.ic_chat_0, R.drawable.ic_lock_0,
-            R.drawable.ic_user_0
-        };
-//        if((Options.mTheme & 0x01) == 0x01) {
-//            return light;
-//        }
         return light;
     }
 

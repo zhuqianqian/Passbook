@@ -10,7 +10,7 @@
      >
      
      <TextView
-         android:id="@+id/desciption"
+         android:id="@+id/description"
          android:layout_width="match_parent"
          android:layout_height="48dp"
          android:textColor="#deffffff"

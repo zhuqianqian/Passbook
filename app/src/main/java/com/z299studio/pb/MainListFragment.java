@@ -92,9 +92,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
         if((mAdapter = getAdapter(mCategoryId)) == null) {
             mAdapter = new MainListAdapter(getActivity(),
                     AccountManager.getInstance().getAccountsByCategory(mCategoryId),
-                    Application.getThemedIcons(),
-                    (Application.Options.mTheme & 0x01) == 0 ?
-                            R.drawable.ic_unknown_0 : R.drawable.ic_unknown_1);
+                    Application.getThemedIcons(), R.drawable.pb_unknown);
             cacheAdapter(mCategoryId, mAdapter);
         }
         mListView.setAdapter(mAdapter);
@@ -123,7 +121,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
             if((mAdapter = getAdapter(mCategoryId)) == null) {
                 mAdapter = new MainListAdapter(getActivity(),
                         AccountManager.getInstance().getAccountsByCategory(mCategoryId),
-                        Application.getThemedIcons(), R.drawable.ic_unknown_1);
+                        Application.getThemedIcons(), R.drawable.pb_unknown);
                 cacheAdapter(mCategoryId, mAdapter);
             }
             mListView.setAdapter(mAdapter);

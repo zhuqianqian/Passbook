@@ -196,16 +196,11 @@ public class NavigationDrawerFragment extends Fragment implements
         }
     }
 
-    /*
-     * Changes are required for icon selection, if tint is available and primary color should be
-     * applied upon press/selection.
-     */
     private ArrayList<NavMenuItem> buildMenuItems() {
         Resources r = getResources();
         AccountManager am = AccountManager.getInstance();
         ArrayList<NavMenuItem> result = new ArrayList<NavMenuItem>();
         int icons[] = Application.getThemedIcons();
-        int themeIdx = Application.Options.mTheme & 0x01;
         String[] categoryNames = Application.getSortedCategoryNames();
         int[] categoryIcons = Application.getSortedCatregoryIcons();
         int[] categoryIds = Application.getSortedCategoryIds();
@@ -214,15 +209,12 @@ public class NavigationDrawerFragment extends Fragment implements
         result.add(new NavMenuItem(0, r.getString(R.string.categories),
                 0, 0, NavMenuItem.MENU_SEPARATOR));
         pos++;
-        result.add(new NavMenuItem(themeIdx == 0 ? R.drawable.ic_all_0 : R.drawable.ic_all_1,
-                r.getString(R.string.all_accounts),
+        result.add(new NavMenuItem(R.drawable.pb_all, r.getString(R.string.all_accounts),
                 am.getAccountsCountByCategory(AccountManager.ALL_CATEGORY_ID),
                 AccountManager.ALL_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
         mCategory2Navigation.put(AccountManager.ALL_CATEGORY_ID, pos++);
         if(Application.Options.mShowOther) {
-            result.add(new NavMenuItem(themeIdx == 0 ?
-                    R.drawable.ic_unknown_0 : R.drawable.ic_unknown_1,
-                    r.getString(R.string.def_category),
+            result.add(new NavMenuItem(R.drawable.pb_unknown, r.getString(R.string.def_category),
                     am.getAccountsCountByCategory(AccountManager.DEFAULT_CATEGORY_ID),
                     AccountManager.DEFAULT_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
             mCategory2Navigation.put(AccountManager.DEFAULT_CATEGORY_ID, pos++);
@@ -237,10 +229,10 @@ public class NavigationDrawerFragment extends Fragment implements
             result.add(new NavMenuItem(0, r.getString(R.string.settings), 0, 0,
                     NavMenuItem.MENU_SEPARATOR));
             int stringIds[] = {R.string.help, R.string.settings, R.string.about};
-            int iconIds[][] = {{R.drawable.ic_help, R.drawable.ic_settings, R.drawable.ic_info},
-                    {R.drawable.ic_help_1, R.drawable.ic_settings_1, R.drawable.ic_info_1}};
+            int iconIds[] = {R.drawable.ic_action_help, R.drawable.ic_action_settings,
+                    R.drawable.ic_action_about};
             for(i = 0; i < stringIds.length; ++i) {
-                result.add(new NavMenuItem(iconIds[themeIdx][i], r.getString(stringIds[i]),
+                result.add(new NavMenuItem(iconIds[i], r.getString(stringIds[i]),
                         0, stringIds[i], NavMenuItem.MENU_ACTION));
             }
         }
