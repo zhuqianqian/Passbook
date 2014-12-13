@@ -17,6 +17,8 @@
 package com.z299studio.pb;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -49,6 +51,14 @@ public class MainActivity extends ActionBarActivity implements
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View v = findViewById(R.id.panel_main);
+            View rootView = v.getRootView();
+            int[] primaryColors = {R.attr.colorPrimaryDark};
+            TypedArray ta = obtainStyledAttributes(primaryColors);
+            rootView.setBackgroundColor(ta.getColor(0, 0));
+            ta.recycle();
+        }
         setupToolbar();
         mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);

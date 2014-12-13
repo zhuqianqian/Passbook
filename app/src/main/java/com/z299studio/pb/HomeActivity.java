@@ -19,6 +19,8 @@ package com.z299studio.pb;
 import java.security.GeneralSecurityException;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +64,13 @@ AnimatorListener, SyncService.SyncListener{
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View v = findViewById(R.id.activity_root);
+            int[] primaryColors = {R.attr.colorPrimaryDark};
+            TypedArray ta = obtainStyledAttributes(primaryColors);
+            v.setBackgroundColor(ta.getColor(0, 0));
+            ta.recycle();
+        }
         if(savedInstanceState==null) {
             Log.d("pb", "null!");
             if(!mApp.hasDataFile()) {

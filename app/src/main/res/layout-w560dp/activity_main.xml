@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity" >
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,7 +15,8 @@
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:background="?android:attr/colorBackground">
 
         <fragment android:id="@+id/navigation_drawer"
             android:name="com.z299studio.pb.NavigationDrawerFragment"

@@ -5,4 +5,41 @@
     	<item name="android:fitsSystemWindows">false</item>
     </style>
 
+    <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <!-- Above items should share the same value in dark and light themes
+             Below are common values but differ in dark and light themes-->
+        <item name="iconColorNormal">@color/text_white_sec</item>
+        <item name="textColorNormal">@color/text_white_std</item>
+        <item name="flatButtonDrawable">@drawable/button_flat_mtrl</item>
+        <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
+        <item name="navigationMenuSeparator">@drawable/div</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl</item>
+    </style>
+
+    <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <!-- Above items should share the same value in dark and light themes
+             Below are common values but differ in dark and light themes-->
+        <item name="iconColorNormal">@color/text_black_sec</item>
+        <item name="textColorNormal">@color/text_black_std</item>
+        <item name="flatButtonDrawable">@drawable/button_flat_mtrl_light</item>
+        <item name="defaultButtonDrawable">@drawable/button_default_mtrl_light</item>
+        <item name="navigationMenuSeparator">@drawable/div_light</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl_light</item>
+    </style>
+
+    <style name="AppDark.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl</item>
+    </style>
+
+    <style name="AppLight.Default">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/orange_a200</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl_light</item>
+    </style>
 </resources>

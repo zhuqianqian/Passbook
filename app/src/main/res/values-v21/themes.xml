@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <!-- Above items should share the same value in dark and light themes
+             Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_white_sec</item>
         <item name="textColorNormal">@color/text_white_std</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
-        <item name="listItemBackground">@drawable/list_item_mtrl</item>
     </style>
 
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <!-- Above items should share the same value in dark and light themes
+             Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_black_sec</item>
         <item name="textColorNormal">@color/text_black_std</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
-        <item name="listItemBackground">@drawable/list_item_mtrl</item>
     </style>
 
     <style name="AppDark.Default">

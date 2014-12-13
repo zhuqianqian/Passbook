@@ -9,7 +9,8 @@
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:fitsSystemWindows="true">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:background="?attr/colorPrimary"
@@ -19,7 +20,7 @@
             android:id="@+id/panel_main"
             android:name="com.z299studio.pb.MainListFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
     </LinearLayout>
     
     <fragment
@@ -27,6 +28,7 @@
         android:name="com.z299studio.pb.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        />
 
 </android.support.v4.widget.DrawerLayout>
