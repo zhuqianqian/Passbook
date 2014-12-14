@@ -9,7 +9,7 @@
     <dimen name="navigation_text_margin">72dp</dimen>
     <dimen name="toolbar_elevation">12dp</dimen>
     <dimen name="main_list_height">56dp</dimen>
-    <dimen name="list_avatar_size">36dp</dimen>
+    <dimen name="list_avatar_size">40dp</dimen>
     <dimen name="card_padding">0dp</dimen>
 
     <dimen name="button_elevation_material">1dp</dimen>

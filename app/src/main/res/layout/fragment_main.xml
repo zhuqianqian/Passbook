@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:drawSelectorOnTop="true"
-        android:choiceMode="multipleChoice"
         android:longClickable="true"/>
 
     <TextView

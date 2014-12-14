@@ -17,11 +17,14 @@
 package com.z299studio.pb;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
 public class MainListAdapter extends BaseAdapter {
 
     public interface OnListItemCheckListener{
-        public void onCheck(int count);
+        public void onCheck(int count, int position, boolean isChecked);
     }
 
     private static class ViewHolder {
@@ -41,6 +44,8 @@ public class MainListAdapter extends BaseAdapter {
     }
 
     private static final long TIME_INTERVAL = 50;
+    private static int COLORS[];
+    private static Animation FLIP1, FLIP2;
 
     private ArrayList<AccountManager.Account> mEntries;
     private ArrayList<Integer> mIcons;
@@ -61,21 +66,41 @@ public class MainListAdapter extends BaseAdapter {
         mAnimationEnabled = true;
         mDefaultDrawableId = defaultDrawableResId;
         setList(accounts, drawableResIds);
+        prepareResources(context);
+    }
+
+    private void prepareResources(Context context) {
+        if(COLORS == null) {
+            COLORS = new int[] {
+//When Android 4.0.x is not supported, the drawables can be created dynamically to setBackground
+                    R.drawable.oval_00, R.drawable.oval_01, R.drawable.oval_02, R.drawable.oval_03,
+                    R.drawable.oval_04, R.drawable.oval_05, R.drawable.oval_06, R.drawable.oval_07,
+                    R.drawable.oval_08, R.drawable.oval_09, R.drawable.oval_0a, R.drawable.oval_0b,
+                    R.drawable.oval_0c, R.drawable.oval_0d, R.drawable.oval_0e, R.drawable.oval_0f
+            };
+//            int[] colors = {R.attr.iconColorNormal, R.attr.textColorNormal};
+//            TypedArray ta = mContext.obtainStyledAttributes(colors);
+//            context.getResources().getDrawable(R.drawable.oval_selected).setColorFilter(
+//                    ta.getColor(1, 0) , PorterDuff.Mode.SRC_ATOP);
+//            ta.recycle();
+            FLIP1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
+            FLIP2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
+        }
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+        View view = convertView;
         ViewHolder holder;
         AccountManager.Account account = mEntries.get(position);
         boolean status = mChecked.get(position);
         if (convertView == null) {
-            v = inflate(parent);
+            view = inflate(parent);
         }
         else{
-            holder = (ViewHolder) v.getTag();
+            holder = (ViewHolder) view.getTag();
             if(holder.mInflate) {
-                v = inflate(parent);
+                view = inflate(parent);
             }
         }
 //        if(mDeleted.get(position)) {
@@ -86,26 +111,27 @@ public class MainListAdapter extends BaseAdapter {
 //                }
 //            });
 //        }
-        holder = (ViewHolder) v.getTag();
+        holder = (ViewHolder) view.getTag();
         holder.mTextView.setText(account.getAccountName());
-//        int srcId = status ? R.drawable.checkmark : mIcons.get(position);
-//        int bkgId = status ? mIconBkgAccent : mIconBkgNormal;
-        holder.mIconView.setImageResource(mIcons.get(position));
-//        holder.mIconView.setBackgroundResource(bkgId);
+        int srcId = status ? R.drawable.checkmark : mIcons.get(position);
+        holder.mIconView.setImageResource(srcId);
+        int background = status ? R.drawable.oval_selected :
+                COLORS[account.getCategoryId() & 0x0f];
+        holder.mIconView.setBackgroundResource(background);
         holder.mIconView.setTag(position);
-
-//        holder.mIconView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                v.clearAnimation();
-//                v.setAnimation(mAnimation1);
-//                v.startAnimation(mAnimation1);
-//                AnimationListener listener = getAnimListener((ImageButton) v, Integer.parseInt(v.getTag().toString()),
-//                        mAnimation1, mAnimation2);
-//                mAnimation1.setAnimationListener(listener);
-//                mAnimation2.setAnimationListener(listener);
-//            }
-//        });
+        final View currentView = view;
+        holder.mIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.clearAnimation();
+                v.setAnimation(FLIP1);
+                v.startAnimation(FLIP1);
+                AnimationListener listener = getAnimListener(currentView, (ImageButton) v,
+                        Integer.parseInt(v.getTag().toString()), FLIP1, FLIP2);
+                FLIP1.setAnimationListener(listener);
+                FLIP2.setAnimationListener(listener);
+            }
+        });
         if(mAnimationEnabled) {
             long timestamp = System.currentTimeMillis();
             long delta = timestamp - mLastTimestamp;
@@ -124,11 +150,11 @@ public class MainListAdapter extends BaseAdapter {
                 }
                 animation.setStartOffset(mAdjustment);
             }
-            v.startAnimation(animation);
+            view.startAnimation(animation);
         }
-
+        view.setActivated(status);
         mLastPosition = position;
-        return v;
+        return view;
     }
 
     @Override
@@ -192,5 +218,62 @@ public class MainListAdapter extends BaseAdapter {
         holder.mInflate = false;
         v.setTag(holder);
         return v;
+    }
+
+    private AnimationListener getAnimListener(final View view, final ImageButton button,
+        final int position, final Animation prev, final Animation next) {
+        AnimationListener listener = new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation anim) {
+                boolean status = mChecked.get(position);
+                int srcId = status ? mIcons.get(position) : R.drawable.checkmark;
+                int bkg = status ? COLORS[mEntries.get(position).getCategoryId() & 0x0f]
+                        : R.drawable.oval_selected;
+                if(anim == prev) {
+                    button.setImageResource(srcId);
+                    button.setBackgroundResource(bkg);
+                    button.clearAnimation();
+                    button.setAnimation(next);
+                    button.startAnimation(next);
+                } else {
+                    mChecked.set(position, !status);
+                    checkCount(position);
+                    setActionMode(!status);
+                    view.setActivated(!status);
+                }
+            }
+
+            private void checkCount(int position) {
+                if(mChecked.get(position)) { mCheckCount++; }
+                else if(mCheckCount > 0) { mCheckCount--; }
+            }
+
+            private void setActionMode(boolean status) {
+                mListener.onCheck(mCheckCount, position, status);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation anim) {}
+
+            @Override
+            public void onAnimationEnd(Animation anim) {}
+        };
+        return listener;
+    }
+
+
+    public void onLongClick(View view, int position) {
+        ViewHolder holder = (ViewHolder) view.getTag();
+        holder.mIconView.clearAnimation();
+        holder.mIconView.setAnimation(FLIP1);
+        holder.mIconView.startAnimation(FLIP1);
+        AnimationListener listener = getAnimListener(view, holder.mIconView,
+                position, FLIP1, FLIP2);
+        FLIP1.setAnimationListener(listener);
+        FLIP2.setAnimationListener(listener);
+    }
+
+    public void setListener(OnListItemCheckListener l) {
+        mListener = l;
     }
 }

@@ -27,7 +27,9 @@ import android.widget.ListView;
 
 import java.util.Hashtable;
 
-public class MainListFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class MainListFragment extends Fragment
+implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
+    MainListAdapter.OnListItemCheckListener{
 
     public interface ItemSelectionInterface {
         public void onSelectAccount(long id);
@@ -37,6 +39,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
     private ListView mListView;
     private MainListAdapter mAdapter;
     private int mCategoryId;
+    private boolean mSelectionMode;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
@@ -70,15 +73,18 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null) {
             mCategoryId = savedInstanceState.getInt("category_id");
+            mSelectionMode = savedInstanceState.getBoolean("selection_mode");
         }
         else {
             mCategoryId = AccountManager.ALL_CATEGORY_ID;
+            mSelectionMode = false;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("category_id", mCategoryId);
+        outState.putBoolean("selection_mode", mSelectionMode);
         super.onSaveInstanceState(outState);
     }
 
@@ -93,9 +99,11 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
                     Application.getThemedIcons(), R.drawable.pb_unknown);
             cacheAdapter(mCategoryId, mAdapter);
         }
+        mAdapter.setListener(this);
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
         return rootView;
     }
 
@@ -122,6 +130,7 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
                         Application.getThemedIcons(), R.drawable.pb_unknown);
                 cacheAdapter(mCategoryId, mAdapter);
             }
+            mAdapter.setListener(this);
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }
@@ -129,8 +138,30 @@ public class MainListFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+        if(mSelectionMode) {
+            onItemLongClick(parent, view, pos, id);
+            return;
+        }
         if(mListener != null) {
             mListener.onSelectAccount(id);
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
+        mAdapter.onLongClick(view, pos);
+        return true;
+    }
+
+    @Override
+    public void onCheck(int count, int position, boolean isChecked) {
+        if(count == 0) {
+            mSelectionMode = false;
+        }
+        else if(count == 1) {
+            mSelectionMode = true;
+      //      mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+      //      mListView.setItemChecked(position, isChecked);
         }
     }
 }
