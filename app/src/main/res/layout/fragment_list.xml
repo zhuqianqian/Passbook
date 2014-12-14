@@ -4,4 +4,5 @@
     android:layout_height="match_parent"
     android:divider="@null"
     android:drawSelectorOnTop="true"
-    android:dividerHeight="@dimen/card_padding"/>
+    android:dividerHeight="@dimen/card_padding"
+    android:background="?android:attr/colorBackground"/>
