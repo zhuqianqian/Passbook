@@ -7,22 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <LinearLayout android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:fitsSystemWindows="true">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:background="?attr/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/action_bar_size"/>
-        <fragment
-            android:id="@+id/panel_main"
-            android:name="com.z299studio.pb.MainListFragment"
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:background="?attr/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_size"/>
+            <fragment
+                android:id="@+id/panel_main"
+                android:name="com.z299studio.pb.MainListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <FrameLayout android:id="@+id/detail_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </LinearLayout>
-    
+    </FrameLayout>
+
     <fragment
         android:id="@+id/navigation_drawer"
         android:name="com.z299studio.pb.NavigationDrawerFragment"

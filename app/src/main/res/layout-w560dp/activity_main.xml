@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity" >
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:background="?attr/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_size"/>
+    android:fitsSystemWindows="true">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:background="?android:attr/colorBackground">
+        android:orientation="vertical"
+        tools:context=".MainActivity" >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"/>
 
-        <fragment android:id="@+id/navigation_drawer"
-            android:name="com.z299studio.pb.NavigationDrawerFragment"
-            android:layout_width="0dp"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"/>
-        <View android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="#808080"/>
-        <fragment
-            android:id="@+id/panel_main"
-            android:name="com.z299studio.pb.MainListFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5" />
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:background="?android:attr/colorBackground">
+
+            <fragment android:id="@+id/navigation_drawer"
+                android:name="com.z299studio.pb.NavigationDrawerFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"/>
+            <View android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#7f7f7f7f"/>
+            <fragment
+                android:id="@+id/panel_main"
+                android:name="com.z299studio.pb.MainListFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+    <FrameLayout android:id="@+id/detail_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

@@ -27,9 +27,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppLight.Default">
         </activity>
-        <activity android:name=".DetailActivity"
-            android:theme="@style/AppLight.Default">
-        </activity>
+
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />

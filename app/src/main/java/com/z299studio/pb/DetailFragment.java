@@ -16,9 +16,12 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
 import android.view.LayoutInflater;
@@ -26,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,9 +38,19 @@ import com.z299studio.pb.AccountManager.Account;
 import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements AdapterView.OnItemClickListener{
+
+    private static int[] COLORS = {R.color.pb_0, R.color.pb_1, R.color.pb_2, R.color.pb_3,
+            R.color.pb_4, R.color.pb_5, R.color.pb_6, R.color.pb_7,
+            R.color.pb_8, R.color.pb_9, R.color.pb_a, R.color.pb_b,
+            R.color.pb_c, R.color.pb_d, R.color.pb_e, R.color.pb_f};
+
     private int mAccountId;
     private ListView mList;
+    private View mToolbar;
+    private TextView mTitleView;
     private AccountAdapter mAdapter;
+    private int mColor;
+    private Account mAccount;
 
     public static DetailFragment create(int accountId) {
         DetailFragment df = new DetailFragment();
@@ -46,7 +60,7 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
         return df;
     }
 
-    public DetailFragment() {}
+    public DetailFragment() {    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,13 +74,20 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
         else {
             mAccountId = getArguments().getInt(C.ACCOUNT);
         }
-        mList = (ListView)inflater.inflate(R.layout.fragment_list, container, false);
-        Account account = AccountManager.getInstance().getAccountById(mAccountId);
-        mAdapter = new AccountAdapter(getActivity(), account);
-        mAdapter.setShowPassword(Application.Options.mAlwaysShowPwd);
-        mList.setAdapter(mAdapter);
-        mList.setOnItemClickListener(this);
-        return mList;
+        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        mList = (ListView)rootView.findViewById(android.R.id.list);
+        mAccount = AccountManager.getInstance().getAccountById(mAccountId);
+        mColor = getResources().getColor(COLORS[mAccount.getCategoryId() & 0x0f]);
+        setUpList();
+        setupToolbar(rootView, mAccount.mProfile);
+        return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(C.ACCOUNT, mAccountId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -74,6 +95,21 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
         mAdapter.changeDisplay(view, pos);
     }
 
+    private void setUpList() {
+        mAdapter = new AccountAdapter(getActivity(), mAccount);
+        mAdapter.setShowPassword(Application.Options.mAlwaysShowPwd);
+        mList.setAdapter(mAdapter);
+        mList.setOnItemClickListener(this);
+    }
+
+    private void setupToolbar(View rootView, String title) {
+        mToolbar = rootView.findViewById(R.id.toolbar);
+        mToolbar.setBackgroundColor(mColor);
+        mTitleView = (TextView)rootView.findViewById(android.R.id.title);
+        mTitleView.setText(title);
+        float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
+        ViewCompat.setElevation(mToolbar, elevation);
+    }
     private class AccountAdapter extends BaseAdapter {
         private ArrayList<Account.Entry> mItems;
         private ArrayList<Boolean> mPwdShowed;

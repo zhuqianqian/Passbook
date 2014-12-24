@@ -20,23 +20,29 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 import android.view.View;
 
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        MainListFragment.ItemSelectionInterface{
+        MainListFragment.ItemSelectionInterface  {
 
     private Application mApp;
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawer;
     private DrawerLayout mDrawerLayout;
     private MainListFragment mMainList;
+    private int mStatusColor;
+    private View mRootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +59,11 @@ public class MainActivity extends ActionBarActivity implements
         this.setContentView(R.layout.activity_main);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.panel_main);
-            View rootView = v.getRootView();
+            mRootView = v.getRootView();
             int[] primaryColors = {R.attr.colorPrimary};
             TypedArray ta = obtainStyledAttributes(primaryColors);
-            rootView.setBackgroundColor(ta.getColor(0, 0));
+            mStatusColor = ta.getColor(0,0);
+            mRootView.setBackgroundColor(mStatusColor);
             ta.recycle();
         }
         setupToolbar();
@@ -83,10 +90,41 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onSelectAccount(long id) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(C.ACCOUNT, (int)id);
-        intent.putExtra(C.ACTION, C.ACTION_VIEW);
-        startActivity(intent);
+    public void onSelectAccount(Fragment hostFragment, View view, long id) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = DetailFragment.create((int)id);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View title = view.findViewById(R.id.item_name);
+            title.setTransitionName("title");
+            hostFragment.setSharedElementReturnTransition(
+                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
+            hostFragment.setExitTransition(
+                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+            hostFragment.setReturnTransition(
+                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+
+            fragment.setSharedElementEnterTransition(
+                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
+            fragment.setEnterTransition(
+                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+            ft.addSharedElement(title, "title");
+        }
+        else {
+            ft.setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right);
+        }
+        ft.replace(R.id.detail_panel, fragment)
+                .addToBackStack(null)
+                .commit();
     }
+
+//    @Override
+//    public void setStatusBarColor(int color) {
+//        mRootView.setBackgroundColor(color);
+//    }
+//
+//    @Override
+//    public void onDetach(Fragment fragment) {
+//        mRootView.setBackgroundColor(mStatusColor);
+//    }
+
 }
