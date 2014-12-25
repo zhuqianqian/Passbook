@@ -17,20 +17,14 @@
 package com.z299studio.pb;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionInflater;
 import android.view.View;
-
-import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -43,6 +37,13 @@ public class MainActivity extends ActionBarActivity implements
     private MainListFragment mMainList;
     private int mStatusColor;
     private View mRootView;
+
+    private Runnable mTintStatusBar = new Runnable() {
+        @Override
+        public void run() {
+            mRootView.setBackgroundColor(mStatusColor);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,8 @@ public class MainActivity extends ActionBarActivity implements
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.panel_main);
             mRootView = v.getRootView();
-            int[] primaryColors = {R.attr.colorPrimary};
-            TypedArray ta = obtainStyledAttributes(primaryColors);
-            mStatusColor = ta.getColor(0,0);
+            mStatusColor = C.ThemedColors[C.colorPrimary];
             mRootView.setBackgroundColor(mStatusColor);
-            ta.recycle();
         }
         setupToolbar();
         mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
@@ -90,41 +88,20 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onSelectAccount(Fragment hostFragment, View view, long id) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = DetailFragment.create((int)id);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            View title = view.findViewById(R.id.item_name);
-//            title.setTransitionName("title");
-//            hostFragment.setSharedElementReturnTransition(
-//                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
-//            hostFragment.setExitTransition(
-//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-//            hostFragment.setReturnTransition(
-//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-//
-//            fragment.setSharedElementEnterTransition(
-//                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
-//            fragment.setEnterTransition(
-//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-//            ft.addSharedElement(title, "title");
-//        }
-//        else {
-            ft.setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right);
-//        }
-        ft.add(R.id.detail_panel, fragment)
+    public void onSelectAccount(View view, long id) {
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right)
+                .replace(R.id.detail_panel, DetailFragment.create((int)id))
                 .addToBackStack(null)
                 .commit();
     }
 
-//    @Override
-//    public void setStatusBarColor(int color) {
-//        mRootView.setBackgroundColor(color);
-//    }
-//
-//    @Override
-//    public void onDetach(Fragment fragment) {
-//        mRootView.setBackgroundColor(mStatusColor);
-//    }
+    public void setStatusBarColor(int color) {
+        mRootView.setBackgroundColor(color);
+    }
+
+    public void onDetach(Fragment fragment) {
+        mRootView.postDelayed(mTintStatusBar, 200);
+    }
 
 }

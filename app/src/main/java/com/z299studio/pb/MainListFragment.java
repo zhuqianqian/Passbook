@@ -32,7 +32,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     MainListAdapter.OnListItemCheckListener{
 
     public interface ItemSelectionInterface {
-        public void onSelectAccount(Fragment hostFragment, View view, long id);
+        public void onSelectAccount(View view, long id);
     }
 
     private ItemSelectionInterface mListener;
@@ -143,7 +143,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             return;
         }
         if(mListener != null) {
-            mListener.onSelectAccount(this, view, id);
+            mListener.onSelectAccount(view, id);
         }
     }
 

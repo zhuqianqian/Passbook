@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="?android:attr/colorBackground">
 
-    <RelativeLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_extend">
-        <TextView android:id="@android:id/title"
-            android:transitionName="title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/navigation_icon_margin"
-            android:layout_marginStart="@dimen/navigation_icon_margin"
-            android:layout_marginLeft="@dimen/navigation_icon_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-    </RelativeLayout>
-    <ListView android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="@dimen/card_padding"
-        android:drawSelectorOnTop="true"/>
-
-</LinearLayout>
+    <include layout="@layout/detail_port"/>
+</RelativeLayout>

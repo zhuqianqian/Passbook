@@ -28,6 +28,8 @@
     <color name="text_white_hint">#42ffffff</color>
     <color name="text_white_div">#1fffffff</color>
 
+    <color name="grey">#80808080</color>
+
     <color name="pb_0">#c62828</color>
     <color name="pb_1">#f06292</color>
     <color name="pb_2">#d500f9</color>

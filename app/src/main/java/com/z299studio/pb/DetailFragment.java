@@ -16,12 +16,14 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,7 +49,7 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
 
     private int mAccountId;
     private ListView mList;
-    private View mToolbar;
+    private Toolbar mToolbar;
     private TextView mTitleView;
     private AccountAdapter mAdapter;
     private int mColor;
@@ -91,6 +94,13 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity ma = (MainActivity)getActivity();
+        ma.onDetach(this);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
         mAdapter.changeDisplay(view, pos);
     }
@@ -103,12 +113,21 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private void setupToolbar(View rootView, String title) {
-        mToolbar = rootView.findViewById(R.id.toolbar);
-        mToolbar.setBackgroundColor(mColor);
+        mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        View header = rootView.findViewById(R.id.header);
+        ImageButton fab = (ImageButton)rootView.findViewById(R.id.fab);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            LayerDrawable background = (LayerDrawable) fab.getBackground();
+            background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+        header.setBackgroundColor(mColor);
         mTitleView = (TextView)rootView.findViewById(android.R.id.title);
         mTitleView.setText(title);
         float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
-        ViewCompat.setElevation(mToolbar, elevation);
+        ViewCompat.setElevation(header, elevation);
+        MainActivity ma = (MainActivity)getActivity();
+        ma.setStatusBarColor(mColor);
     }
     private class AccountAdapter extends BaseAdapter {
         private ArrayList<Account.Entry> mItems;

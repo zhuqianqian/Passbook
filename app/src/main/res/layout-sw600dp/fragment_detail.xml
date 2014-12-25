@@ -9,31 +9,13 @@
     android:focusableInTouchMode="true"
     android:weightSum="10">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="@dimen/detail_card_width"
         android:layout_height="0dp"
         android:layout_weight="7"
         android:background="?android:attr/colorBackground"
         android:elevation="@dimen/window_elevation">
-        <RelativeLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/action_bar_extend">
-            <TextView android:id="@android:id/title"
-                android:transitionName="title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/navigation_icon_margin"
-                android:layout_marginLeft="@dimen/navigation_icon_margin"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-        </RelativeLayout>
-        <ListView android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="@dimen/card_padding"
-            android:drawSelectorOnTop="true"/>
-    </LinearLayout>
+    <include layout="@layout/detail_port"/>
+    </RelativeLayout>
 </LinearLayout>

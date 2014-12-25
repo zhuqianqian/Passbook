@@ -11,19 +11,17 @@
         android:padding="@dimen/navigation_icon_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    
-	<TextView
-	    android:id="@+id/field_value"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-        android:textStyle="normal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
     <TextView
         android:id="@+id/field_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="?android:attr/textColorSecondary"/>
+    <TextView
+        android:id="@+id/field_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

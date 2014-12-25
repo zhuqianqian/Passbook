@@ -3,4 +3,4 @@
     android:fromXDelta="100%"
     android:toXDelta="0"
     android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-    android:duration="@android:integer/config_shortAnimTime"/>
+    android:duration="200"/>

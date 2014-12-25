@@ -1,34 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="?android:attr/colorBackground">
 
-    <RelativeLayout
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:layout_height="match_parent">
-        <TextView android:id="@android:id/title"
-            android:transitionName="title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/navigation_icon_margin"
-            android:layout_marginEnd="@dimen/navigation_icon_margin"
-            android:layout_marginRight="@dimen/navigation_icon_margin"
-            android:layout_marginLeft="@dimen/navigation_icon_margin"
-            android:layout_marginStart="@dimen/navigation_icon_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-    </RelativeLayout>
+    <include layout="@layout/detail_land"/>
 
-    <ListView android:id="@android:id/list"
-        android:layout_weight="5"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:dividerHeight="@dimen/card_padding"
-        android:drawSelectorOnTop="true"/>
-
-</LinearLayout>
+</RelativeLayout>

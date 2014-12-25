@@ -61,4 +61,9 @@ public final class C {
     public static final int THEMES[] = {
         R.style.AppLight_Default, R.style.AppDark_Default
     };
+
+    public static final int colorPrimary = 0;
+    public static final int colorPrimaryDark = 1;
+    public static final int colorAccent = 2;
+    public static int ThemedColors[] = {0, 0, 0};
 }
