@@ -93,26 +93,26 @@ public class MainActivity extends ActionBarActivity implements
     public void onSelectAccount(Fragment hostFragment, View view, long id) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fragment = DetailFragment.create((int)id);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View title = view.findViewById(R.id.item_name);
-            title.setTransitionName("title");
-            hostFragment.setSharedElementReturnTransition(
-                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
-            hostFragment.setExitTransition(
-                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-            hostFragment.setReturnTransition(
-                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-
-            fragment.setSharedElementEnterTransition(
-                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
-            fragment.setEnterTransition(
-                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
-            ft.addSharedElement(title, "title");
-        }
-        else {
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            View title = view.findViewById(R.id.item_name);
+//            title.setTransitionName("title");
+//            hostFragment.setSharedElementReturnTransition(
+//                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
+//            hostFragment.setExitTransition(
+//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+//            hostFragment.setReturnTransition(
+//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+//
+//            fragment.setSharedElementEnterTransition(
+//                    TransitionInflater.from(this).inflateTransition(R.transition.change_bounds));
+//            fragment.setEnterTransition(
+//                    TransitionInflater.from(this).inflateTransition(android.R.transition.explode));
+//            ft.addSharedElement(title, "title");
+//        }
+//        else {
             ft.setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right);
-        }
-        ft.replace(R.id.detail_panel, fragment)
+//        }
+        ft.add(R.id.detail_panel, fragment)
                 .addToBackStack(null)
                 .commit();
     }

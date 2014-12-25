@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#30ffffff"
+    android:background="#40000000"
     android:gravity="center"
     android:clickable="true"
     android:focusableInTouchMode="true"
@@ -11,10 +11,11 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="560dp"
+        android:layout_width="@dimen/detail_card_width"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:background="?android:attr/colorBackground">
+        android:background="?android:attr/colorBackground"
+        android:elevation="@dimen/window_elevation">
         <RelativeLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

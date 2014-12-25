@@ -6,4 +6,5 @@
     <dimen name="navigation_icon_margin">24dp</dimen>
     <dimen name="navigation_text_margin">84dp</dimen>
     <dimen name="navigation_drawer_width">320dp</dimen>
+    <dimen name="detail_card_width">480dp</dimen>
 </resources>
