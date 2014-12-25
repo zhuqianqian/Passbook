@@ -48,6 +48,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/navigation_icon_margin"
         android:layout_marginBottom="@dimen/navigation_icon_margin"
+        android:tint="?attr/textColorNormal"
         android:elevation="@dimen/fab_elevation"/>
 
 </merge>

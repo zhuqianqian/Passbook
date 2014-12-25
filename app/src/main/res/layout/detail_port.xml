@@ -44,5 +44,6 @@
         android:layout_marginBottom="@dimen/fab_small_margin"
         android:layout_marginRight="@dimen/navigation_icon_margin"
         android:layout_marginEnd="@dimen/navigation_icon_margin"
+        android:tint="?attr/textColorNormal"
         android:elevation="@dimen/fab_small_elevation"/>
 </merge>

@@ -65,5 +65,7 @@ public final class C {
     public static final int colorPrimary = 0;
     public static final int colorPrimaryDark = 1;
     public static final int colorAccent = 2;
-    public static int ThemedColors[] = {0, 0, 0};
+    public static final int colorTextNormal = 3;
+    public static final int colorIconNormal = 4;
+    public static int ThemedColors[] = {0, 0, 0, 0, 0};
 }

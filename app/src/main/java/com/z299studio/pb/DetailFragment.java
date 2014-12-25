@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -124,7 +125,8 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
         header.setBackgroundColor(mColor);
         mTitleView = (TextView)rootView.findViewById(android.R.id.title);
         mTitleView.setText(title);
-        float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
+        // Elevation to minus 1 so that fab would not be covered on 5.0
+        float elevation = getResources().getDimension(R.dimen.fab_small_elevation) - 0.5f;
         ViewCompat.setElevation(header, elevation);
         MainActivity ma = (MainActivity)getActivity();
         ma.setStatusBarColor(mColor);

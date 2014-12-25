@@ -37,7 +37,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,12 +65,12 @@ AnimatorListener, SyncService.SyncListener{
         setContentView(R.layout.activity_home);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.activity_root);
-            int[] primaryColors = {R.attr.colorPrimary,
-                    R.attr.colorPrimaryDark, R.attr.colorAccent};
+            int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
+                    R.attr.colorAccent, R.attr.textColorNormal, R.attr.iconColorNormal};
             TypedArray ta = obtainStyledAttributes(primaryColors);
-            C.ThemedColors[C.colorPrimary] = ta.getColor(0, 0);
-            C.ThemedColors[C.colorPrimaryDark] = ta.getColor(1, 0);
-            C.ThemedColors[C.colorAccent] = ta.getColor(2,0);
+            for(int i = 0; i < C.ThemedColors.length; ++i) {
+                C.ThemedColors[i] = ta.getColor(i, 0);
+            }
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
             ta.recycle();
         }

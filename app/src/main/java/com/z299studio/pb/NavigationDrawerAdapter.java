@@ -19,7 +19,6 @@ package com.z299studio.pb;
 import java.util.ArrayList;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,16 +96,13 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     public NavigationDrawerAdapter(Context context, ArrayList<NavMenuItem> menuList) {
         this.mItemList = menuList;
         this.mContext = context;
-        int[] primaryColors = {R.attr.colorPrimary, R.attr.iconColorNormal, R.attr.textColorNormal};
-        TypedArray ta = mContext.obtainStyledAttributes(primaryColors);
-        mTintColor = ta.getColor(0, 0);
-        mIconColor = ta.getColor(1, 0);
-        int colorText = ta.getColor(2, 0);
+        mTintColor = C.ThemedColors[C.colorPrimary];
+        mIconColor = C.ThemedColors[C.colorIconNormal];
+        int colorText = C.ThemedColors[C.colorTextNormal];
         mTextColor = new ColorStateList(new int[][]{
                 new int[]{android.R.attr.state_activated},
                 new int[]{}},
                 new int[]{mTintColor, colorText});
-        ta.recycle();
     }
 
     public void selectItem(View view, int position) {
