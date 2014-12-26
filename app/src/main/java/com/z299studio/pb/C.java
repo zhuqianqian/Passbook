@@ -28,6 +28,7 @@ public final class C {
     public static final String PAGE_NUM = "page";
     public static final String ACTION = "action";
     public static final String ACCOUNT = "account";
+    public static final String CATEGORY = "category";
     public static final int ACTION_VIEW = 0;
     public static final int ACTION_EDIT = 1;
     

@@ -9,5 +9,6 @@
         <attr name="listItemBackground" format="reference"/>
         <attr name="iconColorNormal" format="color|reference"/>
         <attr name="textColorNormal" format="color|reference"/>
+        <attr name="cardViewDrawable" format="reference"/>
     </declare-styleable>    
 </resources>

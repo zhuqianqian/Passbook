@@ -26,7 +26,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class MainActivity extends ActionBarActivity implements
+public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         MainListFragment.ItemSelectionInterface  {
 
@@ -104,4 +104,22 @@ public class MainActivity extends ActionBarActivity implements
         mRootView.postDelayed(mTintStatusBar, 200);
     }
 
+    @Override
+    public void onEdit(int categoryId, int accountId) {
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right)
+                .replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onDelete(int accountId) {
+
+    }
+
+    @Override
+    public void onSave() {
+
+    }
 }

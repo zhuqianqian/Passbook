@@ -16,6 +16,7 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -41,7 +42,9 @@ import com.z299studio.pb.AccountManager.Account;
 
 import java.util.ArrayList;
 
-public class DetailFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class DetailFragment extends Fragment implements
+        AdapterView.OnItemClickListener,
+        View.OnClickListener{
 
     private static int[] COLORS = {R.color.pb_0, R.color.pb_1, R.color.pb_2, R.color.pb_3,
             R.color.pb_4, R.color.pb_5, R.color.pb_6, R.color.pb_7,
@@ -55,6 +58,7 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
     private AccountAdapter mAdapter;
     private int mColor;
     private Account mAccount;
+    private ItemFragmentListener mListener;
 
     public static DetailFragment create(int accountId) {
         DetailFragment df = new DetailFragment();
@@ -65,6 +69,16 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     public DetailFragment() {    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ItemFragmentListener)activity;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,6 +136,7 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
             background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
                     PorterDuff.Mode.SRC_ATOP);
         }
+        fab.setOnClickListener(this);
         header.setBackgroundColor(mColor);
         mTitleView = (TextView)rootView.findViewById(android.R.id.title);
         mTitleView.setText(title);
@@ -131,6 +146,14 @@ public class DetailFragment extends Fragment implements AdapterView.OnItemClickL
         MainActivity ma = (MainActivity)getActivity();
         ma.setStatusBarColor(mColor);
     }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.fab) {
+            mListener.onEdit(-1, mAccountId);
+        }
+    }
+
     private class AccountAdapter extends BaseAdapter {
         private ArrayList<Account.Entry> mItems;
         private ArrayList<Boolean> mPwdShowed;

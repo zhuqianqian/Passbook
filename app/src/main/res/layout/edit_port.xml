@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_extend"
+        android:background="?attr/colorPrimary">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#00000000"/>
+        <EditText android:id="@android:id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/category"
+            android:hint="@string/new_account"
+            android:layout_marginEnd="@dimen/navigation_icon_margin"
+            android:layout_marginRight="@dimen/navigation_icon_margin"
+            android:layout_marginLeft="@dimen/navigation_text_margin"
+            android:layout_marginStart="@dimen/navigation_text_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        <Spinner android:id="@id/category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/navigation_icon_margin"
+            android:layout_marginEnd="@dimen/navigation_icon_margin"
+            android:layout_marginRight="@dimen/navigation_icon_margin"
+            android:layout_marginLeft="@dimen/navigation_text_margin"
+            android:layout_marginStart="@dimen/navigation_text_margin"/>
+    </RelativeLayout>
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header">
+        <LinearLayout android:id="@android:id/list"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"/>
+    </ScrollView>
+
+    <ImageButton android:id="@+id/fab"
+        android:layout_width="@dimen/fab_small"
+        android:layout_height="@dimen/fab_small"
+        android:background="@drawable/fab_small"
+        android:src="@drawable/checkmark"
+        android:contentDescription="@android:string/ok"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/header"
+        android:layout_marginBottom="@dimen/fab_small_margin"
+        android:layout_marginRight="@dimen/navigation_icon_margin"
+        android:layout_marginEnd="@dimen/navigation_icon_margin"
+        android:tint="?attr/textColorNormal"
+        android:elevation="@dimen/fab_small_elevation"/>
+</merge>

@@ -9,7 +9,7 @@
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
-
+        <item name="cardViewDrawable">@drawable/cardview</item>
     </style>
     
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -19,6 +19,7 @@
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl_light</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
         <item name="listItemBackground">@drawable/list_item_mtrl_light</item>
+        <item name="cardViewDrawable">@drawable/cardview_light</item>
     </style>
     
     <style name="AppDark.Default">

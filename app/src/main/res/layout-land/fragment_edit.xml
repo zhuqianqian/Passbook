@@ -5,5 +5,6 @@
     android:clickable="true"
     android:background="?android:attr/colorBackground">
 
-    <include layout="@layout/edit_port"/>
+    <include layout="@layout/edit_land"/>
+
 </RelativeLayout>

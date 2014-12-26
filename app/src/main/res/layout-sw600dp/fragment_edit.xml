@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#40000000"
+    android:gravity="center"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:weightSum="10">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="@dimen/detail_card_width"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:background="?android:attr/colorBackground"
+        android:elevation="@dimen/window_elevation">
+    <include layout="@layout/edit_port"/>
+    </RelativeLayout>
+</LinearLayout>

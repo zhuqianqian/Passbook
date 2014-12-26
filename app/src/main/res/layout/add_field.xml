@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+    <ImageView
+        android:id="@+id/plus_sign"
+        android:layout_width="@dimen/fab_small"
+        android:layout_height="@dimen/fab_small"
+        android:background="@drawable/fab_small"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/plus"
+        android:contentDescription="@string/add_field"
+        android:scaleType="center"
+        android:tint="?attr/textColorNormal"
+        android:elevation="@dimen/fab_small_elevation"/>
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/plus_sign"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textAllCaps="true"
+        android:text="@string/add_field"/>
+</RelativeLayout>
