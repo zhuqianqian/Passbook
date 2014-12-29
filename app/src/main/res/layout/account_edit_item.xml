@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+    card_view:cardCornerRadius="2dp"
+    android:layout_marginBottom="@dimen/card_margin"
+    android:elevation="@dimen/fab_small_elevation">
+<RelativeLayout android:id="@+id/field_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="48dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/card_margin"
     android:paddingBottom="@dimen/card_margin"
-    android:layout_marginBottom="@dimen/card_margin"
-    android:background="?attr/cardViewDrawable"
-    android:elevation="@dimen/fab_small_elevation">
+    android:longClickable="true"
+    android:background="?attr/cardViewDrawable">
 
     <LinearLayout android:id="@+id/line1"
         android:orientation="horizontal"
@@ -43,3 +49,4 @@
         android:contentDescription="@string/auto_gen"
         android:background="@drawable/oval_button"/>
 </RelativeLayout>
+</android.support.v7.widget.CardView>

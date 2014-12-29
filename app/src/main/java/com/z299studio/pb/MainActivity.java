@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     @Override
     public void onSelectAccount(View view, long id) {
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right)
+                .setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom)
                 .replace(R.id.detail_panel, DetailFragment.create((int)id))
                 .addToBackStack(null)
                 .commit();
@@ -107,7 +107,8 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     @Override
     public void onEdit(int categoryId, int accountId) {
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, 0, 0, R.anim.slide_out_right)
+                .setCustomAnimations(R.anim.slide_in_bottom, 0,
+                        0, R.anim.slide_out_bottom)
                 .replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
                 .addToBackStack(null)
                 .commit();
@@ -119,7 +120,26 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     }
 
     @Override
-    public void onSave() {
+    public void onSave(int category) {
+        mNavigationDrawer.updateCounterInMenu(AccountManager.ALL_CATEGORY_ID, 1);
+        mNavigationDrawer.updateCounterInMenu(category, 1);
+        mNavigationDrawer.updateUi();
+//           Update mainlist fragment data here (all_category_id)
+//           Update mainlist fragment data here (category)
+    }
 
+    @Override
+    public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged) {
+        if(category!=oldCategory) {
+            mNavigationDrawer.updateCounterInMenu(category, 1);
+            mNavigationDrawer.updateCounterInMenu(oldCategory, -1);
+            mNavigationDrawer.updateUi();
+//           Update mainlist fragment data here (category)
+//           Update mainlist fragment data here (oldcategory)
+        }
+        if(nameChanged) {
+//           Update mainlist fragment data here (all_category_id)
+//           Update mainlist fragment data here (category)
+        }
     }
 }

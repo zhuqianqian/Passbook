@@ -150,7 +150,7 @@ public class DetailFragment extends Fragment implements
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab) {
-            mListener.onEdit(-1, mAccountId);
+            mListener.onEdit(mAccount.getCategoryId(), mAccountId);
         }
     }
 

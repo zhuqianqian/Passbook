@@ -46,7 +46,7 @@
         android:layout_width="@dimen/fab_small"
         android:layout_height="@dimen/fab_small"
         android:background="@drawable/fab_small"
-        android:src="@drawable/checkmark"
+        android:src="@drawable/ic_action_save"
         android:contentDescription="@android:string/ok"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

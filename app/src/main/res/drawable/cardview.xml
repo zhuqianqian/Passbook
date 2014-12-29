@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape>
-            <corners android:radius="@dimen/cardview_default_radius"/>
-            <solid android:color="@color/ripple_material_light"/>
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <corners android:radius="@dimen/cardview_default_radius"/>
-            <solid android:color="@color/text_black_std"/>
-        </shape>
-    </item>
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="@dimen/cardview_default_radius"/>
+    <solid android:color="@color/text_black_std"/>
+</shape>

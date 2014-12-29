@@ -54,7 +54,7 @@
         android:layout_width="@dimen/fab"
         android:layout_height="@dimen/fab"
         android:background="@drawable/fab"
-        android:src="@drawable/checkmark"
+        android:src="@drawable/ic_action_save"
         android:contentDescription="@android:string/ok"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

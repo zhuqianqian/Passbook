@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/ripple_material_light">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <ripple android:color="?android:attr/colorControlHighlight">
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="?attr/colorAccent"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
     <item>
         <shape android:shape="oval">
-            <solid android:color="#00000000"/>
+            <solid android:color="@android:color/transparent"/>
         </shape>
     </item>
-</ripple>
+</selector>

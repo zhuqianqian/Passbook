@@ -16,10 +16,10 @@
 
 package com.z299studio.pb;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +27,8 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +46,7 @@ import com.z299studio.pb.AccountManager.Account.Entry;
 import java.util.ArrayList;
 
 public class EditFragment extends Fragment implements View.OnClickListener,
-        AdapterView.OnItemSelectedListener, TextWatcher{
+        AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener{
 
     private static final int[] INPUT_TYPES = {
             InputType.TYPE_CLASS_TEXT,
@@ -61,6 +63,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public ImageButton mControl;
         public ImageButton mAutoPwd;
         public View mEntryLayout;
+        public View mEntryContainer;
         public Entry mEntryItem;
     }
 
@@ -103,6 +106,34 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public void onTextChanged(CharSequence s, int start, int before, int count) { }
     }
 
+    private class DragEventListener implements View.OnDragListener {
+
+        public boolean onDrag(View v, DragEvent event) {
+            final int action = event.getAction();
+
+            switch(action) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    Log.d("Dragging (start)", String.format("view=%s", v.toString()));
+                    return true;
+
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    v.setVisibility(View.INVISIBLE);
+                    Log.d("Dragging (enter)", String.format("view=%s", v.toString()));
+                    return true;
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    return true;
+
+                case DragEvent.ACTION_DROP:
+                    Log.d("Dragging (drop)", String.format("view=%s", v.toString()));
+                    return true;
+
+            }
+            return false;
+        }
+
+    }
+
     private ItemFragmentListener mListener;
     private LinearLayout mContainer;
     private ImageButton mSaveFab;
@@ -119,6 +150,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private AccountManager.Account mDummyAccount;
     private ArrayAdapter<CharSequence> mTypeAdapter;
     private ArrayList<EntryHolder> mEntries;
+    private View.OnDragListener mDragListener = new DragEventListener();
 
     public static EditFragment create(int category, int accountId) {
         EditFragment fragment = new EditFragment();
@@ -145,6 +177,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
         mSaveFab = (ImageButton)rootView.findViewById(R.id.fab);
         mSaveFab.setEnabled(false);
+        mSaveFab.setOnClickListener(this);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             LayerDrawable drawable = (LayerDrawable)mSaveFab.getBackground();
             drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
@@ -207,14 +240,31 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+       // outState.putString("account_name", mName);
+        outState.putBoolean("edit_fragment_ready", mReady);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onClick(View v) {
         if(v.getId() == R.id.auto_gen) {
             EntryHolder eh = (EntryHolder) v.getTag();
             requestPassword(eh.mValueField, eh.mEntryItem.mType);
         }
+        else if(v.getId() == R.id.fab) {
+            save();
+        }
         else {
             onAddField(mDummyAccount.newEntry("", "", 1), mEntries.size());
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        ClipData not_used_clip = ClipData.newPlainText("", "");
+        v.startDrag(not_used_clip, new View.DragShadowBuilder(v), v, 0);
+        return true;
     }
 
     @Override
@@ -280,6 +330,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
         eh.mEntryLayout = getActivity().getLayoutInflater()
                 .inflate(R.layout.account_edit_item, mContainer, false);
+        eh.mEntryContainer = eh.mEntryLayout.findViewById(R.id.field_container);
         eh.mNameField = (EditText)eh.mEntryLayout.findViewById(R.id.field_name);
         eh.mValueField = (EditText)eh.mEntryLayout.findViewById(R.id.field_value);
         eh.mTypeField = (Spinner)eh.mEntryLayout.findViewById(R.id.field_type);
@@ -299,6 +350,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mAutoPwd.setOnClickListener(this);
         eh.mNameField.addTextChangedListener(new TextWatcherEx(eh.mNameField));
         eh.mValueField.addTextChangedListener(new TextWatcherEx(eh.mValueField));
+        eh.mEntryContainer.setOnLongClickListener(this);
+        eh.mEntryLayout.setOnDragListener(mDragListener);
     }
 
     private void requestPassword(EditText view, int type) {
@@ -336,6 +389,42 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void changeSaveStatus() {
+        if(mSavable && mNameOk) {
+            mSaveFab.setEnabled(true);
+        }
+        else {
+            mSaveFab.setEnabled(false);
+        }
+    }
 
+    private AccountManager.Account getAccount() {
+        AccountManager.Account account  = AccountManager.getInstance().newAccount(mPosition);
+        account.mId = mAccountId;
+        for(EntryHolder eh : mEntries) {
+            account.addEntry(eh.mEntryItem);
+        }
+        return account;
+    }
+
+    private void save() {
+        String name = mNameEditText.getText().toString();
+        AccountManager.Account account = getAccount();
+        account.setName(name);
+        int categoryId = Application.getSortedCategoryIds()[mPosition];
+        account.setCategory(categoryId);
+        if(mAccountId < 0) {
+            AccountManager.getInstance().addAccount(categoryId, account);
+            if(mListener!=null) {
+                mListener.onSave(categoryId);
+            }
+        }
+        else {
+            AccountManager.getInstance().setAccount(mAccountId, account);
+            if(mListener!=null) {
+                mListener.onSaveChanged(mAccountId, categoryId, mOldCategoryId,
+                        name.equals(account.getAccountName()));
+            }
+        }
+        getActivity().onBackPressed();
     }
 }

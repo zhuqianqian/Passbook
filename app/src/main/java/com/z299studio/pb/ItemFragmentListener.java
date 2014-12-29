@@ -17,12 +17,8 @@
 package com.z299studio.pb;
 
 public interface ItemFragmentListener {
-    /*
-     * @param accountId: The account to be edited. If valid (id>0), categoryId is not used.
-     * @param categoryId: The default category to be selected, only used when accountId
-     *     is invalid.
-     */
     public void onEdit(int categoryId, int accountId);
     public void onDelete(int accountId);
-    public void onSave();
+    public void onSave(int categoryId);
+    public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);
 }

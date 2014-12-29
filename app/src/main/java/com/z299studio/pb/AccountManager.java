@@ -124,11 +124,16 @@ public class AccountManager {
                 this.mEntries.add(new Entry(e.mType, e.mName, e.mValue));
             }
         }
-        
-        public int addEntry(int type, String name, String value) {
+
+        public int addEntry(Entry entry) {
             if(mEntries == null) {
-                mEntries = new ArrayList<Entry>();
+                mEntries = new ArrayList<Entry> ();
             }
+            mEntries.add(entry);
+            return 0;
+        }
+
+        public int addEntry(int type, String name, String value) {
             Entry entry = new Entry(type, name, value);
             mEntries.add(entry);
             return 0;
