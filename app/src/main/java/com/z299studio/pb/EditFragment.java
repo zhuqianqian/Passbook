@@ -108,12 +108,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private class DragEventListener implements View.OnDragListener {
-        private int mIndex, mStart;
+        private int mIndex;
         private EntryHolder mDragged;
 
         public void startDrag(View v) {
             mDragged = (EntryHolder)v.getTag();
-            mStart = mEntries.indexOf(mDragged);
             mDragged.mEntryContainer.setVisibility(View.INVISIBLE);
             mDragged.mEntryLayout.setAlpha(0.0f);
         }
@@ -144,7 +143,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 case DragEvent.ACTION_DROP:
                     mDragged.mEntryContainer.setVisibility(View.VISIBLE);
                     mDragged.mEntryLayout.setAlpha(1.0f);
-                    Collections.swap(mEntries, mStart, mIndex);
+                    int originalIndex = mEntries.indexOf(mDragged);
+                    Collections.swap(mEntries, originalIndex, mIndex);
                     return true;
 
             }
