@@ -44,6 +44,7 @@ import android.widget.Spinner;
 import com.z299studio.pb.AccountManager.Account.Entry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EditFragment extends Fragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener{
@@ -107,7 +108,17 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private class DragEventListener implements View.OnDragListener {
+        private int mIndex, mStart;
+        private EntryHolder mDragged;
 
+        public void startDrag(View v) {
+            mDragged = (EntryHolder)v.getTag();
+            mStart = mEntries.indexOf(mDragged);
+            mDragged.mEntryContainer.setVisibility(View.INVISIBLE);
+            mDragged.mEntryLayout.setAlpha(0.0f);
+        }
+
+        @Override
         public boolean onDrag(View v, DragEvent event) {
             final int action = event.getAction();
 
@@ -117,21 +128,28 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setVisibility(View.INVISIBLE);
                     Log.d("Dragging (enter)", String.format("view=%s", v.toString()));
+                    EntryHolder eh = (EntryHolder) v.getTag();
+                    if(mDragged.mEntryLayout != eh.mEntryLayout) {
+                        mIndex = mEntries.indexOf(eh);
+                        mDragged.mEntryLayout.animate().setDuration(250).y(v.getY());
+                        v.animate().setDuration(250).y(mDragged.mEntryLayout.getY());
+                    }
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENDED:
+                    Log.d("Dragging (end)", String.format("view=%s", v.toString()));
                     return true;
 
                 case DragEvent.ACTION_DROP:
-                    Log.d("Dragging (drop)", String.format("view=%s", v.toString()));
+                    mDragged.mEntryContainer.setVisibility(View.VISIBLE);
+                    mDragged.mEntryLayout.setAlpha(1.0f);
+                    Collections.swap(mEntries, mStart, mIndex);
                     return true;
 
             }
             return false;
         }
-
     }
 
     private ItemFragmentListener mListener;
@@ -150,7 +168,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private AccountManager.Account mDummyAccount;
     private ArrayAdapter<CharSequence> mTypeAdapter;
     private ArrayList<EntryHolder> mEntries;
-    private View.OnDragListener mDragListener = new DragEventListener();
+    private DragEventListener mDragListener = new DragEventListener();
 
     public static EditFragment create(int category, int accountId) {
         EditFragment fragment = new EditFragment();
@@ -264,6 +282,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public boolean onLongClick(View v) {
         ClipData not_used_clip = ClipData.newPlainText("", "");
         v.startDrag(not_used_clip, new View.DragShadowBuilder(v), v, 0);
+        // DragEvent.ACTION_DRAG_STARTED not called in drag event dispatch.
+        // Handle it here.
+        mDragListener.startDrag(v);
         return true;
     }
 
@@ -342,6 +363,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mNameField.setTag(eh);
         eh.mValueField.setTag(eh);
         eh.mAutoPwd.setTag(eh);
+        eh.mEntryContainer.setTag(eh);
+        eh.mEntryLayout.setTag(eh);
     //    eh.mControl.setTag(eh);
         mContainer.addView(eh.mEntryLayout, index);
         mEntries.add(eh);
