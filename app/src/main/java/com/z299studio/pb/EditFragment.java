@@ -16,6 +16,7 @@
 
 package com.z299studio.pb;
 
+import android.animation.Animator;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
@@ -39,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.z299studio.pb.AccountManager.Account.Entry;
@@ -107,14 +109,21 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public void onTextChanged(CharSequence s, int start, int before, int count) { }
     }
 
-    private class DragEventListener implements View.OnDragListener {
+    private class DragEventListener implements View.OnDragListener, Animator.AnimatorListener {
         private int mIndex;
         private EntryHolder mDragged;
+        private boolean mAnimating;
+        private int mItemHeight;
+        private int mAdjustScrollY, mScrollHeight;
 
         public void startDrag(View v) {
             mDragged = (EntryHolder)v.getTag();
             mDragged.mEntryContainer.setVisibility(View.INVISIBLE);
             mDragged.mEntryLayout.setAlpha(0.0f);
+            mIndex = mEntries.indexOf(mDragged);
+            mItemHeight = mDragged.mEntryLayout.getMeasuredHeight();
+            mScrollHeight = mScroll.getMeasuredHeight();
+            mAdjustScrollY = mScrollHeight - mItemHeight;
         }
 
         @Override
@@ -123,33 +132,67 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
             switch(action) {
                 case DragEvent.ACTION_DRAG_STARTED:
-                    Log.d("Dragging (start)", String.format("view=%s", v.toString()));
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    Log.d("Dragging (enter)", String.format("view=%s", v.toString()));
                     EntryHolder eh = (EntryHolder) v.getTag();
-                    if(mDragged.mEntryLayout != eh.mEntryLayout) {
-                        mIndex = mEntries.indexOf(eh);
-                        mDragged.mEntryLayout.animate().setDuration(250).y(v.getY());
-                        v.animate().setDuration(250).y(mDragged.mEntryLayout.getY());
+                    if (mDragged.mEntryLayout != eh.mEntryLayout && !mAnimating) {
+                        int index = mEntries.indexOf(eh);
+                        int insert = index;
+                        int delta = index > mIndex ? -1 : 1;
+                        float y = v.getY();
+                        EntryHolder next;
+                        while(index != mIndex) {
+                            index += delta;
+                            next = mEntries.get(index);
+                            eh.mEntryLayout.animate().setDuration(250).y(next.mEntryLayout.getY());
+                            eh = next;
+                        }
+                        mDragged.mEntryLayout.animate().setDuration(250).y(y).setListener(this);
+                        mAnimating = true;
+                        eh = mEntries.get(mIndex);
+                        mEntries.remove(mIndex);
+                        mEntries.add(insert, eh);
+                        mIndex = insert;
                     }
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENDED:
-                    Log.d("Dragging (end)", String.format("view=%s", v.toString()));
+                    mDragged.mEntryContainer.setVisibility(View.VISIBLE);
+                    mDragged.mEntryLayout.setAlpha(1.0f);
+                    return true;
+
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    int yPosition = (int)v.getY();
+                    int scrollY = mScroll.getScrollY();
+                    if(yPosition < scrollY) {
+                        mScroll.smoothScrollBy(0, -mItemHeight);
+                    }
+                    if(yPosition - scrollY > mAdjustScrollY) {
+                        mScroll.smoothScrollBy(0, mItemHeight);
+                    }
                     return true;
 
                 case DragEvent.ACTION_DROP:
-                    mDragged.mEntryContainer.setVisibility(View.VISIBLE);
-                    mDragged.mEntryLayout.setAlpha(1.0f);
-                    int originalIndex = mEntries.indexOf(mDragged);
-                    Collections.swap(mEntries, originalIndex, mIndex);
                     return true;
 
             }
             return false;
         }
+
+        @Override
+        public void onAnimationStart(Animator anim) { }
+
+        @Override
+        public void onAnimationEnd(Animator anim) {
+            mAnimating = false;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator anim) {}
+
+        @Override
+        public void onAnimationCancel(Animator anim) {}
     }
 
     private ItemFragmentListener mListener;
@@ -158,6 +201,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private EditText mPasswordView;
     private Spinner mCategorySpinner;
     private EditText mNameEditText;
+    private ScrollView mScroll;
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
@@ -194,6 +238,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         footer.setOnClickListener(this);
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
         mSaveFab = (ImageButton)rootView.findViewById(R.id.fab);
+        mScroll = (ScrollView)rootView.findViewById(R.id.scroll);
         mSaveFab.setEnabled(false);
         mSaveFab.setOnClickListener(this);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {

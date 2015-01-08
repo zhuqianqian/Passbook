@@ -39,7 +39,7 @@
                 android:layout_marginLeft="@dimen/navigation_icon_margin"
                 android:layout_marginStart="@dimen/navigation_icon_margin"/>
         </RelativeLayout>
-        <ScrollView
+        <ScrollView android:id="@+id/scroll"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5">

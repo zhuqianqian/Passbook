@@ -32,7 +32,8 @@
             android:layout_marginLeft="@dimen/navigation_text_margin"
             android:layout_marginStart="@dimen/navigation_text_margin"/>
     </RelativeLayout>
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView android:id="@+id/scroll"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header">
         <LinearLayout android:id="@android:id/list"
