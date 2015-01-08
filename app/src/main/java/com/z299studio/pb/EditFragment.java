@@ -303,13 +303,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-       // outState.putString("account_name", mName);
-        outState.putBoolean("edit_fragment_ready", mReady);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onClick(View v) {
         if(v.getId() == R.id.auto_gen) {
             EntryHolder eh = (EntryHolder) v.getTag();
@@ -384,11 +377,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mOldCategoryId = categoryId;
         mSavable = false;
         mNameOk = false;
-        if(savedInstanceState!=null) {
-            mReady = savedInstanceState.getBoolean("edit_fragment_ready", false);
-        } else {
-            mReady = false;
-        }
     }
 
     private void onAddField(Entry e, int index) {
