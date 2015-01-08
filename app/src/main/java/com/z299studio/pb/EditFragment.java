@@ -245,10 +245,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             LayerDrawable drawable = (LayerDrawable)mSaveFab.getBackground();
             drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
                     PorterDuff.Mode.SRC_ATOP);
-            ImageView addView = (ImageView)footer.findViewById(R.id.plus_sign);
-            drawable = (LayerDrawable)addView.getBackground();
-            drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
-                    PorterDuff.Mode.SRC_ATOP);
         }
         mNameEditText.addTextChangedListener(this);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);

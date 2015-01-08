@@ -8,12 +8,12 @@
         <item name="android:fragmentSharedElementEnterTransition">@transition/change_bounds</item>
         <item name="android:fragmentSharedElementReturnTransition">@transition/change_bounds</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_white_sec</item>
         <item name="textColorNormal">@color/text_white_std</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
-        <item name="cardViewDrawable">@drawable/cardview</item>
     </style>
 
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -24,12 +24,13 @@
         <item name="android:fragmentSharedElementEnterTransition">@transition/change_bounds</item>
         <item name="android:fragmentSharedElementReturnTransition">@transition/change_bounds</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+
+        <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_black_sec</item>
         <item name="textColorNormal">@color/text_black_std</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
-        <item name="cardViewDrawable">@drawable/cardview_light</item>
     </style>
 
     <style name="AppDark.Default">
