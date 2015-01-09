@@ -9,14 +9,22 @@
 <RelativeLayout android:id="@+id/field_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="48dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/card_margin"
     android:paddingBottom="@dimen/card_margin"
     android:longClickable="true"
     android:background="?attr/cardViewDrawable">
-
+    <ImageView android:id="@+id/control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_more"
+        android:tint="?attr/textColorNormal"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@null"/>
     <LinearLayout android:id="@+id/line1"
+        android:layout_toRightOf="@id/control"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -37,6 +45,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/field_value"
         android:layout_below="@id/line1"
+        android:layout_toRightOf="@id/control"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
     <ImageButton android:id="@+id/auto_gen"
         android:layout_width="@dimen/list_avatar_size"
