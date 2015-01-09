@@ -226,12 +226,36 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public EditFragment() {}
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if(savedInstanceState == null) {
+            int categoryId = getArguments().getInt(C.CATEGORY, AccountManager.DEFAULT_CATEGORY_ID);
+            mPosition = 0;
+            int[] allIds = Application.getSortedCategoryIds();
+            for (int i = 0; i < allIds.length; ++i) {
+                if (categoryId == allIds[i]) {
+                    mPosition = i;
+                    break;
+                }
+            }
+            mAccountId = getArguments().getInt(C.ACCOUNT, -1);
+            mOldCategoryId = categoryId;
+        }
+        else {
+            mAccountId = savedInstanceState.getInt(C.ACCOUNT);
+            mOldCategoryId = savedInstanceState.getInt(C.CATEGORY);
+            mPosition = savedInstanceState.getInt("Category_Position");
+        }
+        mSavable = false;
+        mNameOk = false;
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(savedInstanceState!=null && AccountManager.getInstance()==null) {
             return null;
         }
-        processArgs(savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
         mContainer = (LinearLayout)rootView.findViewById(android.R.id.list);
         View footer = inflater.inflate(R.layout.add_field, container, false);
@@ -274,6 +298,14 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mCategorySpinner.setAdapter(spinnerAdapter);
         mCategorySpinner.setOnItemSelectedListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(C.CATEGORY, mOldCategoryId);
+        outState.putInt(C.ACCOUNT, mAccountId);
+        outState.putInt("Category_Position", mPosition);
     }
 
     @Override
@@ -358,22 +390,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-    private void processArgs(Bundle savedInstanceState) {
-        int categoryId = getArguments().getInt(C.CATEGORY, AccountManager.DEFAULT_CATEGORY_ID);
-        mPosition = 0;
-        int[] allIds = Application.getSortedCategoryIds();
-        for(int i = 0; i < allIds.length; ++i) {
-            if(categoryId == allIds[i]) {
-                mPosition = i;
-                break;
-            }
-        }
-        mAccountId = getArguments().getInt(C.ACCOUNT, -1);
-        mOldCategoryId = categoryId;
-        mSavable = false;
-        mNameOk = false;
-    }
 
     private void onAddField(Entry e, int index) {
         EntryHolder eh = new EntryHolder();

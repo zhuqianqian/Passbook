@@ -108,7 +108,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     public void onEdit(int categoryId, int accountId) {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(0, 0, 0, R.anim.slide_out_bottom)
-                .add(R.id.detail_panel, EditFragment.create(categoryId, accountId))
+                .replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
                 .addToBackStack(null)
                 .commit();
     }

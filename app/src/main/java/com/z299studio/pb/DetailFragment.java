@@ -28,6 +28,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,19 +82,26 @@ public class DetailFragment extends Fragment implements
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            mAccountId = savedInstanceState.getInt(C.ACCOUNT);
+        }
+        else {
+            mAccountId = getArguments().getInt(C.ACCOUNT);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(savedInstanceState!=null) {
             if(AccountManager.getInstance() == null) {
                 return null;
             }
-            mAccountId = savedInstanceState.getInt(C.ACCOUNT);
-        }
-        else {
-            mAccountId = getArguments().getInt(C.ACCOUNT);
+
         }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
         mList = (ListView)rootView.findViewById(android.R.id.list);
         mAccount = AccountManager.getInstance().getAccountById(mAccountId);
         mColor = getResources().getColor(COLORS[mAccount.getCategoryId() & 0x0f]);
