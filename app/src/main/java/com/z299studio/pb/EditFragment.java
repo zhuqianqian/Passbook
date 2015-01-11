@@ -270,15 +270,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         View footer = inflater.inflate(R.layout.add_field, container, false);
         footer.setOnClickListener(this);
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
-       // mSaveFab = (ImageButton)rootView.findViewById(R.id.fab);
         mScroll = (ScrollView)rootView.findViewById(R.id.scroll);
-//        mSaveFab.setEnabled(false);
-//        mSaveFab.setOnClickListener(this);
-//        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-//            LayerDrawable drawable = (LayerDrawable)mSaveFab.getBackground();
-//            drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
-//                    PorterDuff.Mode.SRC_ATOP);
-//        }
         mNameEditText.addTextChangedListener(this);
         setupToolbar(rootView);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
@@ -424,6 +416,10 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mSaveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
         menu.getItem(0).setIcon(mSaveDrawable);
         mToolbar.setOnMenuItemClickListener(this);
+        if(rootView.findViewById(R.id.frame_box) == null) {
+            MainActivity ma = (MainActivity) getActivity();
+            ma.setStatusBarColor(0, 0, true);
+        }
     }
 
     private void onAddField(Entry e, int index) {

@@ -117,13 +117,6 @@ public class DetailFragment extends Fragment implements
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        MainActivity ma = (MainActivity)getActivity();
-        ma.onDetach(this);
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
         mAdapter.changeDisplay(view, pos);
     }
@@ -151,8 +144,10 @@ public class DetailFragment extends Fragment implements
         // Elevation to minus 1 so that fab would not be covered on 5.0
         float elevation = getResources().getDimension(R.dimen.fab_small_elevation) - 0.5f;
         ViewCompat.setElevation(header, elevation);
-        MainActivity ma = (MainActivity)getActivity();
-        ma.setStatusBarColor(mColor);
+        if(rootView.findViewById(R.id.frame_box)==null) {
+            MainActivity ma = (MainActivity) getActivity();
+            ma.setStatusBarColor(mColor, 200, false);
+        }
     }
 
     @Override

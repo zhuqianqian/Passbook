@@ -19,7 +19,6 @@ package com.z299studio.pb;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -37,11 +36,12 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     private MainListFragment mMainList;
     private int mStatusColor;
     private View mRootView;
+    private int mStatusColorDetail;
 
     private Runnable mTintStatusBar = new Runnable() {
         @Override
         public void run() {
-            mRootView.setBackgroundColor(mStatusColor);
+            mRootView.setBackgroundColor(mStatusColorDetail);
         }
     };
 
@@ -94,20 +94,28 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 .replace(R.id.detail_panel, DetailFragment.create((int)id))
                 .addToBackStack(null)
                 .commit();
+
     }
 
-    public void setStatusBarColor(int color) {
-        mRootView.setBackgroundColor(color);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setStatusBarColor(0,0,true);
     }
 
-    public void onDetach(Fragment fragment) {
-        mRootView.postDelayed(mTintStatusBar, 200);
+    public void setStatusBarColor(int color, int delay, boolean restore) {
+        if(delay > 0) {
+            mStatusColorDetail = color;
+            mRootView.postDelayed(mTintStatusBar, delay);
+        }
+        else {
+            mRootView.setBackgroundColor(restore ? mStatusColor : color);
+        }
     }
 
     @Override
     public void onEdit(int categoryId, int accountId) {
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(0, 0, 0, R.anim.slide_out_bottom)
                 .replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
                 .addToBackStack(null)
                 .commit();
