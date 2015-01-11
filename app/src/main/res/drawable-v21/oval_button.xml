@@ -4,7 +4,7 @@
         <ripple android:color="?android:attr/colorControlHighlight">
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="?attr/colorAccent"/>
+                    <solid android:color="?attr/iconColorNormal"/>
                 </shape>
             </item>
         </ripple>

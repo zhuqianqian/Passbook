@@ -342,6 +342,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 EntryHolder eh = (EntryHolder) v.getTag();
                 requestPassword(eh.mValueField, eh.mEntryItem.mType);
                 break;
+            case R.id.close:
+                getActivity().onBackPressed();
+                break;
 //            case R.id.fab:
 //                save();
 //                break;
@@ -420,6 +423,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             MainActivity ma = (MainActivity) getActivity();
             ma.setStatusBarColor(0, 0, true);
         }
+        ImageButton close = (ImageButton)rootView.findViewById(R.id.close);
+        close.setOnClickListener(this);
     }
 
     private void onAddField(Entry e, int index) {
