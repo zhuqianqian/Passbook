@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:id="@+id/header"
+    <com.z299studio.pb.PbScrollView android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:paddingTop="?attr/actionBarSize">
-        <EditText android:id="@android:id/title"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/new_account"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/navigation_text_margin"
-            android:layout_marginStart="@dimen/navigation_text_margin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-        <Spinner android:id="@id/category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_below="@android:id/title"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/navigation_text_margin"
-            android:layout_marginStart="@dimen/navigation_text_margin"/>
-    </RelativeLayout>
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:paddingTop="?attr/actionBarSize"
+                android:elevation="@dimen/toolbar_elevation">
+                <EditText android:id="@android:id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/new_account"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/navigation_text_margin"
+                    android:layout_marginStart="@dimen/navigation_text_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+                <Spinner android:id="@id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_below="@android:id/title"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/navigation_text_margin"
+                    android:layout_marginStart="@dimen/navigation_text_margin"/>
+            </RelativeLayout>
+            <LinearLayout android:id="@android:id/list"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"/>
+        </LinearLayout>
+    </com.z299studio.pb.PbScrollView>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -41,15 +57,4 @@
         android:background="?attr/actionBarItemBackground"
         android:tint="?attr/textColorNormal"
         android:contentDescription="@android:string/cancel"/>
-
-    <ScrollView android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header">
-        <LinearLayout android:id="@android:id/list"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"/>
-    </ScrollView>
 </merge>

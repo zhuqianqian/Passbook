@@ -24,7 +24,6 @@
         <item name="android:fragmentSharedElementEnterTransition">@transition/change_bounds</item>
         <item name="android:fragmentSharedElementReturnTransition">@transition/change_bounds</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
-
         <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->

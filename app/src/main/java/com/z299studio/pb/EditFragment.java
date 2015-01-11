@@ -27,6 +27,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
@@ -45,6 +46,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 
@@ -55,7 +57,7 @@ import java.util.Collections;
 
 public class EditFragment extends Fragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener,
-        Toolbar.OnMenuItemClickListener{
+        Toolbar.OnMenuItemClickListener, PbScrollView.PbScrollListener{
 
     private static final int[] INPUT_TYPES = {
             InputType.TYPE_CLASS_TEXT,
@@ -203,12 +205,15 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     private ItemFragmentListener mListener;
     private LinearLayout mContainer;
+    private View mHeader;
+    private View mRoot;
     private EditText mPasswordView;
     private Spinner mCategorySpinner;
     private EditText mNameEditText;
-    private ScrollView mScroll;
+    private PbScrollView mScroll;
     private Toolbar mToolbar;
     private Drawable mSaveDrawable;
+
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
@@ -216,7 +221,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private int mOldCategoryId;
     private int mPosition;
     private int mAccountId;
+    private int mHeaderY;
     private String mName;
+    private int mElevation;
     private AccountManager.Account mDummyAccount;
     private ArrayAdapter<CharSequence> mTypeAdapter;
     private ArrayList<EntryHolder> mEntries;
@@ -270,7 +277,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         View footer = inflater.inflate(R.layout.add_field, container, false);
         footer.setOnClickListener(this);
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
-        mScroll = (ScrollView)rootView.findViewById(R.id.scroll);
+        mScroll = (PbScrollView)rootView.findViewById(R.id.scroll);
         mNameEditText.addTextChangedListener(this);
         setupToolbar(rootView);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
@@ -295,7 +302,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         }
         mContainer.addView(footer);
         if(mScrollToolbar) {
-
+            mHeader = rootView.findViewById(R.id.header);
+            mScroll.setPbScrollListener(this);
+            mRoot = rootView;
         }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
@@ -411,8 +420,25 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         return true;
     }
 
+    @Override
+    public void onScroll(int l, int t, int oldl, int oldt) {
+        int height = mHeader.getMeasuredHeight() - mToolbar.getMeasuredHeight();
+        Drawable drawable = mToolbar.getBackground();
+        int alpha = 255 *  (Math.min(Math.max(t, 0), height))/ height;
+        drawable.setAlpha(alpha);
+        if(alpha >= 255) {
+            ViewCompat.setElevation(mToolbar, mElevation);
+            ViewCompat.setElevation(mHeader, 0);
+        }
+        else {
+            ViewCompat.setElevation(mToolbar, 0);
+            ViewCompat.setElevation(mHeader, mElevation);
+        }
+    }
+
     private void setupToolbar(View rootView) {
         mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        mToolbar.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         mToolbar.inflateMenu(R.menu.menu_edit);
         Menu menu = mToolbar.getMenu();
         mSaveDrawable = getResources().getDrawable(R.drawable.ic_action_save);
@@ -425,6 +451,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         }
         ImageButton close = (ImageButton)rootView.findViewById(R.id.close);
         close.setOnClickListener(this);
+        mElevation = (int) (getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f);
     }
 
     private void onAddField(Entry e, int index) {
