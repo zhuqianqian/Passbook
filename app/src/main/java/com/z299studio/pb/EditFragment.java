@@ -20,17 +20,22 @@ import android.animation.Animator;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -49,7 +54,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class EditFragment extends Fragment implements View.OnClickListener,
-        AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener{
+        AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener,
+        Toolbar.OnMenuItemClickListener{
 
     private static final int[] INPUT_TYPES = {
             InputType.TYPE_CLASS_TEXT,
@@ -63,7 +69,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public EditText mNameField;
         public EditText mValueField;
         public Spinner mTypeField;
-        public ImageButton mControl;
+        public ImageView mControl;
         public ImageButton mAutoPwd;
         public View mEntryLayout;
         public View mEntryContainer;
@@ -197,14 +203,16 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     private ItemFragmentListener mListener;
     private LinearLayout mContainer;
-    private ImageButton mSaveFab;
     private EditText mPasswordView;
     private Spinner mCategorySpinner;
     private EditText mNameEditText;
     private ScrollView mScroll;
+    private Toolbar mToolbar;
+    private Drawable mSaveDrawable;
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
+    private boolean mScrollToolbar;
     private int mOldCategoryId;
     private int mPosition;
     private int mAccountId;
@@ -256,21 +264,23 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         if(savedInstanceState!=null && AccountManager.getInstance()==null) {
             return null;
         }
+        mScrollToolbar = getResources().getBoolean(R.bool.scroll_toolbar);
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
         mContainer = (LinearLayout)rootView.findViewById(android.R.id.list);
         View footer = inflater.inflate(R.layout.add_field, container, false);
         footer.setOnClickListener(this);
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
-        mSaveFab = (ImageButton)rootView.findViewById(R.id.fab);
+       // mSaveFab = (ImageButton)rootView.findViewById(R.id.fab);
         mScroll = (ScrollView)rootView.findViewById(R.id.scroll);
-        mSaveFab.setEnabled(false);
-        mSaveFab.setOnClickListener(this);
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            LayerDrawable drawable = (LayerDrawable)mSaveFab.getBackground();
-            drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
-                    PorterDuff.Mode.SRC_ATOP);
-        }
+//        mSaveFab.setEnabled(false);
+//        mSaveFab.setOnClickListener(this);
+//        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+//            LayerDrawable drawable = (LayerDrawable)mSaveFab.getBackground();
+//            drawable.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
+//                    PorterDuff.Mode.SRC_ATOP);
+//        }
         mNameEditText.addTextChangedListener(this);
+        setupToolbar(rootView);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
         if(mAccountId >= 0) {
             mDummyAccount = AccountManager.getInstance().getAccountById(mAccountId).clone();
@@ -286,12 +296,15 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 R.array.field_types, android.R.layout.simple_spinner_dropdown_item);
         mTypeAdapter.setDropDownViewResource(spinnerLayout);
         mEntries = new ArrayList<> ();
+
         int pos = 0;
         for(Entry e : mDummyAccount.getEntryList()) {
             onAddField(e, pos++);
         }
         mContainer.addView(footer);
+        if(mScrollToolbar) {
 
+        }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
@@ -332,15 +345,19 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.auto_gen) {
-            EntryHolder eh = (EntryHolder) v.getTag();
-            requestPassword(eh.mValueField, eh.mEntryItem.mType);
-        }
-        else if(v.getId() == R.id.fab) {
-            save();
-        }
-        else {
-            onAddField(mDummyAccount.newEntry("", "", 1), mEntries.size());
+        switch (v.getId()) {
+            case R.id.auto_gen:
+                EntryHolder eh = (EntryHolder) v.getTag();
+                requestPassword(eh.mValueField, eh.mEntryItem.mType);
+                break;
+//            case R.id.fab:
+//                save();
+//                break;
+//            case R.id.control:
+//                break;
+            default:
+                onAddField(mDummyAccount.newEntry("", "", 1), mEntries.size());
+                break;
         }
     }
 
@@ -391,6 +408,24 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if(item.getItemId() == R.id.action_save) {
+            save();
+        }
+        return true;
+    }
+
+    private void setupToolbar(View rootView) {
+        mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        mToolbar.inflateMenu(R.menu.menu_edit);
+        Menu menu = mToolbar.getMenu();
+        mSaveDrawable = getResources().getDrawable(R.drawable.ic_action_save);
+        mSaveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
+        menu.getItem(0).setIcon(mSaveDrawable);
+        mToolbar.setOnMenuItemClickListener(this);
+    }
+
     private void onAddField(Entry e, int index) {
         EntryHolder eh = new EntryHolder();
 
@@ -401,7 +436,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mValueField = (EditText)eh.mEntryLayout.findViewById(R.id.field_value);
         eh.mTypeField = (Spinner)eh.mEntryLayout.findViewById(R.id.field_type);
         eh.mAutoPwd = (ImageButton)eh.mEntryLayout.findViewById(R.id.auto_gen);
-     //   eh.mControl = (ImageButton)eh.mEntryLayout.findViewById(R.id.field_delete);
+//        eh.mControl = (ImageView)eh.mEntryLayout.findViewById(R.id.control);
         eh.mEntryItem = e;
         eh.mTypeField.setAdapter(mTypeAdapter);
         eh.mTypeField.setTag(eh);
@@ -410,11 +445,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mAutoPwd.setTag(eh);
         eh.mEntryContainer.setTag(eh);
         eh.mEntryLayout.setTag(eh);
-    //    eh.mControl.setTag(eh);
+//        eh.mControl.setTag(eh);
         mContainer.addView(eh.mEntryLayout, index);
         mEntries.add(eh);
         eh.mTypeField.setOnItemSelectedListener(this);
-    //    eh.mControl.setOnClickListener(this);
+//        eh.mControl.setOnClickListener(this);
         eh.mAutoPwd.setOnClickListener(this);
         eh.mNameField.addTextChangedListener(new TextWatcherEx(eh.mNameField));
         eh.mValueField.addTextChangedListener(new TextWatcherEx(eh.mValueField));
@@ -457,12 +492,17 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void changeSaveStatus() {
+        boolean enable = false;
         if(mSavable && mNameOk) {
-            mSaveFab.setEnabled(true);
+            mSaveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal],
+                    PorterDuff.Mode.SRC_ATOP);
+            enable = true;
         }
         else {
-            mSaveFab.setEnabled(false);
+            mSaveDrawable.setColorFilter(C.ThemedColors[C.colorIconNormal],
+                    PorterDuff.Mode.SRC_ATOP);
         }
+        mToolbar.getMenu().getItem(0).setEnabled(enable);
     }
 
     private AccountManager.Account getAccount() {
