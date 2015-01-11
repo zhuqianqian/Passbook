@@ -9,7 +9,7 @@
     android:weightSum="10"
     android:clickable="true">
 
-    <RelativeLayout
+    <RelativeLayout android:id="@+id/frame_box"
         android:orientation="horizontal"
         android:layout_width="680dp"
         android:layout_height="0dp"

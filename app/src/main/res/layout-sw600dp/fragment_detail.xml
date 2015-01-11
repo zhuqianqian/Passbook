@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:weightSum="10">
 
-    <RelativeLayout
+    <RelativeLayout android:id="@+id/frame_box"
         android:orientation="vertical"
         android:layout_width="@dimen/detail_card_width"
         android:layout_height="0dp"
