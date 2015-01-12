@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
@@ -135,6 +136,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             if(mToolbarContainer!=null) {
                 mAdjustScrollY -= mHeader.getMeasuredHeight();
             }
+            mDeleteView.setX(mDragged.mAutoPwd.getX());
+            float y = mDragged.mEntryLayout.getY() + (mDragged.mEntryLayout.getMeasuredHeight()
+                    - mDeleteView.getMeasuredHeight()) / 2;
+            mDeleteView.setY(y);
+            mDeleteView.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -146,31 +152,44 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    EntryHolder eh = (EntryHolder) v.getTag();
-                    if (mDragged.mEntryLayout != eh.mEntryLayout && !mAnimating) {
-                        int index = mEntries.indexOf(eh);
-                        int insert = index;
-                        int delta = index > mIndex ? -1 : 1;
-                        float y = v.getY();
-                        EntryHolder next;
-                        while(index != mIndex) {
-                            index += delta;
-                            next = mEntries.get(index);
-                            eh.mEntryLayout.animate().setDuration(250).y(next.mEntryLayout.getY());
-                            eh = next;
+                    if(v==mDeleteView) {
+                        mDeleteView.setColorFilter(C.ThemedColors[C.colorAccent]);
+                    }
+                    else {
+                        mDeleteView.setColorFilter(C.ThemedColors[C.colorTextNormal]);
+                        EntryHolder eh = (EntryHolder) v.getTag();
+                        if (mDragged.mEntryLayout != eh.mEntryLayout && !mAnimating) {
+                            int index = mEntries.indexOf(eh);
+                            int insert = index;
+                            int delta = index > mIndex ? -1 : 1;
+                            float y = v.getY();
+                            EntryHolder next;
+                            while (index != mIndex) {
+                                index += delta;
+                                next = mEntries.get(index);
+                                eh.mEntryLayout.animate().setDuration(250).y(next.mEntryLayout.getY());
+                                eh = next;
+                            }
+                            mDragged.mEntryLayout.animate().setDuration(250).y(y).setListener(this);
+                            mAnimating = true;
+                            eh = mEntries.get(mIndex);
+                            mEntries.remove(mIndex);
+                            mEntries.add(insert, eh);
+                            mIndex = insert;
+// Was showing delete in the same line as dragging, but this gets problem after re-arrange.
+// Once move up/down is performed, delete button is hidden, and users must decide what shall
+// be performed in this drag.
+                            mDeleteView.setVisibility(View.INVISIBLE);
                         }
-                        mDragged.mEntryLayout.animate().setDuration(250).y(y).setListener(this);
-                        mAnimating = true;
-                        eh = mEntries.get(mIndex);
-                        mEntries.remove(mIndex);
-                        mEntries.add(insert, eh);
-                        mIndex = insert;
                     }
                     return true;
 
                 case DragEvent.ACTION_DRAG_ENDED:
-                    mDragged.mEntryContainer.setVisibility(View.VISIBLE);
-                    mDragged.mEntryLayout.setAlpha(1.0f);
+                    mDeleteView.setVisibility(View.INVISIBLE);
+                    if(v!=mDeleteView) {
+                        mDragged.mEntryContainer.setVisibility(View.VISIBLE);
+                        mDragged.mEntryLayout.setAlpha(1.0f);
+                    }
                     return true;
 
                 case DragEvent.ACTION_DRAG_LOCATION:
@@ -185,6 +204,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                     return true;
 
                 case DragEvent.ACTION_DROP:
+                    if(v==mDeleteView && !mAnimating) {
+                        delete(mDragged);
+                    }
                     return true;
 
             }
@@ -216,6 +238,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private Toolbar mToolbar;
     private Drawable mSaveDrawable;
     private View mToolbarContainer;
+    private ImageView mDeleteView;
 
     private boolean mReady = false;
     private boolean mSavable;
@@ -241,6 +264,16 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     public EditFragment() {}
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ItemFragmentListener)activity;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -301,12 +334,14 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 R.array.field_types, android.R.layout.simple_spinner_dropdown_item);
         mTypeAdapter.setDropDownViewResource(spinnerLayout);
         mEntries = new ArrayList<> ();
-
+        mDeleteView = (ImageView)inflater.inflate(R.layout.delete_field, container, false);
         int pos = 0;
         for(Entry e : mDummyAccount.getEntryList()) {
             onAddField(e, pos++);
         }
         mContainer.addView(footer);
+        mContainer.addView(mDeleteView);
+        mDeleteView.setOnDragListener(mDragListener);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
@@ -520,6 +555,20 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         }
 
         return account;
+    }
+
+    private void delete(EntryHolder entry) {
+        mContainer.removeView(entry.mEntryLayout);
+        mEntries.remove(entry);
+        boolean savable = true;
+        for(EntryHolder eh : mEntries) {
+            if(eh.mEntryItem.mName.isEmpty() || eh.mEntryItem.mValue.isEmpty()) {
+                savable = false;
+                break;
+            }
+        }
+        mSavable = mEntries.size() > 0 && savable;
+        changeSaveStatus();
     }
 
     private void changeSaveStatus() {

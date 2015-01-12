@@ -55,7 +55,7 @@
         android:layout_alignRight="@id/field_value"
         android:src="@drawable/ic_action_edit"
         android:tint="?attr/textColorNormal"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:contentDescription="@string/auto_gen"
         android:background="@drawable/oval_button"/>
 </RelativeLayout>
