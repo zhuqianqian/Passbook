@@ -132,6 +132,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             mItemHeight = mDragged.mEntryLayout.getMeasuredHeight();
             mScrollHeight = mScroll.getMeasuredHeight();
             mAdjustScrollY = mScrollHeight - mItemHeight;
+            if(mToolbarContainer!=null) {
+                mAdjustScrollY -= mHeader.getMeasuredHeight();
+            }
         }
 
         @Override
@@ -206,22 +209,21 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private ItemFragmentListener mListener;
     private LinearLayout mContainer;
     private View mHeader;
-    private View mRoot;
     private EditText mPasswordView;
     private Spinner mCategorySpinner;
     private EditText mNameEditText;
     private PbScrollView mScroll;
     private Toolbar mToolbar;
     private Drawable mSaveDrawable;
+    private View mToolbarContainer;
 
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
-    private boolean mScrollToolbar;
+  //  private boolean mScrollToolbar;
     private int mOldCategoryId;
     private int mPosition;
     private int mAccountId;
-    private int mHeaderY;
     private String mName;
     private int mElevation;
     private AccountManager.Account mDummyAccount;
@@ -271,7 +273,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         if(savedInstanceState!=null && AccountManager.getInstance()==null) {
             return null;
         }
-        mScrollToolbar = getResources().getBoolean(R.bool.scroll_toolbar);
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
         mContainer = (LinearLayout)rootView.findViewById(android.R.id.list);
         View footer = inflater.inflate(R.layout.add_field, container, false);
@@ -279,6 +280,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
         mScroll = (PbScrollView)rootView.findViewById(R.id.scroll);
         mNameEditText.addTextChangedListener(this);
+        mToolbarContainer = rootView.findViewById(R.id.toolbar_container);
+        if(mToolbarContainer!=null) {
+            mHeader = rootView.findViewById(R.id.header);
+            mScroll.setPbScrollListener(this);
+        }
         setupToolbar(rootView);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
         if(mAccountId >= 0) {
@@ -301,11 +307,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             onAddField(e, pos++);
         }
         mContainer.addView(footer);
-        if(mScrollToolbar) {
-            mHeader = rootView.findViewById(R.id.header);
-            mScroll.setPbScrollListener(this);
-            mRoot = rootView;
-        }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
@@ -423,22 +424,24 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onScroll(int l, int t, int oldl, int oldt) {
         int height = mHeader.getMeasuredHeight() - mToolbar.getMeasuredHeight();
-        Drawable drawable = mToolbar.getBackground();
+        Drawable drawable = mToolbarContainer.getBackground();
         int alpha = 255 *  (Math.min(Math.max(t, 0), height))/ height;
         drawable.setAlpha(alpha);
         if(alpha >= 255) {
-            ViewCompat.setElevation(mToolbar, mElevation);
+            ViewCompat.setElevation(mToolbarContainer, mElevation);
             ViewCompat.setElevation(mHeader, 0);
         }
         else {
-            ViewCompat.setElevation(mToolbar, 0);
+            ViewCompat.setElevation(mToolbarContainer, 0);
             ViewCompat.setElevation(mHeader, mElevation);
         }
     }
 
     private void setupToolbar(View rootView) {
         mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
-        mToolbar.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
+        if(mToolbarContainer!=null) {
+            mToolbarContainer.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
+        }
         mToolbar.inflateMenu(R.menu.menu_edit);
         Menu menu = mToolbar.getMenu();
         mSaveDrawable = getResources().getDrawable(R.drawable.ic_action_save);

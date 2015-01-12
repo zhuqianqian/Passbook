@@ -43,18 +43,22 @@
         </LinearLayout>
     </com.z299studio.pb.PbScrollView>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <FrameLayout android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#00000000"/>
-    <ImageButton android:id="@+id/close"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_action_close"
-        android:background="?attr/actionBarItemBackground"
-        android:tint="?attr/textColorNormal"
-        android:contentDescription="@android:string/cancel"/>
+        android:background="#00000000">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+        <ImageButton android:id="@+id/close"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_action_close"
+            android:background="?attr/actionBarItemBackground"
+            android:tint="?attr/textColorNormal"
+            android:contentDescription="@android:string/cancel"/>
+    </FrameLayout>
 </merge>
