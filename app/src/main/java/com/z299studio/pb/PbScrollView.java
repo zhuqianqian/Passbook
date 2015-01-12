@@ -56,4 +56,12 @@ public class PbScrollView extends ScrollView {
             mPbListener.onScroll(l, t, oldl, oldt);
         }
     }
+
+    @Override
+    protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY,
+                                   int scrollRangeX, int scrollRangeY,
+                                   int maxOverScrollX, int maxOverScrollY, boolean isTouchEvent) {
+        return super.overScrollBy(deltaX, deltaY, scrollX, scrollY,
+                scrollRangeX, scrollRangeY, 0, 0, isTouchEvent);
+    }
 }
