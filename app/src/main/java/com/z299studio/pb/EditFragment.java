@@ -16,16 +16,12 @@
 
 package com.z299studio.pb;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -33,7 +29,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,14 +42,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.z299studio.pb.AccountManager.Account.Entry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class EditFragment extends Fragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher, View.OnLongClickListener,
@@ -72,7 +64,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public EditText mNameField;
         public EditText mValueField;
         public Spinner mTypeField;
-        public ImageView mControl;
         public ImageButton mAutoPwd;
         public View mEntryLayout;
         public View mEntryContainer;
@@ -118,10 +109,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         public void onTextChanged(CharSequence s, int start, int before, int count) { }
     }
 
-    private class DragEventListener implements View.OnDragListener, Animator.AnimatorListener {
+    private class DragEventListener implements View.OnDragListener{
         private int mIndex;
         private EntryHolder mDragged;
-        private boolean mAnimating;
         private int mItemHeight;
         private int mAdjustScrollY, mScrollHeight;
 
@@ -154,32 +144,24 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 case DragEvent.ACTION_DRAG_ENTERED:
                     if(v==mDeleteView) {
                         mDeleteView.setColorFilter(C.ThemedColors[C.colorAccent]);
+                        mDeleteView.setScaleX(1.2f);
+                        mDeleteView.setScaleY(1.2f);
                     }
                     else {
                         mDeleteView.setColorFilter(C.ThemedColors[C.colorTextNormal]);
+                        mDeleteView.setScaleX(1.0f);
+                        mDeleteView.setScaleY(1.0f);
                         EntryHolder eh = (EntryHolder) v.getTag();
-                        if (mDragged.mEntryLayout != eh.mEntryLayout && !mAnimating) {
+                        if (mDragged.mEntryLayout != eh.mEntryLayout) {
                             int index = mEntries.indexOf(eh);
-                            int insert = index;
-                            int delta = index > mIndex ? -1 : 1;
-                            float y = v.getY();
-                            EntryHolder next;
-                            while (index != mIndex) {
-                                index += delta;
-                                next = mEntries.get(index);
-                                eh.mEntryLayout.animate().setDuration(250).y(next.mEntryLayout.getY());
-                                eh = next;
-                            }
-                            mDragged.mEntryLayout.animate().setDuration(250).y(y).setListener(this);
-                            mAnimating = true;
+                            mDeleteView.animate().setDuration(300).setStartDelay(50).y(v.getY() +
+                                    (mItemHeight - mDeleteView.getMeasuredHeight())/2);
                             eh = mEntries.get(mIndex);
                             mEntries.remove(mIndex);
-                            mEntries.add(insert, eh);
-                            mIndex = insert;
-// Was showing delete in the same line as dragging, but this gets problem after re-arrange.
-// Once move up/down is performed, delete button is hidden, and users must decide what shall
-// be performed in this drag.
-                            mDeleteView.setVisibility(View.INVISIBLE);
+                            mEntries.add(index, eh);
+                            mContainer.removeViewAt(mIndex);
+                            mContainer.addView(eh.mEntryLayout,index);
+                            mIndex = index;
                         }
                     }
                     return true;
@@ -204,7 +186,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                     return true;
 
                 case DragEvent.ACTION_DROP:
-                    if(v==mDeleteView && !mAnimating) {
+                    if(v==mDeleteView) {
                         delete(mDragged);
                     }
                     return true;
@@ -212,20 +194,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             }
             return false;
         }
-
-        @Override
-        public void onAnimationStart(Animator anim) { }
-
-        @Override
-        public void onAnimationEnd(Animator anim) {
-            mAnimating = false;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator anim) {}
-
-        @Override
-        public void onAnimationCancel(Animator anim) {}
     }
 
     private ItemFragmentListener mListener;
@@ -243,7 +211,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
-  //  private boolean mScrollToolbar;
     private int mOldCategoryId;
     private int mPosition;
     private int mAccountId;
@@ -390,11 +357,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             case R.id.close:
                 getActivity().onBackPressed();
                 break;
-//            case R.id.fab:
-//                save();
-//                break;
-//            case R.id.control:
-//                break;
             default:
                 onAddField(mDummyAccount.newEntry("", "", 1), mEntries.size());
                 break;
@@ -502,7 +464,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mValueField = (EditText)eh.mEntryLayout.findViewById(R.id.field_value);
         eh.mTypeField = (Spinner)eh.mEntryLayout.findViewById(R.id.field_type);
         eh.mAutoPwd = (ImageButton)eh.mEntryLayout.findViewById(R.id.auto_gen);
-//        eh.mControl = (ImageView)eh.mEntryLayout.findViewById(R.id.control);
         eh.mEntryItem = e;
         eh.mTypeField.setAdapter(mTypeAdapter);
         eh.mTypeField.setTag(eh);
@@ -511,11 +472,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mAutoPwd.setTag(eh);
         eh.mEntryContainer.setTag(eh);
         eh.mEntryLayout.setTag(eh);
-//        eh.mControl.setTag(eh);
         mContainer.addView(eh.mEntryLayout, index);
         mEntries.add(eh);
         eh.mTypeField.setOnItemSelectedListener(this);
-//        eh.mControl.setOnClickListener(this);
         eh.mAutoPwd.setOnClickListener(this);
         eh.mNameField.addTextChangedListener(new TextWatcherEx(eh.mNameField));
         eh.mValueField.addTextChangedListener(new TextWatcherEx(eh.mValueField));
