@@ -8,4 +8,14 @@
     </style>
     <style name="Button.Flat" parent="@android:style/Widget.Material.Button.Borderless"/>
     <style name="Button.Flat.Accent" parent="@android:style/Widget.Material.Button.Borderless.Colored"/>
+
+    <style name="DialogTheme.Dark" parent="@android:style/Theme.Material.Dialog">
+        <item name="android:colorAccent">?attr/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="DialogTheme.Light" parent="@android:style/Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">?attr/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

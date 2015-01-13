@@ -25,6 +25,21 @@
     </style>
     
     <style name="Button.Flat.Accent">
-        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="android:textColor">?attr/colorAccent</item>
     </style>
+
+    <style name="DialogTitle">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Title</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:gravity">start|left|center_vertical</item>
+    </style>
+
+    <style name="DialogTheme.DefaultDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/orange_a200</item>
+    </style>
+
+    <style name="DialogTheme.DefaultLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/orange_a200</item>
+    </style>
+
 </resources>

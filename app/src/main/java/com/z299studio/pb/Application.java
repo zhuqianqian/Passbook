@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -340,10 +341,61 @@ public class Application{
         return sCategoryIds;
     }
 
-    public static int[] getSortedCatregoryIcons() {
+    public static int[] getSortedCategoryIcons() {
         if(sCategoryIcons == null) {
             getSortedCategoryNames();
         }
         return sCategoryIcons;
+    }
+
+    private static Random random = new Random();
+    private static char[] candidates = new char[96];
+    public static String generate(boolean hasA2Z, boolean has_a2z, boolean hasDigits,
+                                  boolean hasChars, boolean hasSpace, int minLen, int maxLen) {
+        if(!hasA2Z && !has_a2z && !hasDigits && !hasChars && !hasSpace) {
+            return "";
+        }
+        int length;
+        if(minLen == maxLen) {
+            length = minLen;
+        }
+        else {
+            int min = minLen > maxLen ? maxLen : minLen;
+            int max = minLen > maxLen ? minLen : maxLen;
+            length = min;
+            length += random.nextInt(max-min+1);
+        }
+        int index = 0, i;
+        char[] specChars = {'~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_',
+                '=', '+', '[', '{', ']', '}', '\\', '|', ';', ':', '\'', '"', '<', ',', '.', '>',
+                '/', '?', ' '};
+        char result[] = new char[length];
+        if(hasA2Z) {
+            for(i = 0; i < 26; ++i) {
+                candidates[index++] = (char) ('A' + i) ;
+            }
+        }
+        if(has_a2z) {
+            for(i = 0; i < 26; ++i) {
+                candidates[index++] = (char)('a'+i);
+            }
+        }
+        if(hasDigits) {
+            for(i = 0; i < 10; ++i) {
+                candidates[index++] = (char)('0' + i);
+            }
+        }
+        if(hasChars) {
+            System.arraycopy(specChars, 0, candidates, index, specChars.length);
+            index += specChars.length;
+        }
+        if(hasSpace) {
+            candidates[index++] = 0x20;
+        }
+        for(i = 0; i < length; ++i) {
+            result[i] = candidates[random.nextInt(index)];
+        }
+
+        return String.valueOf(result);
     }
 }

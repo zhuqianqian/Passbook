@@ -6,4 +6,7 @@
     <dimen name="fab_small_margin">-20dp</dimen>
     <dimen name="fab">56dp</dimen>
     <dimen name="fab_margin">-28dp</dimen>
+
+    <!-- Android 5 already has the margin as dialog borders-->
+    <dimen name="dlg_bottom_margin">0dp</dimen>
 </resources>

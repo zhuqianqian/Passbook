@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -199,7 +199,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private ItemFragmentListener mListener;
     private LinearLayout mContainer;
     private View mHeader;
-    private EditText mPasswordView;
     private Spinner mCategorySpinner;
     private EditText mNameEditText;
     private PbScrollView mScroll;
@@ -309,7 +308,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mContainer.addView(footer);
         mContainer.addView(mDeleteView);
         mDeleteView.setOnDragListener(mDragListener);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
         mCategorySpinner.setAdapter(spinnerAdapter);
@@ -396,11 +395,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public void onNothingSelected(AdapterView<?> parent) {}
     @Override
     public void afterTextChanged(Editable s) {
-        if(s.toString().isEmpty()) {
-            mNameOk = false;
-        } else {
-            mNameOk = true;
-        }
+        mNameOk = !s.toString().isEmpty();
         changeSaveStatus();
     }
 
@@ -483,6 +478,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void requestPassword(EditText view, int type) {
+        PasswordGenerator.build(type, view).show(getFragmentManager(), "generate");
 
     }
 

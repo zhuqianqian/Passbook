@@ -14,6 +14,8 @@
         <item name="iconColorNormal">@color/text_white_sec</item>
         <item name="textColorNormal">@color/text_white_std</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
+        <item name="android:dialogTheme">@style/DialogTheme.Dark</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme.Dark</item>
     </style>
 
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -30,6 +32,8 @@
         <item name="iconColorNormal">@color/text_black_sec</item>
         <item name="textColorNormal">@color/text_black_std</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
+        <item name="android:dialogTheme">@style/DialogTheme.Light</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme.Light</item>
     </style>
 
     <style name="AppDark.Default">

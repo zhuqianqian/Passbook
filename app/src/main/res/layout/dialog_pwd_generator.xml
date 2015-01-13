@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dlg_action_margin"
+    android:paddingLeft="@dimen/dlg_action_margin"
+    android:paddingRight="@dimen/dlg_action_margin"
+    android:paddingBottom="@dimen/dlg_bottom_margin">
+
+    <LinearLayout
+        android:id="@+id/container" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dlg_content_margin"
+        android:paddingRight="@dimen/dlg_content_margin"
+        android:paddingLeft="@dimen/dlg_content_margin"
+        android:paddingBottom="@dimen/dlg_action_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DialogTitle"
+            android:text="@string/auto_gen"/>
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_weight="1"
+                android:text="@string/upper_case"/>
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_weight="1"
+                android:text="@string/lower_case"/>
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_weight="1"
+                android:text="@string/digits"/>
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_weight="1"
+                android:text="@string/other"/>
+        </LinearLayout>
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+            <CheckBox android:id="@+id/cb_uppercase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+
+                android:layout_weight="1"/>
+            <CheckBox android:id="@+id/cb_lowercase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_weight="1"/>
+            <CheckBox android:id="@+id/cb_digit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_weight="1"/>
+            <CheckBox android:id="@+id/cb_char"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <TextView android:id="@+id/tv_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        <SeekBar android:id="@+id/sb_length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="16"/>
+
+        <TextView android:id="@+id/text_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+    </LinearLayout>
+
+    <Button android:id="@+id/ok"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/container"
+        android:text="@string/accept"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/refresh"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/container"
+        android:layout_toStartOf="@id/ok"
+        android:layout_toLeftOf="@id/ok"
+        android:text="@string/refresh"
+        android:layout_height="wrap_content" />
+
+    <Button android:id="@+id/cancel"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/container"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:text="@android:string/cancel"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -37,4 +37,8 @@
     <dimen name="control_padding_material">4dp</dimen>
     <dimen name="control_corner_material">2dp</dimen>
 
+    <dimen name="dlg_content_margin">8dp</dimen>
+    <dimen name="dlg_action_margin">16dp</dimen>
+    <dimen name="dlg_bottom_margin">8dp</dimen>
+
 </resources>
