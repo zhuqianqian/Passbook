@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -198,7 +198,7 @@ public class NavigationDrawerFragment extends Fragment implements
         ArrayList<NavMenuItem> result = new ArrayList<NavMenuItem>();
         int icons[] = Application.getThemedIcons();
         String[] categoryNames = Application.getSortedCategoryNames();
-        int[] categoryIcons = Application.getSortedCatregoryIcons();
+        int[] categoryIcons = Application.getSortedCategoryIcons();
         int[] categoryIds = Application.getSortedCategoryIds();
 
         int pos = 0, i;

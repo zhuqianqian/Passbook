@@ -16,6 +16,14 @@
 
 package com.z299studio.pb;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.Shape;
+import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,6 +65,7 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
         button = (Button)rootView.findViewById(R.id.refresh);
         button.setOnClickListener(this);
         SeekBar sb = (SeekBar)rootView.findViewById(R.id.sb_length);
+        tintSeekBar(sb);
         sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
             @Override
@@ -114,6 +123,20 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
             case R.id.cancel:
                 this.dismiss();
                 break;
+        }
+    }
+
+    private void tintSeekBar(SeekBar sb) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Drawable thumb = getResources().getDrawable(R.drawable.thumb);
+            LayerDrawable progress = (LayerDrawable)getResources().getDrawable(R.drawable.progress);
+            progress.getDrawable(0).setColorFilter(C.ThemedColors[C.colorIconNormal],
+                    PorterDuff.Mode.SRC_ATOP);
+            progress.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
+                    PorterDuff.Mode.SRC_ATOP);
+            sb.setProgressDrawable(progress);
+            thumb.setColorFilter(C.ThemedColors[C.colorAccent], PorterDuff.Mode.SRC_ATOP);
+            sb.setThumb(thumb);
         }
     }
 }
