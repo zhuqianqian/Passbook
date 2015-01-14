@@ -77,6 +77,7 @@
     <string name="refresh">Refresh</string>
     <string name="length">Length: %d</string>
     <string name="save">Save</string>
+    <string name="close">Close</string>
     <!-- Tips/Messages -->
     <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>
     <string name="also_del_account">Also delete the accounts under the category.</string>

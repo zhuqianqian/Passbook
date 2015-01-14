@@ -7,7 +7,8 @@
     android:gravity="center"
     android:fitsSystemWindows="true"
     android:weightSum="10"
-    android:clickable="true">
+    android:clickable="true"
+    android:id="@+id/top_frame">
 
     <RelativeLayout android:id="@+id/frame_box"
         android:orientation="horizontal"

@@ -30,6 +30,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,7 +47,7 @@ import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements
         AdapterView.OnItemClickListener,
-        View.OnClickListener{
+        View.OnClickListener, Toolbar.OnMenuItemClickListener{
 
     private static int[] COLORS = {R.color.pb_0, R.color.pb_1, R.color.pb_2, R.color.pb_3,
             R.color.pb_4, R.color.pb_5, R.color.pb_6, R.color.pb_7,
@@ -107,6 +109,10 @@ public class DetailFragment extends Fragment implements
         mColor = getResources().getColor(COLORS[mAccount.getCategoryId() & 0x0f]);
         setUpList();
         setupToolbar(rootView, mAccount.mProfile);
+        View top = rootView.findViewById(R.id.top_frame);
+        if(top!=null) {
+            top.setOnClickListener(this);
+        }
         return rootView;
     }
 
@@ -130,6 +136,8 @@ public class DetailFragment extends Fragment implements
 
     private void setupToolbar(View rootView, String title) {
         mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        View close = rootView.findViewById(R.id.close);
+        close.setOnClickListener(this);
         View header = rootView.findViewById(R.id.header);
         ImageButton fab = (ImageButton)rootView.findViewById(R.id.fab);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
@@ -148,6 +156,12 @@ public class DetailFragment extends Fragment implements
             MainActivity ma = (MainActivity) getActivity();
             ma.setStatusBarColor(mColor, 200, false);
         }
+        mToolbar.inflateMenu(R.menu.menu_detail);
+        Menu menu = mToolbar.getMenu();
+        Drawable d = getResources().getDrawable(R.drawable.ic_action_delete);
+        d.setColorFilter(C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
+        menu.getItem(0).setIcon(d);
+        mToolbar.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -155,6 +169,20 @@ public class DetailFragment extends Fragment implements
         if(view.getId() == R.id.fab) {
             mListener.onEdit(mAccount.getCategoryId(), mAccountId);
         }
+        else {
+            getActivity().onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if(menuItem.getItemId() == R.id.action_delete) {
+            if(mListener!=null) {
+                mListener.onDelete(mAccountId);
+                getActivity().onBackPressed();
+            }
+        }
+        return true;
     }
 
     private class AccountAdapter extends BaseAdapter {

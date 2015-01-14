@@ -6,7 +6,7 @@
     android:background="#40000000"
     android:gravity="center"
     android:clickable="true"
-    android:focusableInTouchMode="true"
+    android:id="@+id/top_frame"
     android:weightSum="10">
 
     <RelativeLayout android:id="@+id/frame_box"

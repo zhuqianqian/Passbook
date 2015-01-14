@@ -10,13 +10,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#00000000"/>
+        <ImageButton android:id="@+id/close"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_action_close"
+            android:tint="?attr/textColorNormal"
+            android:background="?attr/actionBarItemBackground"
+            android:contentDescription="@string/close"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
         <TextView android:id="@android:id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/navigation_icon_margin"
             android:layout_marginStart="@dimen/navigation_icon_margin"
-            android:layout_marginLeft="@dimen/navigation_icon_margin"
+            android:layout_marginLeft="@dimen/navigation_text_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
     </RelativeLayout>
     <ListView android:id="@android:id/list"

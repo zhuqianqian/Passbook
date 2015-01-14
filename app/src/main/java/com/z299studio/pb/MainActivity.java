@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -104,12 +105,13 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     }
 
     public void setStatusBarColor(int color, int delay, boolean restore) {
-        if(delay > 0) {
-            mStatusColorDetail = color;
-            mRootView.postDelayed(mTintStatusBar, delay);
-        }
-        else {
-            mRootView.setBackgroundColor(restore ? mStatusColor : color);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (delay > 0) {
+                mStatusColorDetail = color;
+                mRootView.postDelayed(mTintStatusBar, delay);
+            } else {
+                mRootView.setBackgroundColor(restore ? mStatusColor : color);
+            }
         }
     }
 
@@ -123,7 +125,8 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
     @Override
     public void onDelete(int accountId) {
-
+        Toast.makeText(this, R.string.del_account, Toast.LENGTH_SHORT).show();
+        // Notify mainlist to play deletion
     }
 
     @Override
