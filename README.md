@@ -40,7 +40,7 @@ PwdBook was originally called Passbook. After I realized many other apps also us
 PwdBook is licensed under [Apache License 2.0](LICENSE).
 
     /*
-     * Copyright (C) 2014 Qianqian Zhu <zhuqianqian.299@gmail.com>
+     * Copyright (C) 2015 Qianqian Zhu <zhuqianqian.299@gmail.com>
      *
      * This program is free software: you can redistribute it and/or modify
      * it under the terms of the GNU General Public License as published by
