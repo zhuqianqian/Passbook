@@ -313,6 +313,10 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
         mCategorySpinner.setAdapter(spinnerAdapter);
         mCategorySpinner.setOnItemSelectedListener(this);
+        View top = rootView.findViewById(R.id.top_frame);
+        if(top!=null) {
+            top.setOnClickListener(this);
+        }
         return rootView;
     }
 
@@ -354,6 +358,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 requestPassword(eh.mValueField, eh.mEntryItem.mType);
                 break;
             case R.id.close:
+            case R.id.top_frame:
                 getActivity().onBackPressed();
                 break;
             default:
