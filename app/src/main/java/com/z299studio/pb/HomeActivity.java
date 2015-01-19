@@ -63,19 +63,18 @@ AnimatorListener, SyncService.SyncListener{
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
+                R.attr.colorAccent, R.attr.textColorNormal, R.attr.iconColorNormal};
+        TypedArray ta = obtainStyledAttributes(primaryColors);
+        for(int i = 0; i < C.ThemedColors.length; ++i) {
+            C.ThemedColors[i] = ta.getColor(i, 0);
+        }
+        ta.recycle();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.activity_root);
-            int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
-                    R.attr.colorAccent, R.attr.textColorNormal, R.attr.iconColorNormal};
-            TypedArray ta = obtainStyledAttributes(primaryColors);
-            for(int i = 0; i < C.ThemedColors.length; ++i) {
-                C.ThemedColors[i] = ta.getColor(i, 0);
-            }
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
-            ta.recycle();
         }
         if(savedInstanceState==null) {
-            Log.d("pb", "null!");
             if(!mApp.hasDataFile()) {
                 mStage = SELECT_SYNC;
             }
