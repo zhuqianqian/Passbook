@@ -19,7 +19,6 @@ package com.z299studio.pb;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,16 +27,13 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -56,8 +52,6 @@ public class DetailFragment extends Fragment implements
 
     private int mAccountId;
     private ListView mList;
-    private Toolbar mToolbar;
-    private TextView mTitleView;
     private AccountAdapter mAdapter;
     private int mColor;
     private Account mAccount;
@@ -135,7 +129,9 @@ public class DetailFragment extends Fragment implements
     }
 
     private void setupToolbar(View rootView, String title) {
-        mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        Toolbar toolbar;
+        TextView titleView;
+        toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
         View close = rootView.findViewById(R.id.close);
         close.setOnClickListener(this);
         View header = rootView.findViewById(R.id.header);
@@ -147,8 +143,8 @@ public class DetailFragment extends Fragment implements
         }
         fab.setOnClickListener(this);
         header.setBackgroundColor(mColor);
-        mTitleView = (TextView)rootView.findViewById(android.R.id.title);
-        mTitleView.setText(title);
+        titleView = (TextView)rootView.findViewById(android.R.id.title);
+        titleView.setText(title);
         // Elevation to minus 1 so that fab would not be covered on 5.0
         float elevation = getResources().getDimension(R.dimen.fab_small_elevation) - 0.5f;
         ViewCompat.setElevation(header, elevation);
@@ -156,12 +152,10 @@ public class DetailFragment extends Fragment implements
             MainActivity ma = (MainActivity) getActivity();
             ma.setStatusBarColor(mColor, 200, false);
         }
-        mToolbar.inflateMenu(R.menu.menu_detail);
-        Menu menu = mToolbar.getMenu();
-        Drawable d = getResources().getDrawable(R.drawable.ic_action_delete);
-        d.setColorFilter(C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
-        menu.getItem(0).setIcon(d);
-        mToolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.menu_detail);
+        toolbar.getMenu().getItem(0).getIcon().setColorFilter(
+                C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
+        toolbar.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -204,7 +198,7 @@ public class DetailFragment extends Fragment implements
         public void setShowPassword(boolean showPwd) {
             mShowPwd = showPwd;
             if(!showPwd) {
-                mPwdShowed = new ArrayList<Boolean>(mItems.size());
+                mPwdShowed = new ArrayList<>(mItems.size());
                 for (int i = 0; i < mItems.size(); ++i) {
                     mPwdShowed.add(Boolean.FALSE);
                 }
@@ -244,11 +238,6 @@ public class DetailFragment extends Fragment implements
             }
             holder.mValue.setText(entry.mValue);
             return v;
-        }
-
-        public void update(Account account) {
-            mItems = account.getEntryList();
-            this.notifyDataSetChanged();
         }
 
         @Override

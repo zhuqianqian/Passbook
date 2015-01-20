@@ -3,6 +3,9 @@
     <style name="AppTourTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
     
     <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <item name="iconColorNormal">@color/text_white_sec</item>
         <item name="textColorNormal">@color/text_white_std</item>
         <item name="flatButtonDrawable">@drawable/button_flat_mtrl</item>
@@ -13,6 +16,9 @@
     </style>
     
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <item name="iconColorNormal">@color/text_black_sec</item>
         <item name="textColorNormal">@color/text_black_std</item>
         <item name="flatButtonDrawable">@drawable/button_flat_mtrl_light</item>

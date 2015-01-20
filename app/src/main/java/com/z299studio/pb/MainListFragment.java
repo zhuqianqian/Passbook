@@ -17,19 +17,29 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.Hashtable;
 
 public class MainListFragment extends Fragment
 implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
-    MainListAdapter.OnListItemCheckListener{
+    MainListAdapter.OnListItemCheckListener, Animation.AnimationListener{
 
     public interface ItemSelectionInterface {
         public void onSelectAccount(View view, long id);
@@ -40,13 +50,73 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private MainListAdapter mAdapter;
     private int mCategoryId;
     private boolean mSelectionMode;
+    private ActionMode mActionMode;
+    private int [] mToBeRemoved;
+    private int mRemoveCount;
+    private boolean mActionModeDestroyed = false;
+    private ImageButton mFab;
+    private Animation mFabIn, mFabOut;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
         public boolean mUpToDate;
     }
-    private static Hashtable<Integer, AdapterHolder> cachedAdapters =
-            new Hashtable<Integer, AdapterHolder>();
+    private static Hashtable<Integer, AdapterHolder> cachedAdapters = new Hashtable<>();
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        
+        private boolean mFromMenu;
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_remove, menu);
+            showFab(false);
+            mActionModeDestroyed = false;
+            mFromMenu = false;
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            menu.getItem(0).getIcon().setColorFilter(C.ThemedColors[C.colorTextNormal],
+                    PorterDuff.Mode.SRC_ATOP);
+            return false; // Return false if nothing is done
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    mRemoveCount = mAdapter.getSelected(mToBeRemoved);
+                    mFromMenu = true;
+                    reset();
+                    return true;
+                default:
+                    mFromMenu = true;
+                    reset();
+                    return true;
+            }
+        }
+
+        private void reset() {
+            int begin = mListView.getFirstVisiblePosition();
+            int end = mListView.getLastVisiblePosition();
+            if(mAdapter.cancelSelection(mListView, begin,end) < 1 && mFromMenu) {
+                mActionMode.finish();
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            showFab(true);
+            mActionModeDestroyed = true;
+            if(!mFromMenu) {
+                reset();
+            }
+            mActionMode = null;
+        }
+
+    };
 
     private static MainListAdapter getAdapter( int category_id) {
         AdapterHolder ah = cachedAdapters.get(category_id);
@@ -79,6 +149,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mCategoryId = AccountManager.ALL_CATEGORY_ID;
             mSelectionMode = false;
         }
+        mFabIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_bottom);
+        mFabOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_bottom);
+        mFabIn.setAnimationListener(this);
+        mFabOut.setAnimationListener(this);
     }
 
     @Override
@@ -97,6 +171,12 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mAdapter = new MainListAdapter(getActivity(),
                     AccountManager.getInstance().getAccountsByCategory(mCategoryId),
                     Application.getThemedIcons(), R.drawable.pb_unknown);
+            mListView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.enableAnimation(false);
+                }
+            }, 100);
             cacheAdapter(mCategoryId, mAdapter);
         }
         mAdapter.setListener(this);
@@ -104,6 +184,13 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
+        mToBeRemoved = new int[mAdapter.getCount()];
+        mFab = (ImageButton)rootView.findViewById(R.id.fab);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            LayerDrawable background = (LayerDrawable) mFab.getBackground();
+            background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
+                    PorterDuff.Mode.SRC_ATOP);
+        }
         return rootView;
     }
 
@@ -117,6 +204,27 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
     }
 
+    @Override
+    public void onAnimationStart(Animation animation) { }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        if(animation == mFabIn) {
+            mFab.setVisibility(View.VISIBLE);
+            mActionModeDestroyed = false;
+            if(mRemoveCount > 0 && mListener != null) {
+                // show SnackBar and animate deletion
+                animateDeletion();
+            }
+        }
+        else if(animation == mFabOut) {
+            mFab.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) { }
+    
     public void updateData() {
 
     }
@@ -128,11 +236,18 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 mAdapter = new MainListAdapter(getActivity(),
                         AccountManager.getInstance().getAccountsByCategory(mCategoryId),
                         Application.getThemedIcons(), R.drawable.pb_unknown);
+                mListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.enableAnimation(false);
+                    }
+                }, 100);
                 cacheAdapter(mCategoryId, mAdapter);
             }
             mAdapter.setListener(this);
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
+            mToBeRemoved = new int[mAdapter.getCount()];
         }
     }
 
@@ -160,8 +275,42 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
         else if(count == 1) {
             mSelectionMode = true;
-      //      mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-      //      mListView.setItemChecked(position, isChecked);
         }
+        if(!mActionModeDestroyed) {
+            if(count > 0) {
+                if(mActionMode == null) {
+                    mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+                }
+            }
+            else if(mActionMode != null) {
+                mActionMode.finish();
+            }
+        }
+    }
+    
+    public void onDelete(int accountId) {
+        int firstVisiblePos = mListView.getFirstVisiblePosition();
+        int removePos = mAdapter.getItemPosition(accountId, firstVisiblePos);
+        View v = mListView.getChildAt(removePos - firstVisiblePos);
+        mAdapter.animateDeletion(v, removePos);
+    }
+    
+    public void animateDeletion() {
+        int firstVisiblePosition = mListView.getFirstVisiblePosition();
+        int end = mRemoveCount - 1;
+        View v;
+        mAdapter.markDeletion(mToBeRemoved, mRemoveCount, true);
+        for(int i = end; i >= 0; --i) {
+            v = mListView.getChildAt(mToBeRemoved[i] - firstVisiblePosition);
+            if(v!=null) {
+                mAdapter.animateDeletion(v, mToBeRemoved[i]);
+            }
+        }
+        
+    }
+    
+    protected void showFab(boolean show) {
+        mFab.clearAnimation();
+        mFab.startAnimation(show? mFabIn : mFabOut);
     }
 }

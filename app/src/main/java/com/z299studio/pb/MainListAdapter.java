@@ -16,6 +16,8 @@
 
 package com.z299studio.pb;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.Transformation;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -76,11 +80,7 @@ public class MainListAdapter extends BaseAdapter {
                     R.drawable.oval_08, R.drawable.oval_09, R.drawable.oval_0a, R.drawable.oval_0b,
                     R.drawable.oval_0c, R.drawable.oval_0d, R.drawable.oval_0e, R.drawable.oval_0f
             };
-//            int[] colors = {R.attr.iconColorNormal, R.attr.textColorNormal};
-//            TypedArray ta = mContext.obtainStyledAttributes(colors);
-//            context.getResources().getDrawable(R.drawable.oval_selected).setColorFilter(
-//                    ta.getColor(1, 0) , PorterDuff.Mode.SRC_ATOP);
-//            ta.recycle();
+
             FLIP1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
             FLIP2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
         }
@@ -101,14 +101,6 @@ public class MainListAdapter extends BaseAdapter {
                 view = inflate(parent);
             }
         }
-//        if(mDeleted.get(position)) {
-//            final View deletedView = v;
-//            v.post(new Runnable() {
-//                public void run() {
-//                    animateDelete(deletedView, position);
-//                }
-//            });
-//        }
         holder = (ViewHolder) view.getTag();
         holder.mTextView.setText(account.getAccountName());
         int srcId = status ? R.drawable.checkmark : mIcons.get(position);
@@ -273,5 +265,110 @@ public class MainListAdapter extends BaseAdapter {
 
     public void setListener(OnListItemCheckListener l) {
         mListener = l;
+    }
+    
+    public void enableAnimation(boolean enable) {
+        mAnimationEnabled = enable;
+    }
+
+    public int getItemPosition(int accountId, int startFrom) {
+        int pos;
+        for(pos = startFrom; pos < mEntries.size(); ++pos) {
+            if(mEntries.get(pos).mId == accountId) {
+                break;
+            }
+        }
+        return pos;
+    }
+    
+    public int getSelected(int[] mIndices) {
+        int j;
+        for(int i = j = 0; i < mChecked.size(); ++i) {
+            if(mChecked.get(i)) {
+                mIndices[j++] = i;
+            }
+        }
+        return j;
+    }
+
+    public int cancelSelection(ListView host, int begin, int end) {
+        int i, pos;
+        int totalVisibleMarked = 0;
+        for(pos = 0; pos < begin; ++pos) {
+            if(mChecked.get(pos)) {
+                mChecked.set(pos,  Boolean.FALSE);
+                mCheckCount--;
+            }
+        }
+        for(pos = end+1; pos < mChecked.size(); ++pos) {
+            if(mChecked.get(pos)) {
+                mChecked.set(pos,  Boolean.FALSE);
+                mCheckCount--;
+            }
+        }
+        for(i = 0, pos = begin; pos <= end; i++, pos++) {
+            if(mChecked.get(pos)) {
+                View view = host.getChildAt(i);
+                ViewHolder holder = (ViewHolder) view.getTag();
+                Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
+                Animation anim2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
+                holder.mIconView.clearAnimation();
+                holder.mIconView.setAnimation(anim1);
+                holder.mIconView.startAnimation(anim1);
+
+                AnimationListener listener = getAnimListener(view, 
+                        holder.mIconView, pos, anim1, anim2);
+                anim1.setAnimationListener(listener);
+                anim2.setAnimationListener(listener);
+                totalVisibleMarked++;
+            }
+        }
+        return totalVisibleMarked;
+    }
+    
+    public void animateDeletion(final View view, final int position) {
+        AnimationListener al = new AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation anim) {
+                ViewHolder vh = (ViewHolder)view.getTag();
+                vh.mInflate = true;
+                mLastPosition = position;
+            }
+            @Override public void onAnimationRepeat(Animation animation) {}
+            @Override public void onAnimationStart(Animation animation) {}
+        };
+
+        final int initialHeight = view.getMeasuredHeight();
+
+        Animation anim = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) {
+                    view.setVisibility(View.GONE);
+                }
+                else {
+                    view.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    view.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        if (al!=null) {
+            anim.setAnimationListener(al);
+        }
+        anim.setDuration(250);
+        view.startAnimation(anim);
+        mDeleted.set(position, true);
+    }
+    
+    public void markDeletion(int[] indices, int total, boolean delete) {
+        for(int i = 0; i < total; i++) {
+            mDeleted.set(indices[i], delete);
+        }
     }
 }

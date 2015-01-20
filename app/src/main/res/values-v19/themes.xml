@@ -7,6 +7,9 @@
 
     <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_white_sec</item>
@@ -20,6 +23,9 @@
 
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->
         <item name="iconColorNormal">@color/text_black_sec</item>

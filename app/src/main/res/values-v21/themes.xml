@@ -2,11 +2,9 @@
 <resources>
     <style name="AppDark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:fragmentEnterTransition">@android:transition/explode</item>
-        <item name="android:fragmentExitTransition">@android:transition/explode</item>
-        <item name="android:fragmentSharedElementEnterTransition">@transition/change_bounds</item>
-        <item name="android:fragmentSharedElementReturnTransition">@transition/change_bounds</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
@@ -20,11 +18,9 @@
 
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:fragmentEnterTransition">@android:transition/explode</item>
-        <item name="android:fragmentExitTransition">@android:transition/explode</item>
-        <item name="android:fragmentSharedElementEnterTransition">@transition/change_bounds</item>
-        <item name="android:fragmentSharedElementReturnTransition">@transition/change_bounds</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="actionModeSplitBackground">@null</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes

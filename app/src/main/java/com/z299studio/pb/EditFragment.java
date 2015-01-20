@@ -31,7 +31,6 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,7 +202,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private EditText mNameEditText;
     private PbScrollView mScroll;
     private Toolbar mToolbar;
-    private Drawable mSaveDrawable;
     private View mToolbarContainer;
     private ImageView mDeleteView;
 
@@ -440,10 +438,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             mToolbarContainer.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
         mToolbar.inflateMenu(R.menu.menu_edit);
-        Menu menu = mToolbar.getMenu();
-        mSaveDrawable = getResources().getDrawable(R.drawable.ic_action_save);
-        mSaveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
-        menu.getItem(0).setIcon(mSaveDrawable);
+        mToolbar.getMenu().getItem(0).getIcon().setColorFilter(
+                C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
         mToolbar.setOnMenuItemClickListener(this);
         if(rootView.findViewById(R.id.frame_box) == null) {
             MainActivity ma = (MainActivity) getActivity();
@@ -532,16 +528,10 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void changeSaveStatus() {
-        boolean enable = false;
-        if(mSavable && mNameOk) {
-            mSaveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal],
-                    PorterDuff.Mode.SRC_ATOP);
-            enable = true;
-        }
-        else {
-            mSaveDrawable.setColorFilter(C.ThemedColors[C.colorIconNormal],
-                    PorterDuff.Mode.SRC_ATOP);
-        }
+        boolean enable = mSavable && mNameOk;
+        mToolbar.getMenu().getItem(0).getIcon().setColorFilter(
+                C.ThemedColors[enable ? C.colorTextNormal : C.colorIconNormal], 
+                PorterDuff.Mode.SRC_ATOP);
         mToolbar.getMenu().getItem(0).setEnabled(enable);
     }
 
