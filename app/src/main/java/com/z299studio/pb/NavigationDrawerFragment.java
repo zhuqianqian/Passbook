@@ -26,7 +26,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +67,7 @@ public class NavigationDrawerFragment extends Fragment implements
         } else {
             mCurrentSelection = 1;
         }
-        mCategory2Navigation = new Hashtable<Integer, Integer>();
+        mCategory2Navigation = new Hashtable<>();
         setHasOptionsMenu(true);
     }
 
@@ -121,10 +120,7 @@ public class NavigationDrawerFragment extends Fragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -195,7 +191,7 @@ public class NavigationDrawerFragment extends Fragment implements
     private ArrayList<NavMenuItem> buildMenuItems() {
         Resources r = getResources();
         AccountManager am = AccountManager.getInstance();
-        ArrayList<NavMenuItem> result = new ArrayList<NavMenuItem>();
+        ArrayList<NavMenuItem> result = new ArrayList<>();
         int icons[] = Application.getThemedIcons();
         String[] categoryNames = Application.getSortedCategoryNames();
         int[] categoryIcons = Application.getSortedCategoryIcons();
@@ -258,17 +254,21 @@ public class NavigationDrawerFragment extends Fragment implements
         }
     }
 
-    public void updateCounterInMenu(int category, int delta) {
+    public void increaseCounterInMenu(int category, int delta) {
         Integer pos = mCategory2Navigation.get(category);
+        int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
+        View view = mMenuList.getChildAt(pos - firstVisiblePosition);
         if(pos!=null) {
-            mAdapter.updateCounterInMenu(pos, delta);
+            mAdapter.increaseCounterInMenu(view, pos, delta);
         }
     }
 
     public void updateCategoryCounter(int category, int value) {
         Integer pos = mCategory2Navigation.get(category);
+        int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
+        View view = mMenuList.getChildAt(pos - firstVisiblePosition);
         if(pos!=null) {
-            mAdapter.updateCategoryCounter(pos, value);
+            mAdapter.updateCategoryCounter(view, pos, value);
         }
     }
 
@@ -276,7 +276,4 @@ public class NavigationDrawerFragment extends Fragment implements
         return mAdapter.getCounterInMenu(mCurrentSelection);
     }
 
-    public void updateUi() {
-        mAdapter.notifyDataSetChanged();
-    }
 }

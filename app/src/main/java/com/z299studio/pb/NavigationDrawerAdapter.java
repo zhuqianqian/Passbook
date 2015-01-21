@@ -168,16 +168,24 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         return mItemList.get(position).mCount;
     }
 
-    public NavigationDrawerAdapter updateCounterInMenu(int position, int delta) {
+    public NavigationDrawerAdapter increaseCounterInMenu(View view, int position, int delta) {
         NavMenuItem nmi = mItemList.get(position);
         nmi.mCount += delta;
         mItemList.set(position, nmi);
+        if(view!=null) {
+            NavItemHolder holder = (NavItemHolder)view.getTag();
+            holder.mCounterView.setText(String.format("%d", nmi.mCount));
+        }
         return this;
     }
 
-    public NavigationDrawerAdapter updateCategoryCounter(int position, int value) {
+    public NavigationDrawerAdapter updateCategoryCounter(View view, int position, int value) {
         NavMenuItem nmi = mItemList.get(position);
         nmi.mCount = value;
+        if(view != null) {
+            NavItemHolder holder = (NavItemHolder)view.getTag();
+            holder.mCounterView.setText(String.format("%d", nmi.mCount));
+        }
         return this;
     }
 

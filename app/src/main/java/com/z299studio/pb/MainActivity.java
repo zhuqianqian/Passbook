@@ -19,7 +19,6 @@ package com.z299studio.pb;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -85,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     @Override
     public void onNavigationDrawerItemSelected(int type, int id) {
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
-            mMainList.selectCategory(id);
+            mMainList.selectCategory(id, false);
         }
     }
 
@@ -134,25 +133,23 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
     @Override
     public void onSave(int category) {
-        mNavigationDrawer.updateCounterInMenu(AccountManager.ALL_CATEGORY_ID, 1);
-        mNavigationDrawer.updateCounterInMenu(category, 1);
-        mNavigationDrawer.updateUi();
-//           Update mainlist fragment data here (all_category_id)
-//           Update mainlist fragment data here (category)
+        mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, 1);
+        mNavigationDrawer.increaseCounterInMenu(category, 1);
+        mMainList.updateData(AccountManager.ALL_CATEGORY_ID);
+        mMainList.updateData(category);
     }
 
     @Override
     public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged) {
         if(category!=oldCategory) {
-            mNavigationDrawer.updateCounterInMenu(category, 1);
-            mNavigationDrawer.updateCounterInMenu(oldCategory, -1);
-            mNavigationDrawer.updateUi();
-//           Update mainlist fragment data here (category)
-//           Update mainlist fragment data here (oldcategory)
+            mNavigationDrawer.increaseCounterInMenu(category, 1);
+            mNavigationDrawer.increaseCounterInMenu(oldCategory, -1);
+            mMainList.updateData(category);
+            mMainList.updateData(oldCategory);
         }
         if(nameChanged) {
-//           Update mainlist fragment data here (all_category_id)
-//           Update mainlist fragment data here (category)
+            mMainList.updateData(AccountManager.ALL_CATEGORY_ID);
+            mMainList.updateData(category);
         }
     }
 }

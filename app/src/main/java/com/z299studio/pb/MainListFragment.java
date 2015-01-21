@@ -123,14 +123,14 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         return null;
     }
 
-    private static void cacheAdapter(int category_id, MainListAdapter adapter) {
-        AdapterHolder ah = cachedAdapters.get(category_id);
+    private static void cacheAdapter(int categoryId, MainListAdapter adapter) {
+        AdapterHolder ah = cachedAdapters.get(categoryId);
         if(ah==null) {
             ah = new AdapterHolder();
         }
         ah.mUpToDate = true;
         ah.mAdapter = adapter;
-        cachedAdapters.put(category_id, ah);
+        cachedAdapters.put(categoryId, ah);
     }
 
     public MainListFragment() {   }
@@ -222,13 +222,9 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
     @Override
     public void onAnimationRepeat(Animation animation) { }
-    
-    public void updateData() {
 
-    }
-
-    public void selectCategory(int category_id) {
-        if(mCategoryId != category_id) {
+    public void selectCategory(int category_id, boolean forceUpdate) {
+        if(mCategoryId != category_id || forceUpdate) {
             mCategoryId = category_id;
             if((mAdapter = getAdapter(mCategoryId)) == null) {
                 mAdapter = new MainListAdapter(getActivity(),
@@ -318,5 +314,15 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     protected void showFab(boolean show) {
         mFab.clearAnimation();
         mFab.startAnimation(show? mFabIn : mFabOut);
+    }
+    
+    public void updateData(int categoryId) {
+        AdapterHolder ah = cachedAdapters.get(categoryId);
+        if(ah!=null) {
+            ah.mUpToDate = false;
+        }
+        if(categoryId == mCategoryId) {
+            selectCategory(categoryId, true);
+        }
     }
 }
