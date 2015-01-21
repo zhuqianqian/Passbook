@@ -40,5 +40,6 @@
     <dimen name="dlg_content_margin">8dp</dimen>
     <dimen name="dlg_action_margin">16dp</dimen>
     <dimen name="dlg_bottom_margin">8dp</dimen>
+    <dimen name="snackbar_horizontal_margin">24dp</dimen>
 
 </resources>
