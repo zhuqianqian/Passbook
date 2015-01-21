@@ -39,13 +39,10 @@ import java.util.Hashtable;
 
 public class MainListFragment extends Fragment
 implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
-    MainListAdapter.OnListItemCheckListener, Animation.AnimationListener{
+    MainListAdapter.OnListItemCheckListener, Animation.AnimationListener,
+    View.OnClickListener{
 
-    public interface ItemSelectionInterface {
-        public void onSelectAccount(View view, long id);
-    }
-
-    private ItemSelectionInterface mListener;
+    private ItemFragmentListener mListener;
     private ListView mListView;
     private MainListAdapter mAdapter;
     private int mCategoryId;
@@ -186,6 +183,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mListView.setOnItemLongClickListener(this);
         mToBeRemoved = new int[mAdapter.getCount()];
         mFab = (ImageButton)rootView.findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             LayerDrawable background = (LayerDrawable) mFab.getBackground();
             background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
@@ -198,7 +196,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ItemSelectionInterface) activity;
+            mListener = (ItemFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemSelectionInterface.");
         }
@@ -258,7 +256,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             return;
         }
         if(mListener != null) {
-            mListener.onSelectAccount(view, id);
+            mListener.onSelect((int)id);
         }
     }
 
@@ -288,6 +286,15 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
     }
     
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.fab) {
+            if(mListener!=null) {
+                mListener.onEdit(mCategoryId, -1);
+            }
+        }
+    }
+    
     public void onDelete(int accountId) {
         int firstVisiblePos = mListView.getFirstVisiblePosition();
         int removePos = mAdapter.getItemPosition(accountId, firstVisiblePos);
@@ -306,7 +313,6 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 mAdapter.animateDeletion(v, mToBeRemoved[i]);
             }
         }
-        
     }
     
     protected void showFab(boolean show) {

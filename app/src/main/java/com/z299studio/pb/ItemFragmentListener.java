@@ -16,9 +16,12 @@
 
 package com.z299studio.pb;
 
+import android.support.v4.app.Fragment;
+
 public interface ItemFragmentListener {
     public void onEdit(int categoryId, int accountId);
     public void onDelete(int accountId);
     public void onSave(int categoryId);
+    public void onSelect(int id);
     public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);
 }

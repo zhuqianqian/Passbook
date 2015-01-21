@@ -19,6 +19,8 @@ package com.z299studio.pb;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -27,8 +29,7 @@ import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
-        NavigationDrawerFragment.NavigationDrawerCallbacks,
-        MainListFragment.ItemSelectionInterface  {
+        NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private Application mApp;
     private Toolbar mToolbar;
@@ -89,13 +90,12 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     }
 
     @Override
-    public void onSelectAccount(View view, long id) {
+    public void onSelect(int id) {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom)
-                .replace(R.id.detail_panel, DetailFragment.create((int)id))
+                .replace(R.id.detail_panel, DetailFragment.create(id))
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
@@ -117,8 +117,11 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
     @Override
     public void onEdit(int categoryId, int accountId) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(accountId < 0) {
+            ft.setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom);
+        }
+        ft.replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
                 .addToBackStack(null)
                 .commit();
     }
