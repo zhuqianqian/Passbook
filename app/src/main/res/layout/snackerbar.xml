@@ -1,30 +1,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toast_layout_root"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical|start|left"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/snackbar_height_single"
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/snackbar_horizontal_margin"
     android:paddingRight="@dimen/snackbar_horizontal_margin"
-    android:background="@drawable/snackbar"
-    android:minHeight="48dp">
+    android:background="@drawable/snackbar">
     
     <Button android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         style="@style/Button.Flat.Accent"/>
 
     <TextView
         android:id="@android:id/text1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical|left|start"
         android:layout_centerVertical="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/text_white_std"
         android:layout_toLeftOf="@id/action"
         android:layout_toStartOf="@id/action"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginEnd="@dimen/snackbar_horizontal_margin"
         android:layout_marginRight="@dimen/snackbar_horizontal_margin"/>
      

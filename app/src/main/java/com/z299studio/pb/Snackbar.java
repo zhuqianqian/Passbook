@@ -16,34 +16,55 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.wifi.p2p.WifiP2pManager;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Snackbar extends DialogFragment{
-    
+public class Snackbar extends DialogFragment implements View.OnClickListener{
+
     public interface OnActionListener {
         public void onAction();
     }
     
+    private int mTimeOut = 5000;
     private String mText;
     private String mAction;
-    
     private DialogInterface.OnDismissListener mDismissListener;
     private OnActionListener mActionListener;
+    private final Handler mHandler = new Handler();
+    private final Runnable mTask = new Runnable() {
+        @Override
+        public void run() {
+            Dialog dlg = getDialog();
+            if(dlg!=null) {
+                dlg.dismiss();
+            }
+        }
+    };
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, R.style.Snackbar);
+        if(savedInstanceState!=null) {
+            mTimeOut = savedInstanceState.getInt("timeout");
+            mText = savedInstanceState.getString("text");
+            mAction = savedInstanceState.getString("action");
+        }
     }
     
     @Override
@@ -53,16 +74,72 @@ public class Snackbar extends DialogFragment{
         TextView v = (TextView) rootView.findViewById(android.R.id.text1);
         v.setText(mText);
         Button action = (Button)rootView.findViewById(R.id.action);
+        action.setOnClickListener(this);
         action.setText(mAction);
+        if(mTimeOut > 0) {
+            mHandler.postDelayed(mTask, mTimeOut);
+        }
         return rootView;
     }
     
     @Override
     public void onStart() {
         super.onStart();
-        // Adjust size and position.
+        if(getDialog() != null) {
+            Window window = getDialog().getWindow();
+            window.setWindowAnimations(R.style.SnackbarAnimation);
+            Resources res = getResources();
+            int height = (int) (res.getDimension(R.dimen.snackbar_height_single) + 0.5f);
+            boolean leftAlign = res.getBoolean(R.bool.snackbar_left_align);
+            int margin = leftAlign ?
+                    (int) (res.getDimension(R.dimen.snackbar_horizontal_margin) + 0.5f) : 0;
+            Point windowSize = new Point();
+            ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE))
+                    .getDefaultDisplay().getSize(windowSize);
+            int width = windowSize.x - 2 * margin;
+            if(leftAlign) {
+                int maxWidth = (int) (res.getDimension(R.dimen.snackbar_max_width) + 0.5f);
+                width = Math.min(width, maxWidth);
+            }
+
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.gravity = Gravity.BOTTOM;
+            lp.x = margin;
+            lp.y = margin;
+            lp.height = height;
+            if(!leftAlign || lp.width > width) {
+                lp.width = width;
+            }
+            window.setAttributes(lp);
+        }   
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(mActionListener!=null) {
+            mActionListener.onAction();
+        }
+        dismiss();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mHandler.removeCallbacks(mTask);
+        if(mDismissListener!=null) {
+            mDismissListener.onDismiss(dialog);
+        }
+        
     }
     
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("text", mText);
+        outState.putString("action", mAction);
+        outState.putInt("timeout", mTimeOut);
+        super.onSaveInstanceState(outState);
+    }
+
     public Snackbar setDismissListener(DialogInterface.OnDismissListener listener) {
         mDismissListener = listener;
         return this;
@@ -81,5 +158,14 @@ public class Snackbar extends DialogFragment{
     public Snackbar setActionText(String action) {
         mAction = action;
         return this;
+    }
+    
+    public Snackbar setTimeOut(int milliseconds) {
+        mTimeOut = milliseconds;
+        return this;
+    }
+    
+    public void show(ActionBarActivity activity) {
+        this.show(activity.getSupportFragmentManager(), "snackbar");
     }
 }

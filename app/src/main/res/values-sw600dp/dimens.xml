@@ -7,4 +7,6 @@
     <dimen name="navigation_text_margin">80dp</dimen>
     <dimen name="navigation_drawer_width">320dp</dimen>
     <dimen name="detail_card_width">480dp</dimen>
+
+    <dimen name="snackbar_corner">2dp</dimen>
 </resources>

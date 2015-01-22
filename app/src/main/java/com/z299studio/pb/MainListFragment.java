@@ -17,11 +17,13 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -210,8 +212,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         if(animation == mFabIn) {
             mFab.setVisibility(View.VISIBLE);
             mActionModeDestroyed = false;
-            if(mRemoveCount > 0 && mListener != null) {
-                // show SnackBar and animate deletion
+            if(mRemoveCount > 0) {
+                showDeleteSnackbar((ActionBarActivity) getActivity(), mRemoveCount);
                 animateDeletion();
             }
         }
@@ -296,6 +298,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         int removePos = mAdapter.getItemPosition(accountId, firstVisiblePos);
         View v = mListView.getChildAt(removePos - firstVisiblePos);
         mAdapter.animateDeletion(v, removePos);
+        showDeleteSnackbar((ActionBarActivity) getActivity(), 1);
     }
     
     public void animateDeletion() {
@@ -324,5 +327,24 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         if(categoryId == mCategoryId) {
             selectCategory(categoryId, true);
         }
+    }
+    
+    public void showDeleteSnackbar(ActionBarActivity activity, int count) {
+        new Snackbar()
+                .setText(getResources().getQuantityString(R.plurals.info_deleted, count, count))
+                .setActionText(getString(R.string.undo))
+                .setActionListener(new Snackbar.OnActionListener() {
+                    @Override
+                    public void onAction() {
+
+                    }
+                })
+                .setDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+
+                    }
+                })
+                .show(activity);
     }
 }

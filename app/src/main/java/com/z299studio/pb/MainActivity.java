@@ -127,7 +127,6 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
     @Override
     public void onDelete(int accountId) {
-        Toast.makeText(this, R.string.del_account, Toast.LENGTH_SHORT).show();
         mMainList.onDelete(accountId);
     }
 

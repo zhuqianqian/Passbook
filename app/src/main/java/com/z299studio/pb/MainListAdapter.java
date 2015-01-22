@@ -361,7 +361,7 @@ public class MainListAdapter extends BaseAdapter {
         if (al!=null) {
             anim.setAnimationListener(al);
         }
-        anim.setDuration(250);
+        anim.setDuration(400);
         view.startAnimation(anim);
         mDeleted.set(position, true);
     }
