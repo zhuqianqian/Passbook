@@ -151,4 +151,20 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
             mMainList.updateData(category);
         }
     }
+    
+    @Override
+    public void onDeleted(int categoryId, int count) {
+        if(categoryId == AccountManager.ALL_CATEGORY_ID) {
+            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
+            mNavigationDrawer.refreshCategoryCounters();
+            for(int id : Application.getSortedCategoryIds()) {
+                MainListFragment.resetAdapter(id);
+            }
+        }
+        else {
+            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
+            mNavigationDrawer.increaseCounterInMenu(categoryId, -count);
+            MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
+        }
+    }
 }

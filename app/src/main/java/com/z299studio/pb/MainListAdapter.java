@@ -365,10 +365,66 @@ public class MainListAdapter extends BaseAdapter {
         view.startAnimation(anim);
         mDeleted.set(position, true);
     }
+
+    public void undoDelete(final View v, int rowHeight) {
+        AnimationListener al = new AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation anim) {
+                ViewHolder vh = (ViewHolder)v.getTag();
+                vh.mInflate = true;
+            }
+            @Override public void onAnimationRepeat(Animation animation) {}
+            @Override public void onAnimationStart(Animation animation) {}
+        };
+
+        final int targetHeight = rowHeight;//v.getMeasuredHeight();
+
+        Animation anim = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 0) {
+                    v.getLayoutParams().height = (int)(targetHeight * interpolatedTime);
+                    v.requestLayout();
+                    v.setVisibility(View.VISIBLE);
+                }
+                else {
+                    v.getLayoutParams().height = (int)(targetHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        if (al!=null) {
+            anim.setAnimationListener(al);
+        }
+        anim.setDuration(400);
+        v.startAnimation(anim);
+    }
     
     public void markDeletion(int[] indices, int total, boolean delete) {
         for(int i = 0; i < total; i++) {
             mDeleted.set(indices[i], delete);
         }
+    }
+
+    public void doDelete(int [] indices, int total) {
+        int end = total - 1;
+        AccountManager am = AccountManager.getInstance();
+        int pos;
+        for(int i = end; i >= 0; --i) {
+            pos = indices[i];
+            am.removeAccount(mEntries.get(pos));
+            mEntries.remove(pos);
+            mIcons.remove(pos);
+            mChecked.remove(pos);
+            mDeleted.remove(pos);
+        }
+        this.enableAnimation(false);
+        this.notifyDataSetChanged();
     }
 }

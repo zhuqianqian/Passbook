@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package com.z299studio.pb;
 
-import android.support.v4.app.Fragment;
-
 public interface ItemFragmentListener {
     public void onEdit(int categoryId, int accountId);
     public void onDelete(int accountId);
+    public void onDeleted(int categoryId, int count);
     public void onSave(int categoryId);
     public void onSelect(int id);
     public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);

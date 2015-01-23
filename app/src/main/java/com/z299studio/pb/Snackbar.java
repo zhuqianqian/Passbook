@@ -91,24 +91,19 @@ public class Snackbar extends DialogFragment implements View.OnClickListener{
             Resources res = getResources();
             int height = (int) (res.getDimension(R.dimen.snackbar_height_single) + 0.5f);
             boolean leftAlign = res.getBoolean(R.bool.snackbar_left_align);
-            int margin = leftAlign ?
-                    (int) (res.getDimension(R.dimen.snackbar_horizontal_margin) + 0.5f) : 0;
-            Point windowSize = new Point();
-            ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE))
-                    .getDefaultDisplay().getSize(windowSize);
-            int width = windowSize.x - 2 * margin;
-            if(leftAlign) {
-                int maxWidth = (int) (res.getDimension(R.dimen.snackbar_max_width) + 0.5f);
-                width = Math.min(width, maxWidth);
-            }
-
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.gravity = Gravity.BOTTOM;
-            lp.x = margin;
-            lp.y = margin;
-            lp.height = height;
-            if(!leftAlign || lp.width > width) {
-                lp.width = width;
+            lp.gravity = Gravity.BOTTOM | Gravity.START | Gravity.LEFT;
+            lp.x = 0;
+            lp.y = 0;
+            lp.height = height ;
+            if(!leftAlign) {
+                Point windowSize = new Point();
+                ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE))
+                        .getDefaultDisplay().getSize(windowSize);
+                lp.width = windowSize.x;
+            }
+            else {
+                lp.height += (int) (res.getDimension(R.dimen.snackbar_horizontal_margin) + 0.5f);
             }
             window.setAttributes(lp);
         }   

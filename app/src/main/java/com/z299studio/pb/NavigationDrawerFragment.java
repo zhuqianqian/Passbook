@@ -271,6 +271,19 @@ public class NavigationDrawerFragment extends Fragment implements
             mAdapter.updateCategoryCounter(view, pos, value);
         }
     }
+    
+    public void refreshCategoryCounters() {
+        int[] cateIds = Application.getSortedCategoryIds();
+        AccountManager am = AccountManager.getInstance();
+        Integer pos;
+        for(int i = 0; i < cateIds.length; ++i) {
+            pos = mCategory2Navigation.get(cateIds[i]);
+            if(pos!=null) {
+                mAdapter.updateCategoryCounter(null, pos, am.getAccountsCountByCategory(cateIds[i]));
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
     public int getCurrentCount(){
         return mAdapter.getCounterInMenu(mCurrentSelection);

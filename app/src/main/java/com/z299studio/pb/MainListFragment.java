@@ -55,6 +55,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private boolean mActionModeDestroyed = false;
     private ImageButton mFab;
     private Animation mFabIn, mFabOut;
+    private int mFabToPush;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
@@ -135,6 +136,13 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         cachedAdapters.put(categoryId, ah);
     }
 
+    public static void resetAdapter(int categoryId) {
+        AdapterHolder ah = cachedAdapters.get(categoryId);
+        if(ah!=null) {
+            ah.mUpToDate = false;
+        }
+    }
+
     public MainListFragment() {   }
 
     @Override
@@ -191,6 +199,12 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
                     PorterDuff.Mode.SRC_ATOP);
         }
+        if(!getResources().getBoolean(R.bool.snackbar_left_align)) {
+            mFabToPush = (int)(getResources().getDimension(R.dimen.snackbar_height_single) + 0.5f);
+        }
+        else {
+            mFabToPush = 0;
+        }
         return rootView;
     }
 
@@ -213,7 +227,6 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mFab.setVisibility(View.VISIBLE);
             mActionModeDestroyed = false;
             if(mRemoveCount > 0) {
-                showDeleteSnackbar((ActionBarActivity) getActivity(), mRemoveCount);
                 animateDeletion();
             }
         }
@@ -296,22 +309,25 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     public void onDelete(int accountId) {
         int firstVisiblePos = mListView.getFirstVisiblePosition();
         int removePos = mAdapter.getItemPosition(accountId, firstVisiblePos);
-        View v = mListView.getChildAt(removePos - firstVisiblePos);
-        mAdapter.animateDeletion(v, removePos);
-        showDeleteSnackbar((ActionBarActivity) getActivity(), 1);
+        mToBeRemoved[0] = removePos;
+        mRemoveCount = 1;
+        animateDeletion();
     }
     
     public void animateDeletion() {
         int firstVisiblePosition = mListView.getFirstVisiblePosition();
         int end = mRemoveCount - 1;
         View v;
+        int viewHeight = 0;
         mAdapter.markDeletion(mToBeRemoved, mRemoveCount, true);
         for(int i = end; i >= 0; --i) {
             v = mListView.getChildAt(mToBeRemoved[i] - firstVisiblePosition);
             if(v!=null) {
+                viewHeight = v.getMeasuredHeight();
                 mAdapter.animateDeletion(v, mToBeRemoved[i]);
             }
         }
+        showDeleteSnackbar((ActionBarActivity) getActivity(), mRemoveCount, viewHeight);
     }
     
     protected void showFab(boolean show) {
@@ -329,22 +345,42 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
     }
     
-    public void showDeleteSnackbar(ActionBarActivity activity, int count) {
+    public void showDeleteSnackbar(ActionBarActivity activity, int count, final int rowHeight) {
         new Snackbar()
                 .setText(getResources().getQuantityString(R.plurals.info_deleted, count, count))
                 .setActionText(getString(R.string.undo))
                 .setActionListener(new Snackbar.OnActionListener() {
                     @Override
                     public void onAction() {
-
+                        int firstVisiblePos = mListView.getFirstVisiblePosition();
+                        int end = mRemoveCount - 1;
+                        View v;
+                        for(int i = end; i >= 0; --i){
+                            v = mListView.getChildAt(mToBeRemoved[i] - firstVisiblePos);
+                            if(v!=null) {
+                                mAdapter.undoDelete(v, rowHeight);
+                            }
+                        }
+                        mAdapter.markDeletion(mToBeRemoved, mRemoveCount, false);
+                        mRemoveCount = 0;
                     }
                 })
                 .setDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-
+                        if(mFabToPush > 0) {
+                            mFab.animate().yBy(mFabToPush);
+                        }
+                        if(mRemoveCount > 0) {
+                            mAdapter.doDelete(mToBeRemoved, mRemoveCount);
+                            mListener.onDeleted(mCategoryId, mRemoveCount);
+                            mRemoveCount = 0;
+                        }
                     }
                 })
                 .show(activity);
+        if(mFabToPush > 0) {
+            mFab.animate().yBy(-mFabToPush);
+        }
     }
 }
