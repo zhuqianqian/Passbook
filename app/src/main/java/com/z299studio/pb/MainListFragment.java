@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +37,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.Hashtable;
@@ -59,6 +63,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private int mFabToPush;
     private boolean mIsEditing = false;
     private View mCategoryEditView;
+    private int mCategoryIcon;
+    private boolean mCategorySavable;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
@@ -133,8 +139,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            menu.getItem(0).getIcon().setColorFilter(C.ThemedColors[C.colorTextNormal],
+            menu.getItem(0).getIcon().setColorFilter(
+                    C.ThemedColors[mCategorySavable ? C.colorTextNormal : C.colorIconNormal],
                     PorterDuff.Mode.SRC_ATOP);
+            menu.getItem(0).setEnabled(mCategorySavable);
             return true;
         }
 
@@ -338,10 +346,14 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.fab) {
-            if(mListener!=null) {
-                mListener.onEdit(mCategoryId, -1);
-            }
+        switch(view.getId()) {
+            case R.id.fab:
+                if (mListener != null) {
+                    mListener.onEdit(mCategoryId, -1);
+                }
+                break;
+            case R.id.category_icon:
+                break;
         }
     }
     
@@ -429,7 +441,36 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
         mIsEditing = true;
         mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mEditCategoryCallback);
+        EditText editCategoryName = (EditText)mCategoryEditView.findViewById(R.id.category_name);
+        ImageView editCategoryIcon = (ImageView)mCategoryEditView.findViewById(R.id.category_icon);
         mCategoryEditView.setVisibility(View.VISIBLE);
+        int[] icons = Application.getThemedIcons();
+        AccountManager.Category category = AccountManager.getInstance().getCategory(mCategoryId);
+        if(mCategoryId > AccountManager.DEFAULT_CATEGORY_ID) {
+            editCategoryName.setText(category.mName);
+            editCategoryIcon.setImageResource(icons[category.mImgCode]);
+            mCategoryIcon = category.mImgCode;
+        }
+        else {
+            editCategoryName.setText("");
+            editCategoryIcon.setImageResource(icons[icons.length-1]);
+            mCategoryIcon = icons.length-1;
+        }
+        editCategoryName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mCategorySavable = s.toString().length() > 0;
+                mActionMode.invalidate();
+            }
+        });
+        editCategoryIcon.setOnClickListener(this);
+        
     }
     
     protected void saveCategory() {
