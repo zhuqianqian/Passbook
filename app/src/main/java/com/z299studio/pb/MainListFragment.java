@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -56,6 +57,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private ImageButton mFab;
     private Animation mFabIn, mFabOut;
     private int mFabToPush;
+    private boolean mIsEditing = false;
+    private View mCategoryEditView;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
@@ -80,7 +83,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             menu.getItem(0).getIcon().setColorFilter(C.ThemedColors[C.colorTextNormal],
                     PorterDuff.Mode.SRC_ATOP);
-            return false; // Return false if nothing is done
+            return true;
         }
 
         @Override
@@ -118,6 +121,41 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
     };
 
+    private ActionMode.Callback mEditCategoryCallback = new ActionMode.Callback(){
+        
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            showFab(false);
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.menu_edit, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            menu.getItem(0).getIcon().setColorFilter(C.ThemedColors[C.colorTextNormal],
+                    PorterDuff.Mode.SRC_ATOP);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            if(menuItem.getItemId() == R.id.action_save) {
+                saveCategory();
+            }
+            mActionMode.finish();
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mActionMode = null;
+            mIsEditing = false;
+            mCategoryEditView.setVisibility(View.GONE);
+            showFab(true);
+        }
+    };
+    
     private static MainListAdapter getAdapter( int category_id) {
         AdapterHolder ah = cachedAdapters.get(category_id);
         if(ah!=null && ah.mUpToDate) {
@@ -205,6 +243,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         else {
             mFabToPush = 0;
         }
+        mCategoryEditView = rootView.findViewById(R.id.category_editor);
         return rootView;
     }
 
@@ -262,7 +301,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-        if(mSelectionMode) {
+        if(mSelectionMode || mIsEditing) {
             onItemLongClick(parent, view, pos, id);
             return;
         }
@@ -285,7 +324,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         else if(count == 1) {
             mSelectionMode = true;
         }
-        if(!mActionModeDestroyed) {
+        if(!mActionModeDestroyed && !mIsEditing) {
             if(count > 0) {
                 if(mActionMode == null) {
                     mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mActionModeCallback);
@@ -382,5 +421,18 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         if(mFabToPush > 0) {
             mFab.animate().yBy(-mFabToPush);
         }
+    }
+    
+    public void editCategory() {
+        if(mIsEditing) {
+            return;
+        }
+        mIsEditing = true;
+        mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mEditCategoryCallback);
+        mCategoryEditView.setVisibility(View.VISIBLE);
+    }
+    
+    protected void saveCategory() {
+                
     }
 }

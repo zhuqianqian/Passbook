@@ -101,6 +101,15 @@ public class MainListAdapter extends BaseAdapter {
                 view = inflate(parent);
             }
         }
+        if(mDeleted.get(position)) {
+            final View deletedView = view;
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    animateDeletion(deletedView, position);
+                }
+            });
+        }
         holder = (ViewHolder) view.getTag();
         holder.mTextView.setText(account.getAccountName());
         int srcId = status ? R.drawable.checkmark : mIcons.get(position);

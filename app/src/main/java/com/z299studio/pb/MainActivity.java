@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -24,6 +25,8 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,7 +34,6 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private Application mApp;
-    private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawer;
     private DrawerLayout mDrawerLayout;
     private MainListFragment mMainList;
@@ -75,10 +77,39 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     }
 
     private void setupToolbar() {
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
-        ViewCompat.setElevation(mToolbar, elevation);
+        ViewCompat.setElevation(toolbar, elevation);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(getResources().getBoolean(R.bool.hide_drawer) ?
+            R.menu.menu_home_small : R.menu.menu_home_large, menu);
+        for(int i = 0; i < menu.size(); ++i) {
+            menu.getItem(i).getIcon().setColorFilter(
+                    C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_delete_category:
+                break;
+            case R.id.action_edit_category:
+                mMainList.editCategory();
+                break;
+            case R.id.action_help:
+                break;
+            case R.id.action_about:
+                break;
+            case R.id.action_settings:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

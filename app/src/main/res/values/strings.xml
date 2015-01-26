@@ -79,6 +79,7 @@
     <string name="save">Save</string>
     <string name="close">Close</string>
     <!-- Tips/Messages -->
+    <string name="select_to_add">Select the items to be included:</string>
     <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>
     <string name="also_del_account">Also delete the accounts under the category.</string>
     <string name="no_file_explorer">File explorer not available.</string>

@@ -13,7 +13,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        style="@style/Button.Flat.Accent"/>
+        style="@style/Button.Flat.Accent"
+        android:textAllCaps="true"/>
 
     <TextView
         android:id="@android:id/text1"

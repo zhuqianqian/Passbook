@@ -3,13 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground">
+    <RelativeLayout android:id="@+id/category_editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/card_margin"
+        android:elevation="@dimen/toolbar_elevation">
+        <ImageView android:id="@+id/category_icon"
+            android:layout_width="@dimen/main_list_height"
+            android:layout_height="@dimen/main_list_height"
+            android:scaleType="center"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
 
+        <EditText android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/category_icon"
+            android:layout_toStartOf="@id/category_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="@string/new_category"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/category_icon"
+            android:text="@string/select_to_add"/>
+    </RelativeLayout>
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
         android:drawSelectorOnTop="true"
+        android:layout_below="@id/category_editor"
         android:longClickable="true"/>
 
     <TextView
