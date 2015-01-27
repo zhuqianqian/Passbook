@@ -335,18 +335,20 @@ public class Application{
     }
 
     public static int[] getSortedCategoryIds() {
-        if(sCategoryIds == null) {
+        if(sCategoryNames == null) {
             getSortedCategoryNames();
         }
         return sCategoryIds;
     }
 
     public static int[] getSortedCategoryIcons() {
-        if(sCategoryIcons == null) {
+        if(sCategoryNames == null) {
             getSortedCategoryNames();
         }
         return sCategoryIcons;
     }
+    
+    public static void reset() { sCategoryNames = null; }
 
     private static Random random = new Random();
     private static char[] candidates = new char[96];

@@ -16,8 +16,6 @@
 
 package com.z299studio.pb;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,10 +66,10 @@ public class MainListAdapter extends BaseAdapter {
         mAnimationEnabled = true;
         mDefaultDrawableId = defaultDrawableResId;
         setList(accounts, drawableResIds);
-        prepareResources(context);
+        prepareResources();
     }
 
-    private void prepareResources(Context context) {
+    private void prepareResources() {
         if(COLORS == null) {
             COLORS = new int[] {
 //When Android 4.0.x is not supported, the drawables can be created dynamically to setBackground
@@ -184,13 +182,13 @@ public class MainListAdapter extends BaseAdapter {
 
     private void setList(ArrayList<AccountManager.Account> accounts, int[] drawableResIds) {
         mEntries = accounts;
-        mIcons = new ArrayList<Integer>();
-        mChecked = new ArrayList<Boolean>();
-        mDeleted = new ArrayList<Boolean>();
+        mIcons = new ArrayList<>();
+        mChecked = new ArrayList<>();
+        mDeleted = new ArrayList<>();
         int id;
         AccountManager am = AccountManager.getInstance();
         if(accounts==null) {
-            mEntries = new ArrayList<AccountManager.Account>();
+            mEntries = new ArrayList<>();
         }
         for(AccountManager.Account a : mEntries) {
             id = am.getCategory(a.getCategoryId()).mImgCode;
@@ -209,11 +207,8 @@ public class MainListAdapter extends BaseAdapter {
         ViewHolder holder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.account_list_item, parent, false);
-        TextView titleView = (TextView) v.findViewById(R.id.item_name);
-        ImageButton img = (ImageButton) v.findViewById(R.id.item_icon);
-
-        holder.mIconView = img;
-        holder.mTextView = titleView;
+        holder.mIconView = (ImageButton) v.findViewById(R.id.item_icon);
+        holder.mTextView = (TextView) v.findViewById(R.id.item_name);
         holder.mInflate = false;
         v.setTag(holder);
         return v;
@@ -221,7 +216,7 @@ public class MainListAdapter extends BaseAdapter {
 
     private AnimationListener getAnimListener(final View view, final ImageButton button,
         final int position, final Animation prev, final Animation next) {
-        AnimationListener listener = new AnimationListener() {
+        return new AnimationListener() {
             @Override
             public void onAnimationStart(Animation anim) {
                 boolean status = mChecked.get(position);
@@ -257,7 +252,6 @@ public class MainListAdapter extends BaseAdapter {
             @Override
             public void onAnimationEnd(Animation anim) {}
         };
-        return listener;
     }
 
 
@@ -367,9 +361,7 @@ public class MainListAdapter extends BaseAdapter {
             }
         };
 
-        if (al!=null) {
-            anim.setAnimationListener(al);
-        }
+        anim.setAnimationListener(al);
         anim.setDuration(400);
         view.startAnimation(anim);
         mDeleted.set(position, true);
@@ -407,10 +399,7 @@ public class MainListAdapter extends BaseAdapter {
                 return true;
             }
         };
-
-        if (al!=null) {
-            anim.setAnimationListener(al);
-        }
+        anim.setAnimationListener(al);
         anim.setDuration(400);
         v.startAnimation(anim);
     }
@@ -435,5 +424,51 @@ public class MainListAdapter extends BaseAdapter {
         }
         this.enableAnimation(false);
         this.notifyDataSetChanged();
+    }
+    
+    public void markAll(ListView listView) {
+        int firstVisible = listView.getFirstVisiblePosition();
+        int lastVisible = listView.getLastVisiblePosition();
+        int pos;
+        for(pos = 0; pos < firstVisible; ++pos) {
+            mChecked.set(pos, true);
+        }
+        for(pos = lastVisible + 1; pos < mChecked.size(); ++pos) {
+            mChecked.set(pos, true);
+        }
+        mCheckCount += (mChecked.size() - lastVisible - 1);
+        for(pos = firstVisible; pos <= lastVisible; ++pos) {
+            View v = listView.getChildAt(pos);
+            ViewHolder holder = (ViewHolder)v.getTag();
+            Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
+            Animation anim2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
+            holder.mIconView.clearAnimation();
+            holder.mIconView.setAnimation(anim1);
+            holder.mIconView.startAnimation(anim1);
+
+            AnimationListener listener = getAnimListener(v, holder.mIconView, pos, anim1, anim2);
+            anim1.setAnimationListener(listener);
+            anim2.setAnimationListener(listener);
+        }
+    }
+    
+    public int moveData(int categoryId) {
+        int result = 0;
+        AccountManager.Account account;
+        boolean marked;
+        AccountManager am = AccountManager.getInstance();
+        for(int i = 0; i < mChecked.size(); i++) {
+            account = mEntries.get(i);
+            marked = mChecked.get(i);
+            if(marked && account.getCategoryId() != categoryId) {
+                am.moveAccount(categoryId, account);
+                result++;
+            }
+            else if(!marked && account.getCategoryId()==categoryId) {
+                am.moveAccount(AccountManager.DEFAULT_CATEGORY_ID, account);
+                result++;
+            }
+        }
+        return result;        
     }
 }

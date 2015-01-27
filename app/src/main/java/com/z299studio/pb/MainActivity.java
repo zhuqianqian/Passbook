@@ -198,4 +198,12 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
             MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
         }
     }
+    
+    @Override
+    public void onCategorySaved() {
+        Application.reset();
+        mNavigationDrawer.remove(-1);
+        MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
+        MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
+    }
 }

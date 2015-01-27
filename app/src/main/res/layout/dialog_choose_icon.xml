@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dlg_action_margin"
+    android:paddingLeft="@dimen/dlg_action_margin"
+    android:paddingRight="@dimen/dlg_action_margin"
+    android:paddingBottom="@dimen/dlg_bottom_margin">
+
+    <LinearLayout
+        android:id="@+id/container" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dlg_content_margin"
+        android:paddingRight="@dimen/dlg_content_margin"
+        android:paddingLeft="@dimen/dlg_content_margin"
+        android:paddingBottom="@dimen/dlg_action_margin"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/ok"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DialogTitle"
+            android:text="@string/set_icon"/>
+        <GridView android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="@dimen/main_list_height"
+            android:stretchMode="none"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"
+            android:gravity="center"
+            android:drawSelectorOnTop="true"/>
+        
+    </LinearLayout>
+
+    <Button android:id="@id/ok"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/accept"
+        android:layout_height="wrap_content" />
+
+    <Button android:id="@+id/cancel"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/ok"
+        android:text="@android:string/cancel"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

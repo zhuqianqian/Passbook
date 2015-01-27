@@ -17,7 +17,6 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -41,7 +40,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class MainListFragment extends Fragment
@@ -64,7 +65,9 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private boolean mIsEditing = false;
     private View mCategoryEditView;
     private int mCategoryIcon;
+    private String mCategoryName;
     private boolean mCategorySavable;
+    private ImageView mCategoryIconView;
 
     private static class AdapterHolder {
         public MainListAdapter mAdapter;
@@ -160,6 +163,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mActionMode = null;
             mIsEditing = false;
             mCategoryEditView.setVisibility(View.GONE);
+            updateData(mCategoryId);
             showFab(true);
         }
     };
@@ -353,6 +357,16 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 }
                 break;
             case R.id.category_icon:
+                new IconSetter().setInitImage(mCategoryIcon)
+                        .setListener(new IconSetter.OnIconChosen() {
+                            @Override
+                            public void onChosen(int id) {
+                                mCategoryIcon = id;
+                                mCategoryIconView.setImageResource(
+                                        Application.getThemedIcons()[mCategoryIcon]);
+                            }
+                        })
+                        .show(getFragmentManager(), "set_icon");
                 break;
         }
     }
@@ -442,18 +456,18 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mIsEditing = true;
         mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mEditCategoryCallback);
         EditText editCategoryName = (EditText)mCategoryEditView.findViewById(R.id.category_name);
-        ImageView editCategoryIcon = (ImageView)mCategoryEditView.findViewById(R.id.category_icon);
+        mCategoryIconView = (ImageView)mCategoryEditView.findViewById(R.id.category_icon);
         mCategoryEditView.setVisibility(View.VISIBLE);
         int[] icons = Application.getThemedIcons();
         AccountManager.Category category = AccountManager.getInstance().getCategory(mCategoryId);
         if(mCategoryId > AccountManager.DEFAULT_CATEGORY_ID) {
             editCategoryName.setText(category.mName);
-            editCategoryIcon.setImageResource(icons[category.mImgCode]);
+            mCategoryIconView.setImageResource(icons[category.mImgCode]);
             mCategoryIcon = category.mImgCode;
         }
         else {
             editCategoryName.setText("");
-            editCategoryIcon.setImageResource(icons[icons.length-1]);
+            mCategoryIconView.setImageResource(icons[icons.length-1]);
             mCategoryIcon = icons.length-1;
         }
         editCategoryName.addTextChangedListener(new TextWatcher() {
@@ -465,15 +479,42 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
             @Override
             public void afterTextChanged(Editable s) {
-                mCategorySavable = s.toString().length() > 0;
+                mCategoryName = s.toString();
+                mCategorySavable = mCategoryName.length() > 0;
                 mActionMode.invalidate();
             }
         });
-        editCategoryIcon.setOnClickListener(this);
+        mCategoryIconView.setOnClickListener(this);
+        mCategoryIconView.setColorFilter(C.ThemedColors[C.colorTextNormal]);
+        updateListForEditing();
+        
+    }
+    
+    private void updateListForEditing() {
+        if(mCategoryId != AccountManager.DEFAULT_CATEGORY_ID) {
+            ArrayList<AccountManager.Account> accounts = AccountManager.getInstance()
+                    .getAccountsByCategory(AccountManager.DEFAULT_CATEGORY_ID);
+            if(mCategoryId == AccountManager.ALL_CATEGORY_ID) {
+                mAdapter.addList(accounts, true);
+            }
+            else {
+                mAdapter.markAll(mListView);
+                mAdapter.addList(accounts, false);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
         
     }
     
     protected void saveCategory() {
-                
+        if(mCategoryId <= AccountManager.DEFAULT_CATEGORY_ID) {
+            mCategoryId = AccountManager.getInstance().addCategory(mCategoryIcon, mCategoryName);
+        }
+        else {
+            AccountManager.getInstance().setCategory(mCategoryId, mCategoryName, mCategoryIcon);
+        }
+        Application.showToast(getActivity(), R.string.category_saved, Toast.LENGTH_SHORT);
+        mAdapter.moveData(mCategoryId);
+        mListener.onCategorySaved();
     }
 }
