@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     private int mStatusColor;
     private View mRootView;
     private int mStatusColorDetail;
+    private int mCategoryId;
 
     private Runnable mTintStatusBar = new Runnable() {
         @Override
@@ -56,6 +57,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
             startActivity(intent);
             finish();
             return;
+        }
+        if(savedInstanceState==null) {
+            MainListFragment.clearCache();
         }
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
@@ -98,6 +102,15 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_delete_category:
+                new DeleteCategory()
+                        .setCategory(mCategoryId)
+                        .setListener(new DeleteCategory.OnDeleteConfirmListener() {
+                            @Override
+                            public void onConfirmed(int category, boolean alsoDelAccounts) {
+                                deleteCategory(category, alsoDelAccounts);
+                            }
+                        })
+                        .show(getSupportFragmentManager(), "delete_category");
                 break;
             case R.id.action_edit_category:
                 mMainList.editCategory();
@@ -116,6 +129,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     public void onNavigationDrawerItemSelected(int type, int id) {
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
             mMainList.selectCategory(id, false);
+            mCategoryId = id;
         }
     }
 
@@ -205,5 +219,27 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         mNavigationDrawer.remove(-1);
         MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
         MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
+    }
+    
+    private void deleteCategory(int category, boolean alsoDelAccounts) {
+        AccountManager.getInstance().removeCategory(category, alsoDelAccounts);
+        int countAccounts = mNavigationDrawer.getCount(category);
+        if(countAccounts > 0) {
+            if(alsoDelAccounts) {
+                MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
+                mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID,
+                        -countAccounts);
+            }
+            else {
+                MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
+                mNavigationDrawer.increaseCounterInMenu(AccountManager.DEFAULT_CATEGORY_ID,
+                        countAccounts);
+            }
+        }
+        MainListFragment.resetAdapter(category);
+        mNavigationDrawer.remove(category);
+        mNavigationDrawer.select(AccountManager.ALL_CATEGORY_ID);
+        Application.showToast(this, R.string.category_deleted, Toast.LENGTH_SHORT);
+        Application.reset();
     }
 }

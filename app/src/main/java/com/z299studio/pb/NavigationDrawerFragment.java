@@ -256,6 +256,13 @@ public class NavigationDrawerFragment extends Fragment implements
             }
         }
     }
+    
+    public void select(int category) {
+        Integer pos = mCategory2Navigation.get(category);
+        if(pos!=null) {
+            onItemClick(mMenuList, null, pos, 0);
+        }        
+    }
 
     public void increaseCounterInMenu(int category, int delta) {
         Integer pos = mCategory2Navigation.get(category);
@@ -288,8 +295,12 @@ public class NavigationDrawerFragment extends Fragment implements
         mAdapter.notifyDataSetChanged();
     }
 
-    public int getCurrentCount(){
-        return mAdapter.getCounterInMenu(mCurrentSelection);
+    public int getCount(int categoryId){
+        Integer pos = mCategory2Navigation.get(categoryId);
+        if(pos!=null) {
+            return  mAdapter.getCounterInMenu(pos);
+        }
+        return 0;
     }
 
 }

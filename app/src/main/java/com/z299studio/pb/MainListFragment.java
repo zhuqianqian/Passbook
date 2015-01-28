@@ -185,6 +185,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         ah.mAdapter = adapter;
         cachedAdapters.put(categoryId, ah);
     }
+    
+    public static void clearCache() {
+        cachedAdapters.clear();
+    }
 
     public static void resetAdapter(int categoryId) {
         AdapterHolder ah = cachedAdapters.get(categoryId);

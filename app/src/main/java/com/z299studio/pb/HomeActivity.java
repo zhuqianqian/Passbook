@@ -218,6 +218,7 @@ AnimatorListener, SyncService.SyncListener{
     
     public void startMain() {
         System.gc();
+        Application.reset();
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         mApp.ignoreNextPause();
         AccountManager.getInstance().setDefaultCategory(-1, getString(R.string.def_category));

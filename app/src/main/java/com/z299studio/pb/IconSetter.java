@@ -51,11 +51,6 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(savedInstanceState!=null) {

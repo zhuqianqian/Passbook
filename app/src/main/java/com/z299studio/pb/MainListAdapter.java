@@ -439,16 +439,18 @@ public class MainListAdapter extends BaseAdapter {
         mCheckCount += (mChecked.size() - lastVisible - 1);
         for(pos = firstVisible; pos <= lastVisible; ++pos) {
             View v = listView.getChildAt(pos);
-            ViewHolder holder = (ViewHolder)v.getTag();
-            Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
-            Animation anim2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
-            holder.mIconView.clearAnimation();
-            holder.mIconView.setAnimation(anim1);
-            holder.mIconView.startAnimation(anim1);
+            if(v!=null) {
+                ViewHolder holder = (ViewHolder) v.getTag();
+                Animation anim1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
+                Animation anim2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
+                holder.mIconView.clearAnimation();
+                holder.mIconView.setAnimation(anim1);
+                holder.mIconView.startAnimation(anim1);
 
-            AnimationListener listener = getAnimListener(v, holder.mIconView, pos, anim1, anim2);
-            anim1.setAnimationListener(listener);
-            anim2.setAnimationListener(listener);
+                AnimationListener listener = getAnimListener(v, holder.mIconView, pos, anim1, anim2);
+                anim1.setAnimationListener(listener);
+                anim2.setAnimationListener(listener);
+            }
         }
     }
     
