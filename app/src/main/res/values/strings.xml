@@ -78,6 +78,7 @@
     <string name="length">Length: %d</string>
     <string name="save">Save</string>
     <string name="close">Close</string>
+    <string name="search">Search Accounts</string>
     <!-- Tips/Messages -->
     <string name="select_to_add">Select the items to be included:</string>
     <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>

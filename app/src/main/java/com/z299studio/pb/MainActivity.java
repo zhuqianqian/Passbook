@@ -21,17 +21,22 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
-        NavigationDrawerFragment.NavigationDrawerCallbacks{
+        NavigationDrawerFragment.NavigationDrawerCallbacks,
+        SearchView.OnQueryTextListener {
+
 
     private Application mApp;
     private NavigationDrawerFragment mNavigationDrawer;
@@ -95,12 +100,19 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
             menu.getItem(i).getIcon().setColorFilter(
                     C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
         }
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(
+                menu.findItem(R.id.action_search));
+        searchView.setQueryHint(getString(R.string.search));
+        searchView.setOnQueryTextListener(this);
         return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.action_search:
+                Log.d("onQueryBegin", "sss");
+                break;
             case R.id.action_delete_category:
                 new DeleteCategory()
                         .setCategory(mCategoryId)
@@ -123,6 +135,15 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String s) { return false; }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
     }
 
     @Override
