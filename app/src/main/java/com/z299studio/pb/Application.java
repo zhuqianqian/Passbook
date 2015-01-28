@@ -46,12 +46,14 @@ public class Application{
     public static class Options {
         public static boolean mAlwaysShowPwd;
         public static int mAutoLock;
+        public static boolean mEnableCopyPwd;
         public static boolean mShowOther;
         public static int mSync;
         public static boolean mSyncMsg;
         public static int mSyncVersion;
         public static int mTheme;
         public static boolean mTour;
+        public static boolean mWarnCopyPwd;
     }
     
     public static class FileHeader {
@@ -138,10 +140,12 @@ public class Application{
             }
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
+        Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
         Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, true);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);
         Options.mSyncVersion = mSP.getInt(C.Sync.VERSION, 0);
+        Options.mWarnCopyPwd = mSP.getBoolean(C.Keys.WARN_COPY, true);
         
         mCrypto = Crypto.getInstance();
         try {

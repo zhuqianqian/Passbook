@@ -17,7 +17,10 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
@@ -36,14 +39,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.z299studio.pb.AccountManager.Account;
 
 import java.util.ArrayList;
 
 public class DetailFragment extends Fragment implements
-        AdapterView.OnItemClickListener,
-        View.OnClickListener, Toolbar.OnMenuItemClickListener{
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
+        View.OnClickListener, Toolbar.OnMenuItemClickListener, 
+        ConfirmCopy.OnCopyConfirmListener{
 
     private static int[] COLORS = {R.color.pb_0, R.color.pb_1, R.color.pb_2, R.color.pb_3,
             R.color.pb_4, R.color.pb_5, R.color.pb_6, R.color.pb_7,
@@ -56,6 +61,7 @@ public class DetailFragment extends Fragment implements
     private int mColor;
     private Account mAccount;
     private ItemFragmentListener mListener;
+    private Account.Entry mEntryToCopy;
 
     public static DetailFragment create(int accountId) {
         DetailFragment df = new DetailFragment();
@@ -126,6 +132,7 @@ public class DetailFragment extends Fragment implements
         mAdapter.setShowPassword(Application.Options.mAlwaysShowPwd);
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(this);
+        mList.setOnItemLongClickListener(this);
     }
 
     private void setupToolbar(View rootView, String title) {
@@ -177,6 +184,46 @@ public class DetailFragment extends Fragment implements
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                   int position, long id) {
+        Account.Entry entry = (Account.Entry) mAdapter.getItem(position);
+        if(entry.mType == AccountManager.EntryType.PASSWORD ||
+                entry.mType == AccountManager.EntryType.PIN) {
+            if(Application.Options.mWarnCopyPwd) {
+                new ConfirmCopy().setListener(this).show(getFragmentManager(), "confirm_copy");
+                mEntryToCopy = entry;
+            }
+            else {
+                if(!Application.Options.mEnableCopyPwd) {
+                    return true;
+                }
+                copyToClipboard(entry.mName, entry.mValue);
+            }
+        }
+        else {
+            copyToClipboard(entry.mName, entry.mValue);
+        }
+        return true;
+    }
+
+    @Override
+    public void onConfirmed(boolean confirmed, boolean remember) {
+        if(confirmed) {
+            copyToClipboard(mEntryToCopy.mName, mEntryToCopy.mValue);
+        }
+        if(remember) {
+            SharedPreferences.Editor editor = Application.getInstance().mSP.edit();
+            Application.Options.mWarnCopyPwd = !Application.Options.mWarnCopyPwd;
+            editor.putBoolean(C.Keys.WARN_COPY, Application.Options.mWarnCopyPwd);
+            if(!confirmed) {
+                Application.Options.mEnableCopyPwd = false;
+                editor.putBoolean(C.Keys.ENABLE_COPY, Application.Options.mEnableCopyPwd);
+            }
+            editor.apply();
+        }
     }
 
     private class AccountAdapter extends BaseAdapter {
@@ -274,5 +321,13 @@ public class DetailFragment extends Fragment implements
                 mPwdShowed.set(pos, !showed);
             }
         }
+    }
+    
+    private void copyToClipboard(String label, String text) {
+        ClipboardManager clipboardManager = (ClipboardManager)(getActivity().getSystemService(
+                Context.CLIPBOARD_SERVICE));
+        ClipData clipData = ClipData.newPlainText(label, text);
+        clipboardManager.setPrimaryClip(clipData);
+        Application.showToast(getActivity(), R.string.text_copied, Toast.LENGTH_SHORT);
     }
 }
