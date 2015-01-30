@@ -78,13 +78,14 @@
     <string name="length">Length: %d</string>
     <string name="save">Save</string>
     <string name="close">Close</string>
-    <string name="search">Search Accounts</string>
+    <string name="search">Search in PwdBook</string>
     <!-- Tips/Messages -->
+    <string name="empty_search">No matches found.</string>
     <string name="select_to_add">Select the items to be included:</string>
     <string name="delete_ask">Are you sure to delete it? You cannot undo this.</string>
     <string name="also_del_account">Also delete the accounts under the category.</string>
     <string name="no_file_explorer">File explorer not available.</string>
-    <string name="no_accounts">You have not added anything.\n\nTap to add one.</string>
+    <string name="no_accounts">You have not added anything here.</string>
     <string name="loading">Loading data from %s…</string>
     <string name="pwd_changed">Password changed.</string>
     <string name="category_deleted">Category deleted.</string>

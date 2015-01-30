@@ -40,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -260,6 +261,21 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mFabToPush = 0;
         }
         mCategoryEditView = rootView.findViewById(R.id.category_editor);
+        EditText editCategoryName = (EditText)rootView.findViewById(R.id.category_name);
+        editCategoryName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mCategoryName = s.toString();
+                mCategorySavable = mCategoryName.length() > 0;
+                mActionMode.invalidate();
+            }
+        });
         return rootView;
     }
 
@@ -312,7 +328,19 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
             mToBeRemoved = new int[mAdapter.getCount()];
+            ((TextView)mListView.getEmptyView()).setText(R.string.no_accounts);
         }
+    }
+    
+    public void setSearch(ArrayList<AccountManager.Account> result) {
+        mAdapter = new MainListAdapter(getActivity(), result,
+                Application.getThemedIcons(), R.drawable.pb_unknown);
+        mAdapter.enableAnimation(false);
+        mAdapter.setListener(this);
+        mListView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        mToBeRemoved = new int[mAdapter.getCount()];
+        ((TextView)mListView.getEmptyView()).setText(R.string.empty_search);
     }
 
     @Override
@@ -474,20 +502,6 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mCategoryIconView.setImageResource(icons[icons.length-1]);
             mCategoryIcon = icons.length-1;
         }
-        editCategoryName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mCategoryName = s.toString();
-                mCategorySavable = mCategoryName.length() > 0;
-                mActionMode.invalidate();
-            }
-        });
         mCategoryIconView.setOnClickListener(this);
         mCategoryIconView.setColorFilter(C.ThemedColors[C.colorTextNormal]);
         updateListForEditing();

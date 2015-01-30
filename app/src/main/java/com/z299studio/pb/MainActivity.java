@@ -33,6 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SearchView.OnQueryTextListener {
@@ -46,6 +48,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     private View mRootView;
     private int mStatusColorDetail;
     private int mCategoryId;
+    private ArrayList<AccountManager.Account> mAllAccounts = null;
+    private ArrayList<AccountManager.Account> mSearchedAccounts= null;
+    private String mLastKey = "";
 
     private Runnable mTintStatusBar = new Runnable() {
         @Override
@@ -111,7 +116,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_search:
-                Log.d("onQueryBegin", "sss");
+                if(mAllAccounts == null) {
+                    mAllAccounts = AccountManager.getInstance().getAllAccounts(true);
+                }
                 break;
             case R.id.action_delete_category:
                 new DeleteCategory()
@@ -139,11 +146,32 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
 
     @Override
-    public boolean onQueryTextSubmit(String s) { return false; }
+    public boolean onQueryTextSubmit(String s) {  return false;   }
 
     @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
+    public boolean onQueryTextChange(String s) { 
+        ArrayList<AccountManager.Account> result = new ArrayList<>();
+        ArrayList<AccountManager.Account> pool;
+        s = s.toLowerCase();
+        if(s.isEmpty()) {
+            result = mAllAccounts;
+        }
+        else {
+            if (s.startsWith(mLastKey)) {
+                pool = mSearchedAccounts;
+            } else {
+                pool = mAllAccounts;
+            }
+            for (AccountManager.Account a : pool) {
+                if (a.mProfile.toLowerCase().contains(s)) {
+                    result.add(a);
+                }
+            }
+        }
+        mSearchedAccounts = result;
+        mLastKey = s;
+        mMainList.setSearch(result);
+        return false; 
     }
 
     @Override
