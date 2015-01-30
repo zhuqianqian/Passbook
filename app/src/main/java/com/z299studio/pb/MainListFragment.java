@@ -271,9 +271,11 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
             @Override
             public void afterTextChanged(Editable s) {
-                mCategoryName = s.toString();
-                mCategorySavable = mCategoryName.length() > 0;
-                mActionMode.invalidate();
+                if(mActionMode!=null) {
+                    mCategoryName = s.toString();
+                    mCategorySavable = mCategoryName.length() > 0;
+                    mActionMode.invalidate();
+                }
             }
         });
         return rootView;

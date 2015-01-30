@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
@@ -186,15 +188,27 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     public void onSelect(int id) {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom)
-                .replace(R.id.detail_panel, DetailFragment.create(id))
-                .addToBackStack(null)
+                .replace(R.id.detail_panel, DetailFragment.create(id), "detail")
+                .addToBackStack("detail")
                 .commit();
     }
 
     @Override
     public void onBackPressed() {
+        setStatusBarColor(0, 0, true);
+        Fragment edit = getSupportFragmentManager().findFragmentByTag("edit");
+        if(edit != null) {
+            getSupportFragmentManager().popBackStack("edit",
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            return;
+        }
+        Fragment detail = getSupportFragmentManager().findFragmentByTag("detail");
+        if(detail!=null) {
+            getSupportFragmentManager().popBackStack("detail",
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            return;
+        }
         super.onBackPressed();
-        setStatusBarColor(0,0,true);
     }
 
     public void setStatusBarColor(int color, int delay, boolean restore) {
@@ -214,8 +228,8 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(accountId < 0) {
             ft.setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom);
         }
-        ft.replace(R.id.detail_panel, EditFragment.create(categoryId, accountId))
-                .addToBackStack(null)
+        ft.replace(R.id.detail_panel, EditFragment.create(categoryId, accountId), "edit")
+                .addToBackStack("edit")
                 .commit();
     }
 
