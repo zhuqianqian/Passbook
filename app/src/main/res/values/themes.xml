@@ -12,6 +12,7 @@
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl</item>
         <item name="navigationMenuSeparator">@drawable/div</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <item name="settingItemBackground">@drawable/bottom_line</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
     </style>
     
@@ -25,6 +26,7 @@
         <item name="defaultButtonDrawable">@drawable/button_default_mtrl_light</item>
         <item name="navigationMenuSeparator">@drawable/div_light</item>
         <item name="listItemBackground">@drawable/list_item_mtrl_light</item>
+        <item name="settingItemBackground">@drawable/bottom_line_light</item>
         <item name="cardViewDrawable">@drawable/cardview_light</item>
     </style>
     

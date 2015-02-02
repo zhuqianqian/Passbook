@@ -21,12 +21,12 @@
         </activity>
         <activity android:name=".TourActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTourTheme">
-        </activity>
+            android:theme="@style/AppTourTheme"/>
         <activity android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppLight.Default">
-        </activity>
+            android:label="@string/app_name"/>
+        <activity android:name=".Settings"
+            android:label="@string/settings"
+            android:parentActivityName=".MainActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"

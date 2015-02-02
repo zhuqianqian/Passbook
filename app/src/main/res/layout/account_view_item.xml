@@ -4,13 +4,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="2dp"
-    android:foreground="?attr/listItemBackground">
+    card_view:cardCornerRadius="2dp">
     <LinearLayout
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/cardViewDrawable">
     <TextView
         android:id="@+id/field_name"
         android:layout_width="match_parent"

@@ -90,6 +90,16 @@ public class NavigationDrawerFragment extends Fragment implements
         outState.putInt(SELECTION_KEY, mCurrentSelection);
         super.onSaveInstanceState(outState);
     }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(Application.getInstance().queryChange(Application.DATA_OTHER)) {
+            mAdapter.setList(buildMenuItems());
+            mAdapter.notifyDataSetChanged();
+            select(AccountManager.ALL_CATEGORY_ID);
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {

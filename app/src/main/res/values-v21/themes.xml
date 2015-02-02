@@ -6,6 +6,7 @@
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="actionModeSplitBackground">@null</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <item name="settingItemBackground">@drawable/bottom_line</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->
@@ -22,6 +23,7 @@
         <item name="actionModeBackground">?attr/colorPrimary</item>
         <item name="actionModeSplitBackground">@null</item>
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
+        <item name="settingItemBackground">@drawable/bottom_line_light</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
         <!-- Above items should share the same value in dark and light themes
              Below are common values but differ in dark and light themes-->

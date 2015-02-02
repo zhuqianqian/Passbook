@@ -78,7 +78,7 @@
     <string name="length">Length: %d</string>
     <string name="save">Save</string>
     <string name="close">Close</string>
-    <string name="search">Search in PwdBook</string>
+    <string name="search">Search in PwdBook…</string>
     <!-- Tips/Messages -->
     <string name="empty_search">No matches found.</string>
     <string name="select_to_add">Select the items to be included:</string>
@@ -152,6 +152,12 @@
         <item>Note</item>
         <item>Bank Name</item>
         <item>CVC</item>
+    </string-array>
+    <string-array name="lock_options">
+        <item>Immediately</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>Never</item>
     </string-array>
     <string name="skip">Skip</string>
     <string name="next">Next</string>

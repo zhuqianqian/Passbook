@@ -92,6 +92,27 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 .findFragmentById(R.id.panel_main);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mApp.queryChange(Application.THEME)) {
+            mApp.handleChange(Application.THEME);
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            overridePendingTransition(0,0);
+            return;
+        }
+        if(mApp.queryChange(Application.DATA_OTHER)) {
+            Application.getSortedCategoryNames();
+        }
+    }
+    
+    @Override 
+    protected void onPause() {
+        super.onPause();
+        mApp.handleChange(Application.DATA_OTHER);
+    }
+    
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,6 +162,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
             case R.id.action_about:
                 break;
             case R.id.action_settings:
+                startActivity(new Intent(this, Settings.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -181,6 +203,17 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
             mMainList.selectCategory(id, false);
             mCategoryId = id;
+        }
+        else {
+            switch(id) {
+                case R.string.settings:
+                    startActivity(new Intent(this, Settings.class));
+                    break;
+                case R.string.help:
+                    break;
+                case R.string.about:
+                    break;
+            }
         }
     }
 

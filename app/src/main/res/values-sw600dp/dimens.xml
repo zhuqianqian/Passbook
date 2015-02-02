@@ -9,4 +9,6 @@
     <dimen name="detail_card_width">480dp</dimen>
 
     <dimen name="snackbar_corner">2dp</dimen>
+
+    <dimen name="setting_margin">40dp</dimen>
 </resources>

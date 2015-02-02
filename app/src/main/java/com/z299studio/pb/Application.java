@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Random;
 
@@ -109,8 +110,12 @@ public class Application{
     private boolean mIgnoreNextPause;
     private String mPassword;
     private int mLocalVersion;
-    private boolean mDataChanged;
     private Crypto mCrypto;
+    private Hashtable<Integer, Boolean> mChanges;
+
+    public static final Integer THEME = 0;
+    public static final Integer DATA_OTHER = 1;
+    public static final Integer DATA_ALL = 2;
     
     public static Application getInstance(Activity context) {
         if(__instance == null) {
@@ -129,6 +134,7 @@ public class Application{
         mSP = PreferenceManager.getDefaultSharedPreferences(context);
         Options.mTheme = mSP.getInt(C.Keys.THEME, 0);
         Options.mTour = mSP.getBoolean(C.Keys.TOUR, false);
+        mChanges = new Hashtable<>();
     }
     
     public void onStart() {
@@ -162,7 +168,6 @@ public class Application{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mDataChanged = false;
     }
     
     public void decrypt() throws GeneralSecurityException{
@@ -177,8 +182,19 @@ public class Application{
         }
     }
     
-    public boolean hasDataChanged() {
-        return mDataChanged;
+    public boolean queryChange(int what) {
+        return mChanges.get(what) != null;
+    }
+    
+    public void notifyChange(int what) {
+        mChanges.put(what, Boolean.TRUE);
+        if(what == DATA_ALL || what == DATA_OTHER) {
+            reset();
+        }
+    }
+    
+    public void handleChange(int what) {
+        mChanges.remove(what);
     }
     
     public boolean hasDataFile() {
