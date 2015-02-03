@@ -320,7 +320,7 @@ AnimatorListener, SyncService.SyncListener{
                     unlock.setText(R.string.get_started);
                 }
             }
-            else {
+            else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
                 int ids[] = {R.id.btn_local, R.id.btn_gdrive, R.id.btn_gpg};
                 for(int id : ids) {
                     View button = rootView.findViewById(id);
