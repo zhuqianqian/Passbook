@@ -37,7 +37,7 @@ import android.widget.TextView;
 public class Settings extends ActionBarActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected{
 
-    public interface ActionListener {
+    private interface ActionListener {
         public void onAction(SettingItem sender);
     }
     
@@ -107,7 +107,6 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     private class SettingItemSelection extends  SettingItem {
         private String[] mOptions;
         private int mSelection;
-        public View mView;
 
         public SettingItemSelection(int id, String title, String description) {
             super(id, title, description);
@@ -121,10 +120,8 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         
         @Override
         public void onClick(View view) {
-            mRequestingItem = this;
             SettingListDialog.build(mTitle, mOptions, mSelection)
                     .show(getSupportFragmentManager(), "setting_dialog");
-            mView = view;
         }
         
         @Override
@@ -209,7 +206,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                         onItemClick(null, null, position, item.mId);
                     }
                 });
-            }
+            }            
             return view;
         }
         
@@ -217,18 +214,40 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
             mContext = context;
             mItems = items;           
         }
+        
+        public void updateDescription(String text, int position, ListView listView) {
+            int firstVisible = listView.getFirstVisiblePosition();
+            View view = listView.getChildAt(position - firstVisible);
+            if(view != null) {
+                TextView description = (TextView)view.getTag();
+                description.setText(text);
+            }
+        }
     }
 
     private ActionListener mActionListener = new ActionListener() {
         @Override
         public void onAction(SettingItem sender) {
-
+            int type = 0;
+            switch(sender.mId) {
+                case R.string.export_data:
+                    type = ActionDialog.ACTION_EXPORT;
+                    break;
+                case R.string.import_data:
+                    type = ActionDialog.ACTION_IMPORT;
+                    break;
+                case R.string.change_pwd:
+                    type = ActionDialog.ACTION_RESET_PWD;
+                    break;
+            }
+            ActionDialog.create(type).show(getSupportFragmentManager(), "action_dialog");
         }
     };
     
     private SettingItemAdapter mAdapter;
-    private SettingItemSelection mRequestingItem;
     private boolean mShowOtherInitial;
+    private int mRequestingPosition;
+    private ListView mListView;
     
     private SettingItemAdapter initSettings() {
         SettingItem[] items = new SettingItem[13];
@@ -280,6 +299,9 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
             startActivity(new Intent(this, HomeActivity.class));
             this.finish();
         }
+        if(savedInstanceState != null) {
+            mRequestingPosition = savedInstanceState.getInt("requested_position");
+        }
         setTheme(C.THEMES[Application.Options.mTheme]);
         if(Application.getInstance().queryChange(Application.THEME)) {
             int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
@@ -300,9 +322,15 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ListView listView = (ListView)findViewById(R.id.list);
-        listView.setAdapter(initSettings());
-        listView.setOnItemClickListener(this);
+        mListView = (ListView)findViewById(R.id.list);
+        mListView.setAdapter(initSettings());
+        mListView.setOnItemClickListener(this);
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("requested_position", mRequestingPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -327,6 +355,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         SettingItem item = (SettingItem)mAdapter.getItem(position);
         item.onClick(view);
+        mRequestingPosition = position;
         if(item.mType == SettingItem.TYPE_SWITCH) {
             boolean value = (boolean)item.getValue();
             if(view!=null) {
@@ -339,14 +368,14 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
 
     @Override
     public void onSelected(int selection) {
-        mRequestingItem.setValue(selection);
-        TextView description = (TextView)mRequestingItem.mView.getTag();
-        description.setText(mRequestingItem.getText());
+        SettingItemSelection item = (SettingItemSelection)mAdapter.getItem(mRequestingPosition);
+        item.setValue(selection);
+        mAdapter.updateDescription(item.getText(), mRequestingPosition, mListView);
         SharedPreferences.Editor editor = Application.getInstance().mSP.edit();
-        switch (mRequestingItem.mId) {
+        switch (item.mId) {
             case R.string.theme:
                 Application.getInstance().notifyChange(Application.THEME);
-                Application.Options.mTheme = (int)mRequestingItem.getValue();
+                Application.Options.mTheme = (int)item.getValue();
                 editor.putInt(C.Keys.THEME, Application.Options.mTheme);
                 startActivity(new Intent(this, Settings.class));
                 finish();
@@ -356,7 +385,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 break;
             case R.string.auto_lock:
                 int lock_options[] = {1, 5*60, 10 * 60};
-                Application.Options.mAutoLock = lock_options[(int)mRequestingItem.getValue()];
+                Application.Options.mAutoLock = lock_options[(int)item.getValue()];
                 editor.putInt(C.Keys.AUTO_LOCK_TIME, Application.Options.mAutoLock);
                 break;
         }
