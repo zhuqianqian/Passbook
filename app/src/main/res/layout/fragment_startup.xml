@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_marginTop="24dp"
-        android:textColor="@color/text_black_sec"
         android:text="@string/app_intro"/>
     
     <LinearLayout android:id="@+id/btn_container"

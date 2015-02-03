@@ -20,6 +20,7 @@ import java.security.GeneralSecurityException;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -284,7 +285,11 @@ AnimatorListener, SyncService.SyncListener{
             View rootView = inflater.inflate(layout, container, false);
             
             if(layout == R.layout.fragment_home) {
-                final Button unlock = (Button)rootView.findViewById(R.id.unlock);                
+                final Button unlock = (Button)rootView.findViewById(R.id.unlock); 
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    unlock.getBackground().setColorFilter(C.ThemedColors[C.colorAccent],
+                            PorterDuff.Mode.SRC_ATOP);
+                }
                 TextWatcher tw = new TextWatcher() {      
                     @Override
                     public void afterTextChanged(Editable s) {
@@ -313,6 +318,14 @@ AnimatorListener, SyncService.SyncListener{
                     TextView tv = (TextView)rootView.findViewById(R.id.title);
                     tv.setText(R.string.set_pwd);
                     unlock.setText(R.string.get_started);
+                }
+            }
+            else {
+                int ids[] = {R.id.btn_local, R.id.btn_gdrive, R.id.btn_gpg};
+                for(int id : ids) {
+                    View button = rootView.findViewById(id);
+                    button.getBackground().setColorFilter(C.ThemedColors[C.colorAccent],
+                            PorterDuff.Mode.SRC_ATOP);
                 }
             }
             return rootView;

@@ -14,6 +14,7 @@
         <item name="listItemBackground">@drawable/list_item_mtrl</item>
         <item name="settingItemBackground">@drawable/bottom_line</item>
         <item name="cardViewDrawable">@drawable/cardview</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl</item>
     </style>
     
     <style name="AppLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -28,13 +29,13 @@
         <item name="listItemBackground">@drawable/list_item_mtrl_light</item>
         <item name="settingItemBackground">@drawable/bottom_line_light</item>
         <item name="cardViewDrawable">@drawable/cardview_light</item>
+        <item name="accentButtonDrawable">@drawable/button_accent_mtrl_light</item>
     </style>
     
     <style name="AppDark.Default">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorAccent">@color/orange_a200</item>
         <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="accentButtonDrawable">@drawable/button_accent_mtrl</item>
         <item name="android:dialogTheme">@style/DialogTheme.DefaultDark</item>
         <item name="android:alertDialogTheme">@style/DialogTheme.DefaultDark</item>
     </style>
@@ -43,7 +44,6 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorAccent">@color/orange_a200</item>
         <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="accentButtonDrawable">@drawable/button_accent_mtrl_light</item>
         <item name="android:dialogTheme">@style/DialogTheme.DefaultLight</item>
         <item name="android:alertDialogTheme">@style/DialogTheme.DefaultLight</item>
     </style>
