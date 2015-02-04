@@ -95,6 +95,11 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     @Override
     protected void onResume() {
         super.onResume();
+        if(Application.getInstance().needAuth()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
         if(mApp.queryChange(Application.THEME)) {
             mApp.handleChange(Application.THEME);
             startActivity(new Intent(this, MainActivity.class));
@@ -105,12 +110,17 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(mApp.queryChange(Application.DATA_OTHER)) {
             Application.getSortedCategoryNames();
         }
+        if(mApp.queryChange(Application.DATA_ALL)) {
+            Application.getSortedCategoryNames();
+            MainListFragment.clearCache();
+        }
     }
     
     @Override 
     protected void onPause() {
         super.onPause();
         mApp.handleChange(Application.DATA_OTHER);
+        mApp.onPause();
     }
     
     private void setupToolbar() {
@@ -163,6 +173,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, Settings.class));
+                mApp.ignoreNextPause();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -16,7 +16,12 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,27 +32,55 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ActionDialog extends DialogFragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher{
     
+    public static final int REQ_CODE_FILE_SELECTION = 0x299;
+    
+    public interface ActionDialogListener {
+        public void onConfirm(String text, int type, int operation, int option);
+    }
+    
     public static final int ACTION_AUTHENTICATE = 0;
     public static final int ACTION_EXPORT = 1;
     public static final int ACTION_IMPORT = 2;
     public static final int ACTION_RESET_PWD = 3;
+
+    private Handler mHandler = new Handler();
+    private final Runnable mUpdateUi = new Runnable() {
+        @Override
+        public void run() {
+            mOkButton.setEnabled(true);
+            mSelectButton.setText(mText);
+        }
+    };
     
     private int mDlgType;
     private String mText;
     private Button mOkButton;
     private int mFileType;
     private EditText[] mPasswordEdits = new EditText[3];
+    private ActionDialogListener mListener;
+    private int mOption;
+    private Button mSelectButton;
     
     public static ActionDialog create(int type) {
         ActionDialog dialog = new ActionDialog();
         dialog.mDlgType = type;
         return dialog;
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (ActionDialogListener)activity;
+        }
+        catch (ClassCastException e) {   }
     }
     
     @Override
@@ -57,6 +90,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             mDlgType = savedInstanceState.getInt("dialog_type");
             mText = savedInstanceState.getString("dialog_text");
             mFileType = savedInstanceState.getInt("file_type");
+            mOption = savedInstanceState.getInt("import_option");
         }        
     }
     
@@ -66,6 +100,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         outState.putInt("dialog_type", mDlgType);
         outState.putString("dialog_text", mText);
         outState.putInt("file_type", mFileType);
+        outState.putInt("import_option", mOption);
     }
     
     @Override
@@ -102,6 +137,17 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 mPasswordEdits[i].addTextChangedListener(this);
             }
         }
+        if(mDlgType == ACTION_IMPORT) {
+            int ids[] = {R.id.ignore, R.id.keepall, R.id.overwrite};
+            for(int i = 0; i < ids.length; ++i) {
+                RadioButton rb = (RadioButton)rootView.findViewById(ids[i]);
+                rb.setOnClickListener(this);
+                if(i == mOption) {
+                    rb.setChecked(true);
+                }
+            }
+            mSelectButton = (Button)rootView.findViewById(R.id.select);
+        }
         return rootView;
     }
     
@@ -112,10 +158,25 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 if(mDlgType == ACTION_RESET_PWD) {
                     resetPassword();
                 }
+                else {
+                    mListener.onConfirm(mText, mFileType, mDlgType, mOption);
+                }
             case R.id.cancel:
                 this.dismiss();
-                break;            
-        }        
+                break;     
+            case R.id.ignore:
+                mOption = ImportExportTask.OPTION_IGNORE;
+                break;
+            case R.id.keepall:
+                mOption = ImportExportTask.OPTION_KEEPALL;
+                break;
+            case R.id.overwrite:
+                mOption = ImportExportTask.OPTION_OVERWRITE;
+                break;
+            case R.id.select:
+                showFileChooser();
+                break;
+        }
     }
 
     @Override
@@ -147,7 +208,8 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             }
         }
         else {
-            if(mPasswordEdits[1].getText().toString().length() > 0) {
+            mText = mPasswordEdits[1].getText().toString();
+            if(mText.length() > 0) {
                 mOkButton.setEnabled(true);
                 mOkButton.setAlpha(1.0f);
             }
@@ -157,6 +219,48 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             }
             
         }
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            getActivity().startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_file)),
+                    REQ_CODE_FILE_SELECTION);
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Application.showToast(getActivity(), R.string.no_file_explorer, Toast.LENGTH_SHORT);
+        }
+    }
+
+    public void onFileSelected(Settings context, int resultCode, Intent data) {
+        if(resultCode == Settings.RESULT_OK) {
+            Uri uri = data.getData();
+            if(uri!=null) {
+                if(uri.getScheme().equalsIgnoreCase("file")){
+                    mText = uri.getPath();
+                    mHandler.post(mUpdateUi);
+                    return;
+                }
+                else if(uri.getScheme().equalsIgnoreCase("content")) {
+                    String[] projection = {"_data"};
+                    Cursor cursor;
+                    try {
+                        cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                        int column_index = cursor.getColumnIndexOrThrow("_data");
+                        if(cursor.moveToFirst()) {
+                            mText = cursor.getString(column_index);
+                            mHandler.post(mUpdateUi);
+                            return;
+                        }
+                    }
+                    catch(Exception e) { }
+                }
+            }
+        }
+        Application.showToast(context, R.string.invalid_file, Toast.LENGTH_LONG);
     }
     
     protected void resetPassword() {

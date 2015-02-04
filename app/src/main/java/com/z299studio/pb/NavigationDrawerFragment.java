@@ -94,7 +94,8 @@ public class NavigationDrawerFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if(Application.getInstance().queryChange(Application.DATA_OTHER)) {
+        if(Application.getInstance().queryChange(Application.DATA_OTHER)||
+                Application.getInstance().queryChange(Application.DATA_OTHER)) {
             mAdapter.setList(buildMenuItems());
             mAdapter.notifyDataSetChanged();
             select(AccountManager.ALL_CATEGORY_ID);

@@ -24,6 +24,8 @@ import android.content.Intent;
  * upcoming versions (like Dropbox?).
  */
 public abstract class SyncService {
+
+    public static final int REQ_RESOLUTION = 299;
     
     public static class CA {
         public static final int DATA_SENT = 1;

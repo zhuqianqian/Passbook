@@ -32,14 +32,12 @@
             android:gravity="left"
             android:layout_width="wrap_content"
             android:text="@string/file_loc"/>
-        <TextView
+        <Button
             android:id="@+id/select"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             style="@style/Button.Flat"
             android:textAllCaps="false"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textStyle="normal"
             android:ems="3"
             android:ellipsize="start"
             android:gravity="left|center_vertical"

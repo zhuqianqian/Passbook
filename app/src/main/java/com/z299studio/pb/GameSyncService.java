@@ -39,9 +39,7 @@ import java.io.IOException;
 
 public class GameSyncService extends SyncService implements 
 ConnectionCallbacks, OnConnectionFailedListener {
-    
-    public static final int REQ_RESOLUTION = 299;
-    
+
     private static final String SAVED_DATA="Passbook-Saved-Data";
     private static final int MAX_SNAPSHOT_RESOLVE_RETRIES = 3;
     

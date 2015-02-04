@@ -142,7 +142,7 @@ public class Application{
         if(Options.mAutoLock == 0) {
             boolean autolock_v1 = mSP.getBoolean(C.Keys.AUTO_LOCK, false);
             if(autolock_v1) {
-                Options.mAutoLock = 1 * 1000000000;
+                Options.mAutoLock = 1000;
             }
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
@@ -211,7 +211,7 @@ public class Application{
         return success;    
     }
     
-    public void getData() {
+    public byte[] getData() {
         try {
             mBuffer = new byte[(int) mDataSize];
             FileInputStream fis = mContext.openFileInput(DATA_FILE);
@@ -222,6 +222,7 @@ public class Application{
         catch (IOException e) {
             e.printStackTrace();
         }
+        return mBuffer;
     }
     
     public int getLocalVersion() {
@@ -248,11 +249,11 @@ public class Application{
     }
     
     public void onPause() {
-        mLastPause = System.nanoTime();
+        mLastPause = System.currentTimeMillis();
     }
     
     public boolean needAuth() {
-        long now = System.nanoTime();
+        long now = System.currentTimeMillis();
         if(mIgnoreNextPause) {
             mIgnoreNextPause = false;
             return false;
@@ -314,16 +315,16 @@ public class Application{
         }
     }
 
-    public static int[] getThemedIcons() {
-        int[] light = {
+    private static int[] __icons__= {
             R.drawable.pb_bank, R.drawable.pb_creditcard, R.drawable.pb_desktop,
             R.drawable.pb_shop, R.drawable.pb_email, R.drawable.pb_web,
             R.drawable.pb_wallet, R.drawable.pb_atm, R.drawable.pb_bag,
             R.drawable.pb_gift, R.drawable.pb_school, R.drawable.pb_folder,
             R.drawable.pb_briefcase, R.drawable.pb_chat, R.drawable.pb_lock,
             R.drawable.pb_user
-        };
-        return light;
+    };
+    public static int[] getThemedIcons() {
+        return __icons__;
     }
 
     private static String[] sCategoryNames;

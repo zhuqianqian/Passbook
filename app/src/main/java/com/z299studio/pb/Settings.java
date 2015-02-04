@@ -33,9 +33,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Settings extends ActionBarActivity implements AdapterView.OnItemClickListener,
-        SettingListDialog.OnOptionSelected{
+        SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
+        ActionDialog.ActionDialogListener{
 
     private interface ActionListener {
         public void onAction(SettingItem sender);
@@ -328,6 +330,21 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     }
     
     @Override
+    protected void onResume() {
+        super.onResume();;
+        if(Application.getInstance().needAuth()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Application.getInstance().onPause();
+    }
+    
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("requested_position", mRequestingPosition);
         super.onSaveInstanceState(outState);
@@ -349,6 +366,21 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, Intent data) {
+        switch (requestCode) {
+            case SyncService.REQ_RESOLUTION:
+                SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
+                break;
+            case ActionDialog.REQ_CODE_FILE_SELECTION:
+                ActionDialog dialog = (ActionDialog)getSupportFragmentManager()
+                        .findFragmentByTag("dialog_action");
+                dialog.onFileSelected(this, resultCode, data);
+                Application.getInstance().ignoreNextPause();
+                break;
+        }
     }
     
     @Override
@@ -390,6 +422,44 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 break;
         }
         editor.apply();
+    }
+
+    @Override
+    public void onFinish(boolean authenticate, int operation, String result) {
+        if(result== null) {
+            if(authenticate) {
+                ActionDialog.create(ActionDialog.ACTION_AUTHENTICATE)
+                        .show(getSupportFragmentManager(), "dialog_auth");
+                return;
+            }
+            Application.showToast(Settings.this, operation==ActionDialog.ACTION_EXPORT ?
+                    R.string.export_failed : R.string.import_failed, Toast.LENGTH_LONG);
+        }
+        else {
+            if(operation==ActionDialog.ACTION_EXPORT) {
+                Application.showToast(Settings.this,
+                        getResources().getString(R.string.export_success, result), 
+                        Toast.LENGTH_LONG);
+            }
+            else {
+                if(AccountManager.getInstance().saveRequired()) {
+                    Application.getInstance().saveData();
+                    Application.getInstance().notifyChange(Application.DATA_ALL);
+                }
+                Application.showToast(Settings.this, R.string.import_success, Toast.LENGTH_LONG);
+            }
+        }
+    }
+
+    @Override
+    public void onConfirm(String text, int type, int operation, int option) {
+        if(operation == ActionDialog.ACTION_AUTHENTICATE) {
+            new ImportExportTask(this, text).execute();
+        }
+        else {
+            new ImportExportTask(this, text, Application.getInstance().getPassword(),
+                    type, operation, option).execute();
+        }
     }
     
     private void handleSwitchOption(int id, boolean value) {
