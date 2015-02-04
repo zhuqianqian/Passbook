@@ -40,20 +40,4 @@
         <item name="cardViewDrawable">@drawable/cardview_light</item>
         <item name="accentButtonDrawable">@drawable/button_accent_mtrl_light</item>
     </style>
-
-    <style name="AppDark.Default">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorAccent">@color/orange_a200</item>
-        <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="android:dialogTheme">@style/DialogTheme.DefaultDark</item>
-        <item name="android:alertDialogTheme">@style/DialogTheme.DefaultDark</item>
-    </style>
-
-    <style name="AppLight.Default">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorAccent">@color/orange_a200</item>
-        <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="android:dialogTheme">@style/DialogTheme.DefaultLight</item>
-        <item name="android:alertDialogTheme">@style/DialogTheme.DefaultLight</item>
-    </style>
 </resources>

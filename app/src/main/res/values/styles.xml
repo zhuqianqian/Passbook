@@ -41,6 +41,38 @@
     <style name="DialogTheme.DefaultLight" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/orange_a200</item>
     </style>
+
+    <style name="DialogTheme.IndigoPinkDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/pink_a200</item>
+    </style>
+
+    <style name="DialogTheme.IndigoPinkLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/pink_a200</item>
+    </style>
+
+    <style name="DialogTheme.PurpleRedDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/red_a200</item>
+    </style>
+
+    <style name="DialogTheme.PurpleRedLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/red_a200</item>
+    </style>
+
+    <style name="DialogTheme.TealAmberDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/amber_a200</item>
+    </style>
+
+    <style name="DialogTheme.TealAmberLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/amber_a200</item>
+    </style>
+
+    <style name="DialogTheme.LightblueCyanDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/cyan_a200</item>
+    </style>
+
+    <style name="DialogTheme.LightblueCyanLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/cyan_a200</item>
+    </style>
     
     <style name="SnackbarAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
