@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 public class Application{
     
     private static final String DATA_FILE = "data";
+    private static final int APP_VERSION = 2;
     
     private static Application __instance;
     
@@ -245,7 +247,29 @@ public class Application{
     }
     
     public void saveData() {
-
+        if(mLocalVersion <= Options.mSyncVersion) {
+            mLocalVersion++;
+        }
+        byte[] cipher = mCrypto.encrypt(AccountManager.getInstance().getBytes());
+        byte[] header = FileHeader.build(APP_VERSION, mCrypto.getIterationCount(),
+                Crypto.SALT_LENGTH, mCrypto.getIvLength(), mLocalVersion);
+        byte[] keyInfo = mCrypto.getSaltAndIvBytes();
+        try {
+            FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
+            fos.write(header);
+            fos.write(keyInfo);
+            fos.write(cipher);
+            int size = header.length + keyInfo.length + cipher.length;
+            if (mBuffer == null || mBuffer.length != size) {
+                mBuffer = new byte[size];
+            }
+            System.arraycopy(header, 0, mBuffer, 0, header.length);
+            System.arraycopy(keyInfo, 0, mBuffer, header.length, keyInfo.length);
+            System.arraycopy(cipher, 0, mBuffer, header.length + keyInfo.length, cipher.length);
+            fos.close();
+            AccountManager.getInstance().onSaved();
+        }catch (FileNotFoundException e) {}
+        catch(IOException ioe) {}
     }
     
     public void onPause() {

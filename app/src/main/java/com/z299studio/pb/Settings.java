@@ -38,6 +38,8 @@ import android.widget.Toast;
 public class Settings extends ActionBarActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
         ActionDialog.ActionDialogListener{
+    
+    private static final String TAG_DIALOG = "action_dialog";
 
     private interface ActionListener {
         public void onAction(SettingItem sender);
@@ -123,7 +125,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         @Override
         public void onClick(View view) {
             SettingListDialog.build(mTitle, mOptions, mSelection)
-                    .show(getSupportFragmentManager(), "setting_dialog");
+                    .show(getSupportFragmentManager(), TAG_DIALOG);
         }
         
         @Override
@@ -242,7 +244,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                     type = ActionDialog.ACTION_RESET_PWD;
                     break;
             }
-            ActionDialog.create(type).show(getSupportFragmentManager(), "action_dialog");
+            ActionDialog.create(type).show(getSupportFragmentManager(), TAG_DIALOG);
         }
     };
     
@@ -377,7 +379,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 break;
             case ActionDialog.REQ_CODE_FILE_SELECTION:
                 ActionDialog dialog = (ActionDialog)getSupportFragmentManager()
-                        .findFragmentByTag("dialog_action");
+                        .findFragmentByTag(TAG_DIALOG);
                 dialog.onFileSelected(this, resultCode, data);
                 Application.getInstance().ignoreNextPause();
                 break;
@@ -430,7 +432,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         if(result== null) {
             if(authenticate) {
                 ActionDialog.create(ActionDialog.ACTION_AUTHENTICATE)
-                        .show(getSupportFragmentManager(), "dialog_auth");
+                        .show(getSupportFragmentManager(), TAG_DIALOG);
                 return;
             }
             Application.showToast(Settings.this, operation==ActionDialog.ACTION_EXPORT ?

@@ -163,12 +163,12 @@ AnimatorListener, SyncService.SyncListener{
         case R.id.btn_gdrive:
         case R.id.btn_gpg:
             mStage = LOADING;
-             Application.Options.mSync = id == R.id.btn_gdrive ? C.Sync.GDRIVE : C.Sync.GPGS;
+            Application.Options.mSync = id == R.id.btn_gdrive ? C.Sync.GDRIVE : C.Sync.GPGS;
             startSync(true);
             break;
         case R.id.btn_local:
             Application.Options.mSync = C.Sync.NONE;
-            mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).commit();
+            mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
             mStage = SET_PWD;
             startHome();
             break;
@@ -346,6 +346,8 @@ AnimatorListener, SyncService.SyncListener{
     @Override
     public void onSyncFailed(int errorCode) {
         mStage = SET_PWD;
+        Application.Options.mSync = C.Sync.NONE;
+        mApp.mSP.edit().putInt(C.Sync.SERVER, C.Sync.NONE).apply();
         startHome();
     }
     @Override
@@ -355,6 +357,7 @@ AnimatorListener, SyncService.SyncListener{
             mSyncText.setText(r.getString(R.string.loading, 
                  Application.Options.mSync == C.Sync.GDRIVE ? 
                      r.getString(R.string.sync_gdrive) : r.getString(R.string.sync_gpg)));
+            mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
         }
         else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             byte[] data = SyncService.getInstance().requestData();

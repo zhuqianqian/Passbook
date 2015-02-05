@@ -147,6 +147,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 }
             }
             mSelectButton = (Button)rootView.findViewById(R.id.select);
+            mSelectButton.setOnClickListener(this);
         }
         return rootView;
     }

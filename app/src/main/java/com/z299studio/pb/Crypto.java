@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2014-2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -58,6 +58,10 @@ public class Crypto {
         mIterationCount = iteration;
     }
     
+    public int getIterationCount() { return mIterationCount; }
+    
+    public int getIvLength() {return mIv.length; }
+    
     // Reset or set the password first time should call this.
     public void resetPassword(String password) {
         mSalt = new byte[SALT_LENGTH];
@@ -66,7 +70,7 @@ public class Crypto {
     }
     
     private void deriveKey(String password) {
-        byte[] keyBytes = null;
+        byte[] keyBytes;
         KeySpec keySpec = new PBEKeySpec(password.toCharArray(), mSalt,
                 mIterationCount, KEY_LENGTH);
         SecretKeyFactory keyFactory;
@@ -83,7 +87,7 @@ public class Crypto {
     }
     
     public byte[] encrypt(byte [] data) {
-        byte cipherData[] = null;
+        byte cipherData[];
         if(mKey == null) {
             return null;
         }
@@ -101,7 +105,7 @@ public class Crypto {
     }
     
     public byte[] decrypt(byte [] data) throws GeneralSecurityException {
-        byte plainData[] = null;
+        byte plainData[];
         if(mKey == null ) {
             return null;
         }
