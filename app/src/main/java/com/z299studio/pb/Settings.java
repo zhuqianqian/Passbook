@@ -273,10 +273,11 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         items[index++] = new SettingItemSwitch(R.string.sync_msg, getString(R.string.sync_msg), 
                 null).setValue(Application.Options.mSyncMsg);
         items[index++] = new SettingItem(0, getString(R.string.security), null);
-        int lock_options[] = {1, 5*60, 10*60, 0};
+        int lock_options[] = {1000, 5*60 * 1000, 30*60 * 1000, 0};
         int selection = 0;
+        int saved = Application.Options.mAutoLock;
         for(int i = 0; i < lock_options.length; ++i) {
-            if(lock_options[i] == Application.Options.mAutoLock) {
+            if(lock_options[i] == saved) {
                 selection = i;
             }
         }
@@ -331,7 +332,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     
     @Override
     protected void onResume() {
-        super.onResume();;
+        super.onResume();
         if(Application.getInstance().needAuth()) {
             startActivity(new Intent(this, HomeActivity.class));
             finish();
@@ -416,7 +417,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
             case R.string.sync_server:
                 break;
             case R.string.auto_lock:
-                int lock_options[] = {1, 5*60, 10 * 60};
+                int lock_options[] = {1000, 5*60*1000, 30 * 60 * 1000, 0};
                 Application.Options.mAutoLock = lock_options[(int)item.getValue()];
                 editor.putInt(C.Keys.AUTO_LOCK_TIME, Application.Options.mAutoLock);
                 break;

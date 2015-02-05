@@ -138,8 +138,8 @@ public class Application{
     }
     
     public void onStart() {
-        Options.mAutoLock = mSP.getInt(C.Keys.AUTO_LOCK_TIME, 0);
-        if(Options.mAutoLock == 0) {
+        Options.mAutoLock = mSP.getInt(C.Keys.AUTO_LOCK_TIME, -1);
+        if(Options.mAutoLock == -1) {
             boolean autolock_v1 = mSP.getBoolean(C.Keys.AUTO_LOCK, false);
             if(autolock_v1) {
                 Options.mAutoLock = 1000;
@@ -253,12 +253,11 @@ public class Application{
     }
     
     public boolean needAuth() {
-        long now = System.currentTimeMillis();
-        if(mIgnoreNextPause) {
+        if(mIgnoreNextPause || Options.mAutoLock < 1) {
             mIgnoreNextPause = false;
             return false;
         }
-        return (now - mLastPause) > Options.mAutoLock;
+        return (System.currentTimeMillis() - mLastPause) > Options.mAutoLock;
     }
     
     public void ignoreNextPause() {

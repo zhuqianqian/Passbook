@@ -34,7 +34,7 @@
             android:text="@string/file_loc"/>
         <Button
             android:id="@+id/select"
-            style="@style/Button.Flat"
+            style="@style/Button.Flat.Accent"
             android:textAllCaps="false"
             android:scrollHorizontally="true"
             android:singleLine="true"
