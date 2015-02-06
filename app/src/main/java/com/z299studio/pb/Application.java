@@ -160,7 +160,7 @@ public class Application{
             File file = new File(mContext.getFilesDir()+"/"+DATA_FILE);
             mDataSize = (int) file.length();
             if(mDataSize > 0) {
-                mBuffer = new byte[(int) mDataSize];
+                mBuffer = new byte[mDataSize];
                 FileInputStream fis = mContext.openFileInput(DATA_FILE);
                 fis.read(mBuffer, 0, mDataSize);
                 fis.close();
@@ -242,7 +242,8 @@ public class Application{
     public void setPassword(String password, boolean reset) {
         mPassword = password;
         if(reset) {
-            Crypto.getInstance().resetPassword(password);
+            mCrypto = Crypto.getInstance();
+            mCrypto.resetPassword(password);
         }
     }
     
@@ -273,6 +274,9 @@ public class Application{
     }
     
     public void onPause() {
+        if(AccountManager.getInstance().saveRequired()) {
+            saveData();
+        }
         mLastPause = System.currentTimeMillis();
     }
     
