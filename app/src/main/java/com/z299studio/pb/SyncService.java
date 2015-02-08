@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 
 /*
  * Abstract class for synchronization, as other sync service may be used in 
@@ -45,6 +46,7 @@ public abstract class SyncService {
     protected Activity mContext;
     protected int mLocalVersion;
     protected byte[] mData;
+    protected Handler mHandler = new Handler();
     
     public static SyncService getInstance(Activity context, int server) {
         switch(server) {
@@ -82,7 +84,6 @@ public abstract class SyncService {
         return this;
     }
     
-    public abstract boolean onActivityResult(final int requestCode, final int resultCode, 
-        final Intent data);
+    public abstract boolean onActivityResult(int requestCode, int resultCode, Intent data);
 
 }

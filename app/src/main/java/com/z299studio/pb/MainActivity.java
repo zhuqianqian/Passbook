@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        SearchView.OnQueryTextListener {
+        SearchView.OnQueryTextListener, SyncService.SyncListener {
 
 
     private Application mApp;
@@ -113,6 +114,24 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(mApp.queryChange(Application.DATA_ALL)) {
             Application.getSortedCategoryNames();
             MainListFragment.clearCache();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Application.Options.mSync != C.Sync.NONE) {
+            SyncService.getInstance(this, Application.Options.mSync)
+                    .initialize().setListener(this)
+                    .connect(mApp.getLocalVersion());
+        }
+    }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(Application.Options.mSync != C.Sync.NONE) {
+            SyncService.getInstance().disconnect();
         }
     }
     
@@ -348,5 +367,45 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         mNavigationDrawer.select(AccountManager.ALL_CATEGORY_ID);
         Application.showToast(this, R.string.category_deleted, Toast.LENGTH_SHORT);
         Application.reset();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
+    }
+    
+    @Override
+    public void onSyncFailed(int errorCode) {
+        Application.showToast(this, R.string.sync_failed, Toast.LENGTH_SHORT);
+        if(errorCode == SyncService.CA.DATA_RECEIVED) {
+            SyncService.getInstance().send(mApp.getData());
+        }
+    }
+    
+    @Override
+    public void onSyncProgress(int actionCode) {
+        if(actionCode == SyncService.CA.AUTH) {
+            mApp.ignoreNextPause();
+        }
+        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+            byte[] data = SyncService.getInstance().requestData();
+            Application.FileHeader fh = Application.FileHeader.parse(data);
+            if(fh.valid && fh.revision > mApp.getLocalVersion()) {
+                Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+                Application.Options.mSyncVersion = fh.revision;
+                mApp.saveData(data);
+                mApp.onVersionUpdated(fh.revision);
+            }
+            else if(fh.revision < mApp.getLocalVersion()){
+                SyncService.getInstance().send(mApp.getData());
+            }
+            if(fh.revision != Application.Options.mSyncVersion) {
+                mApp.onVersionUpdated(fh.revision);
+            }
+        }
+        else if(actionCode == SyncService.CA.DATA_SENT) {
+            Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
+            mApp.onVersionUpdated(mApp.getLocalVersion());
+        }
     }
 }

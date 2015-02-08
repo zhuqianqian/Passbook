@@ -274,7 +274,7 @@ AnimatorListener, SyncService.SyncListener{
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            int layout = 0;
+            int layout;
             if(mStage == LOADING || mStage == SELECT_SYNC) {
                 layout = R.layout.fragment_startup;
             }
@@ -346,8 +346,10 @@ AnimatorListener, SyncService.SyncListener{
     @Override
     public void onSyncFailed(int errorCode) {
         mStage = SET_PWD;
-        Application.Options.mSync = C.Sync.NONE;
-        mApp.mSP.edit().putInt(C.Sync.SERVER, C.Sync.NONE).apply();
+        if(errorCode== SyncService.CA.AUTH) {
+            Application.Options.mSync = C.Sync.NONE;
+            mApp.mSP.edit().putInt(C.Sync.SERVER, C.Sync.NONE).apply();
+        }
         startHome();
     }
     @Override
@@ -364,6 +366,7 @@ AnimatorListener, SyncService.SyncListener{
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid) {
                 mApp.saveData(data);
+                mApp.onVersionUpdated(fh.revision);
                 mStage = AUTH;
             }
             else {

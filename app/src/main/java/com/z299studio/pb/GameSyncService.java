@@ -1,5 +1,5 @@
 /*
-* Copyright 2014 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
+* Copyright 2015 Qianqian Zhu <zhuqianqian.299@gmail.com> All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -44,7 +43,6 @@ ConnectionCallbacks, OnConnectionFailedListener {
     private static final int MAX_SNAPSHOT_RESOLVE_RETRIES = 3;
     
     private GoogleApiClient mGoogleApiClient;
-    private Handler mHandler = new Handler();
     
     @Override
     public SyncService initialize() {
@@ -127,14 +125,16 @@ ConnectionCallbacks, OnConnectionFailedListener {
     
     @Override
     public void send(final byte[] data) {
+        if(data==null) {
+            return;
+        }
         if(mGoogleApiClient.isConnected()) {
              AsyncTask<Void, Void, Snapshots.OpenSnapshotResult> task = 
                      new AsyncTask<Void, Void, Snapshots.OpenSnapshotResult>() {
                  @Override
                  protected Snapshots.OpenSnapshotResult doInBackground(Void... params) {
-                     Snapshots.OpenSnapshotResult result = Games.Snapshots.open(
+                     return Games.Snapshots.open(
                              mGoogleApiClient, SAVED_DATA, true).await();
-                     return result;
                  }
                  
                  @Override
@@ -169,7 +169,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     private Snapshot processSnapshotOpenResult(Snapshots.OpenSnapshotResult result, int retryCount) {
-        Snapshot mResolvedSnapshot = null;
+        Snapshot mResolvedSnapshot;
         retryCount++;
         int status = result.getStatus().getStatusCode();
 
@@ -198,8 +198,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
     
     @Override
-    public boolean onActivityResult(final int requestCode, final int resultCode, 
-            final Intent data) {
+    public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQ_RESOLUTION) {
             if (resultCode == Activity.RESULT_OK) {
                 mGoogleApiClient.connect();

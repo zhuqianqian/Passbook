@@ -214,15 +214,22 @@ public class Application{
     }
     
     public byte[] getData() {
-        try {
-            mBuffer = new byte[(int) mDataSize];
-            FileInputStream fis = mContext.openFileInput(DATA_FILE);
-            fis.read(mBuffer, 0, (int) mDataSize);
-            mFileHeader = FileHeader.parse(mBuffer);
-            fis.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        if(mBuffer==null) {
+            try {
+                if(mDataSize < 1) {
+                    saveData();
+                    hasDataFile();
+                }
+                if(mDataSize > 0) {
+                    mBuffer = new byte[mDataSize];
+                    FileInputStream fis = mContext.openFileInput(DATA_FILE);
+                    fis.read(mBuffer, 0, mDataSize);
+                    mFileHeader = FileHeader.parse(mBuffer);
+                    fis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return mBuffer;
     }
@@ -302,8 +309,9 @@ public class Application{
         }
     }
     
-    public void onDataReceived(byte[] data) {
-        
+    public void onVersionUpdated(int revision) {
+        Options.mSyncVersion = revision;
+        mSP.edit().putInt(C.Sync.VERSION, revision).apply();
     }
     
     public static void showToast(Activity context, int stringId, int duration) {

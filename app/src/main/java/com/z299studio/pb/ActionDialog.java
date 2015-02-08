@@ -54,8 +54,11 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     private final Runnable mUpdateUi = new Runnable() {
         @Override
         public void run() {
-            mOkButton.setEnabled(true);
-            mSelectButton.setText(mText);
+            if(mText != null) {
+                mOkButton.setEnabled(true);
+                mSelectButton.setText(mText);
+                mOkButton.setAlpha(1.0f);
+            }
         }
     };
     
