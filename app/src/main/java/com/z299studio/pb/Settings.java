@@ -37,7 +37,7 @@ import android.widget.Toast;
 
 public class Settings extends ActionBarActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
-        ActionDialog.ActionDialogListener{
+        ActionDialog.ActionDialogListener, SyncService.SyncListener{
     
     private static final String TAG_DIALOG = "action_dialog";
 
@@ -417,6 +417,10 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 overridePendingTransition(0,0);
                 break;
             case R.string.sync_server:
+                Application.Options.mSync = (int)item.getValue();
+                if(Application.Options.mSync == C.Sync.NONE) {
+                    editor.putInt(C.Sync.SERVER, Application.Options.mSync);
+                }
                 break;
             case R.string.auto_lock:
                 int lock_options[] = {1000, 5*60*1000, 30 * 60 * 1000, 0};
@@ -464,7 +468,39 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                     type, operation, option).execute();
         }
     }
+
+    @Override
+    public void onSyncFailed(int errorCode) { }
     
+    @Override
+    public void onSyncProgress(int actionCode) {
+        Application app = Application.getInstance();
+        if(actionCode == SyncService.CA.AUTH) {
+            app.ignoreNextPause();
+            app.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
+        }
+        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+            byte[] data = SyncService.getInstance().requestData();
+            Application.FileHeader fh = Application.FileHeader.parse(data);
+            if(fh.valid && fh.revision > app.getLocalVersion()) {
+                Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+                Application.Options.mSyncVersion = fh.revision;
+                app.saveData(data);
+                app.onVersionUpdated(fh.revision);
+                app.notifyChange(Application.DATA_ALL);
+            }
+            else if(fh.revision < app.getLocalVersion()){
+                SyncService.getInstance().send(app.getData());
+            }
+            if(fh.revision != Application.Options.mSyncVersion) {
+                app.onVersionUpdated(fh.revision);
+            }
+        }
+        else if(actionCode == SyncService.CA.DATA_SENT) {
+            Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
+            app.onVersionUpdated(app.getLocalVersion());
+        }
+    }
     private void handleSwitchOption(int id, boolean value) {
         SharedPreferences.Editor editor = Application.getInstance().mSP.edit();
         switch(id) {

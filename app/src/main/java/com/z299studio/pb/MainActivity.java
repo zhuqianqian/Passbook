@@ -394,7 +394,10 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
                 Application.Options.mSyncVersion = fh.revision;
                 mApp.saveData(data);
-                mApp.onVersionUpdated(fh.revision);
+                mApp.onVersionUpdated(fh.revision);    
+                Application.reset();
+                Application.getSortedCategoryNames();
+                MainListFragment.clearCache();
             }
             else if(fh.revision < mApp.getLocalVersion()){
                 SyncService.getInstance().send(mApp.getData());
