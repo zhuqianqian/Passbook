@@ -210,6 +210,17 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mIsEditing = savedInstanceState.getBoolean("edit_category");
             mCategoryIcon = savedInstanceState.getInt("category_icon");
             mCategoryName = savedInstanceState.getString("category_name");
+            IconSetter dialog = (IconSetter)getFragmentManager().findFragmentByTag("set_icon");
+            if(dialog!=null) {
+                dialog.setListener(new IconSetter.OnIconChosen() {
+                    @Override
+                    public void onChosen(int id) {
+                        mCategoryIcon = id;
+                        mCategoryIconView.setImageResource(
+                                Application.getThemedIcons()[mCategoryIcon]);
+                    }
+                });
+            }
         }
         else {
             mCategoryId = AccountManager.ALL_CATEGORY_ID;

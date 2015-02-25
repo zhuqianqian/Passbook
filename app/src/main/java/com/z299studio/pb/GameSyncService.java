@@ -83,7 +83,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
                     Snapshot snapshot = result.getSnapshot();
                     try {
                         mData = snapshot.getSnapshotContents().readFully();
-                        if (mData != null) {
+                        if (mData != null && mData.length > Application.FileHeader.HEADER_SIZE) {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -94,7 +94,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mListener.onSyncFailed(CA.DATA_RECEIVED);
+                                    mListener.onSyncFailed(CA.NO_DATA);
                                 }
                             });
                         }

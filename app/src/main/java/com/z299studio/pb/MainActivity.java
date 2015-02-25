@@ -93,6 +93,18 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         mNavigationDrawer.setUp(R.id.navigation_drawer, mDrawerLayout);
         mMainList = (MainListFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.panel_main);
+        if(savedInstanceState != null) {
+            DeleteCategory dialog = (DeleteCategory)getSupportFragmentManager()
+                    .findFragmentByTag("delete_category");
+            if(dialog!=null) {
+                dialog.setListener(new DeleteCategory.OnDeleteConfirmListener() {
+                    @Override
+                    public void onConfirmed(int category, boolean alsoDelAccounts) {
+                        deleteCategory(category, alsoDelAccounts);
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -391,7 +403,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     @Override
     public void onSyncFailed(int errorCode) {
         Application.showToast(this, R.string.sync_failed, Toast.LENGTH_SHORT);
-        if(errorCode == SyncService.CA.DATA_RECEIVED) {
+        if(errorCode == SyncService.CA.NO_DATA) {
             SyncService.getInstance().send(mApp.getData());
         }
     }

@@ -165,7 +165,7 @@ public class DriveSyncService extends SyncService implements
                 read();
             }
             else {
-                mListener.onSyncFailed(CA.DATA_RECEIVED);
+                mListener.onSyncFailed(CA.NO_DATA);
             }
         }
     };
@@ -189,7 +189,7 @@ public class DriveSyncService extends SyncService implements
                 }
             }
             else {
-                mListener.onSyncFailed(CA.DATA_RECEIVED);
+                mListener.onSyncFailed(CA.NO_DATA);
                 Log.w(LOG_TAG, "Retrieving contents received error");
             }
         }

@@ -33,6 +33,7 @@ public abstract class SyncService {
         public static final int DATA_RECEIVED = 2;
         public static final int CONNECTION = 3;
         public static final int AUTH = 4;
+        public static final int NO_DATA = 5;
     }
     
     public interface SyncListener {
