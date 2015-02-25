@@ -11,7 +11,7 @@
     <!-- App strings -->
     <string name="app_name">PwdBook</string>
     <string name="app_about">%1$s\nVersion %2$s</string>
-    <string name="app_copy">Copyright &#169; 299Studio 2014</string>
+    <string name="app_copy">Copyright &#169; 2015, 299Studio</string>
     <string name="app_welcome">Welcome to PwdBook</string>
     <string name="app_intro">Your central place to securely store your sensitive data and synchronize among devices.\n\nChoose where you want to sync your data</string>
     <!-- Action/Menu/Button/Label/Title strings -->
@@ -103,7 +103,6 @@
     <string name="remember_choice">Remember my choice and do not ask again.</string>
     <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
     <string name="credits">Many thanks to <u>Xu, Xuechen</u> for French translations!</string>
-    <string name="icon8_lisense">Some of the icons used in this app are from <a href="http://icon8.com">Icon8</a> under license <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons Attribution-NoDerivs 3.0 Unported</a>.</string>
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
     <!-- String arrays -->
     <string-array name="theme_names">

@@ -16,9 +16,11 @@
 
 package com.z299studio.pb;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -187,8 +189,14 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 mMainList.editCategory();
                 break;
             case R.id.action_help:
+                Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
+                try {  startActivity(rateIntent); } 
+                catch (ActivityNotFoundException e) {}
                 break;
             case R.id.action_about:
+                ActionDialog.create(ActionDialog.ACTION_ABOUT)
+                        .show(getSupportFragmentManager(), "action_dialog");
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, Settings.class));
@@ -240,8 +248,14 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                     startActivity(new Intent(this, Settings.class));
                     break;
                 case R.string.help:
+                    Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                    Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
+                    try {  startActivity(rateIntent); }
+                    catch (ActivityNotFoundException e) {}
                     break;
                 case R.string.about:
+                    ActionDialog.create(ActionDialog.ACTION_ABOUT)
+                            .show(getSupportFragmentManager(), "action_dialog");
                     break;
             }
         }

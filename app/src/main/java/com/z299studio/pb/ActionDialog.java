@@ -17,7 +17,9 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,18 +30,22 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ActionDialog extends DialogFragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher{
     
     public static final int REQ_CODE_FILE_SELECTION = 0x299;
+    private static final String TAG_DIALOG = "action_dialog";
     
     public interface ActionDialogListener {
         public void onConfirm(String text, int type, int operation, int option);
@@ -49,6 +55,8 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     public static final int ACTION_EXPORT = 1;
     public static final int ACTION_IMPORT = 2;
     public static final int ACTION_RESET_PWD = 3;
+    public static final int ACTION_ABOUT = 4;
+    public static final int ACTION_LICENSE = 5;
 
     private Handler mHandler = new Handler();
     private final Runnable mUpdateUi = new Runnable() {
@@ -111,48 +119,89 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         View rootView;
         int []layouts =  {R.layout.dialog_authenticate, R.layout.dialog_export,
-            R.layout.dialog_import, R.layout.dialog_reset_pwd};
+            R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_about,
+            R.layout.dialog_license};
         rootView = inflater.inflate(layouts[mDlgType], container, false);
         mOkButton = (Button)rootView.findViewById(R.id.ok);
-        mOkButton.setOnClickListener(this);
-        rootView.findViewById(R.id.cancel).setOnClickListener(this);
-        if(mDlgType != ACTION_EXPORT) {
+        if(mOkButton != null) {
+            mOkButton.setOnClickListener(this);
+        }
+        View cancel = rootView.findViewById(R.id.cancel);
+        if(cancel!=null) {
+            cancel.setOnClickListener(this);
+        }
+        switch(mDlgType) {
+        case ACTION_EXPORT:
             mOkButton.setEnabled(false);
             mOkButton.setAlpha(0.4f);
-        }
-        if(mDlgType == ACTION_EXPORT || mDlgType == ACTION_IMPORT) {
-            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+        case ACTION_IMPORT:
+            Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
                     getActivity(), mDlgType == ACTION_EXPORT ? R.array.file_types :
-                    R.array.file_types_import, android.R.layout.simple_spinner_dropdown_item);
+                            R.array.file_types_import, android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
             spinner.setSelection(mFileType);
             spinner.setOnItemSelectedListener(this);
-        }
-        if(mDlgType == ACTION_AUTHENTICATE) {
-            mPasswordEdits[1] = (EditText)rootView.findViewById(R.id.et_password);
+            if(mDlgType == ACTION_IMPORT) {
+                int ids[] = {R.id.ignore, R.id.keepall, R.id.overwrite};
+                for (int i = 0; i < ids.length; ++i) {
+                    RadioButton rb = (RadioButton) rootView.findViewById(ids[i]);
+                    rb.setOnClickListener(this);
+                    if (i == mOption) {
+                        rb.setChecked(true);
+                    }
+                }
+                mSelectButton = (Button) rootView.findViewById(R.id.select);
+                mSelectButton.setOnClickListener(this);
+            }
+            break;
+
+        case ACTION_AUTHENTICATE:
+            mPasswordEdits[1] = (EditText) rootView.findViewById(R.id.et_password);
             mPasswordEdits[1].addTextChangedListener(this);
-        }
-        if(mDlgType == ACTION_RESET_PWD) {
+            break;
+        
+        case ACTION_RESET_PWD:
             int ids[] = {R.id.et_cur_pwd, R.id.et_password, R.id.et_confirm};
-            for(int i = 0; i < ids.length; ++i) {
-                mPasswordEdits[i] = (EditText)rootView.findViewById(ids[i]);
+            for (int i = 0; i < ids.length; ++i) {
+                mPasswordEdits[i] = (EditText) rootView.findViewById(ids[i]);
                 mPasswordEdits[i].addTextChangedListener(this);
             }
-        }
-        if(mDlgType == ACTION_IMPORT) {
-            int ids[] = {R.id.ignore, R.id.keepall, R.id.overwrite};
-            for(int i = 0; i < ids.length; ++i) {
-                RadioButton rb = (RadioButton)rootView.findViewById(ids[i]);
-                rb.setOnClickListener(this);
-                if(i == mOption) {
-                    rb.setChecked(true);
-                }
+            break;
+        
+        case ACTION_ABOUT:
+            rootView.findViewById(R.id.rate).setOnClickListener(this);
+            rootView.findViewById(R.id.licence).setOnClickListener(this);
+            TextView tv = (TextView) rootView.findViewById(R.id.about);
+            Activity context = getActivity();
+            String versionName;
+            try {
+                versionName = context.getPackageManager()
+                        .getPackageInfo(context.getPackageName(), 0)
+                        .versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                versionName = "2.0.0";
             }
-            mSelectButton = (Button)rootView.findViewById(R.id.select);
-            mSelectButton.setOnClickListener(this);
+            tv.setText(getString(R.string.app_about, getString(R.string.app_name), versionName));
+            break;
+        
+        case ACTION_LICENSE:
+            WebView wv = (WebView) rootView.findViewById(R.id.licence_page);
+            wv.loadUrl("file:///android_asset/licence.html");
+            break;
         }
         return rootView;
+    }
+    
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mDlgType == ACTION_LICENSE) {
+            WindowManager.LayoutParams lp = getDialog().getWindow().getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            getDialog().getWindow().setAttributes(lp);
+        }
     }
     
     @Override
@@ -161,8 +210,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             case R.id.ok:
                 if(mDlgType == ACTION_RESET_PWD) {
                     resetPassword();
-                }
-                else {
+                }else {
                     mListener.onConfirm(mText, mFileType, mDlgType, mOption);
                 }
             case R.id.cancel:
@@ -179,6 +227,17 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 break;
             case R.id.select:
                 showFileChooser();
+                break;
+            case R.id.rate:
+                this.dismiss();
+                Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+                Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
+                try { startActivity(rateIntent); } 
+                catch (ActivityNotFoundException e) { }
+                break;
+            case R.id.licence:
+                this.dismiss();
+                ActionDialog.create(ACTION_LICENSE).show(getFragmentManager(), TAG_DIALOG);
                 break;
         }
     }
