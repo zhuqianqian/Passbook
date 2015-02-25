@@ -421,6 +421,8 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 if(Application.Options.mSync == C.Sync.NONE) {
                     editor.putInt(C.Sync.SERVER, Application.Options.mSync);
                 }
+                SyncService.getInstance(this, Application.Options.mSync).initialize()
+                        .setListener(this).connect(Application.getInstance().getLocalVersion());
                 break;
             case R.string.auto_lock:
                 int lock_options[] = {1000, 5*60*1000, 30 * 60 * 1000, 0};

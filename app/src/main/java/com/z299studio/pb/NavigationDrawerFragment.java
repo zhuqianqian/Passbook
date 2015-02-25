@@ -232,7 +232,7 @@ public class NavigationDrawerFragment extends Fragment implements
             mCategory2Navigation.put(categoryIds[i], pos++);
         }
         if(mDrawerHidden) {
-            result.add(new NavMenuItem(0, r.getString(R.string.settings), 0, 0,
+            result.add(new NavMenuItem(0, null, 0, 0,
                     NavMenuItem.MENU_SEPARATOR));
             int stringIds[] = {R.string.help, R.string.settings, R.string.about};
             int iconIds[] = {R.drawable.ic_action_help, R.drawable.ic_action_settings,
@@ -243,10 +243,6 @@ public class NavigationDrawerFragment extends Fragment implements
             }
         }
         return result;
-    }
-
-    public int getNavigationPosition(int categoryId) {
-        return mCategory2Navigation.get(categoryId);
     }
 
     public void remove(int category) {
@@ -279,28 +275,17 @@ public class NavigationDrawerFragment extends Fragment implements
         Integer pos = mCategory2Navigation.get(category);
         int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
         View view = mMenuList.getChildAt(pos - firstVisiblePosition);
-        if(pos!=null) {
-            mAdapter.increaseCounterInMenu(view, pos, delta);
-        }
-    }
-
-    public void updateCategoryCounter(int category, int value) {
-        Integer pos = mCategory2Navigation.get(category);
-        int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
-        View view = mMenuList.getChildAt(pos - firstVisiblePosition);
-        if(pos!=null) {
-            mAdapter.updateCategoryCounter(view, pos, value);
-        }
+        mAdapter.increaseCounterInMenu(view, pos, delta);
     }
     
     public void refreshCategoryCounters() {
         int[] cateIds = Application.getSortedCategoryIds();
         AccountManager am = AccountManager.getInstance();
         Integer pos;
-        for(int i = 0; i < cateIds.length; ++i) {
-            pos = mCategory2Navigation.get(cateIds[i]);
+        for(int id : cateIds) {
+            pos = mCategory2Navigation.get(id);
             if(pos!=null) {
-                mAdapter.updateCategoryCounter(null, pos, am.getAccountsCountByCategory(cateIds[i]));
+                mAdapter.updateCategoryCounter(null, pos, am.getAccountsCountByCategory(id));
             }
         }
         mAdapter.notifyDataSetChanged();

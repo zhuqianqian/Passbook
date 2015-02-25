@@ -18,4 +18,9 @@
         <item name="android:colorAccent">?attr/colorAccent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="NavigationSeparatorTextStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

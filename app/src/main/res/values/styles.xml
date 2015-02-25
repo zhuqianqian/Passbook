@@ -85,4 +85,8 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="NavigationSeparatorTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

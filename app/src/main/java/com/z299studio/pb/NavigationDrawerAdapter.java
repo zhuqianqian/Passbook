@@ -143,7 +143,14 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         else{
             holder = (NavItemHolder) v.getTag();
         }
-        holder.mTitleView.setText(menuItem.mTitle);
+        if(menuItem.mTitle == null) {
+            holder.mTitleView.setVisibility(View.GONE);
+        }
+        else {
+            holder.mTitleView.setVisibility(View.VISIBLE);
+            holder.mTitleView.setText(menuItem.mTitle);
+        }
+        
         holder.mTitleView.setTextColor(mTextColor);
         if(menuItem.mIcon != 0 && holder.mIconView != null) {
             holder.mIconView.setImageResource(menuItem.mIcon);
@@ -156,6 +163,9 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         }
         else if(menuItem.mType == NavMenuItem.MENU_SELECTION && holder.mCounterView != null){
             holder.mCounterView.setText("");
+        }
+        if(menuItem.mType == NavMenuItem.MENU_SEPARATOR) {
+            holder.mTitleView.setTextColor(C.ThemedColors[C.colorIconNormal]);
         }
         return v;
     }
