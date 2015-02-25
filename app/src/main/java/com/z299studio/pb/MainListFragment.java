@@ -163,6 +163,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         public void onDestroyActionMode(ActionMode actionMode) {
             mActionMode = null;
             mIsEditing = false;
+            mSelectionMode = false;
             mCategoryEditView.setVisibility(View.GONE);
             updateData(mCategoryId);
             showFab(true);
@@ -206,10 +207,15 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         if(savedInstanceState != null) {
             mCategoryId = savedInstanceState.getInt("category_id");
             mSelectionMode = savedInstanceState.getBoolean("selection_mode");
+            mIsEditing = savedInstanceState.getBoolean("edit_category");
+            mCategoryIcon = savedInstanceState.getInt("category_icon");
+            mCategoryName = savedInstanceState.getString("category_name");
         }
         else {
             mCategoryId = AccountManager.ALL_CATEGORY_ID;
-            mSelectionMode = false;
+            mSelectionMode = mIsEditing = false;
+            mCategoryIcon = -1;
+            mCategoryName = null;
         }
         mFabIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_bottom);
         mFabOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_bottom);
@@ -220,7 +226,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("category_id", mCategoryId);
+        outState.putInt("category_icon", mCategoryIcon);
+        outState.putString("category_name", mCategoryName);
         outState.putBoolean("selection_mode", mSelectionMode);
+        outState.putBoolean("edit_category", mIsEditing);
         super.onSaveInstanceState(outState);
     }
 
@@ -278,6 +287,13 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 }
             }
         });
+        if(mIsEditing) {
+            mIsEditing = false;
+            editCategory();
+        }
+        else if(mSelectionMode) {
+            mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+        }
         return rootView;
     }
 
@@ -331,6 +347,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mAdapter.notifyDataSetChanged();
             mToBeRemoved = new int[mAdapter.getCount()];
             ((TextView)mListView.getEmptyView()).setText(R.string.no_accounts);
+            mCategoryIcon = -1;
+            mCategoryName = null;
         }
     }
     
@@ -494,16 +512,16 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mCategoryEditView.setVisibility(View.VISIBLE);
         int[] icons = Application.getThemedIcons();
         AccountManager.Category category = AccountManager.getInstance().getCategory(mCategoryId);
-        if(mCategoryId > AccountManager.DEFAULT_CATEGORY_ID) {
-            editCategoryName.setText(category.mName);
-            mCategoryIconView.setImageResource(icons[category.mImgCode]);
-            mCategoryIcon = category.mImgCode;
+        if(mCategoryName == null) {
+            mCategoryName = mCategoryId > AccountManager.DEFAULT_CATEGORY_ID ? 
+                    category.mName : "";
         }
-        else {
-            editCategoryName.setText("");
-            mCategoryIconView.setImageResource(icons[icons.length-1]);
-            mCategoryIcon = icons.length-1;
+        if(mCategoryIcon < 0) {
+            mCategoryIcon = mCategoryId > AccountManager.DEFAULT_CATEGORY_ID ?
+                    category.mImgCode : icons.length-1;
         }
+        editCategoryName.setText(mCategoryName);
+        mCategoryIconView.setImageResource(icons[mCategoryIcon]);
         mCategoryIconView.setOnClickListener(this);
         mCategoryIconView.setColorFilter(C.ThemedColors[C.colorTextNormal]);
         updateListForEditing();
