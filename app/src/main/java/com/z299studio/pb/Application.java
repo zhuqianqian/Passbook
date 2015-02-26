@@ -144,9 +144,7 @@ public class Application{
         Options.mAutoLock = mSP.getInt(C.Keys.AUTO_LOCK_TIME, -1);
         if(Options.mAutoLock == -1) {
             boolean autolock_v1 = mSP.getBoolean(C.Keys.AUTO_LOCK, false);
-            if(autolock_v1) {
-                Options.mAutoLock = 1000;
-            }
+            Options.mAutoLock = autolock_v1 ? 1000 : 0;
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
