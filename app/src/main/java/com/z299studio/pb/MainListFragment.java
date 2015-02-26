@@ -86,6 +86,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             showFab(false);
             mActionModeDestroyed = false;
             mFromMenu = false;
+            mListener.onLockDrawer(true);
             return true;
         }
 
@@ -127,6 +128,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 reset();
             }
             mActionMode = null;
+            mListener.onLockDrawer(false);
         }
 
     };
@@ -138,6 +140,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             showFab(false);
             MenuInflater inflater = actionMode.getMenuInflater();
             inflater.inflate(R.menu.menu_edit, menu);
+            mListener.onLockDrawer(true);
             return true;
         }
 
@@ -167,6 +170,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mCategoryEditView.setVisibility(View.GONE);
             updateData(mCategoryId);
             showFab(true);
+            mListener.onLockDrawer(false);
         }
     };
     

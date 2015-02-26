@@ -18,7 +18,6 @@ package com.z299studio.pb;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
@@ -47,7 +46,6 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
 
     private Application mApp;
     private NavigationDrawerFragment mNavigationDrawer;
-    private DrawerLayout mDrawerLayout;
     private MainListFragment mMainList;
     private int mStatusColor;
     private View mRootView;
@@ -89,8 +87,8 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         setupToolbar();
         mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mNavigationDrawer.setUp(R.id.navigation_drawer, mDrawerLayout);
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mNavigationDrawer.setUp(R.id.navigation_drawer, drawerLayout);
         mMainList = (MainListFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.panel_main);
         if(savedInstanceState != null) {
@@ -204,7 +202,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                 Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
                 Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
                 try {  startActivity(rateIntent); } 
-                catch (ActivityNotFoundException e) {}
+                catch (ActivityNotFoundException e) {
+                    Log.w("PwdBook", "Activity not found when launching help");                    
+                }
                 break;
             case R.id.action_about:
                 ActionDialog.create(ActionDialog.ACTION_ABOUT)
@@ -263,7 +263,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                     Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
                     Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
                     try {  startActivity(rateIntent); }
-                    catch (ActivityNotFoundException e) {}
+                    catch (ActivityNotFoundException e) {
+                        Log.w("PwdBook", "Activity not found when launching help");
+                    }
                     break;
                 case R.string.about:
                     ActionDialog.create(ActionDialog.ACTION_ABOUT)
@@ -371,6 +373,11 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         mNavigationDrawer.remove(-1);
         MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
         MainListFragment.resetAdapter(AccountManager.DEFAULT_CATEGORY_ID);
+    }
+    
+    @Override
+    public void onLockDrawer(boolean lock) {
+        mNavigationDrawer.lockDrawer(lock);
     }
     
     private void deleteCategory(int category, boolean alsoDelAccounts) {

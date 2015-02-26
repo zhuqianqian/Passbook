@@ -261,6 +261,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         }
         mSavable = false;
         mNameOk = false;
+        mListener.onLockDrawer(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -346,6 +347,12 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mNameEditText.getWindowToken(), 0);
+    }
+    
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener.onLockDrawer(false);
     }
 
     @Override

@@ -24,4 +24,5 @@ public interface ItemFragmentListener {
     public void onSelect(int id);
     public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);
     public void onCategorySaved();
+    public void onLockDrawer(boolean lock);
 }

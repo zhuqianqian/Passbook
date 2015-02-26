@@ -121,7 +121,19 @@ public class DetailFragment extends Fragment implements
         outState.putInt(C.ACCOUNT, mAccountId);
         super.onSaveInstanceState(outState);
     }
-
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        mListener.onLockDrawer(true);
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        mListener.onLockDrawer(false);
+    }
+    
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
         mAdapter.changeDisplay(view, pos);

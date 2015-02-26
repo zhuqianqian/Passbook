@@ -298,5 +298,15 @@ public class NavigationDrawerFragment extends Fragment implements
         }
         return 0;
     }
+    
+    public void lockDrawer(boolean lock) {
+        if(mDrawerLayout!=null) {
+            mDrawerLayout.setDrawerLockMode(lock ? 
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+        else {
+            mMenuList.setEnabled(!lock);
+        }
+    }
 
 }

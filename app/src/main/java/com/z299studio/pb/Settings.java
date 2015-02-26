@@ -477,9 +477,9 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     @Override
     public void onSyncProgress(int actionCode) {
         Application app = Application.getInstance();
+        app.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
         if(actionCode == SyncService.CA.AUTH) {
             app.ignoreNextPause();
-            app.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
         }
         else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             byte[] data = SyncService.getInstance().requestData();
