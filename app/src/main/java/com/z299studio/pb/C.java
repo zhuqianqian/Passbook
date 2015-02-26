@@ -29,8 +29,6 @@ public final class C {
     public static final String ACTION = "action";
     public static final String ACCOUNT = "account";
     public static final String CATEGORY = "category";
-    public static final int ACTION_VIEW = 0;
-    public static final int ACTION_EDIT = 1;
     
     public static final class Keys {
         public static final String AUTO_LOCK = "AutoLock";

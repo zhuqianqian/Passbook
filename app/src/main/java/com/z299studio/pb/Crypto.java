@@ -16,6 +16,8 @@
 
 package com.z299studio.pb;
 
+import android.util.Log;
+
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -80,9 +82,9 @@ public class Crypto {
             keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
             mKey = new SecretKeySpec(keyBytes, "AES"); 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Log.e("PwdBook:Crypto", "No encryption algorithm found");
         } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
+            Log.e("PwdBook:Crypto", "Invalid key");
         }        
     }
     

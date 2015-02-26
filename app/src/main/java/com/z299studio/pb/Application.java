@@ -31,6 +31,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -276,8 +277,13 @@ public class Application{
             System.arraycopy(cipher, 0, mBuffer, header.length + keyInfo.length, cipher.length);
             fos.close();
             AccountManager.getInstance().onSaved();
-        }catch (FileNotFoundException e) {}
-        catch(IOException ioe) {}
+        }catch (FileNotFoundException e) {
+            Log.w("PwdBook", "File not found");
+        }
+        catch(IOException ioe) {
+            Log.e("PwdBook", "IOException");
+            
+        }
     }
     
     public void onPause() {

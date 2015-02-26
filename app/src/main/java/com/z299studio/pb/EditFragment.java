@@ -487,7 +487,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     private void requestPassword(EditText view, int type) {
         PasswordGenerator.build(type, view).show(getFragmentManager(), "generate");
-
     }
 
     private AccountManager.Account getEntryList() {
