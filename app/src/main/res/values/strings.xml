@@ -65,7 +65,6 @@
     <string name="delete">Delete</string>
     <string name="unlock">Unlock</string>
     <string name="get_started">Get Started</string>
-    <string name="select">TAP TO SELECT A FILE</string>
     <string name="option_label">Options to deal with duplicates:</string>
     <string name="option_ignore">Ignore</string>
     <string name="option_keepall">Keep Both</string>
@@ -106,15 +105,25 @@
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
     <!-- String arrays -->
     <string-array name="theme_names">
+    <!-- String arrays -->
         <item>Default Light Theme</item>
+    <!-- String arrays -->
         <item>Default Dark Theme</item>
+    <!-- String arrays -->
         <item>Indigo Light</item>
+    <!-- String arrays -->
         <item>Indigo Dark</item>
+    <!-- String arrays -->
         <item>Purple Light</item>
+    <!-- String arrays -->
         <item>Purple Dark</item>
+    <!-- String arrays -->
         <item>Blue-Grey Light</item>
+    <!-- String arrays -->
         <item>Blue-Grey Dark</item>
+    <!-- String arrays -->
         <item>Teal Light</item>
+    <!-- String arrays -->
         <item>Teal Dark</item>
     </string-array>
     <string-array name="category_names">

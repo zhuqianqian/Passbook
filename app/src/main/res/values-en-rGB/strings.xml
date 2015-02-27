@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App strings -->
+    <string name="app_intro">Your central place to securely store your sensitive data and synchronise among devices.\n\nChoose where you want to sync your data</string>
+    <!-- Action/Menu/Button/Label/Title strings -->
+    <string name="licence">Open Source Licences</string>
+    <!-- Tips/Messages -->
+    <!-- String arrays -->
+</resources>

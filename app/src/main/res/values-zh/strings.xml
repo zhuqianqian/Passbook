@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="title_accounts">
+        <item quantity="other">%d个账号</item>
+    </plurals>
+    <plurals name="info_deleted">
+        <item quantity="other">删除%d项。</item>
+    </plurals>
+    <!-- App strings -->
+    <string name="app_name">密码本</string>
+    <string name="app_about">%1$s\n版本 %2$s</string>
+    <string name="app_copy">版权所有 &#169; 2015, 299Studio</string>
+    <string name="app_welcome">欢迎使用密码本</string>
+    <string name="app_intro">安全管理你的账号密码并在多个设备之间同步。\n\n请选择一个服务器进行同步。</string>
+    <!-- Action/Menu/Button/Label/Title strings -->
+    <string name="edit_category">编辑类别</string>
+    <string name="del_category">删除类别</string>
+    <string name="new_category">添加新类别</string>
+    <string name="edit_account">修改账号</string>
+    <string name="del_account">删除账号</string>
+    <string name="new_account">新加账号</string>
+    <string name="help">帮助与常见问题</string>
+    <string name="settings">设置</string>
+    <string name="about">关于密码本</string>
+    <string name="all_accounts">所有账号</string>
+    <string name="categories">类别</string>
+    <string name="rate">评价与反馈</string>
+    <string name="set_icon">设置图标</string>
+    <string name="copy_pwd">复制密码</string>
+    <string name="change_pwd">更换主密码</string>
+    <string name="import_data">导入数据</string>
+    <string name="export_data">导出数据</string>
+    <string name="sync">数据同步</string>
+    <string name="general">常规设置</string>
+    <string name="security">安全</string>
+    <string name="sync_none">不使用同步</string>
+    <string name="sync_gpg">Google Play游戏</string>
+    <string name="sync_gdrive">Google云端硬盘</string>
+    <string name="sync_server">同步服务器</string>
+    <string name="sync_msg">显示同步消息</string>
+    <string name="show_password">总是显示密码</string>
+    <string name="show_ungrouped">显示未分组类别</string>
+    <string name="auto_lock">进入后台时自动上锁</string>
+    <string name="warn_copy">复制密码时显示警告</string>
+    <string name="theme">应用主题</string>
+    <string name="file_loc">文件位置：</string>
+    <string name="export_type">导出文件格式：</string>
+    <string name="import_type">导入文件格式：</string>
+    <string name="licence">开源许可协议</string>
+    <string name="enter_pwd">输入主密码</string>
+    <string name="set_pwd">设置主密码</string>
+    <string name="repeat_pwd">重复密码</string>
+    <string name="current_pwd">当前密码</string>
+    <string name="new_pwd">新密码</string>
+    <string name="select_file">选择文件</string>
+    <string name="def_category">其他</string>
+    <string name="field_name">字段名称</string>
+    <string name="field_value">值</string>
+    <string name="add_field">添加一行信息</string>
+    <string name="undo">撤消</string>
+    <string name="start">开始</string>
+    <string name="change">更改</string>
+    <string name="delete">删除</string>
+    <string name="unlock">解锁</string>
+    <string name="get_started">开始使用</string>
+    <string name="option_label">如何处理重复项目：</string>
+    <string name="option_ignore">忽略</string>
+    <string name="option_keepall">保留所有项目</string>
+    <string name="option_overwrite">覆盖已有项目</string>
+    <string name="copy">复制</string>
+    <string name="auto_gen">密码自动生成</string>
+    <string name="other">其他</string>
+    <string name="accept">接受</string>
+    <string name="refresh">重新生成</string>
+    <string name="length">长度：%d</string>
+    <string name="save">保存</string>
+    <string name="close">关闭</string>
+    <string name="search">在密码本中搜索…</string>
+    <!-- Tips/Messages -->
+    <string name="empty_search">没有找到匹配结果。</string>
+    <string name="select_to_add">选择要添加的条目：</string>
+    <string name="delete_ask">确定要删除吗？你不能撤消删除。</string>
+    <string name="also_del_account">同时删除类别下的所有账号。</string>
+    <string name="no_file_explorer">没有可用的文件管理器。</string>
+    <string name="no_accounts">你还未添加任何账号。\n\n点击添加。</string>
+    <string name="loading">尝试从%s加载数据…</string>
+    <string name="pwd_changed">密码已更改。</string>
+    <string name="category_deleted">类别已删除。</string>
+    <string name="pwd_wrong">密码错误。</string>
+    <string name="pwd_unmatch">两次密码不一致。</string>
+    <string name="export_failed">数据导出失败。</string>
+    <string name="import_failed">数据导入失败。</string>
+    <string name="sync_failed">数据同步失败。</string>
+    <string name="text_copied">文字已复制到粘贴板。</string>
+    <string name="export_success">数据导出到%s。</string>
+    <string name="import_success">数据导入成功。</string>
+    <string name="sync_success_local">数据从服务器同步到本地。</string>
+    <string name="sync_success_server">数据同步到服务器。</string>
+    <string name="invalid_file">请选择一个有效的文件以继续。</string>
+    <string name="remember_choice">记住我的选择并不再询问。</string>
+    <string name="warning_copy">粘贴上的内容可以被设备上的所有应用访问，确定要复制吗？</string>
+    <string name="credits">非常感谢<u>徐雪晨</u>的法语翻译！</string>
+    <string name="auth_required">原始文件用一个不同的密码加密，请输入它的密码以解锁。</string>
+    <!-- String arrays -->
+    <string-array name="theme_names">
+    <!-- String arrays -->
+        <item>默认淡色主题</item>
+    <!-- String arrays -->
+        <item>默认深色主题</item>
+    <!-- String arrays -->
+        <item>靛青淡色</item>
+    <!-- String arrays -->
+        <item>靛青深色</item>
+    <!-- String arrays -->
+        <item>紫色淡色</item>
+    <!-- String arrays -->
+        <item>紫色深色</item>
+    <!-- String arrays -->
+        <item>蓝灰淡色</item>
+    <!-- String arrays -->
+        <item>蓝灰深色</item>
+    <!-- String arrays -->
+        <item>蓝绿淡色</item>
+    <!-- String arrays -->
+        <item>蓝绿深色</item>
+    </string-array>
+    <string-array name="category_names">
+        <item>银行账号</item>
+        <item>信用卡</item>
+        <item>设备</item>
+        <item>电子银行</item>
+        <item>电子邮箱</item>
+        <item>网络账号</item>
+    </string-array>
+    <string-array name="field_types">
+        <item>文本</item>
+        <item>密码</item>
+        <item>网址</item>
+        <item>电子邮箱</item>
+        <item>PIN</item>
+    </string-array>
+    <string-array name="file_types">
+        <item>密码本文件（密文）</item>
+        <item>密码本逗号分隔文件（明文）</item>
+    </string-array>
+    <string-array name="file_types_import">
+        <item>密码本文件（密文）</item>
+        <item>密码本逗号分隔文件（明文）</item>
+        <item>aWallet逗号分隔文件（明文）</item>
+    </string-array>
+    <string-array name="def_field_names">
+        <item>用户名</item>
+        <item>密码</item>
+        <item>电子邮箱</item>
+        <item>网址</item>
+        <item>卡号</item>
+        <item>PIN</item>
+        <item>备注</item>
+        <item>银行名称</item>
+        <item>校验码</item>
+    </string-array>
+    <string-array name="lock_options">
+        <item>立即</item>
+        <item>5分钟</item>
+        <item>30分钟</item>
+        <item>从不</item>
+    </string-array>
+    <string name="skip">跳过</string>
+    <string name="next">下一个</string>
+    <string name="done">完成</string>
+    <string name="title_tour0">安全保存</string>
+    <string name="title_tour1">随时访问</string>
+    <string name="title_tour2">简单易用</string>
+    <string name="desc_tour0">密码本加密存储保证你的数据安全。</string>
+    <string name="desc_tour1">随时从任一设备通过密码本查看数据。</string>
+    <string name="desc_tour2">获取强密码并轻松使用变得易如反掌。</string>
+    <string name="contacting">与%s取得联系…</string>
+    <string name="category_saved">类别已保存。</string>
+</resources>
