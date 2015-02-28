@@ -32,6 +32,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         public static final int MENU_SEPARATOR = 0;
         public static final int MENU_SELECTION = 1;
         public static final int MENU_ACTION = 2;
+        public static final int MENU_HEADER = 3;
         
         public int mType;
         public int mId;
@@ -75,7 +76,8 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return (mItemList.get(position).mType != NavMenuItem.MENU_SEPARATOR);
+        return (mItemList.get(position).mType == NavMenuItem.MENU_ACTION ||
+            mItemList.get(position).mType == NavMenuItem.MENU_SELECTION);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return (NavMenuItem.MENU_ACTION + 1);
+        return (NavMenuItem.MENU_HEADER + 1);
     }
 
     public NavigationDrawerAdapter(Context context, ArrayList<NavMenuItem> menuList) {
@@ -126,6 +128,9 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(type == NavMenuItem.MENU_SEPARATOR) {
                 v = inflater.inflate(R.layout.nav_separator, parent, false);
+            }
+            else if(type == NavMenuItem.MENU_HEADER) {
+                v = inflater.inflate(R.layout.nav_header, parent, false);
             }
             else {
                 v = inflater.inflate(R.layout.nav_menu, parent, false);

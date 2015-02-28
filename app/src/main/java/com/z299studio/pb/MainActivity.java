@@ -253,6 +253,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
             mMainList.selectCategory(id, false);
             mCategoryId = id;
+            String title = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
+                     : AccountManager.getInstance().getCategory(mCategoryId).mName;
+            getSupportActionBar().setTitle(title);
         }
         else {
             switch(id) {

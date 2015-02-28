@@ -212,6 +212,11 @@ public class NavigationDrawerFragment extends Fragment implements
         int[] categoryIds = Application.getSortedCategoryIds();
 
         int pos = 0, i;
+        if(mDrawerHidden) {
+            result.add(new NavMenuItem(0, r.getString(R.string.app_name),
+                    0, 0, NavMenuItem.MENU_HEADER));
+            pos++;
+        }
         result.add(new NavMenuItem(0, r.getString(R.string.categories),
                 0, 0, NavMenuItem.MENU_SEPARATOR));
         pos++;
