@@ -377,7 +377,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     
     @Override
     public void onLockDrawer(boolean lock) {
-        mNavigationDrawer.lockDrawer(lock);
+        if(mNavigationDrawer!=null) {
+            mNavigationDrawer.lockDrawer(lock);
+        }
     }
     
     private void deleteCategory(int category, boolean alsoDelAccounts) {

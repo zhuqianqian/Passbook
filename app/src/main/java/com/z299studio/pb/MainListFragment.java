@@ -19,6 +19,7 @@ package com.z299studio.pb;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -146,9 +147,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            menu.getItem(0).getIcon().setColorFilter(
-                    C.ThemedColors[mCategorySavable ? C.colorTextNormal : C.colorIconNormal],
+            Drawable saveDrawable = menu.getItem(0).getIcon();
+            saveDrawable.setColorFilter(C.ThemedColors[C.colorTextNormal],
                     PorterDuff.Mode.SRC_ATOP);
+            saveDrawable.setAlpha(mCategorySavable ? 255 : 138);
             menu.getItem(0).setEnabled(mCategorySavable);
             return true;
         }

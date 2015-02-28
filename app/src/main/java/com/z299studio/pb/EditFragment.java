@@ -153,7 +153,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                         EntryHolder eh = (EntryHolder) v.getTag();
                         if (mDragged.mEntryLayout != eh.mEntryLayout) {
                             int index = mEntries.indexOf(eh);
-                            mDeleteView.animate().setDuration(300).setStartDelay(50).y(v.getY() +
+                            mDeleteView.animate().setDuration(300).y(v.getY() +
                                     (mItemHeight - mDeleteView.getMeasuredHeight())/2);
                             eh = mEntries.get(mIndex);
                             mEntries.remove(mIndex);
@@ -535,9 +535,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     private void changeSaveStatus() {
         boolean enable = mSavable && mNameOk;
-        mToolbar.getMenu().getItem(0).getIcon().setColorFilter(
-                C.ThemedColors[enable ? C.colorTextNormal : C.colorIconNormal], 
-                PorterDuff.Mode.SRC_ATOP);
+        mToolbar.getMenu().getItem(0).getIcon().setAlpha(enable ? 255 : 138);
         mToolbar.getMenu().getItem(0).setEnabled(enable);
     }
 

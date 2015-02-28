@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="@dimen/card_padding"
+        android:dividerHeight="4dp"
         android:drawSelectorOnTop="true"/>
 
     <ImageButton android:id="@+id/fab"
