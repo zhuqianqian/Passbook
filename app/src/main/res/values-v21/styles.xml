@@ -1,6 +1,9 @@
 <resources>
 
-    <style name="atButtonStyle" parent="@android:style/Widget.Material.Button.Borderless"/>
+    <style name="atButtonStyle" parent="@android:style/Widget.Material.Button.Borderless">
+        <item name="android:textColor">@color/text_white_std</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
     <style name="Button" parent="@android:style/Widget.Material.Button"/>
     <style name="Button.Accent" parent="@android:style/Widget.Material.Button">

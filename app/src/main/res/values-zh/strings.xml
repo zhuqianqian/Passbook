@@ -168,6 +168,7 @@
     <string name="skip">跳过</string>
     <string name="next">下一个</string>
     <string name="done">完成</string>
+    <string name="guide">应用简介</string>
     <string name="title_tour0">安全保存</string>
     <string name="title_tour1">随时访问</string>
     <string name="title_tour2">简单易用</string>

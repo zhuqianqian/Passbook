@@ -4,7 +4,8 @@
         <item name="android:background">@drawable/button</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">#deffffff</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_white_std</item>
     </style>
     
     <style name="Button" parent="@android:style/Widget.Button">

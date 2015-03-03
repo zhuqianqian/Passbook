@@ -243,6 +243,12 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
                 case R.string.change_pwd:
                     type = ActionDialog.ACTION_RESET_PWD;
                     break;
+                case R.string.guide:
+                    Intent intent = new Intent(Settings.this, TourActivity.class);
+                    intent.putExtra(C.ACTIVITY, C.Activity.SETTINGS);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    return;
             }
             ActionDialog.create(type).show(getSupportFragmentManager(), TAG_DIALOG);
         }
@@ -254,7 +260,7 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
     private ListView mListView;
     
     private SettingItemAdapter initSettings() {
-        SettingItem[] items = new SettingItem[13];
+        SettingItem[] items = new SettingItem[14];
         int index = 0;
         items[index++] = new SettingItem(0, getString(R.string.general), null);
         items[index++] = new SettingItemAction(R.string.import_data,
@@ -267,6 +273,8 @@ public class Settings extends ActionBarActivity implements AdapterView.OnItemCli
         items[index++] = new SettingItemSelection(R.string.theme, getString(R.string.theme), null)
                 .setOptions(getResources().getStringArray(R.array.theme_names))
                 .setValue(Application.Options.mTheme);
+        items[index++] = new SettingItemAction(R.string.guide, getString(R.string.guide), null)
+                .setListener(mActionListener);
         items[index++] = new SettingItem(0, getString(R.string.sync), null);
         items[index++] = new SettingItemSelection(R.string.sync_server, 
                 getString(R.string.sync_server), null)
