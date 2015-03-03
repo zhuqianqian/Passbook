@@ -55,7 +55,7 @@ public class NavigationDrawerFragment extends Fragment implements
     private View mFragmentContainerView;
     public ActionBarDrawerToggle mDrawerToggle;
     private NavigationDrawerAdapter mAdapter;
-    private int mCurrentSelection;
+    private int mCategory;
     private Hashtable<Integer, Integer> mCategory2Navigation;
     private boolean mDrawerHidden;
 
@@ -63,9 +63,9 @@ public class NavigationDrawerFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null) {
-            mCurrentSelection = savedInstanceState.getInt(SELECTION_KEY);
+            mCategory = savedInstanceState.getInt(SELECTION_KEY);
         } else {
-            mCurrentSelection = 1;
+            mCategory = AccountManager.ALL_CATEGORY_ID;
         }
         mCategory2Navigation = new Hashtable<>();
         setHasOptionsMenu(true);
@@ -79,15 +79,16 @@ public class NavigationDrawerFragment extends Fragment implements
                 container, false);
         mAdapter = new NavigationDrawerAdapter(getActivity(), buildMenuItems());
         mMenuList.setAdapter(mAdapter);
-        mAdapter.selectItem(null, mCurrentSelection);
+        int position = mCategory2Navigation.get(mCategory);
+        mAdapter.selectItem(null, position);
         mMenuList.setOnItemClickListener(this);
-        mMenuList.setItemChecked(mCurrentSelection, true);
+        mMenuList.setItemChecked(position, true);
         return mMenuList;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTION_KEY, mCurrentSelection);
+        outState.putInt(SELECTION_KEY, mCategory);
         super.onSaveInstanceState(outState);
     }
     
@@ -140,16 +141,16 @@ public class NavigationDrawerFragment extends Fragment implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         NavMenuItem item = null;
-        if(position == mCurrentSelection) {
+        if(id == mCategory) {
             return;
         }
         if(mMenuList!=null) {
             item = (NavMenuItem)mMenuList.getItemAtPosition(position);
             if(item.mType == NavMenuItem.MENU_SELECTION) {
                 mAdapter.selectItem(view, position);
-                mCurrentSelection = position;
+                mCategory = (int)id;
             }
-            mMenuList.setItemChecked(mCurrentSelection,  true);
+            mMenuList.setItemChecked(position,  true);
         }
 
         if (mDrawerLayout != null) {
