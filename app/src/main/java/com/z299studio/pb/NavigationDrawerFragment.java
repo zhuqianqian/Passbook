@@ -150,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment implements
                 mAdapter.selectItem(view, position);
                 mCategory = (int)id;
             }
-            mMenuList.setItemChecked(position,  true);
+            mMenuList.setItemChecked(mCategory2Navigation.get(mCategory),  true);
         }
 
         if (mDrawerLayout != null) {

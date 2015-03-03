@@ -54,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
     private ArrayList<AccountManager.Account> mAllAccounts = null;
     private ArrayList<AccountManager.Account> mSearchedAccounts= null;
     private String mLastKey = "";
+    private String mTitle;
 
     private Runnable mTintStatusBar = new Runnable() {
         @Override
@@ -102,9 +103,20 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
                     }
                 });
             }
+            mTitle = savedInstanceState.getString("pb_title");
         }
+        else {
+            mTitle = getString(R.string.all_accounts);
+        }
+        getSupportActionBar().setTitle(mTitle);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("pb_title", mTitle);
+    }
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -253,9 +265,9 @@ public class MainActivity extends ActionBarActivity implements ItemFragmentListe
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
             mMainList.selectCategory(id, false);
             mCategoryId = id;
-            String title = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
+            mTitle = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
                      : AccountManager.getInstance().getCategory(mCategoryId).mName;
-            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setTitle(mTitle);
         }
         else {
             switch(id) {
