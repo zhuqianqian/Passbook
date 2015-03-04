@@ -96,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         if(Application.getInstance().queryChange(Application.DATA_OTHER)||
-                Application.getInstance().queryChange(Application.DATA_OTHER)) {
+                Application.getInstance().queryChange(Application.DATA_ALL)) {
             mAdapter.setList(buildMenuItems());
             mAdapter.notifyDataSetChanged();
             select(AccountManager.ALL_CATEGORY_ID);

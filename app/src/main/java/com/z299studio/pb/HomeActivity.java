@@ -137,6 +137,7 @@ AnimatorListener, SyncService.SyncListener{
             EditText et_confirm = (EditText) findViewById(R.id.confirm);
             if(password.equals(et_confirm.getText().toString())) {
                 mApp.setPassword(password, true);
+                mApp.onStart();
                 String[] defCategories = getResources().getStringArray(R.array.category_names);
                 int i = 0;
                 AccountManager am = AccountManager.getInstance(null);

@@ -130,10 +130,12 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         if(cancel!=null) {
             cancel.setOnClickListener(this);
         }
-        switch(mDlgType) {
-        case ACTION_EXPORT:
+        if(mDlgType != ACTION_EXPORT && mOkButton != null) {
             mOkButton.setEnabled(false);
             mOkButton.setAlpha(0.4f);
+        }
+        switch(mDlgType) {
+        case ACTION_EXPORT:
         case ACTION_IMPORT:
             Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
