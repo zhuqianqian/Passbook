@@ -26,6 +26,12 @@ PwdBook was originally called Passbook. After I realized many other apps also us
 
 ## Credits
 
+### Translations
+
+* Français: Xuechen Xu
+* Please visit [here](https://299studio.oneskyapp.com/collaboration/project?id=39783) to help on translations.
+* Many thanks to [OneSky](http://www.oneskyapp.com) for providing the translation collaboration platform.
+
 ### Icons
 
 * [Material Design Icons](https://github.com/google/material-design-icons) (PwdBook 2.0+), Copyright © Google
