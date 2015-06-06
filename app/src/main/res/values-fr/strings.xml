@@ -9,10 +9,10 @@
         <item quantity="other">%d éléments supprimés.</item>
     </plurals>
     <!-- App strings -->
-    <string name="app_name">PwdBook</string>
+    <string name="app_name">Passbook</string>
     <string name="app_about">%1$s\nVersion %2$s</string>
     <string name="app_copy">Droit D\'auteur  &#169; 2015, 299Studio</string>
-    <string name="app_welcome">Bienvenue sur PwdBook</string>
+    <string name="app_welcome">Bienvenue sur Passbook</string>
     <string name="app_intro">Votre lieu central pour stocker en toute sécurité vos données sensibles et les synchroniser entre plusieurs périphériques.\n\n\nChoisissez l\'emplacement où vous souhaitez synchroniser vos données.</string>
     <!-- Action/Menu/Button/Label/Title strings -->
     <string name="edit_category">Modifier la Catégorie</string>
@@ -23,7 +23,7 @@
     <string name="new_account">Ajouter un Compte</string>
     <string name="help">Aide et Questions</string>
     <string name="settings">Paramètres</string>
-    <string name="about">À Propos de PwdBook</string>
+    <string name="about">À Propos de Passbook</string>
     <string name="all_accounts">Tous les Comptes</string>
     <string name="categories">Catégories</string>
     <string name="rate">Estimes et Commentaires</string>
@@ -77,7 +77,7 @@
     <string name="length">Longueur: %d</string>
     <string name="save">Enregistrer</string>
     <string name="close">Fermer</string>
-    <string name="search">Rechercher dans PwdBook…</string>
+    <string name="search">Rechercher dans Passbook…</string>
     <!-- Tips/Messages -->
     <string name="empty_search">Pas de correspondances trouvées.</string>
     <string name="select_to_add">Sélectionnez les éléments à inclure:</string>
@@ -142,12 +142,12 @@
         <item>Code</item>
     </string-array>
     <string-array name="file_types">
-        <item>Fichier de données de PwdBook (encodé)</item>
-        <item>Fichier de CSV de PwdBook (Texte brut)</item>
+        <item>Fichier de données de Passbook (encodé)</item>
+        <item>Fichier de CSV de Passbook (Texte brut)</item>
     </string-array>
     <string-array name="file_types_import">
-        <item>Fichier de données de PwdBook (encodé)</item>
-        <item>Fichier de CSV de PwdBook (Texte brut)</item>
+        <item>Fichier de données de Passbook (encodé)</item>
+        <item>Fichier de CSV de Passbook (Texte brut)</item>
         <item>Fichier de CSV d\'aWallet (Texte brut)</item>
     </string-array>
     <string-array name="def_field_names">
@@ -174,8 +174,8 @@
     <string name="title_tour0">Restez Sécurisé</string>
     <string name="title_tour1">Accessible partout</string>
     <string name="title_tour2">Facile à utiliser</string>
-    <string name="desc_tour0">PwdBook encode tout pour sauvegarder vos données en toute sécurité.</string>
-    <string name="desc_tour1">Vous pouvez vérifier vos mots de passe de toutes les périphéries avec PwdBook.</string>
+    <string name="desc_tour0">Passbook encode tout pour sauvegarder vos données en toute sécurité.</string>
+    <string name="desc_tour1">Vous pouvez vérifier vos mots de passe de toutes les périphéries avec Passbook.</string>
     <string name="desc_tour2">Des mots de passe solides sont simples à obtenir et à utiliser avec peu de peine.</string>
     <string name="contacting">Contacter les %s…</string>
     <string name="category_saved">Catégorie ajoutée.</string>

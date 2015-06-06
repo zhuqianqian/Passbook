@@ -9,10 +9,10 @@
         <item quantity="other">%d items deleted.</item>
     </plurals>
     <!-- App strings -->
-    <string name="app_name">PwdBook</string>
+    <string name="app_name">Passbook</string>
     <string name="app_about">%1$s\nVersion %2$s</string>
     <string name="app_copy">Copyright &#169; 2015, 299Studio</string>
-    <string name="app_welcome">Welcome to PwdBook</string>
+    <string name="app_welcome">Welcome to Passbook</string>
     <string name="app_intro">Your central place to securely store your sensitive data and synchronize among devices.\n\nChoose where you want to sync your data</string>
     <!-- Action/Menu/Button/Label/Title strings -->
     <string name="edit_category">Edit Category</string>
@@ -23,7 +23,7 @@
     <string name="new_account">New Account</string>
     <string name="help">Help and FAQ</string>
     <string name="settings">Settings</string>
-    <string name="about">About PwdBook</string>
+    <string name="about">About Passbook</string>
     <string name="all_accounts">All Accounts</string>
     <string name="categories">Categories</string>
     <string name="rate">Rate &amp; Feedback</string>
@@ -77,7 +77,7 @@
     <string name="length">Length: %d</string>
     <string name="save">Save</string>
     <string name="close">Close</string>
-    <string name="search">Search in PwdBook…</string>
+    <string name="search">Search in Passbook…</string>
     <!-- Tips/Messages -->
     <string name="empty_search">No matches found.</string>
     <string name="select_to_add">Select the items to be included:</string>
@@ -142,12 +142,12 @@
         <item>PIN</item>
     </string-array>
     <string-array name="file_types">
-        <item>PwdBook data file (encrypted)</item>
-        <item>PwdBook CSV file (plain text)</item>
+        <item>Passbook data file (encrypted)</item>
+        <item>Passbook CSV file (plain text)</item>
     </string-array>
     <string-array name="file_types_import">
-        <item>PwdBook data file (encrypted)</item>
-        <item>PwdBook CSV file (plain text)</item>
+        <item>Passbook data file (encrypted)</item>
+        <item>Passbook CSV file (plain text)</item>
         <item>aWallet CSV File (plain text)</item>
     </string-array>
     <string-array name="def_field_names">
@@ -174,8 +174,8 @@
     <string name="title_tour0">Stay Secure</string>
     <string name="title_tour1">Access Anywhere</string>
     <string name="title_tour2">Keep Easy</string>
-    <string name="desc_tour0">PwdBook encrypts everything so your data are kept safe.</string>
-    <string name="desc_tour1">You can check your passwords on any devices with PwdBook.</string>
+    <string name="desc_tour0">Passbook encrypts everything so your data are kept safe.</string>
+    <string name="desc_tour1">You can check your passwords on any devices with Passbook.</string>
     <string name="desc_tour2">Strong passwords are easy to get and to use with little effort.</string>
     <string name="contacting">Contacting %s…</string>
     <string name="category_saved">Category saved.</string>
