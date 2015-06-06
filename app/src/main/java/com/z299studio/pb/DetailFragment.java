@@ -28,8 +28,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -293,6 +295,9 @@ public class DetailFragment extends Fragment implements
                 else {
                     holder.mValue.setTransformationMethod(
                             SingleLineTransformationMethod.getInstance());
+                }
+                if(entry.mType == AccountManager.EntryType.WEBADDR) {
+                    holder.mValue.setAutoLinkMask(Linkify.WEB_URLS);
                 }
             }
             holder.mValue.setText(entry.mValue);
