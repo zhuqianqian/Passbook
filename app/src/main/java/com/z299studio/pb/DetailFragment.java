@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.SingleLineTransformationMethod;
 import android.text.util.Linkify;
