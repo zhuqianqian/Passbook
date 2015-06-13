@@ -37,8 +37,8 @@ public abstract class SyncService {
     }
     
     public interface SyncListener {
-        public void onSyncFailed(int errorCode);
-        public void onSyncProgress(int actionCode);
+        void onSyncFailed(int errorCode);
+        void onSyncProgress(int actionCode);
     }
     
     private static SyncService __instance;

@@ -17,14 +17,13 @@
 package com.z299studio.pb;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
 public class PbScrollView extends ScrollView {
 
     public interface PbScrollListener{
-        public void onScroll(int l, int t, int oldl, int oldt);
+        void onScroll(int l, int t, int oldl, int oldt);
     }
 
     private PbScrollListener mPbListener;

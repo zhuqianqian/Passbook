@@ -29,10 +29,9 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class HomeActivity extends ActionBarActivity implements
+public class HomeActivity extends AppCompatActivity implements
 AnimatorListener, SyncService.SyncListener{
     protected Application mApp;
     protected EditText mPwdEdit;

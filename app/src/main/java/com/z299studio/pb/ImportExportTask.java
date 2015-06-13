@@ -35,7 +35,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class ImportExportTask extends AsyncTask<String, Void, String> {
     
     public interface TaskListener {
-        public void onFinish(boolean authenticate, int operation, String result);
+        void onFinish(boolean authenticate, int operation, String result);
     }
 
     public static final int OPTION_OVERWRITE = 2;

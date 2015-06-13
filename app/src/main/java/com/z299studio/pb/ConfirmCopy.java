@@ -27,7 +27,7 @@ import android.widget.CheckBox;
 public class ConfirmCopy extends DialogFragment implements View.OnClickListener{
 
     public interface OnCopyConfirmListener{
-        public void onConfirmed(boolean confirmed, boolean remember);
+        void onConfirmed(boolean confirmed, boolean remember);
     }
 
     OnCopyConfirmListener mListener;

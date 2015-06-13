@@ -49,7 +49,7 @@ public class DriveSyncService extends SyncService implements
     private DriveId mDriveId;
 
     private static final String SAVED_DATA="pb-drive-data";
-    private static final String LOG_TAG = "PwdBook:DriveSyncService";
+    private static final String LOG_TAG = "PB:DriveSyncService";
     
     @Override
     public SyncService initialize() {

@@ -48,7 +48,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     private static final String TAG_DIALOG = "action_dialog";
     
     public interface ActionDialogListener {
-        public void onConfirm(String text, int type, int operation, int option);
+        void onConfirm(String text, int type, int operation, int option);
     }
     
     public static final int ACTION_AUTHENTICATE = 0;
@@ -318,8 +318,8 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                         if(cursor.moveToFirst()) {
                             mText = cursor.getString(column_index);
                             mHandler.post(mUpdateUi);
-                            return;
                         }
+                        cursor.close();
                     }
                     catch(Exception e) { }
                 }

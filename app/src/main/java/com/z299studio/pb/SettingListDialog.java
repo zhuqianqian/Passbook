@@ -33,7 +33,7 @@ import android.widget.TextView;
 public class SettingListDialog extends DialogFragment implements AdapterView.OnItemClickListener{
     
     public interface OnOptionSelected{
-        public void onSelected(int selection);
+        void onSelected(int selection);
     }
 
     private OnOptionSelected mListener;
@@ -66,7 +66,7 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
         try {
             mListener = (OnOptionSelected) activity;
         }catch (ClassCastException e) {
-            Log.e("PwdBook:SettingListDialog", 
+            Log.e("PB:SettingListDialog",
                     "Activity must implement OnOptionSelected interface");
         }
     }

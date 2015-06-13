@@ -49,10 +49,7 @@ public class ScreenSlidePageFragment extends Fragment {
             Bundle savedInstanceState) {
         int ids[] = { R.layout.fragment_tour0, R.layout.fragment_tour1,
                 R.layout.fragment_tour2, R.layout.fragment_tourend};
-        ViewGroup rootView = (ViewGroup) inflater
-                .inflate(ids[mPageNumber], container, false);
-        
-        return rootView;
+        return inflater.inflate(ids[mPageNumber], container, false);
     }
 
     public int getPageNumber() {

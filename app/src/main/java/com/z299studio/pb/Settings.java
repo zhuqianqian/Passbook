@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -35,7 +35,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Settings extends ActionBarActivity implements AdapterView.OnItemClickListener,
+public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
         ActionDialog.ActionDialogListener, SyncService.SyncListener{
     

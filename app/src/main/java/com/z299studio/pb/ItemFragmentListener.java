@@ -17,12 +17,12 @@
 package com.z299studio.pb;
 
 public interface ItemFragmentListener {
-    public void onEdit(int categoryId, int accountId);
-    public void onDelete(int accountId);
-    public void onDeleted(int categoryId, int count);
-    public void onSave(int categoryId);
-    public void onSelect(int id);
-    public void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);
-    public void onCategorySaved();
-    public void onLockDrawer(boolean lock);
+    void onEdit(int categoryId, int accountId);
+    void onDelete(int accountId);
+    void onDeleted(int categoryId, int count);
+    void onSave(int categoryId);
+    void onSelect(int id);
+    void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);
+    void onCategorySaved();
+    void onLockDrawer(boolean lock);
 }

@@ -32,7 +32,7 @@ import android.widget.ImageView;
 public class IconSetter extends DialogFragment implements View.OnClickListener {
 
     public interface OnIconChosen {
-        public void onChosen(int id);
+        void onChosen(int id);
     }
 
     protected OnIconChosen mListener;

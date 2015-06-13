@@ -24,7 +24,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -461,7 +461,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 mAdapter.animateDeletion(v, mToBeRemoved[i]);
             }
         }
-        showDeleteSnackbar((ActionBarActivity) getActivity(), mRemoveCount, viewHeight);
+        showDeleteSnackbar((AppCompatActivity) getActivity(), mRemoveCount, viewHeight);
     }
     
     protected void showFab(boolean show) {
@@ -479,7 +479,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
     }
     
-    public void showDeleteSnackbar(ActionBarActivity activity, int count, final int rowHeight) {
+    public void showDeleteSnackbar(AppCompatActivity activity, int count, final int rowHeight) {
         new Snackbar()
                 .setText(getResources().getQuantityString(R.plurals.info_deleted, count, count))
                 .setActionText(getString(R.string.undo))

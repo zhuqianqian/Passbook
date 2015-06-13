@@ -28,7 +28,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -39,7 +39,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity implements ItemFragmentListener,
+public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SearchView.OnQueryTextListener, SyncService.SyncListener {
 

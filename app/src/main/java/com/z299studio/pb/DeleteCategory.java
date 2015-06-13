@@ -31,7 +31,7 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
         AdapterView.OnItemSelectedListener{
 
     public interface OnDeleteConfirmListener{
-        public void onConfirmed(int category, boolean alsoDelAccounts);        
+        void onConfirmed(int category, boolean alsoDelAccounts);
     }
 
     private int mPosition = -1;

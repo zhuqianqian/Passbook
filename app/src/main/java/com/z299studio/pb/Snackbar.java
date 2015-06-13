@@ -24,7 +24,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +37,7 @@ import android.widget.TextView;
 public class Snackbar extends DialogFragment implements View.OnClickListener{
 
     public interface OnActionListener {
-        public void onAction();
+        void onAction();
     }
     
     private int mTimeOut = 5000;
@@ -160,7 +160,7 @@ public class Snackbar extends DialogFragment implements View.OnClickListener{
         return this;
     }
     
-    public void show(ActionBarActivity activity) {
+    public void show(AppCompatActivity activity) {
         this.show(activity.getSupportFragmentManager(), "snackbar");
     }
 }
