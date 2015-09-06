@@ -110,6 +110,10 @@
     <!-- String arrays -->
         <item>Thème Sombre par Défaut</item>
     <!-- String arrays -->
+        <item>Thème Claire Bleu-Gris</item>
+    <!-- String arrays -->
+        <item>Thème Sombre Bleu-Gris</item>
+    <!-- String arrays -->
         <item>Thème Claire Indigo</item>
     <!-- String arrays -->
         <item>Thème Sombre Indigo</item>
@@ -117,10 +121,6 @@
         <item>Thème Claire pourpre</item>
     <!-- String arrays -->
         <item>Thème Sombre pourpre</item>
-    <!-- String arrays -->
-        <item>Thème Claire Bleu-Gris</item>
-    <!-- String arrays -->
-        <item>Thème Sombre Bleu-Gris</item>
     <!-- String arrays -->
         <item>Thème Claire Sarcelle</item>
     <!-- String arrays -->

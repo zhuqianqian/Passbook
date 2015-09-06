@@ -108,6 +108,10 @@
     <!-- String arrays -->
         <item>默认深色主题</item>
     <!-- String arrays -->
+        <item>蓝灰淡色</item>
+    <!-- String arrays -->
+        <item>蓝灰深色</item>
+    <!-- String arrays -->
         <item>靛青淡色</item>
     <!-- String arrays -->
         <item>靛青深色</item>
@@ -115,10 +119,6 @@
         <item>紫色淡色</item>
     <!-- String arrays -->
         <item>紫色深色</item>
-    <!-- String arrays -->
-        <item>蓝灰淡色</item>
-    <!-- String arrays -->
-        <item>蓝灰深色</item>
     <!-- String arrays -->
         <item>蓝绿淡色</item>
     <!-- String arrays -->

@@ -110,6 +110,10 @@
     <!-- String arrays -->
         <item>Default Dark Theme</item>
     <!-- String arrays -->
+        <item>Blue-Grey Light</item>
+    <!-- String arrays -->
+        <item>Blue-Grey Dark</item>
+    <!-- String arrays -->
         <item>Indigo Light</item>
     <!-- String arrays -->
         <item>Indigo Dark</item>
@@ -117,10 +121,6 @@
         <item>Purple Light</item>
     <!-- String arrays -->
         <item>Purple Dark</item>
-    <!-- String arrays -->
-        <item>Blue-Grey Light</item>
-    <!-- String arrays -->
-        <item>Blue-Grey Dark</item>
     <!-- String arrays -->
         <item>Teal Light</item>
     <!-- String arrays -->
