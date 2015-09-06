@@ -23,24 +23,35 @@
             android:layout_height="wrap_content"
             style="@style/DialogTitle"
             android:text="@string/change_pwd"/>
-        <EditText android:id="@+id/et_cur_pwd"
-            android:layout_width="match_parent"
-            android:inputType="textPassword"
-            android:hint="@string/current_pwd"
-            android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:inputType="textPassword"
-            android:hint="@string/new_pwd"
-            android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/et_confirm"
-            android:layout_width="match_parent"
-            android:inputType="textPassword"
+        <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
-            android:hint="@string/repeat_pwd"/>
+            android:layout_width="match_parent">
+            <EditText android:id="@+id/et_cur_pwd"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:hint="@string/current_pwd"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:hint="@string/new_pwd"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText android:id="@+id/et_confirm"
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:layout_height="wrap_content"
+                android:hint="@string/repeat_pwd"/>
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <Button android:id="@+id/ok"
