@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -489,8 +490,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                         Manifest.permission.READ_EXTERNAL_STORAGE :
                         Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{permission}, PERMISSION_REQUEST);
+                if (ActivityCompat.checkSelfPermission(this, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{permission},
+                            PERMISSION_REQUEST);
                     mActionType = type;
                     mText = text;
                     mOperation = operation;
