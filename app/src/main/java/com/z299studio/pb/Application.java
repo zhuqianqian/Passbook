@@ -135,7 +135,7 @@ public class Application{
     private Application(Activity context) {
         mContext = context;
         mSP = PreferenceManager.getDefaultSharedPreferences(context);
-        Options.mTheme = mSP.getInt(C.Keys.THEME, 0);
+        Options.mTheme = mSP.getInt(C.Keys.THEME, 2);
         Options.mTour = mSP.getBoolean(C.Keys.TOUR, false);
         mChanges = new Hashtable<>();
     }
