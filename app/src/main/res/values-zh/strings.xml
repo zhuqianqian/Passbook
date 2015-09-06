@@ -38,6 +38,8 @@
     <string name="sync_gdrive">Google云端硬盘</string>
     <string name="sync_server">同步服务器</string>
     <string name="sync_msg">显示同步消息</string>
+    <string name="last_sync">最后同步时间</string>
+    <string name="never">从未发生</string>
     <string name="show_password">总是显示密码</string>
     <string name="show_ungrouped">显示未分组类别</string>
     <string name="auto_lock">进入后台时自动上锁</string>
@@ -110,7 +112,7 @@
     <!-- String arrays -->
         <item>蓝灰淡色</item>
     <!-- String arrays -->
-        <item>蓝灰深色</item>
+        <item>靛青深色</item>
     <!-- String arrays -->
         <item>靛青淡色</item>
     <!-- String arrays -->
@@ -168,7 +170,7 @@
     <string name="skip">跳过</string>
     <string name="next">下一个</string>
     <string name="done">完成</string>
-    <string name="guide">应用简介</string>
+    <string name="guide">应用介绍</string>
     <string name="title_tour0">安全保存</string>
     <string name="title_tour1">随时访问</string>
     <string name="title_tour2">简单易用</string>

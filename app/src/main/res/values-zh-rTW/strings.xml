@@ -38,6 +38,8 @@
     <string name="sync_gdrive">Google雲端硬碟</string>
     <string name="sync_server">同步伺服器</string>
     <string name="sync_msg">顯示同步訊息</string>
+    <string name="last_sync">最近一次同步時間</string>
+    <string name="never">還沒有發生過</string>
     <string name="show_password">總是顯示密碼</string>
     <string name="show_ungrouped">顯示未分組類別</string>
     <string name="auto_lock">進入後臺時自動鎖定</string>
@@ -168,7 +170,7 @@
     <string name="skip">略過</string>
     <string name="next">下一個</string>
     <string name="done">完成</string>
-    <string name="guide">應用程式概覽</string>
+    <string name="guide">應用程式導覽</string>
     <string name="title_tour0">安全存儲</string>
     <string name="title_tour1">隨時訪問</string>
     <string name="title_tour2">簡單易用</string>

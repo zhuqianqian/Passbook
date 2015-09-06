@@ -40,6 +40,8 @@
     <string name="sync_gdrive">Google Drive</string>
     <string name="sync_server">Sync Server</string>
     <string name="sync_msg">Show Sync Message</string>
+    <string name="last_sync">Last Synchronization Time</string>
+    <string name="never">Never happened</string>
     <string name="show_password">Always Show Passwords</string>
     <string name="show_ungrouped">Show \'Other\' Category</string>
     <string name="auto_lock">Lock on Entering Background</string>

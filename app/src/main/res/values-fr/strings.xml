@@ -40,6 +40,8 @@
     <string name="sync_gdrive">Google Drive</string>
     <string name="sync_server">Serveur de Synchronisation</string>
     <string name="sync_msg">Afficher le Message de Synchronisation</string>
+    <string name="last_sync">Dernières Synchronisation Horaire</string>
+    <string name="never">N\'est jamais arrivé</string>
     <string name="show_password">Afficher les Mots de Passe</string>
     <string name="show_ungrouped">Afficher la Catégorie «Autre»</string>
     <string name="auto_lock">Verrouiller en entrant l\'Arrière-Plan</string>
@@ -170,7 +172,7 @@
     <string name="skip">Sauter</string>
     <string name="next">Suivant</string>
     <string name="done">Fini</string>
-    <string name="guide">App Introductions</string>
+    <string name="guide">L\'introduction de Cette App</string>
     <string name="title_tour0">Restez Sécurisé</string>
     <string name="title_tour1">Accessible partout</string>
     <string name="title_tour2">Facile à utiliser</string>

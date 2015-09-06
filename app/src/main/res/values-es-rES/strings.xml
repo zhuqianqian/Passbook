@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="title_accounts">
+        <item quantity="one">%d Cuenta</item>
+        <item quantity="other">%d Cuentas</item>
+    </plurals>
+    <!-- App strings -->
+    <string name="app_name">Pwd Libro</string>
+    <!-- Action/Menu/Button/Label/Title strings -->
+    <!-- Tips/Messages -->
+    <!-- String arrays -->
+</resources>
