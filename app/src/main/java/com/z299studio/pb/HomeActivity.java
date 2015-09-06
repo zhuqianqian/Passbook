@@ -17,6 +17,8 @@
 package com.z299studio.pb;
 
 import java.security.GeneralSecurityException;
+import java.util.Date;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.content.res.TypedArray;
@@ -363,6 +365,7 @@ AnimatorListener, SyncService.SyncListener{
         }
         else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             byte[] data = SyncService.getInstance().requestData();
+            Application.getInstance().onSyncSucceed();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid) {
                 mApp.saveData(data);

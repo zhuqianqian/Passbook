@@ -45,6 +45,7 @@ public final class C {
         public static final String SERVER = "SyncServer";
         public static final String MSG = "SyncMessage";
         public static final String VERSION = "LastSyncVersion";
+        public static final String TIME = "LastSyncTime";
         public static final int NONE = 0;
         public static final int GPGS = 1;
         public static final int GDRIVE = 2;    

@@ -38,6 +38,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
         ActionDialog.ActionDialogListener, SyncService.SyncListener{
@@ -252,6 +255,13 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 case R.string.change_pwd:
                     type = ActionDialog.ACTION_RESET_PWD;
                     break;
+                case R.string.last_sync:
+                    if(Application.Options.mSync != C.Sync.NONE) {
+                        SyncService.getInstance(Settings.this, Application.Options.mSync)
+                                .initialize().setListener(Settings.this)
+                                .connect(Application.getInstance().getLocalVersion());
+                    }
+                    return;
                 case R.string.guide:
                     Intent intent = new Intent(Settings.this, TourActivity.class);
                     intent.putExtra(C.ACTIVITY, C.Activity.SETTINGS);
@@ -269,8 +279,9 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private ListView mListView;
     
     private SettingItemAdapter initSettings() {
-        SettingItem[] items = new SettingItem[14];
+        SettingItem[] items = new SettingItem[15];
         int index = 0;
+        String desc;
         items[index++] = new SettingItem(0, getString(R.string.general), null);
         items[index++] = new SettingItemAction(R.string.import_data,
                 getString(R.string.import_data), null).setListener(mActionListener);
@@ -289,6 +300,15 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 getString(R.string.sync_server), null)
                 .setOptions(getResources().getStringArray(R.array.sync_methods))
                 .setValue(Application.Options.mSync);
+        if(Application.Options.mSyncTime.after(new Date(0L))) {
+            DateFormat df = DateFormat.getDateTimeInstance();
+            desc = df.format(Application.Options.mSyncTime);
+        }
+        else{
+            desc = getString(R.string.never);
+        }
+        items[index++] = new SettingItemAction(R.string.last_sync,
+                getString(R.string.last_sync), desc).setListener(mActionListener);
         items[index++] = new SettingItemSwitch(R.string.sync_msg, getString(R.string.sync_msg), 
                 null).setValue(Application.Options.mSyncMsg);
         items[index++] = new SettingItem(0, getString(R.string.security), null);
@@ -523,12 +543,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     
     @Override
     public void onSyncProgress(int actionCode) {
+        String time = null;
         Application app = Application.getInstance();
         app.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
         if(actionCode == SyncService.CA.AUTH) {
             app.ignoreNextPause();
         }
         else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+            time = app.onSyncSucceed();
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > app.getLocalVersion()) {
@@ -546,8 +568,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             }
         }
         else if(actionCode == SyncService.CA.DATA_SENT) {
+            time = app.onSyncSucceed();
             Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
             app.onVersionUpdated(app.getLocalVersion());
+        }
+        if(time!=null) {
+            mAdapter.updateDescription(time, mRequestingPosition, mListView);
         }
     }
     private void handleSwitchOption(int id, boolean value) {

@@ -22,10 +22,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Random;
+import java.util.zip.DataFormatException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -58,6 +62,7 @@ public class Application{
         public static int mTheme;
         public static boolean mTour;
         public static boolean mWarnCopyPwd;
+        public static Date mSyncTime;
     }
     
     public static class FileHeader {
@@ -153,7 +158,14 @@ public class Application{
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);
         Options.mSyncVersion = mSP.getInt(C.Sync.VERSION, 0);
         Options.mWarnCopyPwd = mSP.getBoolean(C.Keys.WARN_COPY, true);
-        
+        String syncTime = mSP.getString(C.Sync.TIME, "0000-00-00 00:00:00");
+        DateFormat df = DateFormat.getDateTimeInstance();
+        try {
+            Options.mSyncTime = df.parse(syncTime);
+        }
+        catch (ParseException e) {
+            Options.mSyncTime = new Date(0L);
+        }
         mCrypto = Crypto.getInstance();
         try {
             File file = new File(mContext.getFilesDir()+"/"+DATA_FILE);
@@ -235,7 +247,7 @@ public class Application{
     
     public int getLocalVersion() {
         int version = 0;
-        if(mFileHeader!=null) {
+        if (mFileHeader != null) {
             version = mFileHeader.revision;
         }
         return version;
@@ -316,6 +328,14 @@ public class Application{
     public void onVersionUpdated(int revision) {
         Options.mSyncVersion = revision;
         mSP.edit().putInt(C.Sync.VERSION, revision).apply();
+    }
+
+    public String onSyncSucceed() {
+        Options.mSyncTime = new Date();
+        DateFormat df = DateFormat.getDateTimeInstance();
+        String time = df.format(Options.mSyncTime);
+        mSP.edit().putString(C.Sync.TIME, time).apply();
+        return time;
     }
     
     public static void showToast(Activity context, int stringId, int duration) {

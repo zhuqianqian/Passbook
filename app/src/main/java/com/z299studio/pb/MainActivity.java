@@ -438,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mApp.ignoreNextPause();
         }
         else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+            Application.getInstance().onSyncSucceed();
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > mApp.getLocalVersion()) {
@@ -457,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             }
         }
         else if(actionCode == SyncService.CA.DATA_SENT) {
+            Application.getInstance().onSyncSucceed();
             Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
             mApp.onVersionUpdated(mApp.getLocalVersion());
         }
