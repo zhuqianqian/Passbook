@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Random;
-import java.util.zip.DataFormatException;
 
 import android.app.Activity;
 import android.content.Context;

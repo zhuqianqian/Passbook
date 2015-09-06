@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -54,7 +55,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private int mOption;
 
     private interface ActionListener {
-        public void onAction(SettingItem sender);
+        void onAction(SettingItem sender);
     }
     
     private class SettingItem {
@@ -529,7 +530,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResult){
+                                           @NonNull int[] grantResult){
         if(requestCode == PERMISSION_REQUEST) {
             if(grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                 new ImportExportTask(this, mText, Application.getInstance().getPassword(),

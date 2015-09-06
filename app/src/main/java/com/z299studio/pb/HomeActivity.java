@@ -17,7 +17,6 @@
 package com.z299studio.pb;
 
 import java.security.GeneralSecurityException;
-import java.util.Date;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -89,7 +88,7 @@ AnimatorListener, SyncService.SyncListener{
         else {
             mStage = savedInstanceState.getInt("home_stage");
         }
-        if(Application.Options.mTour == false){
+        if(!Application.Options.mTour){
             Intent intent = new Intent(this, TourActivity.class);
             intent.putExtra(C.ACTIVITY, C.Activity.HOME);
             this.startActivity(intent);
@@ -117,7 +116,7 @@ AnimatorListener, SyncService.SyncListener{
     
     @Override
     protected void onResume() {
-        super.onStart();
+        super.onResume();
         popInput();
     }
     
@@ -151,7 +150,6 @@ AnimatorListener, SyncService.SyncListener{
                 et_confirm.setText("");
                 mPwdEdit.setText("");
                 Application.showToast(this, R.string.pwd_unmatch, Toast.LENGTH_SHORT);
-                return;
             }
         }
         else {
