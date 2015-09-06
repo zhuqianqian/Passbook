@@ -16,9 +16,11 @@
 
 package com.z299studio.pb;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +42,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         ActionDialog.ActionDialogListener, SyncService.SyncListener{
     
     private static final String TAG_DIALOG = "action_dialog";
+    private static final int PERMISSION_REQUEST = 299;
+
+    private String mText;
+    private int mActionType;
+    private int mOperation;
+    private int mOption;
 
     private interface ActionListener {
         public void onAction(SettingItem sender);
@@ -470,12 +478,40 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
     @Override
     public void onConfirm(String text, int type, int operation, int option) {
+        String permission;
         if(operation == ActionDialog.ACTION_AUTHENTICATE) {
             new ImportExportTask(this, text).execute();
         }
         else {
-            new ImportExportTask(this, text, Application.getInstance().getPassword(),
-                    type, operation, option).execute();
+
+            if(operation == ActionDialog.ACTION_IMPORT || operation == ActionDialog.ACTION_EXPORT) {
+                permission = operation == ActionDialog.ACTION_IMPORT ?
+                        Manifest.permission.READ_EXTERNAL_STORAGE :
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{permission}, PERMISSION_REQUEST);
+                    mActionType = type;
+                    mText = text;
+                    mOperation = operation;
+                    mOption = option;
+                }
+                else {
+                    new ImportExportTask(this, text, Application.getInstance().getPassword(),
+                            type, operation, option).execute();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResult){
+        if(requestCode == PERMISSION_REQUEST) {
+            if(grantResult[0] == PackageManager.PERMISSION_GRANTED) {
+                new ImportExportTask(this, mText, Application.getInstance().getPassword(),
+                        mActionType, mOperation, mOption).execute();
+            }
         }
     }
 
