@@ -462,6 +462,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 else {
                     SyncService.getInstance(this, Application.Options.mSync).initialize()
                             .setListener(this).connect(Application.getInstance().getLocalVersion());
+                    mRequestingPosition += 1;  // Bad design
                 }
                 break;
             case R.string.auto_lock:
