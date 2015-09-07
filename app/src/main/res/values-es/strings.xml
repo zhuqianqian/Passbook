@@ -5,7 +5,7 @@
         <item quantity="other">%d Cuentas</item>
     </plurals>
     <!-- App strings -->
-    <string name="app_name">Pwd Libro</string>
+    <string name="app_name">Passbook</string>
     <!-- Action/Menu/Button/Label/Title strings -->
     <!-- Tips/Messages -->
     <!-- String arrays -->
