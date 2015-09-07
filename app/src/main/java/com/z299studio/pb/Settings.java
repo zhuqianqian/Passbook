@@ -459,8 +459,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 if(Application.Options.mSync == C.Sync.NONE) {
                     editor.putInt(C.Sync.SERVER, Application.Options.mSync);
                 }
-                SyncService.getInstance(this, Application.Options.mSync).initialize()
-                        .setListener(this).connect(Application.getInstance().getLocalVersion());
+                else {
+                    SyncService.getInstance(this, Application.Options.mSync).initialize()
+                            .setListener(this).connect(Application.getInstance().getLocalVersion());
+                }
                 break;
             case R.string.auto_lock:
                 int lock_options[] = {1000, 5*60*1000, 30 * 60 * 1000, 0};
@@ -529,7 +531,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult){
         if(requestCode == PERMISSION_REQUEST) {
             if(grantResult[0] == PackageManager.PERMISSION_GRANTED) {
