@@ -1,6 +1,6 @@
-#PwdBook - A better password tool#
+#Passbook - A better password tool#
 
-PwdBook runs on Android 4.0+  and helps you to manage sensitive data securely with delightful Material experience[<sup>1</sup>](#note1) and powerful features.
+Passbook runs on Android 4.0+  and helps you to manage sensitive data securely with delightful Material experience[<sup>1</sup>](#note1) and powerful features.
 
 ---
 
@@ -12,10 +12,7 @@ PwdBook runs on Android 4.0+  and helps you to manage sensitive data securely wi
 * Password generation
 * Multiple Material themes
 * Free edit: add or remove any information as you wish, without a template
-* In-app Search (under development, available in 2.0)
-
-### About the Name
-PwdBook was originally called Passbook. After I realized many other apps also use this name, I decided to change it to PwdBook, another abbreviation form of "Password Book". For all releases before version 2.0, the name was Passbook.
+* In-app Search
 
 ### Download
 
@@ -43,7 +40,7 @@ PwdBook was originally called Passbook. After I realized many other apps also us
 
 ## License
 
-PwdBook is licensed under [Apache License 2.0](LICENSE).
+Passbook is licensed under [Apache License 2.0](LICENSE).
 
     /*
      * Copyright (C) 2015 Qianqian Zhu <zhuqianqian.299@gmail.com>
@@ -66,4 +63,4 @@ PwdBook is licensed under [Apache License 2.0](LICENSE).
 
 <a name="note1" id="md_anchor"><sup>1</sup>Material Themes</a>: Certain Material features require Android 4.4 or Android 5.0.
 
-<a name="note2" id="md_anchor"><sup>2</sup>data synchronization</a>: Synchronization before version 2 uses Google Play Games snapshot service, which can save up to 3MB data. The integration with Google Drive is underdevelopment and it is to be available in version 2.0.
+<a name="note2" id="md_anchor"><sup>2</sup>data synchronization</a>: Synchronization before version 2 uses Google Play Games snapshot service, which can save up to 3MB data. Since version 2, you can choose from Google Play Games snapshot service or Google Drive as the server to synchronize your data. Even if you chose Google Play Games service, the data is actually stored in your Google Drive folder, managed by Google Play Games service, and it can only be accessed by Passbook.
