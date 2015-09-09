@@ -31,7 +31,7 @@ Passbook runs on Android 4.0+  and helps you to manage sensitive data securely w
 
 ### Icons
 
-* [Material Design Icons](https://github.com/google/material-design-icons) (PwdBook 2.0+), Copyright © Google
+* [Material Design Icons](https://github.com/google/material-design-icons) (Passbook 2.0+), Copyright © Google
 * [Icon pack for Android L from Icons8](http://icons8.com/android-L/) (Passbook 1.0+), Copyright © Icons8.com
 
 ### Open Source Projects/Libraries
