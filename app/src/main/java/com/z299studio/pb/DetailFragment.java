@@ -26,6 +26,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
@@ -75,10 +76,10 @@ public class DetailFragment extends Fragment implements
     public DetailFragment() {    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (ItemFragmentListener)activity;
+            mListener = (ItemFragmentListener)context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -107,7 +108,7 @@ public class DetailFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mList = (ListView)rootView.findViewById(android.R.id.list);
         mAccount = AccountManager.getInstance().getAccountById(mAccountId);
-        mColor = getResources().getColor(COLORS[mAccount.getCategoryId() & 0x0f]);
+        mColor = ContextCompat.getColor(getContext(), COLORS[mAccount.getCategoryId() & 0x0f]);
         setUpList();
         setupToolbar(rootView, mAccount.mProfile);
         View top = rootView.findViewById(R.id.top_frame);

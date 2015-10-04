@@ -47,7 +47,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         ActionDialog.ActionDialogListener, SyncService.SyncListener{
     
     private static final String TAG_DIALOG = "action_dialog";
-    private static final int PERMISSION_REQUEST = 299;
+    private static final int PERMISSION_REQUEST = 1;
 
     private String mText;
     private int mActionType;

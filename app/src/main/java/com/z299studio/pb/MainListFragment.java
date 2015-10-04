@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -315,10 +316,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (ItemFragmentListener) activity;
+            mListener = (ItemFragmentListener)context;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemSelectionInterface.");
         }

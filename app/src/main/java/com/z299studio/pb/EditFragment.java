@@ -230,10 +230,10 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public EditFragment() {}
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (ItemFragmentListener)activity;
+            mListener = (ItemFragmentListener)context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

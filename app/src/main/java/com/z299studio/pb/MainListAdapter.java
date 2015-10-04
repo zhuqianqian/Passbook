@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class MainListAdapter extends BaseAdapter {
 
     public interface OnListItemCheckListener{
-        public void onCheck(int count, int position, boolean isChecked);
+        void onCheck(int count, int position, boolean isChecked);
     }
 
     private static class ViewHolder {

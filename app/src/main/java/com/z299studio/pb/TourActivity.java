@@ -40,7 +40,6 @@ public class TourActivity extends Activity implements AnimatorListener{
     private static final int NUM_PAGES = 3;
     private int mCurrent;
     private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
     private LayerDrawable mBackground;
     private TextView mAppText;
     private ImageView[] mIndicators = new ImageView[NUM_PAGES];
@@ -80,16 +79,16 @@ public class TourActivity extends Activity implements AnimatorListener{
         mNext = (Button)findViewById(R.id.next);
         mContainer = (LinearLayout)findViewById(R.id.container);
         mAppText = (TextView)findViewById(R.id.app);
-        if(mReady == false) {
+        if(!mReady) {
             mAppText.animate().alpha(1.0f).setDuration(400).setListener(this);
         }
         else {
             mPager.setAlpha(1.0f);
             mContainer.setAlpha(1.0f);
         }
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPager.setAdapter(pagerAdapter);
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 adjustNavigation(position);
