@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="get_pro">购买付费版</string>
+    <string-array name="theme_names">
+        <item>默认淡色主题</item>
+        <item>默认深色主题</item>
+        <item>蓝灰淡色</item>
+        <item>蓝灰淡色</item>
+    </string-array>
+</resources>

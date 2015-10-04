@@ -10,12 +10,22 @@ android {
         targetSdkVersion 23
     }
 
+    productFlavors {
+        paid {
+            applicationId "com.z299studio.pb"
+        }
+        free {
+            applicationId "com.z299studio.pbfree"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    sourceSets { pro { java.srcDirs = ['src/pro/java', 'src/pro/java/'] } }
 }
 
 dependencies {
@@ -24,5 +34,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-games:+'
     compile 'com.google.android.gms:play-services-drive:+'
     compile 'com.android.support:support-v13:23.0.1'
+    freeCompile 'com.google.android.gms:play-services-ads:+'
     compile files('libs/opencsv-3.0.jar')
 }
