@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(savedInstanceState!=null && AccountManager.getInstance() == null) {
+        if(AccountManager.getInstance() == null) {
             super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
