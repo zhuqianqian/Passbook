@@ -26,6 +26,9 @@ Passbook runs on Android 4.0+  and helps you to manage sensitive data securely w
 ### Translations
 
 * Français: Xuechen Xu
+* Espa?ol: [oseliko7](https://github.com/joseliko7).
+* Many thanks to you guys for the translations!
+
 * Please visit [here](https://299studio.oneskyapp.com/collaboration/project?id=39783) to help on translations.
 * Many thanks to [OneSky](http://www.oneskyapp.com) for providing the translation collaboration platform.
 
