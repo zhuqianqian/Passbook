@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:padding="@dimen/app_tour_padding">
     
     <TextView android:id="@+id/icon"
         android:layout_width="wrap_content"
@@ -10,7 +10,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:drawableTop="@drawable/ic_launcher"/>
+        android:drawableTop="@drawable/ic_launcher"
+        android:textSize="@dimen/start_title_size"/>
 
     <TextView
         android:id="@+id/intro_0" 
@@ -18,47 +19,49 @@
         android:layout_below="@id/icon"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_marginTop="24dp"
+        android:textSize="@dimen/start_intro_size"
+        android:layout_marginTop="@dimen/app_tour_padding"
         android:text="@string/app_intro"/>
     
     <LinearLayout android:id="@+id/btn_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="@dimen/app_tour_padding"
         android:layout_below="@id/intro_0"
         >
-    <Button android:id="@+id/btn_gdrive"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        style="@style/Button.Accent"
-        android:text="@string/sync_gdrive"
-        android:onClick="onSyncSelected"
-        />
-    
-    <Button android:id="@+id/btn_gpg"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        style="@style/Button.Accent"
-        android:text="@string/sync_gpg"   
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:onClick="onSyncSelected"
-        />
-    
-    <Button android:id="@+id/btn_local"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        style="@style/Button.Accent"
-        android:text="@string/sync_none"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:onClick="onSyncSelected"/>
+        <Button android:id="@+id/btn_gdrive"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/Button.Accent"
+            android:text="@string/sync_gdrive"
+            android:onClick="onSyncSelected"
+            />
+
+        <Button android:id="@+id/btn_gpg"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/Button.Accent"
+            android:text="@string/sync_gpg"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:onClick="onSyncSelected"
+            />
+
+        <Button android:id="@+id/btn_local"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/Button.Accent"
+            android:text="@string/sync_none"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:onClick="onSyncSelected"/>
     </LinearLayout>
     
     <ProgressBar android:id="@+id/pb"
         android:layout_width="match_parent" 
         android:layout_height="48dp"
         android:alpha="0"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/app_tour_padding"
+        android:layout_alignTop="@id/btn_container"
         android:layout_below="@id/intro_0"/>
     
     <TextView android:id="@+id/sync_hint"        
