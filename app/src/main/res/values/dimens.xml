@@ -48,4 +48,9 @@
     
     <dimen name="setting_margin">16dp</dimen>
 
+    <dimen name="app_tour_image_margin">60dp</dimen>
+    <dimen name="app_tour_title_margin">180dp</dimen>
+    <dimen name="app_tour_desc_padding">120dp</dimen>
+    <dimen name="app_tour_padding">16dp</dimen>
+
 </resources>

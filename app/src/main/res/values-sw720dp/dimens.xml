@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="detail_card_width">560dp</dimen>
+
+    <dimen name="app_tour_image_margin">120dp</dimen>
+    <dimen name="app_tour_title_margin">280dp</dimen>
+    <dimen name="app_tour_desc_padding">240dp</dimen>
+    <dimen name="app_tour_padding">72dp</dimen>
 </resources>
