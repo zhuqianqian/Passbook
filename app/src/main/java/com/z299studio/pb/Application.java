@@ -152,7 +152,7 @@ public class Application{
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
-        Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, true);
+        Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, false);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);
         Options.mSyncVersion = mSP.getInt(C.Sync.VERSION, 0);
