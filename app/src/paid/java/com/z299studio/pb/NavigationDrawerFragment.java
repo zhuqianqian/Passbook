@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -104,10 +105,10 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mCallback = (NavigationDrawerCallbacks) activity;
+            mCallback = (NavigationDrawerCallbacks) context;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
@@ -218,9 +219,6 @@ public class NavigationDrawerFragment extends Fragment implements
                     0, 0, NavMenuItem.MENU_HEADER));
             pos++;
         }
-        result.add(new NavMenuItem(0, r.getString(R.string.categories),
-                0, 0, NavMenuItem.MENU_SEPARATOR));
-        pos++;
         result.add(new NavMenuItem(R.drawable.pb_all, r.getString(R.string.all_accounts),
                 am.getAccountsCountByCategory(AccountManager.ALL_CATEGORY_ID),
                 AccountManager.ALL_CATEGORY_ID, NavMenuItem.MENU_SELECTION));
