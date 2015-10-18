@@ -24,7 +24,7 @@
     <string name="settings">Ajustes</string>
     <string name="about">Acerca</string>
     <string name="all_accounts">Todas Las Cuentas</string>
-    <string name="rate">Valorar &amp;amp; Feedback</string>
+    <string name="rate">Valorar y Feedback</string>
     <string name="set_icon">Seleccione un icono</string>
     <string name="copy_pwd">Copiar Contraseña</string>
     <string name="change_pwd">Cambiar Contraseña Maestra</string>
@@ -103,6 +103,28 @@
     <string name="warning_copy">Texto en el portapapeles se puede acceder mediante cualquier aplicacion en el dispositivo. ¿Está seguro de que deseas copiar?</string>
     <string name="auth_required">El archivo de origen se cifra con una contraseña diferente, por favor, introduzca la contraseña para desbloquearlo.</string>
     <!-- String arrays -->
+    <string-array name="theme_names">
+    <!-- String arrays -->
+        <item>Predeterminado (Ligero)</item>
+    <!-- String arrays -->
+        <item>Predeterminado (Oscuro)</item>
+    <!-- String arrays -->
+        <item>Gris azulado (Ligero)</item>
+    <!-- String arrays -->
+        <item>Gris azulado (Oscuro)</item>
+    <!-- String arrays -->
+        <item>Indigo (Ligero)</item>
+    <!-- String arrays -->
+        <item>Indigo (Oscuro)</item>
+    <!-- String arrays -->
+        <item>Morado (Ligero)</item>
+    <!-- String arrays -->
+        <item>Morado (Oscuro)</item>
+    <!-- String arrays -->
+        <item>Cerceta (Ligero)</item>
+    <!-- String arrays -->
+        <item>Cerceta (Oscuro)</item>
+    </string-array>
     <string-array name="category_names">
         <item>Cuentas Bancarias</item>
         <item>Tarjetas De Crédito</item>

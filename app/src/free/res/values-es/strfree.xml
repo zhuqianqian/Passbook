@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="get_pro">Acheter la Version Premium</string>
+    <string name="get_pro">Comprar versión premium</string>
     <string-array name="theme_names">
-        <item>Thème Claire par Défaut</item>
-        <item>Thème Sombre par Défaut</item>
-        <item>Thème Claire Bleu-Gris</item>
-        <item>Thème Sombre Bleu-Gris</item>
+        <item>Predeterminado (Ligero)</item>
+        <item>Predeterminado (Oscuro)</item>
+        <item>Gris azulado (Ligero)</item>
+        <item>Gris azulado (Oscuro)</item>
     </string-array>
 </resources>
