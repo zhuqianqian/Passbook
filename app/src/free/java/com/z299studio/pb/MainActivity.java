@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(getResources().getBoolean(R.bool.hide_drawer) ?
-            R.menu.menu_home_small : R.menu.menu_home_large, menu);
+                R.menu.menu_home_small : R.menu.menu_home_large, menu);
         for(int i = 0; i < menu.size(); ++i) {
             menu.getItem(i).getIcon().setColorFilter(
                     C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
@@ -206,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Uri uri;
+        Intent intent;
         switch(item.getItemId()) {
             case R.id.action_search:
                 if(mAllAccounts == null) {
@@ -227,16 +229,20 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 mMainList.editCategory();
                 break;
             case R.id.action_help:
-                Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
-                Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
-                try {  startActivity(rateIntent); } 
+                uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {  startActivity(intent); }
                 catch (ActivityNotFoundException e) {
-                    Log.w("PwdBook", "Activity not found when launching help");                    
+                    Log.w("Passbook", "Activity not found when launching help");
                 }
                 break;
-            case R.id.action_about:
-                ActionDialog.create(ActionDialog.ACTION_ABOUT)
-                        .show(getSupportFragmentManager(), "action_dialog");
+            case R.id.action_rate:
+                uri = Uri.parse("market://details?id=" + this.getPackageName());
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                try { startActivity(intent); }
+                catch (ActivityNotFoundException e) {
+                    Log.w("Passbook", "Activity not found when launching rate");
+                }
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, Settings.class));
@@ -301,15 +307,19 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                     break;
                 case R.string.help:
                     Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
-                    Intent helpIntent = new Intent(Intent.ACTION_VIEW, uri);
-                    try {  startActivity(helpIntent); }
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    try {  startActivity(intent); }
                     catch (ActivityNotFoundException e) {
                         Log.w("PwdBook", "Activity not found when launching help");
                     }
                     break;
-                case R.string.about:
-                    ActionDialog.create(ActionDialog.ACTION_ABOUT)
-                            .show(getSupportFragmentManager(), "action_dialog");
+                case R.string.rate:
+                    uri = Uri.parse("market://details?id=" + this.getPackageName());
+                    intent = new Intent(Intent.ACTION_VIEW, uri);
+                    try { startActivity(intent); }
+                    catch (ActivityNotFoundException e) {
+                        Log.w("Passbook", "Activity not found when launching rate");
+                    }
                     break;
                 
                 case R.string.get_pro:

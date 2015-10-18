@@ -17,7 +17,6 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -41,11 +40,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class ActionDialog extends DialogFragment implements View.OnClickListener,
         AdapterView.OnItemSelectedListener, TextWatcher{
     
     public static final int REQ_CODE_FILE_SELECTION = 0x299;
-    private static final String TAG_DIALOG = "action_dialog";
     
     public interface ActionDialogListener {
         void onConfirm(String text, int type, int operation, int option);
@@ -55,7 +55,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     public static final int ACTION_EXPORT = 1;
     public static final int ACTION_IMPORT = 2;
     public static final int ACTION_RESET_PWD = 3;
-    public static final int ACTION_ABOUT = 4;
+    public static final int ACTION_CREDITS = 4;
     public static final int ACTION_LICENSE = 5;
 
     private Handler mHandler = new Handler();
@@ -119,7 +119,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         View rootView;
         int []layouts =  {R.layout.dialog_authenticate, R.layout.dialog_export,
-            R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_about,
+            R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_credits,
             R.layout.dialog_license};
         rootView = inflater.inflate(layouts[mDlgType], container, false);
         mOkButton = (Button)rootView.findViewById(R.id.ok);
@@ -171,20 +171,17 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             }
             break;
         
-        case ACTION_ABOUT:
-            rootView.findViewById(R.id.rate).setOnClickListener(this);
-            rootView.findViewById(R.id.licence).setOnClickListener(this);
-            TextView tv = (TextView) rootView.findViewById(R.id.about);
-            Activity context = getActivity();
-            String versionName;
-            try {
-                versionName = context.getPackageManager()
-                        .getPackageInfo(context.getPackageName(), 0)
-                        .versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                versionName = "2.0.0";
-            }
-            tv.setText(getString(R.string.app_about, getString(R.string.app_name), versionName));
+        case ACTION_CREDITS:
+            rootView.findViewById(R.id.cancel).setOnClickListener(this);
+            TextView tv = (TextView) rootView.findViewById(R.id.testers);
+            tv.setText(R.string.cc_yhc);
+            tv = (TextView) rootView.findViewById(R.id.translators);
+            String translators = String.format(Locale.getDefault(),
+                    "%s: %s\n%s: %s\n%s: %s",
+                    getString(R.string.lang_fr), getString(R.string.cc_xcx),
+                    getString(R.string.lang_es), getString(R.string.cc_jh),
+                    getString(R.string.lang_zhtw), getString(R.string.cc_qqz));
+            tv.setText(translators);
             break;
         
         case ACTION_LICENSE:
@@ -229,17 +226,6 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 break;
             case R.id.select:
                 showFileChooser();
-                break;
-            case R.id.rate:
-                this.dismiss();
-                Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
-                Intent rateIntent = new Intent(Intent.ACTION_VIEW, uri);
-                try { startActivity(rateIntent); } 
-                catch (ActivityNotFoundException e) { }
-                break;
-            case R.id.licence:
-                this.dismiss();
-                ActionDialog.create(ACTION_LICENSE).show(getFragmentManager(), TAG_DIALOG);
                 break;
         }
     }

@@ -10,7 +10,6 @@
     </plurals>
     <!-- App strings -->
     <string name="app_name">Passbook</string>
-    <string name="app_about">%1$s\nVersion %2$s</string>
     <string name="app_copy">Droit D\'auteur  &#169; 2015, 299Studio</string>
     <string name="app_welcome">Bienvenue sur Passbook</string>
     <string name="app_intro">Votre lieu central pour stocker en toute sécurité vos données sensibles et les synchroniser entre plusieurs périphériques.\n\n\nChoisissez l\'emplacement où vous souhaitez synchroniser vos données.</string>
@@ -23,9 +22,8 @@
     <string name="new_account">Ajouter un Compte</string>
     <string name="help">Aide et Questions</string>
     <string name="settings">Paramètres</string>
-    <string name="about">À Propos de Passbook</string>
+    <string name="about">À Propos</string>
     <string name="all_accounts">Tous les Comptes</string>
-    <string name="categories">Catégories</string>
     <string name="rate">Estimes et Commentaires</string>
     <string name="set_icon">Choisir Une Icône</string>
     <string name="copy_pwd">Copier le Mot de Passe</string>
@@ -103,7 +101,6 @@
     <string name="invalid_file">Sélectionnez un fichier valide pour continuer, SVP!</string>
     <string name="remember_choice">Se souvenir de mon choix et ne me le demander pas à nouveau.</string>
     <string name="warning_copy">Le texte dans le presse-papiers peut être consulté par toute les applications de votre appareil. Vous êtes sûr(e) de le copier?</string>
-    <string name="credits">Un grand remerciement à <u>Xu, Xuechen</u> pour les traductions françaises!</string>
     <string name="auth_required">Le fichier source nécessite un mot de passe pour déverrouiller.</string>
     <!-- String arrays -->
     <string-array name="theme_names">

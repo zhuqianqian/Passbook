@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="credits">致謝</string>
+    <string name="thanks">非常感謝所有的貢獻者！</string>
+    <string name="testing">調試</string>
+    <string name="translation">翻譯</string>
+    <string name="build">版本</string>
+    <string name="version">版本：%s</string>
+</resources>

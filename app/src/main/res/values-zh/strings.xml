@@ -8,7 +8,6 @@
     </plurals>
     <!-- App strings -->
     <string name="app_name">密码本</string>
-    <string name="app_about">%1$s\n版本 %2$s</string>
     <string name="app_copy">版权所有 &#169; 2015, 299Studio</string>
     <string name="app_welcome">欢迎使用密码本</string>
     <string name="app_intro">安全管理你的账号密码并在多个设备之间同步。\n\n请选择一个服务器进行同步。</string>
@@ -21,9 +20,8 @@
     <string name="new_account">新加账号</string>
     <string name="help">帮助与常见问题</string>
     <string name="settings">设置</string>
-    <string name="about">关于密码本</string>
+    <string name="about">关于</string>
     <string name="all_accounts">所有账号</string>
-    <string name="categories">类别</string>
     <string name="rate">评价与反馈</string>
     <string name="set_icon">设置图标</string>
     <string name="copy_pwd">复制密码</string>
@@ -101,7 +99,6 @@
     <string name="invalid_file">请选择一个有效的文件以继续。</string>
     <string name="remember_choice">记住我的选择并不再询问。</string>
     <string name="warning_copy">粘贴上的内容可以被设备上的所有应用访问，确定要复制吗？</string>
-    <string name="credits">非常感谢<u>徐雪晨</u>的法语翻译！</string>
     <string name="auth_required">原始文件用一个不同的密码加密，请输入它的密码以解锁。</string>
     <!-- String arrays -->
     <string-array name="theme_names">

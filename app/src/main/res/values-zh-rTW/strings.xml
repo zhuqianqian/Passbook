@@ -8,7 +8,6 @@
     </plurals>
     <!-- App strings -->
     <string name="app_name">密碼簿</string>
-    <string name="app_about">%1$s\n版本 %2$s</string>
     <string name="app_copy">&#169; 299Studio 2015， 版權所有</string>
     <string name="app_welcome">歡迎使用密碼簿</string>
     <string name="app_intro">安全管理你的賬號密碼並在多個裝置之間同步。\n\n請選擇一個伺服器進行同步。</string>
@@ -21,9 +20,8 @@
     <string name="new_account">新增賬號</string>
     <string name="help">幫助與常見問題</string>
     <string name="settings">設定</string>
-    <string name="about">關於密碼簿</string>
+    <string name="about">關於</string>
     <string name="all_accounts">全部賬號</string>
-    <string name="categories">類別</string>
     <string name="rate">評價與意見反映</string>
     <string name="set_icon">設定圖標</string>
     <string name="copy_pwd">複製密碼</string>
@@ -101,7 +99,6 @@
     <string name="invalid_file">請選擇一個有效檔案以繼續。</string>
     <string name="remember_choice">記住我的選擇并不再詢問。</string>
     <string name="warning_copy">剪貼簿上的內容可以被設備上的所有應用程式訪問，確定要複製嗎？</string>
-    <string name="credits">非常感謝<u>徐雪晨</u>的法文翻譯！</string>
     <string name="auth_required">原始檔案使用一個不同的密碼加密，請輸入它的密碼以解鎖。</string>
     <!-- String arrays -->
     <string-array name="theme_names">

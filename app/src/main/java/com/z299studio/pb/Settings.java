@@ -256,6 +256,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 case R.string.change_pwd:
                     type = ActionDialog.ACTION_RESET_PWD;
                     break;
+                case R.string.licence:
+                    type = ActionDialog.ACTION_LICENSE;
+                    break;
+                case R.string.credits:
+                    type = ActionDialog.ACTION_CREDITS;
+                    break;
                 case R.string.last_sync:
                     if(Application.Options.mSync != C.Sync.NONE) {
                         SyncService.getInstance(Settings.this, Application.Options.mSync)
@@ -280,7 +286,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private ListView mListView;
     
     private SettingItemAdapter initSettings() {
-        SettingItem[] items = new SettingItem[15];
+        SettingItem[] items = new SettingItem[19];
         int index = 0;
         String desc;
         items[index++] = new SettingItem(0, getString(R.string.general), null);
@@ -329,8 +335,21 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 .setValue(Application.Options.mAlwaysShowPwd);
         items[index++] = new SettingItemSwitch(R.string.warn_copy, getString(R.string.warn_copy),
                 null).setValue(Application.Options.mWarnCopyPwd);
-        items[index] = new SettingItemAction(R.string.change_pwd, getString(R.string.change_pwd),
-                null).setListener(mActionListener);                
+        items[index++] = new SettingItemAction(R.string.change_pwd, getString(R.string.change_pwd),
+                null).setListener(mActionListener);
+        items[index++] = new SettingItem(0, getString(R.string.about), null);
+        items[index++] = new SettingItemAction(R.string.licence, getString(R.string.licence),
+                null).setListener(mActionListener);
+        items[index++] = new SettingItemAction(R.string.credits, getString(R.string.credits),
+                null).setListener(mActionListener);
+        String versionName;
+        try {
+            versionName = this.getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "2.2.0";
+        }
+        desc = getString(R.string.version, versionName);
+        items[index++] = new SettingItemAction(R.string.build, getString(R.string.build), desc);
         mAdapter = new SettingItemAdapter(this, items);
         return mAdapter;
     }

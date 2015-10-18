@@ -10,7 +10,6 @@
     </plurals>
     <!-- App strings -->
     <string name="app_name">Passbook</string>
-    <string name="app_about">%1$s\nVersion %2$s</string>
     <string name="app_copy">Copyright &#169; 2015, 299Studio</string>
     <string name="app_welcome">Welcome to Passbook</string>
     <string name="app_intro">Your central place to securely store your sensitive data and synchronize among devices.\n\nChoose where you want to sync your data</string>
@@ -23,9 +22,8 @@
     <string name="new_account">New Account</string>
     <string name="help">Help and FAQ</string>
     <string name="settings">Settings</string>
-    <string name="about">About Passbook</string>
+    <string name="about">About</string>
     <string name="all_accounts">All Accounts</string>
-    <string name="categories">Categories</string>
     <string name="rate">Rate &amp; Feedback</string>
     <string name="set_icon">Choose an Icon</string>
     <string name="copy_pwd">Copy Password</string>
@@ -103,7 +101,6 @@
     <string name="invalid_file">Please select a valid file to continue.</string>
     <string name="remember_choice">Remember my choice and do not ask again.</string>
     <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
-    <string name="credits">Many thanks to <u>Xu, Xuechen</u> for French translations!</string>
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
     <!-- String arrays -->
     <string-array name="theme_names">

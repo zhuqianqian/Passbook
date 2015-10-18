@@ -25,47 +25,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/DialogTitle"
-            android:text="@string/about"/>
+            android:text="@string/credits"/>
         <TextView
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:drawableLeft="@drawable/ic_launcher"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="164dp"
-            android:id="@+id/about"/>
+            android:layout_width="match_parent"
+            android:text="@string/thanks"/>
 
-        <TextView
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:text="@string/testing"
+            android:textAllCaps="true"
+            android:gravity="center"/>
+        <TextView android:id="@+id/testers"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/credits"/>
+            android:gravity="center"/>
 
-        <TextView
-            android:layout_marginTop="8dp"
-            android:gravity="center"
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:text="@string/translation"
+            android:textAllCaps="true"
+            android:gravity="center"/>
+        <TextView android:id="@+id/translators"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:text="@string/app_copy"/>
+            android:gravity="center"/>
     </LinearLayout>
 
-    <Button android:id="@+id/licence"
+    <Button android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Button.Flat.Accent"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@id/container"
-        android:text="@string/licence"/>
-    <Button
-        android:id="@+id/rate"
-        style="@style/Button.Flat.Accent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/licence"
-        android:layout_alignParentRight="true"
-        android:text="@string/rate" />
+        android:text="@android:string/ok"/>
 
 </RelativeLayout>
 </ScrollView>

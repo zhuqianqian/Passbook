@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="credits">Reconocimiento</string>
+    <string name="thanks">Muchas gracias a todos los colaboradores!</string>
+    <string name="testing">Pruebas</string>
+    <string name="translation">Traducciones</string>
+    <string name="build">Versión</string>
+    <string name="version">Versión: %s</string>
+</resources>

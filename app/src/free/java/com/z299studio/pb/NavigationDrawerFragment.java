@@ -238,9 +238,9 @@ public class NavigationDrawerFragment extends Fragment implements
         if(mDrawerHidden) {
             result.add(new NavMenuItem(0, null, 0, 0,
                     NavMenuItem.MENU_SEPARATOR));
-            int stringIds[] = {R.string.help, R.string.settings, R.string.about, R.string.get_pro};
-            int iconIds[] = {R.drawable.ic_action_help, R.drawable.ic_action_settings,
-                    R.drawable.ic_action_about, R.drawable.pb_shop};
+            int stringIds[] = {R.string.help, R.string.rate, R.string.get_pro, R.string.settings};
+            int iconIds[] = {R.drawable.ic_action_help, R.drawable.ic_rate_review,
+                    R.drawable.pb_shop, R.drawable.ic_action_settings};
             for(i = 0; i < stringIds.length; ++i) {
                 result.add(new NavMenuItem(iconIds[i], r.getString(stringIds[i]),
                         0, stringIds[i], NavMenuItem.MENU_ACTION));

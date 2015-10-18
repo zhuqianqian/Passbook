@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="credits">กิตติกรรมประกาศ</string>
+    <string name="thanks">ขอบคุณมากที่ทุกคนที่ช่วยให้!</string>
+    <string name="testing">การทดสอบ</string>
+    <string name="translation">แปล</string>
+    <string name="build">รุ่น</string>
+    <string name="version">รุ่น: %s</string>
+</resources>

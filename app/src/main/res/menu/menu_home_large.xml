@@ -19,9 +19,9 @@
         android:icon="@drawable/ic_action_help"
         android:title="@string/help"
         app:showAsAction="never|collapseActionView"/>
-    <item android:id="@+id/action_about"
-        android:icon="@drawable/ic_action_about"
-        android:title="@string/about"
+    <item android:id="@+id/action_rate"
+        android:icon="@drawable/ic_rate_review"
+        android:title="@string/rate"
         app:showAsAction="never|withText"/>
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
