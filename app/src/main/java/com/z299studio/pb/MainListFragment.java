@@ -16,7 +16,6 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;

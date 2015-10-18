@@ -22,6 +22,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,8 +125,9 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
 
     private void tintSeekBar(SeekBar sb) {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable thumb = getResources().getDrawable(R.drawable.thumb);
-            LayerDrawable progress = (LayerDrawable)getResources().getDrawable(R.drawable.progress);
+            Drawable thumb = ContextCompat.getDrawable(getContext(), R.drawable.thumb);
+            LayerDrawable progress = (LayerDrawable)ContextCompat.getDrawable(getContext(),
+                    R.drawable.progress);
             progress.getDrawable(0).setColorFilter(C.ThemedColors[C.colorIconNormal],
                     PorterDuff.Mode.SRC_ATOP);
             progress.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],

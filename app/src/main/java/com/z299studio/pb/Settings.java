@@ -349,7 +349,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             versionName = "2.2.0";
         }
         desc = getString(R.string.version, versionName);
-        items[index++] = new SettingItemAction(R.string.build, getString(R.string.build), desc);
+        items[index] = new SettingItemAction(R.string.build, getString(R.string.build), desc);
         mAdapter = new SettingItemAdapter(this, items);
         return mAdapter;
     }

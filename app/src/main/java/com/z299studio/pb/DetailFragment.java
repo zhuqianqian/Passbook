@@ -16,7 +16,6 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
