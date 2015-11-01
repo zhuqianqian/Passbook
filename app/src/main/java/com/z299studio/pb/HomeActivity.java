@@ -153,18 +153,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(et_confirm.getWindowToken(), 0);
                 mApp.setPassword(password, true);
-
                 new InitTask().execute();
-//                mApp.onStart();
-//                String[] defCategories = getResources().getStringArray(R.array.category_names);
-//                int i = 0;
-//                AccountManager am = AccountManager.getInstance(null);
-//                for(String s : defCategories) {
-//                    am.addCategory(i++, s);
-//                }
-//                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
-//                    startMain();
-//                }
             }
             else {
                 et_confirm.setText("");
@@ -201,6 +190,10 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             }
             else if(mFingerprintManager.isHardwareDetected() &&
                     mFingerprintManager.hasEnrolledFingerprints()) {
+                if(mPwdEdit!=null) {
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
+                }
                 FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
                         .show(getSupportFragmentManager(), "dialog_fp");
                 isHandled = true;
