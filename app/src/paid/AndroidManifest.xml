@@ -1,7 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.z299studio.pb">
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
-        tools:node="remove"/>
-</manifest>

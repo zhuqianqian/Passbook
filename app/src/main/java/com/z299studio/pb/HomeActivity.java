@@ -109,7 +109,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 requestPermissions(new String[]{Manifest.permission.USE_FINGERPRINT},
                         PERMISSION_REQ_CODE_FP2);
             }
-            else {
+            else if(mFingerprintManager.isHardwareDetected()
+                    && mFingerprintManager.hasEnrolledFingerprints()){
                 startFingerprintDialog(false);
             }
         }
