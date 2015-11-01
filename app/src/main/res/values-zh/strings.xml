@@ -147,17 +147,6 @@
         <item>密码本逗号分隔文件（明文）</item>
         <item>aWallet逗号分隔文件（明文）</item>
     </string-array>
-    <string-array name="def_field_names">
-        <item>用户名</item>
-        <item>密码</item>
-        <item>电子邮箱</item>
-        <item>网址</item>
-        <item>卡号</item>
-        <item>PIN</item>
-        <item>备注</item>
-        <item>银行名称</item>
-        <item>校验码</item>
-    </string-array>
     <string-array name="lock_options">
         <item>立即</item>
         <item>5分钟</item>
