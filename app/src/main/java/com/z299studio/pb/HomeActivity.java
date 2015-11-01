@@ -70,7 +70,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
-        mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
+
         setContentView(R.layout.activity_home);
         int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
                 R.attr.colorAccent, R.attr.textColorNormal, R.attr.iconColorNormal};
@@ -103,15 +103,18 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && mStage == AUTH) {
-            if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.USE_FINGERPRINT},
-                        PERMISSION_REQ_CODE_FP2);
-            }
-            else if(mFingerprintManager.isHardwareDetected()
-                    && mFingerprintManager.hasEnrolledFingerprints()){
-                startFingerprintDialog(false);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
+            mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
+            if(mStage == AUTH) {
+                if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.USE_FINGERPRINT},
+                            PERMISSION_REQ_CODE_FP2);
+                }
+                else if (mFingerprintManager.isHardwareDetected()
+                        && mFingerprintManager.hasEnrolledFingerprints()) {
+                    startFingerprintDialog(false);
+                }
             }
         }
     }
@@ -183,7 +186,6 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult){
-
         if((requestCode == PERMISSION_REQ_CODE_FP1 || requestCode == PERMISSION_REQ_CODE_FP2) &&
                 grantResult[0] == PackageManager.PERMISSION_GRANTED &&
                 mFingerprintManager.isHardwareDetected() &&

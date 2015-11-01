@@ -16,11 +16,14 @@
 
 package com.z299studio.pb;
 
+import android.annotation.TargetApi;
 import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.CancellationSignal;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+@TargetApi(Build.VERSION_CODES.M)
 public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallback {
 
     static final long ERROR_TIMEOUT_MILLIS = 1600;

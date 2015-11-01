@@ -16,8 +16,10 @@
 
 package com.z299studio.pb;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
@@ -52,6 +54,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
+@TargetApi(Build.VERSION_CODES.M)
 public class FingerprintDialog extends DialogFragment implements View.OnClickListener,
         FingerprintUiHelper.Callback{
     
