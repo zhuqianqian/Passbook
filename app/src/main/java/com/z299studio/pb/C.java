@@ -34,6 +34,7 @@ public final class C {
         public static final String AUTO_LOCK = "AutoLock";
         public static final String AUTO_LOCK_TIME = "AutoLockTime";
         public static final String ENABLE_COPY = "EnableCopy";
+        public static final String ENABLE_FP = "EnableFPAuth";
         public static final String SHOW_OTHER = "ShowUngrouped";
         public static final String SHOW_PWD = "ShowPassword";
         public static final String THEME = "Theme";
@@ -71,4 +72,8 @@ public final class C {
     public static final int colorTextNormal = 3;
     public static final int colorIconNormal = 4;
     public static int ThemedColors[] = {0, 0, 0, 0, 0};
+
+    public static final int fpNever = 0;
+    public static final int fpDisabled = 2;
+    public static final int fpEnabled = 3;
 }

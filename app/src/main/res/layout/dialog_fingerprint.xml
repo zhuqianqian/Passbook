@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dlg_action_margin"
+    android:paddingLeft="@dimen/dlg_action_margin"
+    android:paddingRight="@dimen/dlg_action_margin"
+    android:paddingBottom="@dimen/dlg_bottom_margin">
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dlg_content_margin"
+        android:paddingRight="@dimen/dlg_content_margin"
+        android:paddingLeft="@dimen/dlg_content_margin"
+        android:paddingBottom="@dimen/dlg_action_margin"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DialogTitle"
+            android:text="@string/fp_title"/>
+
+        <TextView android:id="@+id/fp_desc"
+            android:layout_below="@id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:text="@string/fp_ask"/>
+
+        <ImageView android:id="@+id/fp_icon"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_fp_40px"
+            android:layout_below="@id/fp_desc"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/fp_touch"
+            />
+        <TextView android:id="@+id/fp_area"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/fp_desc"
+            android:layout_toEndOf="@id/fp_icon"
+            android:layout_toRightOf="@id/fp_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fp_touch"
+            android:textStyle="italic"
+            android:gravity="center_vertical"
+            android:minHeight="40dp"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            />
+
+    </RelativeLayout>
+
+    <Button android:id="@+id/cancel"
+        style="@style/Button.Flat.Accent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/container"
+        android:text="@android:string/cancel"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

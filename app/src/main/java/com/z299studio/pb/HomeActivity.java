@@ -18,11 +18,15 @@ package com.z299studio.pb;
 
 import java.security.GeneralSecurityException;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -47,7 +51,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements
-AnimatorListener, SyncService.SyncListener{
+AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener{
     protected Application mApp;
     protected EditText mPwdEdit;
     protected TextView mSyncText;
@@ -57,12 +61,16 @@ AnimatorListener, SyncService.SyncListener{
     private static final int LOADING = 1;
     private static final int SET_PWD = 2;
     private static final int AUTH = 3;
+    private FingerprintManager mFingerprintManager;
+    private static final int PERMISSION_REQ_CODE_FP1 = 1;
+    private static final int PERMISSION_REQ_CODE_FP2 = 2;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
+        mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
         setContentView(R.layout.activity_home);
         int[] primaryColors = {R.attr.colorPrimary, R.attr.colorPrimaryDark,
                 R.attr.colorAccent, R.attr.textColorNormal, R.attr.iconColorNormal};
@@ -95,6 +103,16 @@ AnimatorListener, SyncService.SyncListener{
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && mStage == AUTH) {
+            if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.USE_FINGERPRINT},
+                        PERMISSION_REQ_CODE_FP2);
+            }
+            else {
+                startFingerprintDialog(false);
+            }
+        }
     }
     
     @Override
@@ -124,8 +142,7 @@ AnimatorListener, SyncService.SyncListener{
     protected void onPause() {
         if(mPwdEdit!=null) {
             mPwdEdit.clearFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                      Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
         }
         super.onPause();
@@ -136,6 +153,9 @@ AnimatorListener, SyncService.SyncListener{
         if(mStage == SET_PWD) {
             EditText et_confirm = (EditText) findViewById(R.id.confirm);
             if(password.equals(et_confirm.getText().toString())) {
+                et_confirm.clearFocus();
+                ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(et_confirm.getWindowToken(), 0);
                 mApp.setPassword(password, true);
                 mApp.onStart();
                 String[] defCategories = getResources().getStringArray(R.array.category_names);
@@ -144,7 +164,9 @@ AnimatorListener, SyncService.SyncListener{
                 for(String s : defCategories) {
                     am.addCategory(i++, s);
                 }
-                startMain();
+                if(!tryUseFingerprint()) {
+                    startMain();
+                }
             }
             else {
                 et_confirm.setText("");
@@ -155,6 +177,40 @@ AnimatorListener, SyncService.SyncListener{
         else {
             new DecryptTask().execute(password);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResult){
+
+        if((requestCode == PERMISSION_REQ_CODE_FP1 || requestCode == PERMISSION_REQ_CODE_FP2) &&
+                grantResult[0] == PackageManager.PERMISSION_GRANTED &&
+                mFingerprintManager.isHardwareDetected() &&
+                mFingerprintManager.hasEnrolledFingerprints()){
+            startFingerprintDialog(requestCode == PERMISSION_REQ_CODE_FP1);
+        }
+    }
+
+    private void startFingerprintDialog(boolean isFirstTime) {
+        FingerprintDialog.build(isFirstTime).show(getSupportFragmentManager(), "dialog_fp");
+    }
+
+    private boolean tryUseFingerprint() {
+        boolean isHandled = false;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.USE_FINGERPRINT},
+                        PERMISSION_REQ_CODE_FP1);
+                isHandled = true;
+            }
+            else if(mFingerprintManager.isHardwareDetected() &&
+                    mFingerprintManager.hasEnrolledFingerprints()) {
+                startFingerprintDialog(true);
+                isHandled = true;
+            }
+        }
+        return isHandled;
     }
     
     public void onSyncSelected(View view) {
@@ -411,6 +467,20 @@ AnimatorListener, SyncService.SyncListener{
             else {
                 startMain();
             }
+        }
+    }
+
+    @Override
+    public void onCanceled(boolean isFirstTime) {
+    }
+
+    @Override
+    public void onConfirmed(boolean isFirstTime, byte[] password) {
+        if(isFirstTime) {
+            startMain();
+        }
+        else {
+            new DecryptTask().execute(new String(password));
         }
     }
 }

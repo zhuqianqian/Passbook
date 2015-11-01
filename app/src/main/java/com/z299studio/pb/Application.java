@@ -54,6 +54,7 @@ public class Application{
         public static boolean mAlwaysShowPwd;
         public static int mAutoLock;
         public static boolean mEnableCopyPwd;
+        public static int mEnableFingerprint;
         public static boolean mShowOther;
         public static int mSync;
         public static boolean mSyncMsg;
@@ -152,6 +153,7 @@ public class Application{
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
+        Options.mEnableFingerprint = mSP.getInt(C.Keys.ENABLE_FP, C.fpNever);
         Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, false);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);

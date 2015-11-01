@@ -178,4 +178,10 @@
     <string name="desc_tour2">Strong passwords are easy to get and to use with little effort.</string>
     <string name="contacting">Contacting %s…</string>
     <string name="category_saved">Category saved.</string>
+    <string name="fp_title">Fingerprint</string>
+    <string name="fp_ask">Do you want to use your fingerprint to unlock your data? Touch the sensor to continue.</string>
+    <string name="fp_confirm">Confirm your fingerprint to unlock.</string>
+    <string name="fp_touch">Touch sensor</string>
+    <string name="fp_ok">Fingerprint Recognized</string>
+    <string name="fp_fail">Fingerprint not recognized.</string>
 </resources>
