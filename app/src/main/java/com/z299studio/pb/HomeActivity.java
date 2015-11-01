@@ -21,6 +21,7 @@ import java.security.GeneralSecurityException;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -62,8 +63,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     private static final int SET_PWD = 2;
     private static final int AUTH = 3;
     private FingerprintManager mFingerprintManager;
-    private static final int PERMISSION_REQ_CODE_FP1 = 1;
-    private static final int PERMISSION_REQ_CODE_FP2 = 2;
+    private static final int PERMISSION_REQ_CODE_FP = 1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +105,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
             mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
-            if(mStage == AUTH) {
-                if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.USE_FINGERPRINT},
-                            PERMISSION_REQ_CODE_FP2);
-                }
-                else if (mFingerprintManager.isHardwareDetected()
-                        && mFingerprintManager.hasEnrolledFingerprints()) {
-                    startFingerprintDialog(false);
-                }
+            if(mStage == AUTH && Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
+                tryUseFingerprint();
             }
         }
     }
@@ -168,7 +160,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 for(String s : defCategories) {
                     am.addCategory(i++, s);
                 }
-                if(!tryUseFingerprint()) {
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
                     startMain();
                 }
             }
@@ -178,38 +170,37 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 Application.showToast(this, R.string.pwd_unmatch, Toast.LENGTH_SHORT);
             }
         }
-        else {
+        else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
             new DecryptTask().execute(password);
         }
     }
 
-    @Override
+    @Override @TargetApi(Build.VERSION_CODES.M)
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult){
-        if((requestCode == PERMISSION_REQ_CODE_FP1 || requestCode == PERMISSION_REQ_CODE_FP2) &&
+        if(requestCode == PERMISSION_REQ_CODE_FP &&
                 grantResult[0] == PackageManager.PERMISSION_GRANTED &&
                 mFingerprintManager.isHardwareDetected() &&
                 mFingerprintManager.hasEnrolledFingerprints()){
-            startFingerprintDialog(requestCode == PERMISSION_REQ_CODE_FP1);
+            FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
+                    .show(getSupportFragmentManager(), "dialog_fp");
         }
     }
 
-    private void startFingerprintDialog(boolean isFirstTime) {
-        FingerprintDialog.build(isFirstTime).show(getSupportFragmentManager(), "dialog_fp");
-    }
-
+    @TargetApi(Build.VERSION_CODES.M)
     private boolean tryUseFingerprint() {
         boolean isHandled = false;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if(Application.Options.mFpStatus != C.Fingerprint.DISABLED){
             if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[] {Manifest.permission.USE_FINGERPRINT},
-                        PERMISSION_REQ_CODE_FP1);
+                        PERMISSION_REQ_CODE_FP);
                 isHandled = true;
             }
             else if(mFingerprintManager.isHardwareDetected() &&
                     mFingerprintManager.hasEnrolledFingerprints()) {
-                startFingerprintDialog(true);
+                FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
+                        .show(getSupportFragmentManager(), "dialog_fp");
                 isHandled = true;
             }
         }

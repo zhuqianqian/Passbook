@@ -31,9 +31,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -43,8 +40,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.security.spec.InvalidParameterSpecException;
-import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -62,9 +57,6 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
         void onCanceled(boolean isFirstTime);
         void onConfirmed(boolean isFirstTime, byte[] password);
     }
-
-    private static final String KEY_FILE = "PBFPK";
-    private static final String IV_FILE = "PBFPI";
 
     private FingerprintListener mListener;
     private boolean mIsFirstTime;
@@ -121,15 +113,13 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
             dismiss();
             mListener.onCanceled(mIsFirstTime);
             if(mIsFirstTime) {
-                Application.Options.mEnableFingerprint = C.fpDisabled;
-                Application.getInstance().mSP.edit().putInt(C.Keys.ENABLE_FP, C.fpDisabled).apply();
+                Application.getInstance().clearFpData();
             }
         }
     }
 
     private void initCipher(int mode) {
         try {
-            byte[] iv;
             IvParameterSpec ivParams;
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
@@ -151,13 +141,7 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
             }
             else {
                 key = (SecretKey)keyStore.getKey(KEY_NAME, null);
-                File file = new File(getContext().getFilesDir()+"/"+IV_FILE);
-                int fileSize = (int)file.length();
-                iv = new byte[fileSize];
-                FileInputStream fis = getContext().openFileInput(IV_FILE);
-                fis.read(iv, 0, fileSize);
-                fis.close();
-                ivParams = new IvParameterSpec(iv);
+                ivParams = new IvParameterSpec(Application.getInstance().getFpIv());
                 mCipher.init(mode, key, ivParams);
             }
             mCryptoObject = new FingerprintManager.CryptoObject(mCipher);
@@ -184,37 +168,18 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
 
     @Override
     public void onAuthenticated() {
-        byte[] data;
+        Application app = Application.getInstance();
         try {
             if (mIsFirstTime) {
-                data = mCryptoObject.getCipher().doFinal(
-                       Application.getInstance().getPassword().getBytes());
-                FileOutputStream fos = getContext().openFileOutput(KEY_FILE, Context.MODE_PRIVATE);
-                fos.write(data);
-                fos.close();
-                IvParameterSpec ivParams = mCipher.getParameters()
-                        .getParameterSpec(IvParameterSpec.class);
-                data = ivParams.getIV();
-                fos = getContext().openFileOutput(IV_FILE, Context.MODE_PRIVATE);
-                fos.write(data);
-                fos.close();
-                Application.Options.mEnableFingerprint = C.fpEnabled;
-                Application.getInstance().mSP.edit().putInt(C.Keys.ENABLE_FP, C.fpEnabled).apply();
+                app.setFpData(mCryptoObject.getCipher().doFinal(app.getPassword().getBytes()),
+                        mCipher.getIV());
                 mListener.onConfirmed(true, null);
             }
             else {
-                File file = new File(getContext().getFilesDir()+"/"+KEY_FILE);
-                int fileSize = (int)file.length();
-                data = new byte[fileSize];
-                FileInputStream fis = getContext().openFileInput(KEY_FILE);
-                fis.read(data, 0, fileSize);
-                fis.close();
-                mListener.onConfirmed(false, mCryptoObject.getCipher().doFinal(data));
+                mListener.onConfirmed(false, mCryptoObject.getCipher().doFinal(app.getFpData()));
             }
-
         }
-        catch (BadPaddingException | IllegalBlockSizeException | IOException |
-                InvalidParameterSpecException e) {
+        catch (BadPaddingException | IllegalBlockSizeException e) {
             Log.e("Pb:FingerprintDialog", "Runtime error during encryption/decryption.");
             Log.e("Pb:FingerprintDialog", e.toString());
         }
