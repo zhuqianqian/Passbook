@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,7 +45,8 @@ import java.util.Date;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
-        ActionDialog.ActionDialogListener, SyncService.SyncListener{
+        ActionDialog.ActionDialogListener, SyncService.SyncListener,
+        FingerprintDialog.FingerprintListener{
     
     private static final String TAG_DIALOG = "action_dialog";
     private static final int PERMISSION_REQUEST = 1;
@@ -286,7 +288,11 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private ListView mListView;
     
     private SettingItemAdapter initSettings() {
-        SettingItem[] items = new SettingItem[19];
+        int itemSize = 19;
+        if(Application.Options.mFpStatus != C.Fingerprint.UNKNOWN) {
+            itemSize += 1;
+        }
+        SettingItem[] items = new SettingItem[itemSize];
         int index = 0;
         String desc;
         items[index++] = new SettingItem(0, getString(R.string.general), null);
@@ -337,6 +343,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 null).setValue(Application.Options.mWarnCopyPwd);
         items[index++] = new SettingItemAction(R.string.change_pwd, getString(R.string.change_pwd),
                 null).setListener(mActionListener);
+        if(Application.Options.mFpStatus != C.Fingerprint.UNKNOWN) {
+            items[index++] = new SettingItemSwitch(R.string.fp_title, getString(R.string.fp_title),
+                    getString(R.string.fp_desc))
+                    .setValue(Application.Options.mFpStatus == C.Fingerprint.ENABLED);
+        }
+
         items[index++] = new SettingItem(0, getString(R.string.about), null);
         items[index++] = new SettingItemAction(R.string.licence, getString(R.string.licence),
                 null).setListener(mActionListener);
@@ -380,6 +392,9 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             View v = findViewById(R.id.activity_root);
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
+//        }
         mShowOtherInitial = Application.Options.mShowOther;
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -501,7 +516,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                         .show(getSupportFragmentManager(), TAG_DIALOG);
                 return;
             }
-            Application.showToast(Settings.this, operation==ActionDialog.ACTION_EXPORT ?
+            Application.showToast(Settings.this, operation == ActionDialog.ACTION_EXPORT ?
                     R.string.export_failed : R.string.import_failed, Toast.LENGTH_LONG);
         }
         else {
@@ -526,8 +541,11 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         if(operation == ActionDialog.ACTION_AUTHENTICATE) {
             new ImportExportTask(this, text).execute();
         }
+        else if(operation == ActionDialog.ACTION_RESET_PWD && Application.Options.mFpStatus ==
+                C.Fingerprint.ENABLED) {
+            FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+        }
         else {
-
             if(operation == ActionDialog.ACTION_IMPORT || operation == ActionDialog.ACTION_EXPORT) {
                 permission = operation == ActionDialog.ACTION_IMPORT ?
                         Manifest.permission.READ_EXTERNAL_STORAGE :
@@ -618,9 +636,21 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 Application.Options.mWarnCopyPwd = value;
                 editor.putBoolean(C.Keys.WARN_COPY, value);
                 break;
+            case R.string.fp_title:
+                if(value) {
+                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                }
+                else {
+                    Application.getInstance().clearFpData();
+                }
         }
         editor.apply();
     }
-    
-    
+
+    @Override
+    public void onCanceled(boolean isFirstTime) { }
+
+    @Override
+    public void onConfirmed(boolean isFirstTime, byte[] password) { }
+
 }
