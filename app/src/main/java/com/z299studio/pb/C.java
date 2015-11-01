@@ -34,7 +34,6 @@ public final class C {
         public static final String AUTO_LOCK = "AutoLock";
         public static final String AUTO_LOCK_TIME = "AutoLockTime";
         public static final String ENABLE_COPY = "EnableCopy";
-        public static final String ENABLE_FP = "EnableFPAuth";
         public static final String SHOW_OTHER = "ShowUngrouped";
         public static final String SHOW_PWD = "ShowPassword";
         public static final String THEME = "Theme";
@@ -58,6 +57,16 @@ public final class C {
         public static final int MAIN = 2;
         public static final int SETTINGS = 3;
     }
+
+    public static final class Fingerprint {
+        public static final String FILE = "pbfp.xml";
+        public static final String STATUS = "Status";
+        public static final String IV = "PbIv";
+        public static final String DATA = "PbData";
+        public static final int ENABLED  = 3;
+        public static final int DISABLED = 2;
+        public static final int UNKNOWN = 0;
+    }
     
     public static final int THEMES[] = {
         R.style.AppLight_Default, R.style.AppDark_Default, R.style.AppLight_LightblueCyan,
@@ -72,8 +81,4 @@ public final class C {
     public static final int colorTextNormal = 3;
     public static final int colorIconNormal = 4;
     public static int ThemedColors[] = {0, 0, 0, 0, 0};
-
-    public static final int fpNever = 0;
-    public static final int fpDisabled = 2;
-    public static final int fpEnabled = 3;
 }

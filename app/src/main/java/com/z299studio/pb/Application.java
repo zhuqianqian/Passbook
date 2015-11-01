@@ -31,9 +31,11 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +51,13 @@ public class Application{
     private static Application __instance;
     
     public SharedPreferences mSP;
+    private SharedPreferences mFpData;
     
     public static class Options {
         public static boolean mAlwaysShowPwd;
         public static int mAutoLock;
         public static boolean mEnableCopyPwd;
-        public static int mEnableFingerprint;
+        public static int mFpStatus;
         public static boolean mShowOther;
         public static int mSync;
         public static boolean mSyncMsg;
@@ -140,6 +143,7 @@ public class Application{
     private Application(Activity context) {
         mContext = context;
         mSP = PreferenceManager.getDefaultSharedPreferences(context);
+        mFpData = context.getSharedPreferences(C.Fingerprint.FILE, Context.MODE_PRIVATE);
         Options.mTheme = mSP.getInt(C.Keys.THEME, 2);
         Options.mTour = mSP.getBoolean(C.Keys.TOUR, false);
         mChanges = new Hashtable<>();
@@ -153,7 +157,6 @@ public class Application{
         }
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
-        Options.mEnableFingerprint = mSP.getInt(C.Keys.ENABLE_FP, C.fpNever);
         Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, false);
         Options.mSync = mSP.getInt(C.Sync.SERVER, C.Sync.NONE);
         Options.mSyncMsg = mSP.getBoolean(C.Sync.MSG, true);
@@ -338,7 +341,36 @@ public class Application{
         mSP.edit().putString(C.Sync.TIME, time).apply();
         return time;
     }
-    
+
+    public int queryFpStatus() {
+        Options.mFpStatus = mFpData.getInt(C.Fingerprint.STATUS, C.Fingerprint.UNKNOWN);
+        return Options.mFpStatus;
+    }
+
+    public byte[] getFpIv() {
+        return Base64.decode(mFpData.getString(C.Fingerprint.IV, "1234"), Base64.DEFAULT);
+    }
+
+    public byte[] getFpData() {
+        return Base64.decode(mFpData.getString(C.Fingerprint.DATA, "1234"), Base64.DEFAULT);
+    }
+
+    public void setFpData(byte[] data, byte[] iv) {
+        mFpData.edit()
+                .putInt(C.Fingerprint.STATUS, C.Fingerprint.ENABLED)
+                .putString(C.Fingerprint.DATA, Base64.encodeToString(data, Base64.DEFAULT))
+                .putString(C.Fingerprint.IV, Base64.encodeToString(iv, Base64.DEFAULT))
+                .apply();
+        Options.mFpStatus = C.Fingerprint.ENABLED;
+    }
+
+    public void clearFpData() {
+        mFpData.edit().clear()
+                .putInt(C.Fingerprint.STATUS, C.Fingerprint.DISABLED)
+                .apply();
+        Options.mFpStatus = C.Fingerprint.DISABLED;
+    }
+
     public static void showToast(Activity context, int stringId, int duration) {
         if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT) {
             Toast.makeText(context, stringId, duration).show();

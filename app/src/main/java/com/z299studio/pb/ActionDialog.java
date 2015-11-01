@@ -323,6 +323,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 app.setPassword(pwd, true);
                 app.saveData();
                 Application.showToast(getActivity(), R.string.pwd_changed, Toast.LENGTH_SHORT);
+                mListener.onConfirm(pwd, 0, mDlgType, 0);
                 this.dismiss();
             }
             else {
