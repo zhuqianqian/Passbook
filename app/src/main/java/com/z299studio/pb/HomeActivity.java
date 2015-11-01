@@ -432,6 +432,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
 
     @Override
     public void onCanceled(boolean isFirstTime) {
+        startMain();
     }
 
     @Override
