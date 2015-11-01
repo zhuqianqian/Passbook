@@ -66,4 +66,113 @@
         <item>3</item>
         <item>6</item>
     </integer-array>
+
+    <string-array name="def_values">
+        <item>http://www.google.com</item>
+        <item>http://www.microsoft.com</item>
+        <item>https://www.facebook.com</item>
+        <item>https://www.twitter.com</item>
+        <item>https://www.linkedin.com</item>
+        <item>your_account@google.com</item>
+        <item>your_account@live.com</item>
+        <item>1234abcd*()</item>
+        <item>https://www.amazon.com</item>
+    </string-array>
+
+    <integer-array name="defGoogle">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>0</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="defMs">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>1</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="defFb">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>2</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="defTwitter">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>3</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="defLi">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>4</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="defAmazon">
+        <item>6</item> <!-- Category: Web -->
+        <item>3</item> <!-- Field Name -->
+        <item>8</item> <!-- Value -->
+        <item>3</item> <!-- Type -->
+        <item>2</item>
+        <item>6</item>
+        <item>2</item>
+        <item>1</item>
+        <item>7</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="def_account_names">
+        <item>@string/a_google</item>
+        <item>@string/a_ms</item>
+        <item>@string/a_fb</item>
+        <item>@string/a_twitter</item>
+        <item>@string/a_li</item>
+        <item>@string/a_amazon</item>
+    </string-array>
+
+    <array name="def_account_data">
+        <item>@array/defGoogle</item>
+        <item>@array/defMs</item>
+        <item>@array/defFb</item>
+        <item>@array/defTwitter</item>
+        <item>@array/defLi</item>
+        <item>@array/defAmazon</item>
+    </array>
+
 </resources>

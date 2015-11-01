@@ -153,16 +153,18 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(et_confirm.getWindowToken(), 0);
                 mApp.setPassword(password, true);
-                mApp.onStart();
-                String[] defCategories = getResources().getStringArray(R.array.category_names);
-                int i = 0;
-                AccountManager am = AccountManager.getInstance(null);
-                for(String s : defCategories) {
-                    am.addCategory(i++, s);
-                }
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
-                    startMain();
-                }
+
+                new InitTask().execute();
+//                mApp.onStart();
+//                String[] defCategories = getResources().getStringArray(R.array.category_names);
+//                int i = 0;
+//                AccountManager am = AccountManager.getInstance(null);
+//                for(String s : defCategories) {
+//                    am.addCategory(i++, s);
+//                }
+//                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
+//                    startMain();
+//                }
             }
             else {
                 et_confirm.setText("");
@@ -402,6 +404,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
         startHome();
     }
+
     @Override
     public void onSyncProgress(int actionCode) {
         if(actionCode == SyncService.CA.AUTH) {
@@ -424,6 +427,20 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 mStage = SET_PWD;
             }
             startHome();
+        }
+    }
+
+    @Override
+    public void onCanceled(boolean isFirstTime) {
+    }
+
+    @Override
+    public void onConfirmed(boolean isFirstTime, byte[] password) {
+        if(isFirstTime) {
+            startMain();
+        }
+        else {
+            new DecryptTask().execute(new String(password));
         }
     }
     
@@ -466,17 +483,55 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
     }
 
-    @Override
-    public void onCanceled(boolean isFirstTime) {
-    }
+    private class InitTask extends AsyncTask<String, Void, String> {
+        Button mOK;
+        ProgressBar mProgress;
 
-    @Override
-    public void onConfirmed(boolean isFirstTime, byte[] password) {
-        if(isFirstTime) {
-            startMain();
+        @Override
+        protected void onPreExecute() {
+            mOK = (Button)HomeActivity.this.findViewById(R.id.unlock);
+            mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+            mOK.setEnabled(false);
+            mProgress.setVisibility(View.VISIBLE);
         }
-        else {
-            new DecryptTask().execute(new String(password));
+        @Override
+        protected String doInBackground(String... params) {
+            mApp.onStart();
+            Resources r = getResources();
+            String[] defCategories = r.getStringArray(R.array.category_names);
+            int i = 0;
+            AccountManager am = AccountManager.getInstance(null);
+            for(String s : defCategories) {
+                am.addCategory(i++, s);
+            }
+            String[] defAccountNames = r.getStringArray(R.array.def_account_names);
+            String[] defNames = r.getStringArray(R.array.def_field_names);
+            String[] defValues = r.getStringArray(R.array.def_values);
+            int[] defTypes = r.getIntArray(R.array.def_field_types);
+            TypedArray defAccountData = r.obtainTypedArray(R.array.def_account_data);
+            int[] dataDetails;
+            AccountManager.Account a;
+            for(i = 0; i < defAccountNames.length; ++i) {
+                dataDetails = r.getIntArray(defAccountData.getResourceId(i, 0));
+                a = am.newAccount(dataDetails[0]);
+                a.mProfile = defAccountNames[i];
+                for (int j = 1; j < dataDetails.length; j += 3){
+                    a.addEntry(defTypes[dataDetails[j + 2]],
+                            defNames[dataDetails[j]],
+                            defValues[dataDetails[j + 1]]);
+                }
+                am.addAccount(dataDetails[0], a);
+            }
+            return "OK";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                    || Application.Options.mFpStatus == C.Fingerprint.ENABLED
+                    || !tryUseFingerprint())  {
+                startMain();
+            }
         }
     }
 }
