@@ -178,4 +178,17 @@
     <string name="desc_tour2">Des mots de passe solides sont simples à obtenir et à utiliser avec peu de peine.</string>
     <string name="contacting">Contacter les %s…</string>
     <string name="category_saved">Catégorie ajoutée.</string>
+    <string name="fp_title">Authentification par Empreinte</string>
+    <string name="fp_ask">Vous voulez utiliser votre empreinte digitale pour déverrouiller vos données ? Touchez le capteur pour continuer.</string>
+    <string name="fp_confirm">Confirmer vos empreintes digitales pour déverrouiller.</string>
+    <string name="fp_touch">Touchez le capteur</string>
+    <string name="fp_ok">Empreintes digitales reconnu</string>
+    <string name="fp_fail">Empreintes digitales non reconnu</string>
+    <string name="fp_desc">Utilisez vos empreintes digitales pour protéger les données.</string>
+    <string name="a_google">Google</string>
+    <string name="a_ms">Microsoft/Hotmail</string>
+    <string name="a_twitter">Twitter</string>
+    <string name="a_fb">Facebook</string>
+    <string name="a_li">LinkedIn</string>
+    <string name="a_amazon">Amazon</string>
 </resources>

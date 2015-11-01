@@ -185,12 +185,10 @@
     <string name="fp_ok">Fingerprint Recognized</string>
     <string name="fp_fail">Fingerprint not recognized.</string>
     <string name="fp_desc">Use your fingerprint to unlock data.</string>
-
     <string name="a_google">Google</string>
     <string name="a_ms">Microsoft/Hotmail</string>
     <string name="a_twitter">Twitter</string>
     <string name="a_fb">Facebook</string>
     <string name="a_li">LinkedIn</string>
     <string name="a_amazon">Amazon</string>
-
 </resources>
