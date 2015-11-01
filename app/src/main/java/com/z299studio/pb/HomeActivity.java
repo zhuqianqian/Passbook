@@ -105,7 +105,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
             mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
-            if(mStage == AUTH && Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
+            if(mStage == AUTH && mApp.queryFpStatus() == C.Fingerprint.ENABLED) {
                 tryUseFingerprint();
             }
         }
@@ -170,7 +170,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 Application.showToast(this, R.string.pwd_unmatch, Toast.LENGTH_SHORT);
             }
         }
-        else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !tryUseFingerprint()) {
+        else {
             new DecryptTask().execute(password);
         }
     }
@@ -458,7 +458,9 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 mPwdEdit.setText("");
                 Application.showToast(HomeActivity.this, R.string.pwd_wrong, Toast.LENGTH_SHORT);
             }
-            else {
+            else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                    || Application.Options.mFpStatus == C.Fingerprint.ENABLED
+                    || !tryUseFingerprint())  {
                 startMain();
             }
         }

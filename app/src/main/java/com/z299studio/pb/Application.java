@@ -155,7 +155,6 @@ public class Application{
             boolean autolock_v1 = mSP.getBoolean(C.Keys.AUTO_LOCK, false);
             Options.mAutoLock = autolock_v1 ? 1000 : 0;
         }
-        Options.mFpStatus = mFpData.getInt(C.Fingerprint.STATUS, C.Fingerprint.UNKNOWN);
         Options.mAlwaysShowPwd = mSP.getBoolean(C.Keys.SHOW_PWD, false);
         Options.mEnableCopyPwd = mSP.getBoolean(C.Keys.ENABLE_COPY, true);
         Options.mShowOther = mSP.getBoolean(C.Keys.SHOW_OTHER, false);
@@ -341,6 +340,11 @@ public class Application{
         String time = df.format(Options.mSyncTime);
         mSP.edit().putString(C.Sync.TIME, time).apply();
         return time;
+    }
+
+    public int queryFpStatus() {
+        Options.mFpStatus = mFpData.getInt(C.Fingerprint.STATUS, C.Fingerprint.UNKNOWN);
+        return Options.mFpStatus;
     }
 
     public byte[] getFpIv() {
