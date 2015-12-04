@@ -26,8 +26,8 @@ import android.widget.TextView;
 @TargetApi(Build.VERSION_CODES.M)
 public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallback {
 
-    static final long ERROR_TIMEOUT_MILLIS = 1600;
-    static final long SUCCESS_DELAY_MILLIS = 1300;
+    static final long ERROR_TIMEOUT_MILLIS = 800;
+    static final long SUCCESS_DELAY_MILLIS = 500;
 
     private final FingerprintManager mFingerprintManager;
     private final ImageView mIcon;
