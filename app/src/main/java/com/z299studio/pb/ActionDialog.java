@@ -305,7 +305,6 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     }
 
     private String getFilePath(Activity context, Uri uri){
-        String[] projection = {MediaStore.Images.Media.DATA};
         String docId;
         Uri contentUri;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT  &&
