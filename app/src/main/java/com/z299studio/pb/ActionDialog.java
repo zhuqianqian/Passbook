@@ -17,11 +17,16 @@
 package com.z299studio.pb;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -289,30 +294,65 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         if(resultCode == Settings.RESULT_OK) {
             Uri uri = data.getData();
             if(uri!=null) {
-                if(uri.getScheme().equalsIgnoreCase("file")){
-                    mText = uri.getPath();
+                mText = getFilePath(context, uri);
+                if(mText!=null) {
                     mHandler.post(mUpdateUi);
                     return;
-                }
-                else if(uri.getScheme().equalsIgnoreCase("content")) {
-                    String[] projection = {"_data"};
-                    Cursor cursor;
-                    try {
-                        cursor = context.getContentResolver().query(uri, projection, null, null, null);
-                        int column_index = cursor.getColumnIndexOrThrow("_data");
-                        if(cursor.moveToFirst()) {
-                            mText = cursor.getString(column_index);
-                            mHandler.post(mUpdateUi);
-                        }
-                        cursor.close();
-                    }
-                    catch(Exception e) { }
                 }
             }
         }
         Application.showToast(context, R.string.invalid_file, Toast.LENGTH_LONG);
     }
-    
+
+    private String getFilePath(Activity context, Uri uri){
+        String[] projection = {MediaStore.Images.Media.DATA};
+        String docId;
+        Uri contentUri;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT  &&
+                DocumentsContract.isDocumentUri(context, uri)){
+            if("com.android.externalstorage.documents".equals(uri.getAuthority())) {
+                docId = DocumentsContract.getDocumentId(uri);
+                final String split[] = docId.split(":");
+                if("primary".equalsIgnoreCase(split[0])) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            else if("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                docId = DocumentsContract.getDocumentId(uri);
+                contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads//public_downloads"), Long.valueOf(docId));
+                return getDataColumn(context, contentUri, null, null);
+            }
+        }
+        else if(uri.getScheme().equalsIgnoreCase("content")) {
+            return  getDataColumn(context, uri, null, null);
+        }
+        else if(uri.getScheme().equalsIgnoreCase("file")){
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    private String getDataColumn(Activity context, Uri uri, String selection,
+                                 String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String[] projection = {MediaStore.Images.Media.DATA};
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
+                return cursor.getString(columnIndex);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
     protected void resetPassword() {
         Application app = Application.getInstance();
         String current = mPasswordEdits[0].getText().toString();
