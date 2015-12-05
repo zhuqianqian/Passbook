@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         this.setContentView(R.layout.activity_main);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.panel_main);
@@ -166,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             SyncService.getInstance().disconnect();
         }
     }
-    
-    @Override 
+
+    @Override
     protected void onPause() {
         super.onPause();
         mApp.handleChange(Application.DATA_OTHER);

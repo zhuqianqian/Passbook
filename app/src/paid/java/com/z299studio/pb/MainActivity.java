@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         mApp = Application.getInstance(this);
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         this.setContentView(R.layout.activity_main);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View v = findViewById(R.id.panel_main);
