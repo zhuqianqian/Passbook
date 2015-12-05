@@ -18,7 +18,8 @@
         android:layout_height="0dp"
         android:layout_weight="17"
         android:background="?android:attr/colorBackground"
-        android:elevation="@dimen/window_elevation">
+        android:elevation="@dimen/window_elevation"
+        android:clickable="true">
     <include layout="@layout/edit_port"/>
     </RelativeLayout>
 </LinearLayout>
