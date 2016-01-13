@@ -1,2 +1,9 @@
-language: ANDROID
+language: android
+android:
+  components:
+    - platform-tools
+    - tools
 
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
