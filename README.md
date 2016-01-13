@@ -1,5 +1,6 @@
 #Passbook - A better password tool#
 [![Build Status][travis-image]][travis-url]
+
 Passbook runs on Android 4.0+  and helps you to manage sensitive data securely with delightful Material experience[<sup>1</sup>](#note1) and powerful features.
 
 ---
@@ -67,3 +68,6 @@ Passbook is licensed under [Apache License 2.0](LICENSE).
 <a name="note1" id="md_anchor"><sup>1</sup>Material Themes</a>: Certain Material features require Android 4.4 or Android 5.0.
 
 <a name="note2" id="md_anchor"><sup>2</sup>data synchronization</a>: Synchronization before version 2 uses Google Play Games snapshot service, which can save up to 3MB data. Since version 2, you can choose from Google Play Games snapshot service or Google Drive as the server to synchronize your data. Even if you chose Google Play Games service, the data is actually stored in your Google Drive folder, managed by Google Play Games service, and it can only be accessed by Passbook.
+
+[travis-url]: https://travis-ci.org/zhuqianqian/Passbook 
+[travis-image]: https://travis-ci.org/zhuqianqian/Passbook.svg?branch=master
