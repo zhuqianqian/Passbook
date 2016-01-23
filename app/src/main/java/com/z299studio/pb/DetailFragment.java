@@ -102,7 +102,6 @@ public class DetailFragment extends Fragment implements
             if(Application.getInstance() == null) {
                 return null;
             }
-
         }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mList = (ListView)rootView.findViewById(android.R.id.list);

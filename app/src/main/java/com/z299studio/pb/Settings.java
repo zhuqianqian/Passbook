@@ -45,7 +45,7 @@ import java.util.Date;
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
         ActionDialog.ActionDialogListener, SyncService.SyncListener,
-        FingerprintDialog.FingerprintListener{
+        FingerprintDialog.FingerprintListener, DecryptTask.OnTaskFinishListener{
     
     private static final String TAG_DIALOG = "action_dialog";
     private static final int PERMISSION_REQUEST = 1;
@@ -371,6 +371,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             super.onCreate(savedInstanceState);
             startActivity(new Intent(this, HomeActivity.class));
             this.finish();
+            return;
         }
         if(savedInstanceState != null) {
             mRequestingPosition = savedInstanceState.getInt("requested_position");
@@ -594,11 +595,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > app.getLocalVersion()) {
-                Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
-                Application.Options.mSyncVersion = fh.revision;
-                app.saveData(data);
-                app.onVersionUpdated(fh.revision);
-                app.notifyChange(Application.DATA_ALL);
+                new DecryptTask(data, fh, this).execute();
             }
             else if(fh.revision < app.getLocalVersion()){
                 SyncService.getInstance().send(app.getData());
@@ -616,6 +613,23 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             mAdapter.updateDescription(time, mRequestingPosition, mListView);
         }
     }
+
+    @Override
+    public void preExecute() {  }
+
+    @Override
+    public void onFinished(boolean isSuccessful, AccountManager manager,
+                           byte[] data, Application.FileHeader header, Crypto crypto) {
+        Application app = Application.getInstance();
+        Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+        Application.Options.mSyncVersion = header.revision;
+        app.setAccountManager(manager);
+        app.setCrypto(crypto);
+        app.saveData(data, header.revision);
+        app.onVersionUpdated(header.revision);
+        app.notifyChange(Application.DATA_ALL);
+    }
+
     private void handleSwitchOption(int id, boolean value) {
         SharedPreferences.Editor editor = Application.getInstance().mSP.edit();
         switch(id) {

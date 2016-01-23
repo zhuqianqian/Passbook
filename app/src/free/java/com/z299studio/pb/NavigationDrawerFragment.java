@@ -294,6 +294,11 @@ public class NavigationDrawerFragment extends Fragment implements
                 mAdapter.updateCategoryCounter(null, pos, am.getAccountsCountByCategory(id));
             }
         }
+        pos = mCategory2Navigation.get(AccountManager.ALL_CATEGORY_ID);
+        if(pos!=null) {
+            mAdapter.updateCategoryCounter(null, pos,
+                    am.getAccountsCountByCategory(AccountManager.ALL_CATEGORY_ID));
+        }
         mAdapter.notifyDataSetChanged();
     }
 

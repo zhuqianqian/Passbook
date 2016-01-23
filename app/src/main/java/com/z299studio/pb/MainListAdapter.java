@@ -180,7 +180,7 @@ public class MainListAdapter extends BaseAdapter {
         }
     }
 
-    private void setList(ArrayList<AccountManager.Account> accounts, int[] drawableResIds) {
+    public void setList(ArrayList<AccountManager.Account> accounts, int[] drawableResIds) {
         mEntries = accounts;
         mIcons = new ArrayList<>();
         mChecked = new ArrayList<>();

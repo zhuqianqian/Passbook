@@ -51,7 +51,6 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
     private static int mFileType;
     private static String mFilePath;
     private static int mOption;
-    private byte[] mBuffer;
     private static String mPassword;
     private TaskListener mListener;
 
@@ -75,16 +74,17 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
     private String importPbData() {
         String result = null;
         try {
+            byte[] buffer;
             File file = new File(mFilePath);
             int size = (int) file.length();
             if(size > 0) {
-                mBuffer = new byte[size];
+                buffer = new byte[size];
                 FileInputStream fis = new FileInputStream(file);
-                fis.read(mBuffer, 0, size);
+                fis.read(buffer, 0, size);
                 fis.close();
-                Application.FileHeader header = Application.FileHeader.parse(mBuffer);
+                Application.FileHeader header = Application.FileHeader.parse(buffer);
                 if(header.valid) {
-                    AccountManager am = Application.decrypt(new Crypto(), mPassword, header, mBuffer);
+                    AccountManager am = Application.decrypt(new Crypto(), mPassword, header, buffer);
                     process(am);
                     result = mFilePath;
                 }

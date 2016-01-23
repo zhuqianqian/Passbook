@@ -107,7 +107,7 @@ public class Application{
             header[i++] = (byte) ivLength;
             byte[] revBytes = String.format(Locale.ENGLISH, "%10d", revision).getBytes();
             System.arraycopy(revBytes, 0, header, i, revBytes.length);
-            i += RESERVED;
+           // i += RESERVED;
             return header;
         }
     }
@@ -170,21 +170,6 @@ public class Application{
         catch (ParseException e) {
             Options.mSyncTime = new Date(0L);
         }
-        mCrypto = Crypto.getInstance();
-        try {
-            File file = new File(mContext.getFilesDir()+"/"+DATA_FILE);
-            mDataSize = (int) file.length();
-            if(mDataSize > 0) {
-                mBuffer = new byte[mDataSize];
-                FileInputStream fis = mContext.openFileInput(DATA_FILE);
-                fis.read(mBuffer, 0, mDataSize);
-                fis.close();
-                mFileHeader = FileHeader.parse(mBuffer);
-                mLocalVersion = mFileHeader.revision;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public AccountManager getAccountManager() {
@@ -194,10 +179,11 @@ public class Application{
     public void setAccountManager(AccountManager mgr) {
         mAccountManager = mgr;
     }
-    public void decrypt() throws GeneralSecurityException{
-        mAccountManager = decrypt(mCrypto, mPassword, mFileHeader, mBuffer);
+
+    public void setCrypto(Crypto crypto) {
+        mCrypto = crypto;
     }
-    
+
     public boolean queryChange(int what) {
         return mChanges.get(what) != null;
     }
@@ -238,7 +224,6 @@ public class Application{
                     mBuffer = new byte[mDataSize];
                     FileInputStream fis = mContext.openFileInput(DATA_FILE);
                     fis.read(mBuffer, 0, mDataSize);
-                    mFileHeader = FileHeader.parse(mBuffer);
                     fis.close();
                 }
             } catch (IOException e) {
@@ -246,6 +231,16 @@ public class Application{
             }
         }
         return mBuffer;
+    }
+
+    public FileHeader getAppHeaderData() {
+        if(mBuffer == null) {
+            getData();
+        }
+        if(mBuffer!=null) {
+            mFileHeader = FileHeader.parse(mBuffer);
+        }
+        return mFileHeader;
     }
     
     public int getLocalVersion() {
@@ -263,7 +258,7 @@ public class Application{
     public void setPassword(String password, boolean reset) {
         mPassword = password;
         if(reset) {
-            mCrypto = Crypto.getInstance();
+            mCrypto = new Crypto();
             mCrypto.resetPassword(password);
         }
     }
@@ -289,13 +284,13 @@ public class Application{
             System.arraycopy(keyInfo, 0, mBuffer, header.length, keyInfo.length);
             System.arraycopy(cipher, 0, mBuffer, header.length + keyInfo.length, cipher.length);
             fos.close();
+            mFileHeader = FileHeader.parse(mBuffer);
             mAccountManager.onSaved();
         }catch (FileNotFoundException e) {
             Log.w("Passbook", "File not found");
         }
         catch(IOException ioe) {
             Log.e("Passbook", "IOException");
-            
         }
     }
     
@@ -318,8 +313,10 @@ public class Application{
         mIgnoreNextPause = true;
     }
     
-    public void saveData(byte[] data) {
+    public void saveData(byte[] data, int version) {
         try {
+            mLocalVersion = version;
+            mFileHeader.revision = version;
             FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
             fos.write(data);
             fos.close();
@@ -380,6 +377,7 @@ public class Application{
             byte[] textData = new byte[data.length - total];
             System.arraycopy(data, total, textData, 0, textData.length);
             byte[] text = crypto.decrypt(textData);
+            Log.i("Passbook", "Decrypt complete successfully.");
             return new AccountManager(new String(text));
         }
         return null;
@@ -396,7 +394,6 @@ public class Application{
             TextView desc = (TextView)layout.findViewById(R.id.description);
             desc.setText(stringId);
             Toast toast = new Toast(context.getApplicationContext());
-            //toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, mTopMargin);
             toast.setView(layout);
             toast.setDuration(duration);
             toast.show();
@@ -414,7 +411,6 @@ public class Application{
             TextView desc = (TextView)layout.findViewById(R.id.description);
             desc.setText(text);
             Toast toast = new Toast(context.getApplicationContext());
-            //toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, mTopMargin);
             toast.setView(layout);
             toast.setDuration(duration);
             toast.show();

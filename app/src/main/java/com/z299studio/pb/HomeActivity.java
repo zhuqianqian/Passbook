@@ -16,8 +16,6 @@
 
 package com.z299studio.pb;
 
-import java.security.GeneralSecurityException;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -52,11 +50,13 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements
-AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener{
+AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener,
+        DecryptTask.OnTaskFinishListener{
     protected Application mApp;
     protected EditText mPwdEdit;
     protected TextView mSyncText;
     protected View mButtonContainer;
+    private ProgressBar mProgress;
     private static int mStage;
     private static final int SELECT_SYNC = 0;
     private static final int LOADING = 1;
@@ -162,7 +162,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             }
         }
         else {
-            new DecryptTask().execute(password);
+            mApp.setPassword(password, false);
+            new DecryptTask(mApp.getData(), mApp.getAppHeaderData(), this).execute(password);
         }
     }
 
@@ -170,9 +171,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult){
         if(requestCode == PERMISSION_REQ_CODE_FP &&
-                grantResult[0] == PackageManager.PERMISSION_GRANTED &&
-                mFingerprintManager.isHardwareDetected() &&
-                mFingerprintManager.hasEnrolledFingerprints()){
+                grantResult[0] == PackageManager.PERMISSION_GRANTED){
             FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
                     .show(getSupportFragmentManager(), "dialog_fp");
         }
@@ -308,7 +307,35 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             }
         }        
     }
-    
+
+    @Override
+    public void preExecute() {
+        Button okButton = (Button)HomeActivity.this.findViewById(R.id.unlock);
+        mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+        okButton.setEnabled(false);
+        mProgress.setVisibility(View.VISIBLE);
+        mApp.onStart();
+    }
+
+    @Override
+    public void onFinished(boolean isSuccessful, AccountManager manager,
+                           byte[] data, Application.FileHeader header, Crypto crypto) {
+        if(isSuccessful) {
+            mApp.setAccountManager(manager);
+            mApp.setCrypto(crypto);
+        }
+        if(!isSuccessful) {
+            mProgress.setVisibility(View.INVISIBLE);
+            mPwdEdit.setText("");
+            Application.showToast(HomeActivity.this, R.string.pwd_wrong, Toast.LENGTH_SHORT);
+        }
+        else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || Application.Options.mFpStatus == C.Fingerprint.ENABLED
+                || !tryUseFingerprint())  {
+            startMain();
+        }
+    }
+
     public static class HomeFragment extends Fragment {
         
         public static HomeFragment create() {
@@ -412,8 +439,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             Application.getInstance().onSyncSucceed();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid) {
-                mApp.saveData(data);
                 mApp.onVersionUpdated(fh.revision);
+                mApp.saveData(data, fh.revision);
                 mStage = AUTH;
             }
             else {
@@ -439,59 +466,20 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             startMain();
         }
         else {
-            new DecryptTask().execute(new String(password));
-        }
-    }
-    
-    private class DecryptTask extends AsyncTask<String, Void, String> {
-        Button mOK;
-        ProgressBar mProgress;
-        
-        @Override
-        protected void onPreExecute() {
-            mOK = (Button)HomeActivity.this.findViewById(R.id.unlock);
-            mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
-            mOK.setEnabled(false);
-            mProgress.setVisibility(View.VISIBLE);
-        }
-        @Override
-        protected String doInBackground(String... params) {
-            try{
-                mApp.onStart();
-                mApp.setPassword(params[0], false);
-                mApp.decrypt();
-            }
-            catch(GeneralSecurityException e) {
-                return null;
-            }
-            return "OK";
-        }
-        
-        @Override
-        protected void onPostExecute(String result) {
-            if(result== null) {
-                mProgress.setVisibility(View.INVISIBLE);
-                mPwdEdit.setText("");
-                Application.showToast(HomeActivity.this, R.string.pwd_wrong, Toast.LENGTH_SHORT);
-            }
-            else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                    || Application.Options.mFpStatus == C.Fingerprint.ENABLED
-                    || !tryUseFingerprint())  {
-                startMain();
-            }
+            String pwd = new String(password);
+            mApp.setPassword(pwd, false);
+            new DecryptTask(mApp.getData(), mApp.getAppHeaderData(), this).execute(pwd);
         }
     }
 
     private class InitTask extends AsyncTask<String, Void, String> {
-        Button mOK;
-        ProgressBar mProgress;
 
         @Override
         protected void onPreExecute() {
-            mOK = (Button)HomeActivity.this.findViewById(R.id.unlock);
-            mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
-            mOK.setEnabled(false);
-            mProgress.setVisibility(View.VISIBLE);
+            Button okButton = (Button)HomeActivity.this.findViewById(R.id.unlock);
+            ProgressBar pb = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+            okButton.setEnabled(false);
+            pb.setVisibility(View.VISIBLE);
         }
         @Override
         protected String doInBackground(String... params) {

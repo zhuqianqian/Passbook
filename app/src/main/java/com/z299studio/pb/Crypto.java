@@ -43,23 +43,11 @@ public class Crypto {
     private byte [] mIv = null;
     private SecretKey mKey = null;
     private int mIterationCount;
-    
-    private static Crypto sInstance;
-    
-    public static Crypto getInstance() {
-        if(sInstance == null ) {
-            sInstance = new Crypto();
-        }
-        return sInstance;
-    }
+
     public Crypto () {
         mIterationCount = 800;
     }
-    
-    public void setIteration(int iteration) {
-        mIterationCount = iteration;
-    }
-    
+
     public int getIterationCount() { return mIterationCount; }
     
     public int getIvLength() {return mIv.length; }

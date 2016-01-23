@@ -467,7 +467,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     
     protected void showFab(boolean show) {
         mFab.clearAnimation();
-        mFab.startAnimation(show? mFabIn : mFabOut);
+        mFab.startAnimation(show ? mFabIn : mFabOut);
     }
     
     public void updateData(int categoryId) {
@@ -478,6 +478,13 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         if(categoryId == mCategoryId) {
             selectCategory(categoryId, true);
         }
+    }
+
+    public void updateDataImmediately() {
+        mAdapter.setList(Application.getInstance().getAccountManager().getAccountsByCategory(mCategoryId),
+                Application.getThemedIcons());
+        mAdapter.notifyDataSetChanged();
+        cacheAdapter(mCategoryId, mAdapter);
     }
     
     public void showDeleteSnackbar(AppCompatActivity activity, int count, final int rowHeight) {

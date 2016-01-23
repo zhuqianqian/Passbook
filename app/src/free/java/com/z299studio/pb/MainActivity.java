@@ -20,7 +20,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,13 +41,12 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        SearchView.OnQueryTextListener, SyncService.SyncListener {
-
+        SearchView.OnQueryTextListener, SyncService.SyncListener,
+        DecryptTask.OnTaskFinishListener{
 
     private Application mApp;
     private NavigationDrawerFragment mNavigationDrawer;
@@ -420,7 +418,6 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     @Override
     public void onDeleted(int categoryId, int count) {
         if(categoryId == AccountManager.ALL_CATEGORY_ID) {
-            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
             mNavigationDrawer.refreshCategoryCounters();
             for(int id : mApp.getSortedCategoryIds()) {
                 MainListFragment.resetAdapter(id);
@@ -493,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > mApp.getLocalVersion()) {
-                new DecryptTask(data, fh).doInBackground(mApp.getPassword());
+                new DecryptTask(data, fh, this).execute(mApp.getPassword());
             }
             else if(fh.revision < mApp.getLocalVersion()){
                 SyncService.getInstance().send(mApp.getData());
@@ -509,37 +506,25 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         }
     }
 
-    private class DecryptTask extends AsyncTask<String, Void, String> {
-        private byte[] mData;
-        private Application.FileHeader mHeader;
-        public DecryptTask(byte[] data, Application.FileHeader header) {
-            super();
-            mData = data;
-            mHeader = header;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                mApp.setAccountManager(Application.decrypt(new Crypto(), params[0], mHeader, mData));
-                return "OK";
-            }
-            catch(GeneralSecurityException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if(result!=null) {
-                Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
-                Application.Options.mSyncVersion = mHeader.revision;
-                mApp.saveData(mData);
-                mApp.onVersionUpdated(mHeader.revision);
-                Application.reset();
-                mApp.getSortedCategoryNames();
-                MainListFragment.clearCache();
-            }
+    @Override
+    public void onFinished(boolean isSuccessful, AccountManager manager,
+                           byte[] data, Application.FileHeader header, Crypto crypto) {
+        if(isSuccessful) {
+            Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+            Application.Options.mSyncVersion = header.revision;
+            mApp.saveData(data, header.revision);
+            mApp.onVersionUpdated(header.revision);
+            mApp.setAccountManager(manager);
+            mApp.setCrypto(crypto);
+            Application.reset();
+            mApp.getAccountManager().setDefaultCategory(-1, getString(R.string.def_category));
+            mApp.getSortedCategoryNames();
+            mNavigationDrawer.refreshCategoryCounters();
+            MainListFragment.clearCache();
+            mMainList.updateDataImmediately();
         }
     }
+
+    @Override
+    public void preExecute() {}
 }
