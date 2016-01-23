@@ -190,7 +190,10 @@ public class Application{
     public AccountManager getAccountManager() {
         return mAccountManager;
     }
-    
+
+    public void setAccoutManager(AccountManager mgr) {
+        mAccountManager = mgr;
+    }
     public void decrypt() throws GeneralSecurityException{
         mAccountManager = decrypt(mCrypto, mPassword, mFileHeader, mBuffer);
     }

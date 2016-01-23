@@ -20,6 +20,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
@@ -455,13 +457,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > mApp.getLocalVersion()) {
-                Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
-                Application.Options.mSyncVersion = fh.revision;
-                mApp.saveData(data);
-                mApp.onVersionUpdated(fh.revision);    
-                Application.reset();
-                mApp.getSortedCategoryNames();
-                MainListFragment.clearCache();
+                new DecryptTask(data, fh).doInBackground(mApp.getPassword());
             }
             else if(fh.revision < mApp.getLocalVersion()){
                 SyncService.getInstance().send(mApp.getData());
@@ -474,6 +470,40 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mApp.onSyncSucceed();
             Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
             mApp.onVersionUpdated(mApp.getLocalVersion());
+        }
+    }
+
+    private class DecryptTask extends AsyncTask<String, Void, String> {
+        private byte[] mData;
+        private Application.FileHeader mHeader;
+        public DecryptTask(byte[] data, Application.FileHeader header) {
+            super();
+            mData = data;
+            mHeader = header;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                mApp.setAccoutManager(Application.decrypt(new Crypto(), params[0], mHeader, mData));
+                return "OK";
+            }
+            catch(GeneralSecurityException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result!=null) {
+                Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+                Application.Options.mSyncVersion = mHeader.revision;
+                mApp.saveData(mData);
+                mApp.onVersionUpdated(mHeader.revision);
+                Application.reset();
+                mApp.getSortedCategoryNames();
+                MainListFragment.clearCache();
+            }
         }
     }
 }
