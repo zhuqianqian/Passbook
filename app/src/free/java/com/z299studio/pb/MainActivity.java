@@ -514,10 +514,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             Application.Options.mSyncVersion = header.revision;
             mApp.saveData(data, header.revision);
             mApp.onVersionUpdated(header.revision);
-            mApp.setAccountManager(manager);
+            mApp.setAccountManager(manager, -1, getString(R.string.def_category));
             mApp.setCrypto(crypto);
             Application.reset();
-            mApp.getAccountManager().setDefaultCategory(-1, getString(R.string.def_category));
             mApp.getSortedCategoryNames();
             mNavigationDrawer.refreshCategoryCounters();
             MainListFragment.clearCache();

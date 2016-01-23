@@ -176,8 +176,9 @@ public class Application{
         return mAccountManager;
     }
 
-    public void setAccountManager(AccountManager mgr) {
+    public void setAccountManager(AccountManager mgr, int imgCode, String defCategoryName) {
         mAccountManager = mgr;
+        mAccountManager.setDefaultCategory(imgCode, defCategoryName);
     }
 
     public void setCrypto(Crypto crypto) {
@@ -239,6 +240,7 @@ public class Application{
         }
         if(mBuffer!=null) {
             mFileHeader = FileHeader.parse(mBuffer);
+            mLocalVersion = mFileHeader.revision;
         }
         return mFileHeader;
     }

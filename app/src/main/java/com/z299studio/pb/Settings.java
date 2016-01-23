@@ -595,7 +595,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > app.getLocalVersion()) {
-                new DecryptTask(data, fh, this).execute();
+                new DecryptTask(data, fh, this).execute(app.getPassword());
             }
             else if(fh.revision < app.getLocalVersion()){
                 SyncService.getInstance().send(app.getData());
@@ -623,7 +623,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         Application app = Application.getInstance();
         Application.showToast(this, R.string.sync_success_local, Toast.LENGTH_SHORT);
         Application.Options.mSyncVersion = header.revision;
-        app.setAccountManager(manager);
+        app.setAccountManager(manager, -1, getString(R.string.def_category));
         app.setCrypto(crypto);
         app.saveData(data, header.revision);
         app.onVersionUpdated(header.revision);

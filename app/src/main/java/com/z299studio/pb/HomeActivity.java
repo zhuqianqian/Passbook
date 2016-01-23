@@ -321,7 +321,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     public void onFinished(boolean isSuccessful, AccountManager manager,
                            byte[] data, Application.FileHeader header, Crypto crypto) {
         if(isSuccessful) {
-            mApp.setAccountManager(manager);
+            mApp.setAccountManager(manager, -1, getString(R.string.def_category));
             mApp.setCrypto(crypto);
         }
         if(!isSuccessful) {
@@ -488,7 +488,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             String[] defCategories = r.getStringArray(R.array.category_names);
             int i = 0;
             AccountManager am = new AccountManager(null);
-            mApp.setAccountManager(am);
+            mApp.setAccountManager(am, -1, getString(R.string.def_category));
             for(String s : defCategories) {
                 am.addCategory(i++, s);
             }

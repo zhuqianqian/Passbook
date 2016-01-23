@@ -496,11 +496,12 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         protected void onPostExecute(String result) {
             if(result!=null) {
                 Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
-                Application.Options.mSyncVersion = mHeader.revision;
-                mApp.saveData(mData, mHeader.revision);
-                mApp.onVersionUpdated(mHeader.revision);
+                Application.Options.mSyncVersion = header.revision;
+                mApp.saveData(data, header.revision);
+                mApp.onVersionUpdated(header.revision);
+                mApp.setAccountManager(manager, -1, getString(R.string.def_category));
+                mApp.setCrypto(crypto);
                 Application.reset();
-                mApp.getAccountManager().setDefaultCategory(-1, getString(R.string.def_category));
                 mApp.getSortedCategoryNames();
                 mNavigationDrawer.refreshCategoryCounters();
                 MainListFragment.clearCache();
