@@ -367,7 +367,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(AccountManager.getInstance() == null) {
+        if(Application.getInstance() == null) {
             super.onCreate(savedInstanceState);
             startActivity(new Intent(this, HomeActivity.class));
             this.finish();
@@ -525,7 +525,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                         Toast.LENGTH_LONG);
             }
             else {
-                if(AccountManager.getInstance().saveRequired()) {
+                if(Application.getInstance().getAccountManager().saveRequired()) {
                     Application.getInstance().saveData();
                     Application.getInstance().notifyChange(Application.DATA_ALL);
                 }

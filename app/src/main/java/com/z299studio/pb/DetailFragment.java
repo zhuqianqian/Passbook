@@ -99,14 +99,14 @@ public class DetailFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(savedInstanceState!=null) {
-            if(AccountManager.getInstance() == null) {
+            if(Application.getInstance() == null) {
                 return null;
             }
 
         }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mList = (ListView)rootView.findViewById(android.R.id.list);
-        mAccount = AccountManager.getInstance().getAccountById(mAccountId);
+        mAccount = Application.getInstance().getAccountManager().getAccountById(mAccountId);
         mColor = ContextCompat.getColor(getContext(), COLORS[mAccount.getCategoryId() & 0x0f]);
         setUpList();
         setupToolbar(rootView, mAccount.mProfile);

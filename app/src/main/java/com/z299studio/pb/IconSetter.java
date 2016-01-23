@@ -54,7 +54,7 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(savedInstanceState!=null) {
-            if(AccountManager.getInstance()==null) {
+            if(Application.getInstance()==null) {
                 return null;
             }
             mImg = savedInstanceState.getInt("img_code");

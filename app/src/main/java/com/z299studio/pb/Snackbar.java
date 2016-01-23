@@ -92,7 +92,7 @@ public class Snackbar extends DialogFragment implements View.OnClickListener{
             int height = (int) (res.getDimension(R.dimen.snackbar_height_single) + 0.5f);
             boolean leftAlign = res.getBoolean(R.bool.snackbar_left_align);
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.gravity = Gravity.BOTTOM | Gravity.START | Gravity.LEFT;
+            lp.gravity = Gravity.BOTTOM | Gravity.START ;
             lp.x = 0;
             lp.y = 0;
             lp.height = height ;
@@ -152,11 +152,6 @@ public class Snackbar extends DialogFragment implements View.OnClickListener{
     
     public Snackbar setActionText(String action) {
         mAction = action;
-        return this;
-    }
-    
-    public Snackbar setTimeOut(int milliseconds) {
-        mTimeOut = milliseconds;
         return this;
     }
     

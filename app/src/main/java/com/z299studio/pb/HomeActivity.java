@@ -267,7 +267,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         Application.reset();
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         mApp.ignoreNextPause();
-        AccountManager.getInstance().setDefaultCategory(-1, getString(R.string.def_category));
+        mApp.getAccountManager().setDefaultCategory(-1, getString(R.string.def_category));
         startActivity(intent);
         this.finish();
     }
@@ -499,7 +499,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             Resources r = getResources();
             String[] defCategories = r.getStringArray(R.array.category_names);
             int i = 0;
-            AccountManager am = AccountManager.getInstance(null);
+            AccountManager am = new AccountManager(null);
             for(String s : defCategories) {
                 am.addCategory(i++, s);
             }
@@ -521,6 +521,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 }
                 am.addAccount(dataDetails[0], a);
             }
+            defAccountData.recycle();
             return "OK";
         }
 

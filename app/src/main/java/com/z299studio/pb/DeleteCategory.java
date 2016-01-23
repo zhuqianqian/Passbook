@@ -55,7 +55,7 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(savedInstanceState!=null) {
-            if(AccountManager.getInstance()==null) {
+            if(Application.getInstance()==null) {
                 return null;
             }
             mPosition = savedInstanceState.getInt("category");
@@ -66,14 +66,14 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
         button = (Button)rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
         Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
-        String[] allNames = Application.getSortedCategoryNames();
+        String[] allNames = Application.getInstance().getSortedCategoryNames();
         String[] deletableNames = new String[allNames.length-1];
         int i, j = 0;
         for(i = 1; i < allNames.length; ++i) {
             deletableNames[j++] = allNames[i];
         }
         if(mPosition < 0) {
-            int[] allIds = Application.getSortedCategoryIds();
+            int[] allIds = Application.getInstance().getSortedCategoryIds();
             for (i = 1; i < allIds.length; ++i) {
                 if (mCategory == allIds[i]) {
                     mPosition = i;
@@ -117,7 +117,7 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         mPosition = pos;
-        mCategory = Application.getSortedCategoryIds()[pos+1];
+        mCategory = Application.getInstance().getSortedCategoryIds()[pos+1];
     }
     
     @Override

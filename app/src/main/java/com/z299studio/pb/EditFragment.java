@@ -203,7 +203,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     private Toolbar mToolbar;
     private View mToolbarContainer;
     private ImageView mDeleteView;
-
+    private Application mApp;
     private boolean mReady = false;
     private boolean mSavable;
     private boolean mNameOk;
@@ -240,10 +240,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mApp = Application.getInstance();
         if(savedInstanceState == null) {
             int categoryId = getArguments().getInt(C.CATEGORY, AccountManager.DEFAULT_CATEGORY_ID);
             mPosition = 0;
-            int[] allIds = Application.getSortedCategoryIds();
+            int[] allIds = mApp.getSortedCategoryIds();
             for (int i = 0; i < allIds.length; ++i) {
                 if (categoryId == allIds[i]) {
                     mPosition = i;
@@ -267,7 +268,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedInstanceState!=null && AccountManager.getInstance()==null) {
+        if(savedInstanceState!=null && mApp == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
@@ -285,7 +286,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         setupToolbar(rootView);
         mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
         if(mAccountId >= 0) {
-            mDummyAccount = AccountManager.getInstance().getAccountById(mAccountId).clone();
+            mDummyAccount = mApp.getAccountManager().getAccountById(mAccountId).clone();
             mName = mDummyAccount.getAccountName();
         }
         else {
@@ -307,7 +308,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mContainer.addView(mDeleteView);
         mDeleteView.setOnDragListener(mDragListener);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item , Application.getSortedCategoryNames());
+                android.R.layout.simple_spinner_dropdown_item , mApp.getSortedCategoryNames());
         spinnerAdapter.setDropDownViewResource(spinnerLayout);
         mCategorySpinner.setAdapter(spinnerAdapter);
         mCategorySpinner.setOnItemSelectedListener(this);
@@ -489,8 +490,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private AccountManager.Account getEntryList() {
-        int cateId = Application.getSortedCategoryIds()[mPosition];
-        AccountManager.Account result = AccountManager.getInstance().getTemplate(cateId);
+        int cateId = mApp.getSortedCategoryIds()[mPosition];
+        AccountManager.Account result = mApp.getAccountManager().getTemplate(cateId);
         if(result == null) {
             result = getDefaultTemplate(cateId);
         }
@@ -504,7 +505,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         String[] defNames = r.getStringArray(R.array.def_field_names);
         int[] defTypes = r.getIntArray(R.array.def_field_types);
         int[] indexArray;
-        AccountManager.Account account = AccountManager.getInstance().newAccount(id);
+        AccountManager.Account account = mApp.getAccountManager().newAccount(id);
         if(id < intArrayIds.length) {
             indexArray = r.getIntArray(intArrayIds[id]);
         }
@@ -539,7 +540,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private AccountManager.Account getAccount() {
-        AccountManager.Account account  = AccountManager.getInstance().newAccount(mPosition);
+        AccountManager.Account account  = mApp.getAccountManager().newAccount(mPosition);
         account.mId = mAccountId;
         for(EntryHolder eh : mEntries) {
             account.addEntry(eh.mEntryItem);
@@ -551,16 +552,16 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         String name = mNameEditText.getText().toString();
         AccountManager.Account account = getAccount();
         account.setName(name);
-        int categoryId = Application.getSortedCategoryIds()[mPosition];
+        int categoryId = mApp.getSortedCategoryIds()[mPosition];
         account.setCategory(categoryId);
         if(mAccountId < 0) {
-            AccountManager.getInstance().addAccount(categoryId, account);
+            mApp.getAccountManager().addAccount(categoryId, account);
             if(mListener!=null) {
                 mListener.onSave(categoryId);
             }
         }
         else {
-            AccountManager.getInstance().setAccount(mAccountId, account);
+            mApp.getAccountManager().setAccount(account);
             if(mListener!=null) {
                 mListener.onSaveChanged(mAccountId, categoryId, mOldCategoryId,
                         name.equals(account.getAccountName()));

@@ -204,13 +204,14 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     private ArrayList<NavMenuItem> buildMenuItems() {
+        Application app = Application.getInstance();
         Resources r = getResources();
-        AccountManager am = AccountManager.getInstance();
+        AccountManager am = app.getAccountManager();
         ArrayList<NavMenuItem> result = new ArrayList<>();
         int icons[] = Application.getThemedIcons();
-        String[] categoryNames = Application.getSortedCategoryNames();
-        int[] categoryIcons = Application.getSortedCategoryIcons();
-        int[] categoryIds = Application.getSortedCategoryIds();
+        String[] categoryNames = app.getSortedCategoryNames();
+        int[] categoryIcons = app.getSortedCategoryIcons();
+        int[] categoryIds = app.getSortedCategoryIds();
 
         int pos = 0, i;
         if(mDrawerHidden) {
@@ -282,8 +283,8 @@ public class NavigationDrawerFragment extends Fragment implements
     }
     
     public void refreshCategoryCounters() {
-        int[] cateIds = Application.getSortedCategoryIds();
-        AccountManager am = AccountManager.getInstance();
+        int[] cateIds = Application.getInstance().getSortedCategoryIds();
+        AccountManager am = Application.getInstance().getAccountManager();
         Integer pos;
         for(int id : cateIds) {
             pos = mCategory2Navigation.get(id);

@@ -72,18 +72,6 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
         mPassword = password;
     }
 
-    private AccountManager decrypt(Application.FileHeader parser)
-            throws GeneralSecurityException {
-        Crypto crypto = new Crypto();
-        int total = parser.keyLength + parser.ivLength;
-        crypto.setPassword(mPassword, mBuffer, parser.size, total);
-        total += parser.size;
-        byte[] data = new byte[mBuffer.length - total];
-        System.arraycopy(mBuffer, total, data, 0, data.length);
-        byte[] text = crypto.decrypt(data);
-        return new AccountManager(new String(text));
-    }
-
     private String importPbData() {
         String result = null;
         try {
@@ -96,7 +84,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
                 fis.close();
                 Application.FileHeader header = Application.FileHeader.parse(mBuffer);
                 if(header.valid) {
-                    AccountManager am = decrypt(header);
+                    AccountManager am = Application.decrypt(new Crypto(), mPassword, header, mBuffer);
                     process(am);
                     result = mFilePath;
                 }
@@ -111,7 +99,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
     }
 
     private void process(AccountManager am) {
-        AccountManager appAm = AccountManager.getInstance();
+        AccountManager appAm = Application.getInstance().getAccountManager();
         Hashtable<String, Integer> existingCategory = new Hashtable<>();
         Hashtable<String, Integer> existingAccounts = new Hashtable<>();
         List<AccountManager.Category> newCategories = am.getCategoryList(true, false);
@@ -173,7 +161,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
             CSVReader csvReader = new CSVReader(new FileReader(mFilePath));
             List<String[]> content = csvReader.readAll();
             csvReader.close();
-            AccountManager appAm = AccountManager.getInstance();
+            AccountManager appAm = Application.getInstance().getAccountManager();
             Hashtable<String, Integer> existingCategory = new Hashtable<>();
             Hashtable<String, Integer> existingAccounts = new Hashtable<>();
             List<AccountManager.Category> categories = appAm.getCategoryList(true, false);
@@ -221,7 +209,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
                         appAm.addAccount(categoryId, account);
                     }
                     else {
-                        appAm.setAccount(account.mId, account);
+                        appAm.setAccount(account);
                     }
                 }
             }
@@ -252,7 +240,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
             return null;
         }
         String result;
-        AccountManager appAm = AccountManager.getInstance();
+        AccountManager appAm = Application.getInstance().getAccountManager();
         int start = mFilePath.lastIndexOf(File.separator)+1;
         Hashtable<String, Integer> existingAccounts = new Hashtable<>();
         int categoryId = -1;
@@ -300,7 +288,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
                         }
                     }
                     if(accountId != null) {
-                        appAm.setAccount(account.mId, account);
+                        appAm.setAccount(account);
                     }
                     else {
                         appAm.addAccount(categoryId, account);
@@ -330,7 +318,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
 
     private String exportData() {
         String result;
-        if(AccountManager.getInstance().saveRequired()) {
+        if(Application.getInstance().getAccountManager().saveRequired()) {
             Application.getInstance().saveData();
         }
         byte[] data = Application.getInstance().getData();
@@ -350,14 +338,14 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
     private String exportCSV() {
         String result;
         try{
-            AccountManager am = AccountManager.getInstance();
+            AccountManager am = Application.getInstance().getAccountManager();
             File file = new File(Environment.getExternalStorageDirectory(), "pb.csv");
             FileWriter fw = new FileWriter(file, false);
             CSVWriter csvWriter = new CSVWriter(fw);
             csvWriter.writeNext(am.getCategoryNames());
             List<AccountManager.Account> accounts = am.getAllAccounts(false);
             for(AccountManager.Account a: accounts) {
-                csvWriter.writeNext(a.getStringList());
+                csvWriter.writeNext(a.getStringList(am));
             }
             csvWriter.close();
             result = file.getPath();

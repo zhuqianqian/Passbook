@@ -186,7 +186,7 @@ public class MainListAdapter extends BaseAdapter {
         mChecked = new ArrayList<>();
         mDeleted = new ArrayList<>();
         int id;
-        AccountManager am = AccountManager.getInstance();
+        AccountManager am = Application.getInstance().getAccountManager();
         if(accounts==null) {
             mEntries = new ArrayList<>();
         }
@@ -412,7 +412,7 @@ public class MainListAdapter extends BaseAdapter {
 
     public void doDelete(int [] indices, int total) {
         int end = total - 1;
-        AccountManager am = AccountManager.getInstance();
+        AccountManager am = Application.getInstance().getAccountManager();
         int pos;
         for(int i = end; i >= 0; --i) {
             pos = indices[i];
@@ -458,7 +458,7 @@ public class MainListAdapter extends BaseAdapter {
         int result = 0;
         AccountManager.Account account;
         boolean marked;
-        AccountManager am = AccountManager.getInstance();
+        AccountManager am = Application.getInstance().getAccountManager();
         for(int i = 0; i < mChecked.size(); i++) {
             account = mEntries.get(i);
             marked = mChecked.get(i);

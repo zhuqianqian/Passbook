@@ -257,7 +257,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mListView = (ListView)rootView.findViewById(android.R.id.list);
         if((mAdapter = getAdapter(mCategoryId)) == null) {
             mAdapter = new MainListAdapter(getActivity(),
-                    AccountManager.getInstance().getAccountsByCategory(mCategoryId),
+                    Application.getInstance().getAccountManager().getAccountsByCategory(mCategoryId),
                     Application.getThemedIcons(), R.drawable.pb_unknown);
             mListView.postDelayed(new Runnable() {
                 @Override
@@ -349,7 +349,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mCategoryId = category_id;
             if((mAdapter = getAdapter(mCategoryId)) == null) {
                 mAdapter = new MainListAdapter(getActivity(),
-                        AccountManager.getInstance().getAccountsByCategory(mCategoryId),
+                        Application.getInstance().getAccountManager()
+                                .getAccountsByCategory(mCategoryId),
                         Application.getThemedIcons(), R.drawable.pb_unknown);
                 mListView.postDelayed(new Runnable() {
                     @Override
@@ -528,7 +529,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mCategoryIconView = (ImageView)mCategoryEditView.findViewById(R.id.category_icon);
         mCategoryEditView.setVisibility(View.VISIBLE);
         int[] icons = Application.getThemedIcons();
-        AccountManager.Category category = AccountManager.getInstance().getCategory(mCategoryId);
+        AccountManager.Category category = Application.getInstance()
+                .getAccountManager().getCategory(mCategoryId);
         if(mCategoryName == null) {
             mCategoryName = mCategoryId > AccountManager.DEFAULT_CATEGORY_ID ? 
                     category.mName : "";
@@ -547,8 +549,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     
     private void updateListForEditing() {
         if(mCategoryId != AccountManager.DEFAULT_CATEGORY_ID) {
-            ArrayList<AccountManager.Account> accounts = AccountManager.getInstance()
-                    .getAccountsByCategory(AccountManager.DEFAULT_CATEGORY_ID);
+            ArrayList<AccountManager.Account> accounts = Application.getInstance()
+                    .getAccountManager().getAccountsByCategory(AccountManager.DEFAULT_CATEGORY_ID);
             if(mCategoryId == AccountManager.ALL_CATEGORY_ID) {
                 mAdapter.addList(accounts, true);
             }
@@ -563,10 +565,12 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     
     protected void saveCategory() {
         if(mCategoryId <= AccountManager.DEFAULT_CATEGORY_ID) {
-            mCategoryId = AccountManager.getInstance().addCategory(mCategoryIcon, mCategoryName);
+            mCategoryId = Application.getInstance()
+                    .getAccountManager().addCategory(mCategoryIcon, mCategoryName);
         }
         else {
-            AccountManager.getInstance().setCategory(mCategoryId, mCategoryName, mCategoryIcon);
+            Application.getInstance()
+                    .getAccountManager().setCategory(mCategoryId, mCategoryName, mCategoryIcon);
         }
         Application.showToast(getActivity(), R.string.category_saved, Toast.LENGTH_SHORT);
         mAdapter.moveData(mCategoryId);

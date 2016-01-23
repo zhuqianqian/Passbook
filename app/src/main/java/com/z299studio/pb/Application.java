@@ -31,7 +31,6 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
-import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -123,6 +122,7 @@ public class Application{
     private int mLocalVersion;
     private Crypto mCrypto;
     private Hashtable<Integer, Boolean> mChanges;
+    private AccountManager mAccountManager;
 
     public static final Integer THEME = 0;
     public static final Integer DATA_OTHER = 1;
@@ -186,17 +186,13 @@ public class Application{
             e.printStackTrace();
         }
     }
+
+    public AccountManager getAccountManager() {
+        return mAccountManager;
+    }
     
     public void decrypt() throws GeneralSecurityException{
-        if(mBuffer!=null) {
-            int total = mFileHeader.keyLength + mFileHeader.ivLength;
-            mCrypto.setPassword(mPassword, mBuffer, mFileHeader.size, total);
-            total += mFileHeader.size;
-            byte[] data = new byte[mBuffer.length - total];
-            System.arraycopy(mBuffer, total, data, 0, data.length);
-            byte[] text = mCrypto.decrypt(data);
-            AccountManager.getInstance(new String(text));
-        }
+        mAccountManager = decrypt(mCrypto, mPassword, mFileHeader, mBuffer);
     }
     
     public boolean queryChange(int what) {
@@ -273,7 +269,7 @@ public class Application{
         if(mLocalVersion <= Options.mSyncVersion) {
             mLocalVersion++;
         }
-        byte[] cipher = mCrypto.encrypt(AccountManager.getInstance().getBytes());
+        byte[] cipher = mCrypto.encrypt(mAccountManager.getBytes());
         byte[] header = FileHeader.build(APP_VERSION, mCrypto.getIterationCount(),
                 Crypto.SALT_LENGTH, mCrypto.getIvLength(), mLocalVersion);
         byte[] keyInfo = mCrypto.getSaltAndIvBytes();
@@ -290,7 +286,7 @@ public class Application{
             System.arraycopy(keyInfo, 0, mBuffer, header.length, keyInfo.length);
             System.arraycopy(cipher, 0, mBuffer, header.length + keyInfo.length, cipher.length);
             fos.close();
-            AccountManager.getInstance().onSaved();
+            mAccountManager.onSaved();
         }catch (FileNotFoundException e) {
             Log.w("Passbook", "File not found");
         }
@@ -301,7 +297,7 @@ public class Application{
     }
     
     public void onPause() {
-        if(AccountManager.getInstance().saveRequired()) {
+        if(mAccountManager.saveRequired()) {
             saveData();
         }
         mLastPause = System.currentTimeMillis();
@@ -371,6 +367,21 @@ public class Application{
         Options.mFpStatus = C.Fingerprint.DISABLED;
     }
 
+    public static AccountManager decrypt(Crypto crypto, String password,
+                                         FileHeader header, byte[]data)
+            throws GeneralSecurityException{
+        if(data!=null) {
+            int total = header.keyLength + header.ivLength;
+            crypto.setPassword(password, data, header.size, total);
+            total += header.size;
+            byte[] textData = new byte[data.length - total];
+            System.arraycopy(data, total, textData, 0, textData.length);
+            byte[] text = crypto.decrypt(textData);
+            return new AccountManager(new String(text));
+        }
+        return null;
+    }
+
     public static void showToast(Activity context, int stringId, int duration) {
         if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT) {
             Toast.makeText(context, stringId, duration).show();
@@ -422,18 +433,18 @@ public class Application{
     private static String[] sCategoryNames;
     private static int[] sCategoryIcons;
     private static int[] sCategoryIds;
-    public static String[] getSortedCategoryNames() {
+    public String[] getSortedCategoryNames() {
         if(sCategoryNames == null) {
             int size;
-            ArrayList<AccountManager.Category> categories = AccountManager.getInstance()
-                    .getCategoryList(false, true);
+            ArrayList<AccountManager.Category> categories =
+                    mAccountManager.getCategoryList(false, true);
             size = categories.size() + 1;
             sCategoryNames = new String[size];
             sCategoryIds = new int[size];
             sCategoryIcons = new int[size];
             int i = 0;
-            AccountManager.Category defaultCategory = AccountManager.getInstance()
-                    .getCategory(AccountManager.DEFAULT_CATEGORY_ID);
+            AccountManager.Category defaultCategory =
+                    mAccountManager.getCategory(AccountManager.DEFAULT_CATEGORY_ID);
             sCategoryNames[i] = defaultCategory.mName;
             sCategoryIds[i] = defaultCategory.mId;
             sCategoryIcons[i++] = defaultCategory.mImgCode;
@@ -447,14 +458,14 @@ public class Application{
         return sCategoryNames;
     }
 
-    public static int[] getSortedCategoryIds() {
+    public int[] getSortedCategoryIds() {
         if(sCategoryNames == null) {
             getSortedCategoryNames();
         }
         return sCategoryIds;
     }
 
-    public static int[] getSortedCategoryIcons() {
+    public int[] getSortedCategoryIcons() {
         if(sCategoryNames == null) {
             getSortedCategoryNames();
         }

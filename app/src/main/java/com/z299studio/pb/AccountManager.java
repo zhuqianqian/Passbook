@@ -167,9 +167,8 @@ public class AccountManager {
             return new Entry(type, name, value);
         }
         
-        public String[] getStringList() {
+        public String[] getStringList(AccountManager am) {
             String[] result = new String[mEntries.size()+1];
-            AccountManager am = AccountManager.getInstance();
             int i = 1;
             result[0] = String.format("%s\t%s", am.getCategory(this.mCategoryId).mName, mProfile);
             for(Entry e : mEntries) {
@@ -192,16 +191,7 @@ public class AccountManager {
             return COLLATOR.compare(arg0.mProfile, arg1.mProfile);
         }
     };
-    
-    private static AccountManager sInstance;
-    public static AccountManager getInstance() {
-        return sInstance;
-    }
-    public static AccountManager getInstance(String data) {
-        sInstance = new AccountManager(data);
-        return sInstance;
-    }
-    
+
     public AccountManager(String data) {
         mCategories = new  Hashtable<> ();
         mMap = new Hashtable<>();
@@ -471,7 +461,7 @@ public class AccountManager {
         mNullCount += 1;
     }
     
-    public void setAccount(int id, Account account) {
+    public void setAccount(Account account) {
         Account previous = getAccountById(account.mId);
         if(previous.mCategoryId != account.mCategoryId) {
             ArrayList<Integer> intList = mMap.get(Integer.valueOf(previous.mCategoryId));

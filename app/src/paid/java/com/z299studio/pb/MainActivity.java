@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(AccountManager.getInstance() == null) {
+        if(Application.getInstance() == null) {
             super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
@@ -136,10 +136,10 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             return;
         }
         if(mApp.queryChange(Application.DATA_OTHER)) {
-            Application.getSortedCategoryNames();
+            mApp.getSortedCategoryNames();
         }
         if(mApp.queryChange(Application.DATA_ALL)) {
-            Application.getSortedCategoryNames();
+            mApp.getSortedCategoryNames();
             MainListFragment.clearCache();
         }
     }
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         switch(item.getItemId()) {
             case R.id.action_search:
                 if(mAllAccounts == null) {
-                    mAllAccounts = AccountManager.getInstance().getAllAccounts(true);
+                    mAllAccounts = mApp.getAccountManager().getAllAccounts(true);
                 }
                 break;
             case R.id.action_delete_category:
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mMainList.selectCategory(id, false);
             mCategoryId = id;
             mTitle = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
-                     : AccountManager.getInstance().getCategory(mCategoryId).mName;
+                     : mApp.getAccountManager().getCategory(mCategoryId).mName;
             getSupportActionBar().setTitle(mTitle);
         }
         else {
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(categoryId == AccountManager.ALL_CATEGORY_ID) {
             mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
             mNavigationDrawer.refreshCategoryCounters();
-            for(int id : Application.getSortedCategoryIds()) {
+            for(int id : mApp.getSortedCategoryIds()) {
                 MainListFragment.resetAdapter(id);
             }
         }
@@ -411,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     }
     
     private void deleteCategory(int category, boolean alsoDelAccounts) {
-        AccountManager.getInstance().removeCategory(category, alsoDelAccounts);
+        mApp.getAccountManager().removeCategory(category, alsoDelAccounts);
         int countAccounts = mNavigationDrawer.getCount(category);
         if(countAccounts > 0) {
             if(alsoDelAccounts) {
@@ -460,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 mApp.saveData(data);
                 mApp.onVersionUpdated(fh.revision);    
                 Application.reset();
-                Application.getSortedCategoryNames();
+                mApp.getSortedCategoryNames();
                 MainListFragment.clearCache();
             }
             else if(fh.revision < mApp.getLocalVersion()){
