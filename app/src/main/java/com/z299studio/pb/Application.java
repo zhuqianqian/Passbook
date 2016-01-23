@@ -191,7 +191,7 @@ public class Application{
         return mAccountManager;
     }
 
-    public void setAccoutManager(AccountManager mgr) {
+    public void setAccountManager(AccountManager mgr) {
         mAccountManager = mgr;
     }
     public void decrypt() throws GeneralSecurityException{

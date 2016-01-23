@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         @Override
         protected String doInBackground(String... params) {
             try {
-                mApp.setAccoutManager(Application.decrypt(new Crypto(), params[0], mHeader, mData));
+                mApp.setAccountManager(Application.decrypt(new Crypto(), params[0], mHeader, mData));
                 return "OK";
             }
             catch(GeneralSecurityException e) {
