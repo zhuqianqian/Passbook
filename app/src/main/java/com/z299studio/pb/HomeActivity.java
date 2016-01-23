@@ -500,6 +500,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             String[] defCategories = r.getStringArray(R.array.category_names);
             int i = 0;
             AccountManager am = new AccountManager(null);
+            mApp.setAccountManager(am);
             for(String s : defCategories) {
                 am.addCategory(i++, s);
             }
