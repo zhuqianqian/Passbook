@@ -112,7 +112,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
                 }
                 }
                 catch(IllegalStateException e) {
-                    Log.w("PwdBook:GameSyncService", "IllegalStateException during read()");
+                    Log.w("Pb:GameSyncService", "IllegalStateException during read()");
                 }
                 return status;
             }

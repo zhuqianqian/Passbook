@@ -292,10 +292,10 @@ public class Application{
             fos.close();
             AccountManager.getInstance().onSaved();
         }catch (FileNotFoundException e) {
-            Log.w("PwdBook", "File not found");
+            Log.w("Passbook", "File not found");
         }
         catch(IOException ioe) {
-            Log.e("PwdBook", "IOException");
+            Log.e("Passbook", "IOException");
             
         }
     }
