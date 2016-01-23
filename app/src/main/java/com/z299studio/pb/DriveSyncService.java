@@ -167,6 +167,7 @@ public class DriveSyncService extends SyncService implements
             else {
                 mListener.onSyncFailed(CA.NO_DATA);
             }
+            result.release();
         }
     };
     

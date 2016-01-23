@@ -50,6 +50,9 @@ public abstract class SyncService {
     protected Handler mHandler = new Handler();
     
     public static SyncService getInstance(Activity context, int server) {
+        if(__instance!=null) {
+            __instance.disconnect();
+        }
         switch(server) {
         case C.Sync.GDRIVE:
             __instance = new DriveSyncService();
