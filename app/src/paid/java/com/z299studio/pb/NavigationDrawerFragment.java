@@ -275,15 +275,17 @@ public class NavigationDrawerFragment extends Fragment implements
     public void select(int category) {
         Integer pos = mCategory2Navigation.get(category);
         if(pos!=null) {
-            onItemClick(mMenuList, null, pos, 0);
+            onItemClick(mMenuList, null, pos, category);
         }        
     }
 
     public void increaseCounterInMenu(int category, int delta) {
         Integer pos = mCategory2Navigation.get(category);
-        int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
-        View view = mMenuList.getChildAt(pos - firstVisiblePosition);
-        mAdapter.increaseCounterInMenu(view, pos, delta);
+        if(pos != null) {
+            int firstVisiblePosition = mMenuList.getFirstVisiblePosition();
+            View view = mMenuList.getChildAt(pos - firstVisiblePosition);
+            mAdapter.increaseCounterInMenu(view, pos, delta);
+        }
     }
     
     public void refreshCategoryCounters() {

@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 Intent buyIntent = new Intent(Intent.ACTION_VIEW, uri);
                 try { startActivity(buyIntent); }
                 catch (ActivityNotFoundException e) {
-                    Log.w("PwdBook", "Activity not found when launching buy");
+                    Log.w("Passbook", "Activity not found when launching buy");
                 }
                 break;
         }
