@@ -44,7 +44,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        SearchView.OnQueryTextListener, SyncService.SyncListener {
+        SearchView.OnQueryTextListener, SyncService.SyncListener,
+        DecryptTask.OnTaskFinishListener {
 
 
     private Application mApp;
@@ -456,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid && fh.revision > mApp.getLocalVersion()) {
-                new DecryptTask(data, fh).execute(mApp.getPassword());
+                new DecryptTask(data, fh, this).execute(mApp.getPassword());
             }
             else if(fh.revision < mApp.getLocalVersion()){
                 SyncService.getInstance().send(mApp.getData());
@@ -472,41 +473,24 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         }
     }
 
-    private class DecryptTask extends AsyncTask<String, Void, String> {
-        private byte[] mData;
-        private Application.FileHeader mHeader;
-        public DecryptTask(byte[] data, Application.FileHeader header) {
-            super();
-            mData = data;
-            mHeader = header;
-        }
+    @Override
+    public void preExecute() { }
 
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                mApp.setAccountManager(Application.decrypt(new Crypto(), params[0], mHeader, mData));
-                return "OK";
-            }
-            catch(GeneralSecurityException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if(result!=null) {
-                Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
-                Application.Options.mSyncVersion = header.revision;
-                mApp.saveData(data, header.revision);
-                mApp.onVersionUpdated(header.revision);
-                mApp.setAccountManager(manager, -1, getString(R.string.def_category));
-                mApp.setCrypto(crypto);
-                Application.reset();
-                mApp.getSortedCategoryNames();
-                mNavigationDrawer.refreshCategoryCounters();
-                MainListFragment.clearCache();
-                mMainList.updateDataImmediately();
-            }
+    @Override
+    public void onFinished(boolean isSuccessful, AccountManager manager,
+                           byte[] data, Application.FileHeader header, Crypto crypto) {
+        if(isSuccessful) {
+            Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
+            Application.Options.mSyncVersion = header.revision;
+            mApp.saveData(data, header.revision);
+            mApp.onVersionUpdated(header.revision);
+            mApp.setAccountManager(manager, -1, getString(R.string.def_category));
+            mApp.setCrypto(crypto);
+            Application.reset();
+            mApp.getSortedCategoryNames();
+            mNavigationDrawer.refreshCategoryCounters();
+            MainListFragment.clearCache();
+            mMainList.updateDataImmediately();
         }
     }
 }
