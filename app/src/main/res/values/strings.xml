@@ -191,4 +191,6 @@
     <string name="a_fb">Facebook</string>
     <string name="a_li">LinkedIn</string>
     <string name="a_amazon">Amazon</string>
+    <string name="diff_pwd">A newer copy of data was found on the server, but the current password cannot lock it. Enter a password to download the data, or discard the server version.\nNote the password will overwrite your current one if you use it.</string>
+    <string name="discard">Discard</string>
 </resources>

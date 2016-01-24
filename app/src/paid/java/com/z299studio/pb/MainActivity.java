@@ -20,7 +20,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,14 +38,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
-        NavigationDrawerFragment.NavigationDrawerCallbacks,
+        NavigationDrawerFragment.NavigationDrawerCallbacks, FingerprintDialog.FingerprintListener,
         SearchView.OnQueryTextListener, SyncService.SyncListener,
-        DecryptTask.OnTaskFinishListener {
-
+        DecryptTask.OnTaskFinishListener, ActionDialog.ActionDialogListener{
 
     private Application mApp;
     private NavigationDrawerFragment mNavigationDrawer;
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     private ArrayList<AccountManager.Account> mSearchedAccounts= null;
     private String mLastKey = "";
     private String mTitle;
+    private byte[] mData;
 
     private Runnable mTintStatusBar = new Runnable() {
         @Override
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(savedInstanceState==null) {
             MainListFragment.clearCache();
         }
-        mApp = Application.getInstance(this);
+        mApp = Application.getInstance();
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -474,15 +472,12 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     }
 
     @Override
-    public void preExecute() { }
-
-    @Override
-    public void onFinished(boolean isSuccessful, AccountManager manager,
+    public void onFinished(boolean isSuccessful, AccountManager manager, String password,
                            byte[] data, Application.FileHeader header, Crypto crypto) {
         if(isSuccessful) {
             Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
             Application.Options.mSyncVersion = header.revision;
-            mApp.saveData(data, header.revision);
+            mApp.saveData(data, header);
             mApp.onVersionUpdated(header.revision);
             mApp.setAccountManager(manager, -1, getString(R.string.def_category));
             mApp.setCrypto(crypto);
@@ -491,6 +486,38 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mNavigationDrawer.refreshCategoryCounters();
             MainListFragment.clearCache();
             mMainList.updateDataImmediately();
+            if(!mApp.getPassword().equals(password)) {
+                mApp.setPassword(password, false);
+                if(Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
+                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                }
+            }
+        }
+        else {
+            mData = data;
+            ActionDialog.create(ActionDialog.ACTION_AUTHENTICATE2).show(
+                    getSupportFragmentManager(),"dialog_auth2");
         }
     }
+
+    @Override
+    public void preExecute() {}
+
+    @Override
+    public void onConfirm(String text, int type, int operation, int option) {
+        Application.FileHeader header = Application.FileHeader.parse(mData);
+        if(text!=null) {
+            new DecryptTask(mData, header, this ).execute(text);
+        }
+        else {
+            mApp.increaseVersion(header.revision);
+            SyncService.getInstance().send(mApp.getData());
+        }
+    }
+
+    @Override
+    public void onCanceled(boolean isFirstTime) { }
+
+    @Override
+    public void onConfirmed(boolean isFirstTime, byte[] password) { }
 }

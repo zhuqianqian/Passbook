@@ -9,7 +9,7 @@ public class DecryptTask extends AsyncTask<String, Void, Boolean> {
 
     public interface OnTaskFinishListener {
         void preExecute();
-        void onFinished(boolean isSuccessful, AccountManager manager,
+        void onFinished(boolean isSuccessful, AccountManager manager, String pwd,
                         byte[] data, Application.FileHeader header, Crypto crypto);
     }
     byte[] mData;
@@ -17,6 +17,7 @@ public class DecryptTask extends AsyncTask<String, Void, Boolean> {
     OnTaskFinishListener mListener;
     AccountManager mMgr;
     Crypto mCrypto;
+    String mPassword;
 
     public DecryptTask(byte[] data, Application.FileHeader header, OnTaskFinishListener listener) {
         super();
@@ -37,6 +38,7 @@ public class DecryptTask extends AsyncTask<String, Void, Boolean> {
             if(mData!=null) {
                 mCrypto = new Crypto();
                 int total = mHeader.keyLength + mHeader.ivLength;
+                mPassword = params[0];
                 mCrypto.setPassword(params[0], mData, mHeader.size, total);
                 total += mHeader.size;
                 byte[] textData = new byte[mData.length - total];
@@ -56,7 +58,7 @@ public class DecryptTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if(mListener != null) {
-            mListener.onFinished(result, mMgr, mData, mHeader, mCrypto);
+            mListener.onFinished(result, mMgr, mPassword, mData, mHeader, mCrypto);
         }
     }
 }

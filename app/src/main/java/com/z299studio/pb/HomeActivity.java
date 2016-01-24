@@ -318,7 +318,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     }
 
     @Override
-    public void onFinished(boolean isSuccessful, AccountManager manager,
+    public void onFinished(boolean isSuccessful, AccountManager manager, String password,
                            byte[] data, Application.FileHeader header, Crypto crypto) {
         if(isSuccessful) {
             mApp.setAccountManager(manager, -1, getString(R.string.def_category));
@@ -440,7 +440,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid) {
                 mApp.onVersionUpdated(fh.revision);
-                mApp.saveData(data, fh.revision);
+                mApp.saveData(data, fh);
                 mStage = AUTH;
             }
             else {

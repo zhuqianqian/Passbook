@@ -61,6 +61,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     public static final int ACTION_RESET_PWD = 3;
     public static final int ACTION_CREDITS = 4;
     public static final int ACTION_LICENSE = 5;
+    public static final int ACTION_AUTHENTICATE2 = 6;
 
     private Handler mHandler = new Handler();
     private final Runnable mUpdateUi = new Runnable() {
@@ -124,7 +125,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         View rootView;
         int []layouts =  {R.layout.dialog_authenticate, R.layout.dialog_export,
             R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_credits,
-            R.layout.dialog_license};
+            R.layout.dialog_license, R.layout.dialog_authenticate};
         rootView = inflater.inflate(layouts[mDlgType], container, false);
         mOkButton = (Button)rootView.findViewById(R.id.ok);
         if(mOkButton != null) {
@@ -161,7 +162,10 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
                 mSelectButton.setOnClickListener(this);
             }
             break;
-
+        case ACTION_AUTHENTICATE2:
+            ((TextView)rootView.findViewById(R.id.auth_desc)).setText(R.string.diff_pwd);
+            ((Button)rootView.findViewById(R.id.cancel)).setText(R.string.discard);
+            // no break to use the logic of authenticate
         case ACTION_AUTHENTICATE:
             mPasswordEdits[1] = (EditText) rootView.findViewById(R.id.et_password);
             mPasswordEdits[1].addTextChangedListener(this);
@@ -205,6 +209,9 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
             getDialog().getWindow().setAttributes(lp);
         }
+        else if(mDlgType == ACTION_AUTHENTICATE2) {
+            getDialog().setCanceledOnTouchOutside(false);
+        }
     }
     
     @Override
@@ -213,10 +220,16 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             case R.id.ok:
                 if(mDlgType == ACTION_RESET_PWD) {
                     resetPassword();
-                }else {
+                }
+                else {
                     mListener.onConfirm(mText, mFileType, mDlgType, mOption);
                 }
+                this.dismiss();
+                break;
             case R.id.cancel:
+                if(mDlgType == ACTION_AUTHENTICATE2) {
+                    mListener.onConfirm(null, 0, mDlgType, mOption);
+                }
                 this.dismiss();
                 break;     
             case R.id.ignore:

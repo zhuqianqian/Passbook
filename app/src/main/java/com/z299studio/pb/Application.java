@@ -264,6 +264,13 @@ public class Application{
             mCrypto.resetPassword(password);
         }
     }
+
+    public void increaseVersion(int atLeast) {
+        if(mLocalVersion <= atLeast) {
+            mLocalVersion = atLeast + 1;
+            saveData();
+        }
+    }
     
     public void saveData() {
         if(mLocalVersion <= Options.mSyncVersion) {
@@ -315,10 +322,11 @@ public class Application{
         mIgnoreNextPause = true;
     }
     
-    public void saveData(byte[] data, int version) {
+    public void saveData(byte[] data, FileHeader fileHeader) {
         try {
-            mLocalVersion = version;
-            mFileHeader.revision = version;
+            mLocalVersion = fileHeader.revision;
+            mFileHeader = fileHeader;
+            mBuffer = data;
             FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
             fos.write(data);
             fos.close();

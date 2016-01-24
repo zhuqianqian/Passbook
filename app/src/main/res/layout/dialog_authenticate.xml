@@ -25,6 +25,7 @@
             android:text="@string/enter_pwd"/>
         <TextView android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/auth_desc"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="@string/auth_required"/>
 
