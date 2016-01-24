@@ -185,4 +185,5 @@
     <string name="fp_ok">Reconocidos la huella digital</string>
     <string name="fp_fail">No reconocida la huella digital.</string>
     <string name="fp_desc">Utilizar tu huella digital para desbloquear los datos.</string>
+    <string name="discard">Deseche el</string>
 </resources>

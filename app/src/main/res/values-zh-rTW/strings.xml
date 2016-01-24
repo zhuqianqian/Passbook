@@ -189,4 +189,6 @@
     <string name="a_fb">Facebook</string>
     <string name="a_li">LinkedIn</string>
     <string name="a_amazon">亞馬遜</string>
+    <string name="diff_pwd">在你的同步伺服器上檢測到新的數據檔案，但是當前的密碼不能解密。你需要提供一個正確的密碼進行解密，否則請選擇丟棄新的數據檔案。\n注意，如果使用新的數據檔案，你當前的密碼會被替換成現在輸入的密碼。</string>
+    <string name="discard">丟棄</string>
 </resources>

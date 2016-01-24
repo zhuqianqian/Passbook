@@ -147,6 +147,17 @@
         <item>密码本逗号分隔文件（明文）</item>
         <item>aWallet逗号分隔文件（明文）</item>
     </string-array>
+    <string-array name="def_field_names">
+        <item>用户名</item>
+        <item>密码</item>
+        <item>电子邮箱</item>
+        <item>网址</item>
+        <item>卡号</item>
+        <item>PIN</item>
+        <item>备注</item>
+        <item>银行名称</item>
+        <item>校验码</item>
+    </string-array>
     <string-array name="lock_options">
         <item>立即</item>
         <item>5分钟</item>
@@ -178,4 +189,6 @@
     <string name="a_fb">Facebook</string>
     <string name="a_li">领英（LinkedIn）</string>
     <string name="a_amazon">亚马逊</string>
+    <string name="diff_pwd">在你的同步服务器上检测到一份较新的数据文件，但是当前密码不能解锁。如果需要使用这份新的数据，请输入一个密码，否则丢弃它而继续使用本地的数据。\n注意，如果选择使用服务器版本，你的密码会被你现在输入的密码替换。</string>
+    <string name="discard">丢弃</string>
 </resources>

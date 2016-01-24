@@ -189,4 +189,6 @@
     <string name="a_fb">Facebook</string>
     <string name="a_li">LinkedIn</string>
     <string name="a_amazon">Amazon</string>
+    <string name="diff_pwd">พบสำเนาข้อมูลใหม่บนเซิร์ฟเวอร์ แต่รหัสผ่านปัจจุบันไม่สามารถปลดล็อก ป้อนรหัสผ่านถ้าคุณต้องการใช้รุ่นที่ใหม่กว่า หรือยกเลิกการเก็บเครื่อง\nหมายเหตุรหัสผ่านจะเขียนทับหนึ่งปัจจุบันของคุณถ้าคุณใช้</string>
+    <string name="discard">ยกเลิกการ</string>
 </resources>
