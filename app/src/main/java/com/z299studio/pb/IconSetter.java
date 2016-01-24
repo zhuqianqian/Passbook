@@ -53,10 +53,10 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
+        if(Application.getInstance()==null || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         if(savedInstanceState!=null) {
-            if(Application.getInstance()==null) {
-                return null;
-            }
             mImg = savedInstanceState.getInt("img_code");
         }
         rootView = inflater.inflate(R.layout.dialog_choose_icon, container);

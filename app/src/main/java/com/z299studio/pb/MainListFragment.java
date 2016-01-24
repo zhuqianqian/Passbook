@@ -253,6 +253,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(Application.getInstance() == null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mListView = (ListView)rootView.findViewById(android.R.id.list);
         if((mAdapter = getAdapter(mCategoryId)) == null) {

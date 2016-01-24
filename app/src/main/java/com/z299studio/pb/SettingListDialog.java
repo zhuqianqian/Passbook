@@ -82,6 +82,10 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(Application.getInstance() == null ||
+                Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         View rootView = inflater.inflate(R.layout.dialog_setting_list, container, false);
         ListView listView = (ListView)rootView.findViewById(R.id.list);
         listView.setAdapter(mAdapter = new OptionAdapter());

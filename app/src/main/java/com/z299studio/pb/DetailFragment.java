@@ -98,10 +98,10 @@ public class DetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedInstanceState!=null) {
-            if(Application.getInstance() == null) {
-                return null;
-            }
+
+        if(Application.getInstance() == null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mList = (ListView)rootView.findViewById(android.R.id.list);

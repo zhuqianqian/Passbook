@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(Application.getInstance() == null) {
+        mApp = Application.getInstance();
+        if(mApp == null || mApp.getAccountManager() == null) {
             super.onCreate(savedInstanceState);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(savedInstanceState==null) {
             MainListFragment.clearCache();
         }
-        mApp = Application.getInstance();
         this.setTheme(C.THEMES[Application.Options.mTheme]);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,

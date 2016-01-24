@@ -52,6 +52,10 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(Application.getInstance() == null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         View rootView = inflater.inflate(R.layout.dialog_pwd_generator, container, false);
         Button ok = (Button)rootView.findViewById(R.id.ok);
         ok.setOnClickListener(this);

@@ -122,6 +122,10 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(Application.getInstance() == null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         View rootView;
         int []layouts =  {R.layout.dialog_authenticate, R.layout.dialog_export,
             R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_credits,

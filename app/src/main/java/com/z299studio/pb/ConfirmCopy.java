@@ -43,7 +43,8 @@ public class ConfirmCopy extends DialogFragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
-        if(savedInstanceState!=null && Application.getInstance()== null) {
+        if(Application.getInstance()== null
+                || Application.getInstance().getAccountManager() == null) {
             return null;
         }
         rootView = inflater.inflate(R.layout.dialog_confirm_copy, container);

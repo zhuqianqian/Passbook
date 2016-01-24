@@ -74,6 +74,10 @@ public class NavigationDrawerFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
+        if(Application.getInstance() == null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
         mDrawerHidden = getResources().getBoolean(R.bool.hide_drawer);
         mMenuList = (ListView)inflater.inflate(R.layout.fragment_navigation_drawer,
                 container, false);

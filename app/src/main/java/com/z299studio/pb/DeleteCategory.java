@@ -54,10 +54,11 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
-        if(savedInstanceState!=null) {
-            if(Application.getInstance()==null) {
-                return null;
-            }
+        if(Application.getInstance()==null
+                || Application.getInstance().getAccountManager() == null) {
+            return null;
+        }
+        if(savedInstanceState != null) {
             mPosition = savedInstanceState.getInt("category");
         }
         rootView = inflater.inflate(R.layout.dialog_delete_category, container);

@@ -368,7 +368,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(Application.getInstance() == null) {
+        if(Application.getInstance() == null || Application.getInstance().getAccountManager() == null) {
             super.onCreate(savedInstanceState);
             startActivity(new Intent(this, HomeActivity.class));
             this.finish();

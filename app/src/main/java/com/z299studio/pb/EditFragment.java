@@ -268,7 +268,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedInstanceState!=null && mApp == null) {
+        if(mApp == null || mApp.getAccountManager() == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
