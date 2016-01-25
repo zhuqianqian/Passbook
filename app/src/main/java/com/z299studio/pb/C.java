@@ -59,7 +59,7 @@ public final class C {
     }
 
     public static final class Fingerprint {
-        public static final String FILE = "pbfp.xml";
+        public static final String FILE = "pbfp";
         public static final String STATUS = "Status";
         public static final String IV = "PbIv";
         public static final String DATA = "PbData";
