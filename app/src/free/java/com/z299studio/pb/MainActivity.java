@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     protected void onResume() {
         super.onResume();
         if(Application.getInstance().needAuth()) {
-            startActivity(new Intent(this, HomeActivity.class));
+            Intent homeIntent = new Intent(this, HomeActivity.class);
+            homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
             finish();
             return;
         }
