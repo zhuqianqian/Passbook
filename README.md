@@ -17,8 +17,7 @@ Passbook runs on Android 4.0+  and helps you to manage sensitive data securely w
 
 ### Download
 
-[![image]](https://play.google.com/store/apps/details?id=com.z299studio.pbfree =204x60)
-[image]: https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png "Get it on Google Play"
+<a href="https://play.google.com/store/apps/details?id=com.z299studio.pbfree"><img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="60" width="204" ></a>
 
 ---
 
