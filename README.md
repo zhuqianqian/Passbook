@@ -14,6 +14,7 @@ Passbook runs on Android 4.0+  and helps you to manage sensitive data securely w
 * Multiple Material themes
 * Free edit: add or remove any information as you wish, without a template
 * In-app Search
+* Fingerprint authentication[<sup>3</sup>](#note3)
 
 ### Download
 
@@ -66,7 +67,9 @@ Passbook is licensed under [Apache License 2.0](LICENSE).
 
 <a name="note1" id="md_anchor"><sup>1</sup>Material Themes</a>: Certain Material features require Android 4.4 or Android 5.0.
 
-<a name="note2" id="md_anchor"><sup>2</sup>data synchronization</a>: Synchronization before version 2 uses Google Play Games snapshot service, which can save up to 3MB data. Since version 2, you can choose from Google Play Games snapshot service or Google Drive as the server to synchronize your data. Even if you chose Google Play Games service, the data is actually stored in your Google Drive folder, managed by Google Play Games service, and it can only be accessed by Passbook.
+<a name="note2" id="md_anchor"><sup>2</sup>Data Synchronization</a>: Passbook provides two ways of data synchronization: Google Play Games snapshot and Google Drive. Even if you chose Google Play Games service, the data is also actually stored in your Google Drive folder, managed by Google Play Games service, and accessed by Passbook only.
+
+<a name="note3" id="md_anchor"><sup>3</sup>Fingerprint Authentication</a>: Fingerprint authentication requires Android 6 Marshmallow and a working fingerprint sensor on your device. Manufacture specific fingerprint authentication is not supported.
 
 [travis-url]: https://travis-ci.org/zhuqianqian/Passbook 
 [travis-image]: https://travis-ci.org/zhuqianqian/Passbook.svg?branch=master
