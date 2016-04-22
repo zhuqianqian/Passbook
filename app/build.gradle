@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion "android-N"
+    buildToolsVersion "24.0.0 rc3"
 
     defaultConfig {
         applicationId "com.z299studio.pb"
@@ -32,11 +32,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.google.android.gms:play-services-games:+'
     compile 'com.google.android.gms:play-services-drive:+'
-    compile 'com.android.support:support-v13:23.1.1'
+    compile 'com.android.support:support-v13:23.3.0'
     freeCompile 'com.google.android.gms:play-services-ads:+'
     compile files('libs/opencsv-3.0.jar')
 }
