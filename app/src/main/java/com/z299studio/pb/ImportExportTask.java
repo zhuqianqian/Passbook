@@ -92,7 +92,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
         } catch (GeneralSecurityException e) {
             mAuthRequired = true;
             result = null;
-        } catch (IOException ioe) {
+        } catch (Exception e) {
             result = null;
         }
         return result;
@@ -229,7 +229,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
             }
             result = mFilePath;
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             result = null;
         }
         return result;
@@ -310,7 +310,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
                 }
             }
             result = mFilePath;
-        }catch (IOException e) {
+        }catch (Exception e) {
             result = null;
         }
         return result;
