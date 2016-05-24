@@ -146,6 +146,10 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     
     public void onConfirm(View view) {
         String password = mPwdEdit.getText().toString();
+        if(password.length() < 1) {
+            Application.showToast(this, R.string.pwd_wrong, Toast.LENGTH_SHORT);
+            return;
+        }
         if(mStage == SET_PWD) {
             EditText et_confirm = (EditText) findViewById(R.id.confirm);
             if(password.equals(et_confirm.getText().toString())) {
