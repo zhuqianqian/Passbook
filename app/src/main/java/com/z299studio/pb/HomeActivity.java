@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 
 public class HomeActivity extends AppCompatActivity implements
 AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener,
@@ -508,9 +511,13 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 a = am.newAccount(dataDetails[0]);
                 a.mProfile = defAccountNames[i];
                 for (int j = 1; j < dataDetails.length; j += 3){
-                    a.addEntry(defTypes[dataDetails[j + 2]],
-                            defNames[dataDetails[j]],
-                            defValues[dataDetails[j + 1]]);
+                    try {
+                        a.addEntry(defTypes[dataDetails[j + 2]],
+                                defNames[dataDetails[j]],
+                                defValues[dataDetails[j + 1]]);
+                    }catch(ArrayIndexOutOfBoundsException e) {
+                        Log.e("Passbook", "This should really not happen.");
+                    }
                 }
                 am.addAccount(dataDetails[0], a);
             }
