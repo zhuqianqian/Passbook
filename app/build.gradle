@@ -8,7 +8,7 @@ android {
         applicationId "com.z299studio.pb"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode "270"
+        versionCode 270
         versionName "2.7.0"
     }
 
