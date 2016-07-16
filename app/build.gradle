@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "24.0.0 rc3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "com.z299studio.pb"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 24
+        versionCode "270"
+        versionName "2.7.0"
     }
 
     productFlavors {
@@ -32,11 +34,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.google.android.gms:play-services-games:+'
-    compile 'com.google.android.gms:play-services-drive:+'
-    compile 'com.android.support:support-v13:23.4.0'
-    freeCompile 'com.google.android.gms:play-services-ads:+'
+    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.android.support:support-v13:24.0.0'
+    compile 'com.google.android.gms:play-services-games:9.2.1'
+    compile 'com.google.android.gms:play-services-drive:9.2.1'
+    freeCompile 'com.google.android.gms:play-services-ads:9.2.1'
     compile files('libs/opencsv-3.0.jar')
 }

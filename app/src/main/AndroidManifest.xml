@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.z299studio.pb"
-    android:versionCode="260"
-    android:versionName="2.6.0" >
+    package="com.z299studio.pb" >
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
