@@ -44,7 +44,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.z299studio.pb.Application;
 
 import java.util.ArrayList;
 
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     protected void onPause() {
         super.onPause();
         mApp.handleChange(Application.DATA_OTHER);
-        mApp.onPause();
+        mApp.onPause(this);
     }
 
     @Override
@@ -498,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     public void onSyncFailed(int errorCode) {
         Application.showToast(this, R.string.sync_failed, Toast.LENGTH_SHORT);
         if(errorCode == SyncService.CA.NO_DATA) {
-            SyncService.getInstance().send(mApp.getData());
+            SyncService.getInstance().send(mApp.getData(this));
         }
     }
     
@@ -515,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 new DecryptTask(data, fh, this).execute(mApp.getPassword());
             }
             else if(fh.revision < mApp.getLocalVersion()){
-                SyncService.getInstance().send(mApp.getData());
+                SyncService.getInstance().send(mApp.getData(this));
             }
             if(fh.revision != Application.Options.mSyncVersion) {
                 mApp.onVersionUpdated(fh.revision);
@@ -534,7 +533,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(isSuccessful) {
             Application.showToast(MainActivity.this, R.string.sync_success_local, Toast.LENGTH_SHORT);
             Application.Options.mSyncVersion = header.revision;
-            mApp.saveData(data, header);
+            mApp.saveData(this, data, header);
             mApp.onVersionUpdated(header.revision);
             mApp.setAccountManager(manager, -1, getString(R.string.def_category));
             mApp.setCrypto(crypto);
@@ -567,8 +566,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             new DecryptTask(mData, header, this ).execute(text);
         }
         else {
-            mApp.increaseVersion(header.revision);
-            SyncService.getInstance().send(mApp.getData());
+            mApp.increaseVersion(this,header.revision);
+            SyncService.getInstance().send(mApp.getData(this));
         }
     }
 

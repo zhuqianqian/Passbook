@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -27,6 +28,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -397,13 +399,13 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             View v = findViewById(R.id.activity_root);
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            mFingerprintManager = (FingerprintManager)getSystemService(FINGERPRINT_SERVICE);
-//        }
         mShowOtherInitial = Application.Options.mShowOther;
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         mListView = (ListView)findViewById(R.id.list);
         mListView.setAdapter(initSettings());
         mListView.setOnItemClickListener(this);
@@ -423,7 +425,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     protected void onPause() {
         super.onPause();
-        Application.getInstance().onPause();
+        Application.getInstance().onPause(this);
     }
     
     @Override
@@ -534,7 +536,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             }
             else {
                 if(Application.getInstance().getAccountManager().saveRequired()) {
-                    Application.getInstance().saveData();
+                    Application.getInstance().saveData(this);
                     Application.getInstance().notifyChange(Application.DATA_ALL);
                 }
                 Application.showToast(Settings.this, R.string.import_success, Toast.LENGTH_LONG);
@@ -544,7 +546,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
 
     @Override
     public void onConfirm(String text, int type, int operation, int option) {
-        String permission;
+
         if(operation == ActionDialog.ACTION_AUTHENTICATE) {
             new ImportExportTask(this, text).execute();
         }
@@ -558,30 +560,36 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 new DecryptTask(mData, header, this ).execute(text);
             }
             else {
-                Application.getInstance().increaseVersion(header.revision);
-                SyncService.getInstance().send(Application.getInstance().getData());
+                Application.getInstance().increaseVersion(this,header.revision);
+                SyncService.getInstance().send(Application.getInstance().getData(this));
             }
         }
         else {
-            if(operation == ActionDialog.ACTION_IMPORT || operation == ActionDialog.ACTION_EXPORT) {
-                permission = operation == ActionDialog.ACTION_IMPORT ?
-                        Manifest.permission.READ_EXTERNAL_STORAGE :
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-                if (ActivityCompat.checkSelfPermission(this, permission)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{permission},
-                            PERMISSION_REQUEST);
-                    mActionType = type;
-                    mText = text;
-                    mOperation = operation;
-                    mOption = option;
-                }
-                else {
-                    new ImportExportTask(this, text, Application.getInstance().getPassword(),
-                            type, operation, option).execute();
-                }
+            if(operation == ActionDialog.ACTION_IMPORT ||
+                    operation == ActionDialog.ACTION_EXPORT) {
+                getPermission2Do(text, type, operation, option);
             }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    void getPermission2Do(String text, int type, int operation, int option){
+        String permission = operation == ActionDialog.ACTION_IMPORT ?
+                Manifest.permission.READ_EXTERNAL_STORAGE :
+                Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+        if (ActivityCompat.checkSelfPermission(this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{permission},
+                    PERMISSION_REQUEST);
+            mActionType = type;
+            mText = text;
+            mOperation = operation;
+            mOption = option;
+        }
+        else {
+            new ImportExportTask(this, text, Application.getInstance().getPassword(),
+                    type, operation, option).execute();
         }
     }
 
@@ -630,7 +638,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 new DecryptTask(data, fh, this).execute(app.getPassword());
             }
             else if(fh.revision < app.getLocalVersion()){
-                SyncService.getInstance().send(app.getData());
+                SyncService.getInstance().send(app.getData(this));
             }
             if(fh.revision != Application.Options.mSyncVersion) {
                 app.onVersionUpdated(fh.revision);
@@ -658,7 +666,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             Application.Options.mSyncVersion = header.revision;
             app.setAccountManager(manager, -1, getString(R.string.def_category));
             app.setCrypto(crypto);
-            app.saveData(data, header);
+            app.saveData(this,data, header);
             app.onVersionUpdated(header.revision);
             app.notifyChange(Application.DATA_ALL);
             if( !app.getPassword().equals(password)) {

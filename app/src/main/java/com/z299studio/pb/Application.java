@@ -111,8 +111,7 @@ public class Application{
             return header;
         }
     }
-    
-    private Activity mContext;
+
     private byte[] mBuffer;
     private int mDataSize;
     private FileHeader mFileHeader;
@@ -132,16 +131,14 @@ public class Application{
         if(__instance == null) {
             __instance = new Application(context);
         }
-        __instance.mContext = context;
         return __instance;
     }
-    
+
     public static Application getInstance() {
         return __instance;
     }
     
-    private Application(Activity context) {
-        mContext = context;
+    private Application(Context context) {
         mSP = PreferenceManager.getDefaultSharedPreferences(context);
         mFpData = context.getSharedPreferences(C.Fingerprint.FILE, Context.MODE_PRIVATE);
         Options.mTheme = mSP.getInt(C.Keys.THEME, 2);
@@ -200,10 +197,10 @@ public class Application{
         mChanges.remove(what);
     }
     
-    boolean hasDataFile() {
+    boolean hasDataFile(Context context) {
         boolean success = false;
         try {
-            File file = new File(mContext.getFilesDir()+"/"+DATA_FILE);
+            File file = new File(context.getFilesDir()+"/"+DATA_FILE);
             mDataSize = (int) file.length();
             if(mDataSize > 0) {
                 success = true;
@@ -214,16 +211,16 @@ public class Application{
         return success;    
     }
     
-    public byte[] getData() {
+    byte[] getData(Context context) {
         if(mBuffer==null) {
             try {
                 if(mDataSize < 1) {
-                    saveData();
-                    hasDataFile();
+                    saveData(context);
+                    hasDataFile(context);
                 }
                 if(mDataSize > 0) {
                     mBuffer = new byte[mDataSize];
-                    FileInputStream fis = mContext.openFileInput(DATA_FILE);
+                    FileInputStream fis = context.openFileInput(DATA_FILE);
                     fis.read(mBuffer, 0, mDataSize);
                     fis.close();
                 }
@@ -234,9 +231,9 @@ public class Application{
         return mBuffer;
     }
 
-    FileHeader getAppHeaderData() {
+    FileHeader getAppHeaderData(Context context) {
         if(mBuffer == null) {
-            getData();
+            getData(context);
         }
         if(mBuffer!=null) {
             mFileHeader = FileHeader.parse(mBuffer);
@@ -265,14 +262,14 @@ public class Application{
         }
     }
 
-    void increaseVersion(int atLeast) {
+    void increaseVersion(Context context, int atLeast) {
         if(mLocalVersion <= atLeast) {
             mLocalVersion = atLeast + 1;
-            saveData();
+            saveData(context);
         }
     }
     
-    void saveData() {
+    void saveData(Context context) {
         if(mLocalVersion <= Options.mSyncVersion) {
             mLocalVersion++;
         }
@@ -281,7 +278,7 @@ public class Application{
                 Crypto.SALT_LENGTH, mCrypto.getIvLength(), mLocalVersion);
         byte[] keyInfo = mCrypto.getSaltAndIvBytes();
         try {
-            FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
             fos.write(header);
             fos.write(keyInfo);
             fos.write(cipher);
@@ -303,9 +300,9 @@ public class Application{
         }
     }
     
-    void onPause() {
+    void onPause(Context context) {
         if(mAccountManager.saveRequired()) {
-            saveData();
+            saveData(context);
         }
         mLastPause = System.currentTimeMillis();
     }
@@ -322,19 +319,19 @@ public class Application{
         mIgnoreNextPause = true;
     }
     
-    void saveData(byte[] data, FileHeader fileHeader) {
+    void saveData(Context context, byte[] data, FileHeader fileHeader) {
         try {
             mLocalVersion = fileHeader.revision;
             mFileHeader = fileHeader;
             mBuffer = data;
-            FileOutputStream fos = mContext.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
             fos.write(data);
             fos.close();
-        } catch (Exception e) {            
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     void onVersionUpdated(int revision) {
         Options.mSyncVersion = revision;
         mSP.edit().putInt(C.Sync.VERSION, revision).apply();

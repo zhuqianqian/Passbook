@@ -89,7 +89,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
         if(savedInstanceState==null) {
-            if(!mApp.hasDataFile()) {
+            if(!mApp.hasDataFile(this)) {
                 mStage = SELECT_SYNC;
             }
             else {
@@ -172,7 +172,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
         else {
             mApp.setPassword(password, false);
-            new DecryptTask(mApp.getData(), mApp.getAppHeaderData(), this).execute(password);
+            new DecryptTask(mApp.getData(this), mApp.getAppHeaderData(this), this).execute(password);
         }
     }
 
@@ -465,7 +465,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             Application.FileHeader fh = Application.FileHeader.parse(data);
             if(fh.valid) {
                 mApp.onVersionUpdated(fh.revision);
-                mApp.saveData(data, fh);
+                mApp.saveData(this, data, fh);
                 mStage = AUTH;
             }
             else {
@@ -493,7 +493,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         else {
             String pwd = new String(password);
             mApp.setPassword(pwd, false);
-            new DecryptTask(mApp.getData(), mApp.getAppHeaderData(), this).execute(pwd);
+            new DecryptTask(mApp.getData(this), mApp.getAppHeaderData(this), this).execute(pwd);
         }
     }
 
