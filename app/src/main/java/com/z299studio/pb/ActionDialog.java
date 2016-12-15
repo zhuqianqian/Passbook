@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -91,10 +92,10 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     }
     
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (ActionDialogListener)activity;
+            mListener = (ActionDialogListener)context;
         }
         catch (ClassCastException e) {   }
     }

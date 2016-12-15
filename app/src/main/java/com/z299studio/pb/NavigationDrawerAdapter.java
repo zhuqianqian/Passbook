@@ -17,6 +17,8 @@
 package com.z299studio.pb;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
@@ -29,18 +31,18 @@ import android.widget.TextView;
 public class NavigationDrawerAdapter extends BaseAdapter {
     
     public static class NavMenuItem {
-        public static final int MENU_SEPARATOR = 0;
-        public static final int MENU_SELECTION = 1;
-        public static final int MENU_ACTION = 2;
-        public static final int MENU_HEADER = 3;
+        static final int MENU_SEPARATOR = 0;
+        static final int MENU_SELECTION = 1;
+        static final int MENU_ACTION = 2;
+        static final int MENU_HEADER = 3;
         
-        public int mType;
-        public int mId;
-        public int mIcon;
-        public String mTitle;
-        public int mCount;
+        int mType;
+        int mId;
+        int mIcon;
+        String mTitle;
+        int mCount;
 
-        public NavMenuItem(int icon, String title, int count, int id, int type) {
+        NavMenuItem(int icon, String title, int count, int id, int type) {
             mIcon = icon;
             mTitle = title;
             mCount = count;
@@ -59,9 +61,9 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     private ColorStateList mTextColor;
 
     private static class NavItemHolder {
-        public ImageView mIconView;
-        public TextView mTitleView;
-        public TextView mCounterView;
+        ImageView mIconView;
+        TextView mTitleView;
+        TextView mCounterView;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         return (NavMenuItem.MENU_HEADER + 1);
     }
 
-    public NavigationDrawerAdapter(Context context, ArrayList<NavMenuItem> menuList) {
+    NavigationDrawerAdapter(Context context, ArrayList<NavMenuItem> menuList) {
         this.mItemList = menuList;
         this.mContext = context;
         mTintColor = C.ThemedColors[C.colorPrimary];
@@ -107,7 +109,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
                 new int[]{mTintColor, colorText});
     }
 
-    public void selectItem(View view, int position) {
+    void selectItem(View view, int position) {
         if(mSelected!=null) {
             mSelected.mIconView.setColorFilter(mIconColor);
         }
@@ -179,32 +181,32 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         this.mItemList = menuList;
     }
 
-    public int getCounterInMenu(int position) {
+    int getCounterInMenu(int position) {
         return mItemList.get(position).mCount;
     }
 
-    public NavigationDrawerAdapter increaseCounterInMenu(View view, int position, int delta) {
+    NavigationDrawerAdapter increaseCounterInMenu(View view, int position, int delta) {
         NavMenuItem nmi = mItemList.get(position);
         nmi.mCount += delta;
         mItemList.set(position, nmi);
         if(view!=null) {
             NavItemHolder holder = (NavItemHolder)view.getTag();
-            holder.mCounterView.setText(String.format("%d", nmi.mCount));
+            holder.mCounterView.setText(String.format(Locale.ENGLISH, "%d", nmi.mCount));
         }
         return this;
     }
 
-    public NavigationDrawerAdapter updateCategoryCounter(View view, int position, int value) {
+    NavigationDrawerAdapter updateCategoryCounter(View view, int position, int value) {
         NavMenuItem nmi = mItemList.get(position);
         nmi.mCount = value;
         if(view != null) {
             NavItemHolder holder = (NavItemHolder)view.getTag();
-            holder.mCounterView.setText(String.format("%d", nmi.mCount));
+            holder.mCounterView.setText(String.format(Locale.ENGLISH, "%d", nmi.mCount));
         }
         return this;
     }
 
-    public void remove(int position) {
+    void remove(int position) {
         mItemList.remove(position);
         this.notifyDataSetChanged();
     }

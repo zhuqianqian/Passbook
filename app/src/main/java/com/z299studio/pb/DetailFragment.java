@@ -244,17 +244,17 @@ public class DetailFragment extends Fragment implements
         private Context mContext;
         private boolean mShowPwd;
 
-        public class ViewHolder {
-            public TextView mName;
-            public TextView mValue;
+        class ViewHolder {
+            TextView mName;
+            TextView mValue;
         }
 
-        public AccountAdapter(Context context, Account account) {
+        AccountAdapter(Context context, Account account) {
             mContext = context;
             mItems = account.getEntryList();
         }
 
-        public void setShowPassword(boolean showPwd) {
+        void setShowPassword(boolean showPwd) {
             mShowPwd = showPwd;
             if(!showPwd) {
                 mPwdShowed = new ArrayList<>(mItems.size());
@@ -317,7 +317,7 @@ public class DetailFragment extends Fragment implements
             return position;
         }
 
-        public void changeDisplay(View view, int pos) {
+        void changeDisplay(View view, int pos) {
             if(mShowPwd) {
                 return;
             }

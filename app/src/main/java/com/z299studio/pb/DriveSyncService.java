@@ -18,12 +18,11 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -42,7 +41,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class DriveSyncService extends SyncService implements 
+class DriveSyncService extends SyncService implements
     ConnectionCallbacks, OnConnectionFailedListener {
     
     private GoogleApiClient mGoogleApiClient;
@@ -52,8 +51,8 @@ public class DriveSyncService extends SyncService implements
     private static final String LOG_TAG = "PB:DriveSyncService";
     
     @Override
-    public SyncService initialize() {
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+    public SyncService initialize(Activity context) {
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
             .addApi(Drive.API)
             .addScope(Drive.SCOPE_APPFOLDER)
             .addConnectionCallbacks(this)
@@ -76,7 +75,7 @@ public class DriveSyncService extends SyncService implements
     
     @Override
     public void read() {
-        Drive.DriveApi.getFile(mGoogleApiClient, mDriveId)
+        mDriveId.asDriveFile()
                 .open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
                 .setResultCallback(contentsResultCallback);
     }
@@ -90,7 +89,7 @@ public class DriveSyncService extends SyncService implements
                     Drive.DriveApi.newDriveContents(mGoogleApiClient)
                             .setResultCallback(driveContentsCallback);
                 } else {
-                    Drive.DriveApi.getFile(mGoogleApiClient, mDriveId)
+                    mDriveId.asDriveFile()
                             .open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
                             .setResultCallback(contentsResultCallbackToWrite);
                 }
@@ -122,17 +121,8 @@ public class DriveSyncService extends SyncService implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mContext, 0).show();
-            mListener.onSyncFailed(CA.CONNECTION);
-            return;
-        }
-        try {
-            result.startResolutionForResult(mContext, REQ_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            mListener.onSyncFailed(CA.CONNECTION);
-        }
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        mListener.onConnectionFailed(result);
     }
 
     @Override
@@ -145,10 +135,10 @@ public class DriveSyncService extends SyncService implements
     @Override
     public void onConnectionSuspended(int cause) { }
     
-    ResultCallback<DriveApi.MetadataBufferResult> childrenRetrievedCallback = new
+    private ResultCallback<DriveApi.MetadataBufferResult> childrenRetrievedCallback = new
             ResultCallback<DriveApi.MetadataBufferResult>() {
         @Override
-        public void onResult(DriveApi.MetadataBufferResult result) {
+        public void onResult(@NonNull DriveApi.MetadataBufferResult result) {
             if(!result.getStatus().isSuccess()) {
                 Log.w(LOG_TAG, "Retrieving files received error");
             }
@@ -171,18 +161,22 @@ public class DriveSyncService extends SyncService implements
         }
     };
     
-    ResultCallback<DriveApi.DriveContentsResult> contentsResultCallback = new
+    private ResultCallback<DriveApi.DriveContentsResult> contentsResultCallback = new
             ResultCallback<DriveApi.DriveContentsResult>() {
         @Override
-        public void onResult(DriveApi.DriveContentsResult result) {
+        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
             if(result.getStatus().isSuccess()) {
                 try {
                     FileDescriptor file = result.getDriveContents()
                             .getParcelFileDescriptor().getFileDescriptor();
                     FileInputStream fis = new FileInputStream(file);
                     mData = new byte[fis.available()];
-                    fis.read(mData);
+                    int nbr = fis.read(mData);
                     fis.close();
+                    if(nbr < mData.length) {
+                        mListener.onSyncFailed(CA.DATA_RECEIVED);
+                        return;
+                    }
                     mListener.onSyncProgress(CA.DATA_RECEIVED);
                 }catch(IOException e) {
                     mListener.onSyncFailed(CA.DATA_RECEIVED);
@@ -196,10 +190,10 @@ public class DriveSyncService extends SyncService implements
         }
     };
 
-    ResultCallback<DriveApi.DriveContentsResult> contentsResultCallbackToWrite = new
+    private ResultCallback<DriveApi.DriveContentsResult> contentsResultCallbackToWrite = new
             ResultCallback<DriveApi.DriveContentsResult>() {
         @Override
-        public void onResult(DriveApi.DriveContentsResult result) {
+        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
             if(result.getStatus().isSuccess()) {
                 try {
                     FileDescriptor file = result.getDriveContents()
@@ -224,7 +218,7 @@ public class DriveSyncService extends SyncService implements
     private ResultCallback<DriveApi.DriveContentsResult> driveContentsCallback = new
             ResultCallback<DriveApi.DriveContentsResult>() {
         @Override
-        public void onResult(DriveApi.DriveContentsResult result) {
+        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
             if (!result.getStatus().isSuccess()) {
                 Log.w(LOG_TAG, "Error while trying to create new file contents");
                 return;
@@ -254,10 +248,10 @@ public class DriveSyncService extends SyncService implements
         }
     };
 
-    ResultCallback<DriveFolder.DriveFileResult> fileCreateCallback = new
+    private ResultCallback<DriveFolder.DriveFileResult> fileCreateCallback = new
             ResultCallback<DriveFolder.DriveFileResult>() {
         @Override
-        public void onResult(DriveFolder.DriveFileResult result) {
+        public void onResult(@NonNull DriveFolder.DriveFileResult result) {
             if (!result.getStatus().isSuccess()) {
                 Log.w(LOG_TAG, "Error while trying to create the file");
                 return;

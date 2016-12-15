@@ -18,10 +18,12 @@ package com.z299studio.pb;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +42,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.z299studio.pb.Application;
 
 import java.util.ArrayList;
@@ -159,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     protected void onStart() {
         super.onStart();
         if(Application.Options.mSync != C.Sync.NONE) {
-            SyncService.getInstance(this, Application.Options.mSync)
-                    .initialize().setListener(this)
+            SyncService.getInstance(Application.Options.mSync)
+                    .initialize(this).setListener(this)
                     .connect(mApp.getLocalVersion());
         }
     }
@@ -474,7 +478,22 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
     }
-    
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        if (!result.hasResolution()) {
+            GoogleApiAvailability.getInstance()
+                    .getErrorDialog(this,result.getErrorCode(), 0).show();
+            onSyncFailed(SyncService.CA.CONNECTION);
+            return;
+        }
+        try {
+            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
+        } catch (IntentSender.SendIntentException e) {
+            onSyncFailed(SyncService.CA.CONNECTION);
+        }
+    }
+
     @Override
     public void onSyncFailed(int errorCode) {
         Application.showToast(this, R.string.sync_failed, Toast.LENGTH_SHORT);

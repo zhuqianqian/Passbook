@@ -31,16 +31,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainListAdapter extends BaseAdapter {
+class MainListAdapter extends BaseAdapter {
 
-    public interface OnListItemCheckListener{
+    interface OnListItemCheckListener{
         void onCheck(int count, int position, boolean isChecked);
     }
 
     private static class ViewHolder {
-        public ImageButton mIconView;
-        public TextView mTextView;
-        public boolean mInflate;
+        ImageButton mIconView;
+        TextView mTextView;
+        boolean mInflate;
     }
 
     private static final long TIME_INTERVAL = 50;
@@ -60,7 +60,7 @@ public class MainListAdapter extends BaseAdapter {
     private long mLastTimestamp;
     private long mAdjustment;
 
-    public MainListAdapter(Context context, ArrayList<AccountManager.Account> accounts,
+    MainListAdapter(Context context, ArrayList<AccountManager.Account> accounts,
                            int[] drawableResIds, int defaultDrawableResId) {
         mContext = context;
         mAnimationEnabled = true;
@@ -165,7 +165,7 @@ public class MainListAdapter extends BaseAdapter {
         return mEntries.get(position).mId;
     }
 
-    public void addList(ArrayList<AccountManager.Account> itemList, boolean reset) {
+    void addList(ArrayList<AccountManager.Account> itemList, boolean reset) {
         if(reset) {
             setList(itemList, null);
             notifyDataSetChanged();
@@ -180,7 +180,7 @@ public class MainListAdapter extends BaseAdapter {
         }
     }
 
-    public void setList(ArrayList<AccountManager.Account> accounts, int[] drawableResIds) {
+    void setList(ArrayList<AccountManager.Account> accounts, int[] drawableResIds) {
         mEntries = accounts;
         mIcons = new ArrayList<>();
         mChecked = new ArrayList<>();
@@ -255,7 +255,7 @@ public class MainListAdapter extends BaseAdapter {
     }
 
 
-    public void onLongClick(View view, int position) {
+    void onLongClick(View view, int position) {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.mIconView.clearAnimation();
         holder.mIconView.setAnimation(FLIP1);
@@ -270,11 +270,11 @@ public class MainListAdapter extends BaseAdapter {
         mListener = l;
     }
     
-    public void enableAnimation(boolean enable) {
+    void enableAnimation(boolean enable) {
         mAnimationEnabled = enable;
     }
 
-    public int getItemPosition(int accountId, int startFrom) {
+    int getItemPosition(int accountId, int startFrom) {
         int pos;
         for(pos = startFrom; pos < mEntries.size(); ++pos) {
             if(mEntries.get(pos).mId == accountId) {
@@ -284,7 +284,7 @@ public class MainListAdapter extends BaseAdapter {
         return pos;
     }
     
-    public int getSelected(int[] mIndices) {
+    int getSelected(int[] mIndices) {
         int j;
         for(int i = j = 0; i < mChecked.size(); ++i) {
             if(mChecked.get(i)) {
@@ -294,7 +294,7 @@ public class MainListAdapter extends BaseAdapter {
         return j;
     }
 
-    public int cancelSelection(ListView host, int begin, int end) {
+    int cancelSelection(ListView host, int begin, int end) {
         int i, pos;
         int totalVisibleMarked = 0;
         for(pos = 0; pos < begin; ++pos) {
@@ -329,7 +329,7 @@ public class MainListAdapter extends BaseAdapter {
         return totalVisibleMarked;
     }
     
-    public void animateDeletion(final View view, final int position) {
+    void animateDeletion(final View view, final int position) {
         AnimationListener al = new AnimationListener() {
             @Override
             public void onAnimationEnd(Animation anim) {
@@ -367,7 +367,7 @@ public class MainListAdapter extends BaseAdapter {
         mDeleted.set(position, true);
     }
 
-    public void undoDelete(final View v, int rowHeight) {
+    void undoDelete(final View v, int rowHeight) {
         AnimationListener al = new AnimationListener() {
             @Override
             public void onAnimationEnd(Animation anim) {
@@ -404,13 +404,13 @@ public class MainListAdapter extends BaseAdapter {
         v.startAnimation(anim);
     }
     
-    public void markDeletion(int[] indices, int total, boolean delete) {
+    void markDeletion(int[] indices, int total, boolean delete) {
         for(int i = 0; i < total; i++) {
             mDeleted.set(indices[i], delete);
         }
     }
 
-    public void doDelete(int [] indices, int total) {
+    void doDelete(int [] indices, int total) {
         int end = total - 1;
         AccountManager am = Application.getInstance().getAccountManager();
         int pos;
@@ -426,7 +426,7 @@ public class MainListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
     
-    public void markAll(ListView listView) {
+    void markAll(ListView listView) {
         int firstVisible = listView.getFirstVisiblePosition();
         int lastVisible = listView.getLastVisiblePosition();
         int pos;
@@ -454,7 +454,7 @@ public class MainListAdapter extends BaseAdapter {
         }
     }
     
-    public int moveData(int categoryId) {
+    int moveData(int categoryId) {
         int result = 0;
         AccountManager.Account account;
         boolean marked;

@@ -20,6 +20,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.TargetApi;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -50,7 +51,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class HomeActivity extends AppCompatActivity implements
 AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener,
@@ -248,8 +250,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             pb.setAlpha(1.0f);
             mSyncText.setAlpha(1.0f);
         }
-        SyncService ss = SyncService.getInstance(this, Application.Options.mSync);
-        ss.initialize().setListener(this).connect(0);
+        SyncService ss = SyncService.getInstance(Application.Options.mSync);
+        ss.initialize(this).setListener(this).connect(0);
     }
     
     private void startHome() {
@@ -422,6 +424,22 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     public void onAnimationCancel(Animator animation) {}
     @Override
     public void onAnimationRepeat(Animator animation) {}
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        if (!result.hasResolution()) {
+            GoogleApiAvailability.getInstance()
+                    .getErrorDialog(this,result.getErrorCode(), 0).show();
+            onSyncFailed(SyncService.CA.CONNECTION);
+            return;
+        }
+        try {
+            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
+        } catch (IntentSender.SendIntentException e) {
+            onSyncFailed(SyncService.CA.CONNECTION);
+        }
+    }
+
     @Override
     public void onSyncFailed(int errorCode) {
         mStage = SET_PWD;

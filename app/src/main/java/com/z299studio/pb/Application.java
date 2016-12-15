@@ -49,36 +49,36 @@ public class Application{
     
     private static Application __instance;
     
-    public SharedPreferences mSP;
+    SharedPreferences mSP;
     private SharedPreferences mFpData;
     
     public static class Options {
-        public static boolean mAlwaysShowPwd;
-        public static int mAutoLock;
-        public static boolean mEnableCopyPwd;
-        public static int mFpStatus;
-        public static boolean mShowOther;
-        public static int mSync;
-        public static boolean mSyncMsg;
-        public static int mSyncVersion;
-        public static int mTheme;
-        public static boolean mTour;
-        public static boolean mWarnCopyPwd;
-        public static Date mSyncTime;
+        static boolean mAlwaysShowPwd;
+        static int mAutoLock;
+        static boolean mEnableCopyPwd;
+        static int mFpStatus;
+        static boolean mShowOther;
+        static int mSync;
+        static boolean mSyncMsg;
+        static int mSyncVersion;
+        static int mTheme;
+        static boolean mTour;
+        static boolean mWarnCopyPwd;
+        static Date mSyncTime;
     }
     
-    public static class FileHeader {
+    static class FileHeader {
         public int version;  // 1 byte
-        public int iterationCount; // 1 byte
-        public int keyLength;  //1 byte
-        public int ivLength;  // 1 byte
-        public int revision;  // 10 bytes
+        int iterationCount; // 1 byte
+        int keyLength;  //1 byte
+        int ivLength;  // 1 byte
+        int revision;  // 10 bytes
         public int size;
-        public boolean valid;
-        public static final int HEADER_SIZE = 16;
-        public static final int RESERVED = 10;
+        boolean valid;
+        static final int HEADER_SIZE = 16;
+        static final int RESERVED = 10;
         
-        public static FileHeader parse(byte[] buffer) {
+        static FileHeader parse(byte[] buffer) {
             FileHeader fh = new FileHeader();
             fh.valid = false;
             if(buffer!=null) {
@@ -124,9 +124,9 @@ public class Application{
     private Hashtable<Integer, Boolean> mChanges;
     private AccountManager mAccountManager;
 
-    public static final Integer THEME = 0;
-    public static final Integer DATA_OTHER = 1;
-    public static final Integer DATA_ALL = 2;
+    static final Integer THEME = 0;
+    static final Integer DATA_OTHER = 1;
+    static final Integer DATA_ALL = 2;
     
     public static Application getInstance(Activity context) {
         if(__instance == null) {
@@ -149,7 +149,7 @@ public class Application{
         mChanges = new Hashtable<>();
     }
     
-    public void onStart() {
+    void onStart() {
         Options.mAutoLock = mSP.getInt(C.Keys.AUTO_LOCK_TIME, -1);
         if(Options.mAutoLock == -1) {
             boolean autolock_v1 = mSP.getBoolean(C.Keys.AUTO_LOCK, false);
@@ -176,31 +176,31 @@ public class Application{
         return mAccountManager;
     }
 
-    public void setAccountManager(AccountManager mgr, int imgCode, String defCategoryName) {
+    void setAccountManager(AccountManager mgr, int imgCode, String defCategoryName) {
         mAccountManager = mgr;
         mAccountManager.setDefaultCategory(imgCode, defCategoryName);
     }
 
-    public void setCrypto(Crypto crypto) {
+    void setCrypto(Crypto crypto) {
         mCrypto = crypto;
     }
 
-    public boolean queryChange(int what) {
+    boolean queryChange(int what) {
         return mChanges.get(what) != null;
     }
     
-    public void notifyChange(int what) {
+    void notifyChange(int what) {
         mChanges.put(what, Boolean.TRUE);
         if(what == DATA_ALL || what == DATA_OTHER) {
             reset();
         }
     }
     
-    public void handleChange(int what) {
+    void handleChange(int what) {
         mChanges.remove(what);
     }
     
-    public boolean hasDataFile() {
+    boolean hasDataFile() {
         boolean success = false;
         try {
             File file = new File(mContext.getFilesDir()+"/"+DATA_FILE);
@@ -234,7 +234,7 @@ public class Application{
         return mBuffer;
     }
 
-    public FileHeader getAppHeaderData() {
+    FileHeader getAppHeaderData() {
         if(mBuffer == null) {
             getData();
         }
@@ -245,7 +245,7 @@ public class Application{
         return mFileHeader;
     }
     
-    public int getLocalVersion() {
+    int getLocalVersion() {
         int version = 0;
         if (mFileHeader != null) {
             version = mFileHeader.revision;
@@ -257,7 +257,7 @@ public class Application{
         return mPassword;
     }
     
-    public void setPassword(String password, boolean reset) {
+    void setPassword(String password, boolean reset) {
         mPassword = password;
         if(reset) {
             mCrypto = new Crypto();
@@ -265,14 +265,14 @@ public class Application{
         }
     }
 
-    public void increaseVersion(int atLeast) {
+    void increaseVersion(int atLeast) {
         if(mLocalVersion <= atLeast) {
             mLocalVersion = atLeast + 1;
             saveData();
         }
     }
     
-    public void saveData() {
+    void saveData() {
         if(mLocalVersion <= Options.mSyncVersion) {
             mLocalVersion++;
         }
@@ -303,14 +303,14 @@ public class Application{
         }
     }
     
-    public void onPause() {
+    void onPause() {
         if(mAccountManager.saveRequired()) {
             saveData();
         }
         mLastPause = System.currentTimeMillis();
     }
     
-    public boolean needAuth() {
+    boolean needAuth() {
         if(mIgnoreNextPause || Options.mAutoLock < 1) {
             mIgnoreNextPause = false;
             return false;
@@ -318,11 +318,11 @@ public class Application{
         return (System.currentTimeMillis() - mLastPause) > Options.mAutoLock;
     }
     
-    public void ignoreNextPause() {
+    void ignoreNextPause() {
         mIgnoreNextPause = true;
     }
     
-    public void saveData(byte[] data, FileHeader fileHeader) {
+    void saveData(byte[] data, FileHeader fileHeader) {
         try {
             mLocalVersion = fileHeader.revision;
             mFileHeader = fileHeader;
@@ -335,12 +335,12 @@ public class Application{
         }
     }
     
-    public void onVersionUpdated(int revision) {
+    void onVersionUpdated(int revision) {
         Options.mSyncVersion = revision;
         mSP.edit().putInt(C.Sync.VERSION, revision).apply();
     }
 
-    public String onSyncSucceed() {
+    String onSyncSucceed() {
         Options.mSyncTime = new Date();
         DateFormat df = DateFormat.getDateTimeInstance();
         String time = df.format(Options.mSyncTime);
@@ -348,20 +348,20 @@ public class Application{
         return time;
     }
 
-    public int queryFpStatus() {
+    int queryFpStatus() {
         Options.mFpStatus = mFpData.getInt(C.Fingerprint.STATUS, C.Fingerprint.UNKNOWN);
         return Options.mFpStatus;
     }
 
-    public byte[] getFpIv() {
+    byte[] getFpIv() {
         return Base64.decode(mFpData.getString(C.Fingerprint.IV, "1234"), Base64.DEFAULT);
     }
 
-    public byte[] getFpData() {
+    byte[] getFpData() {
         return Base64.decode(mFpData.getString(C.Fingerprint.DATA, "1234"), Base64.DEFAULT);
     }
 
-    public void setFpData(byte[] data, byte[] iv) {
+    void setFpData(byte[] data, byte[] iv) {
         mFpData.edit()
                 .putInt(C.Fingerprint.STATUS, C.Fingerprint.ENABLED)
                 .putString(C.Fingerprint.DATA, Base64.encodeToString(data, Base64.DEFAULT))
@@ -370,14 +370,14 @@ public class Application{
         Options.mFpStatus = C.Fingerprint.ENABLED;
     }
 
-    public void clearFpData() {
+    void clearFpData() {
         mFpData.edit().clear()
                 .putInt(C.Fingerprint.STATUS, C.Fingerprint.DISABLED)
                 .apply();
         Options.mFpStatus = C.Fingerprint.DISABLED;
     }
 
-    public static AccountManager decrypt(Crypto crypto, String password,
+    static AccountManager decrypt(Crypto crypto, String password,
                                          FileHeader header, byte[]data)
             throws GeneralSecurityException{
         if(data!=null) {
@@ -393,7 +393,7 @@ public class Application{
         return null;
     }
 
-    public static void showToast(Activity context, int stringId, int duration) {
+    static void showToast(Activity context, int stringId, int duration) {
         if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT) {
             Toast.makeText(context, stringId, duration).show();
         }
@@ -410,7 +410,7 @@ public class Application{
         }
     }
     
-    public static void showToast(Activity context, String text, int duration) {
+    static void showToast(Activity context, String text, int duration) {
         if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.KITKAT) {
             Toast.makeText(context, text, duration).show();
         }
@@ -435,14 +435,14 @@ public class Application{
             R.drawable.pb_briefcase, R.drawable.pb_chat, R.drawable.pb_lock,
             R.drawable.pb_user
     };
-    public static int[] getThemedIcons() {
+    static int[] getThemedIcons() {
         return __icons__;
     }
 
     private static String[] sCategoryNames;
     private static int[] sCategoryIcons;
     private static int[] sCategoryIds;
-    public String[] getSortedCategoryNames() {
+    String[] getSortedCategoryNames() {
         if(sCategoryNames == null) {
             int size;
             ArrayList<AccountManager.Category> categories =
@@ -467,25 +467,25 @@ public class Application{
         return sCategoryNames;
     }
 
-    public int[] getSortedCategoryIds() {
+    int[] getSortedCategoryIds() {
         if(sCategoryNames == null) {
             getSortedCategoryNames();
         }
         return sCategoryIds;
     }
 
-    public int[] getSortedCategoryIcons() {
+    int[] getSortedCategoryIcons() {
         if(sCategoryNames == null) {
             getSortedCategoryNames();
         }
         return sCategoryIcons;
     }
     
-    public static void reset() { sCategoryNames = null; }
+    static void reset() { sCategoryNames = null; }
 
     private static Random random = new Random();
     private static char[] candidates = new char[96];
-    public static String generate(boolean hasA2Z, boolean has_a2z, boolean hasDigits,
+    static String generate(boolean hasA2Z, boolean has_a2z, boolean hasDigits,
                                   boolean hasChars, boolean hasSpace, int minLen, int maxLen) {
         if(!hasA2Z && !has_a2z && !hasDigits && !hasChars && !hasSpace) {
             return "";

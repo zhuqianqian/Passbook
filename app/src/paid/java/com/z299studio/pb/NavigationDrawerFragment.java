@@ -173,7 +173,9 @@ public class NavigationDrawerFragment extends Fragment implements
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if(actionBar!=null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
 
             mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
                     R.string.navigation_drawer_open, R.string.navigation_drawer_close ) {
@@ -203,7 +205,7 @@ public class NavigationDrawerFragment extends Fragment implements
                 }
             });
 
-            mDrawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerLayout.addDrawerListener(mDrawerToggle);
         }
     }
 

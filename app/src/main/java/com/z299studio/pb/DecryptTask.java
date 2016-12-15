@@ -5,21 +5,21 @@ import android.util.Log;
 
 import java.security.GeneralSecurityException;
 
-public class DecryptTask extends AsyncTask<String, Void, Boolean> {
+class DecryptTask extends AsyncTask<String, Void, Boolean> {
 
-    public interface OnTaskFinishListener {
+    interface OnTaskFinishListener {
         void preExecute();
         void onFinished(boolean isSuccessful, AccountManager manager, String pwd,
                         byte[] data, Application.FileHeader header, Crypto crypto);
     }
-    byte[] mData;
-    Application.FileHeader mHeader;
-    OnTaskFinishListener mListener;
-    AccountManager mMgr;
-    Crypto mCrypto;
-    String mPassword;
+    private byte[] mData;
+    private Application.FileHeader mHeader;
+    private OnTaskFinishListener mListener;
+    private AccountManager mMgr;
+    private Crypto mCrypto;
+    private String mPassword;
 
-    public DecryptTask(byte[] data, Application.FileHeader header, OnTaskFinishListener listener) {
+    DecryptTask(byte[] data, Application.FileHeader header, OnTaskFinishListener listener) {
         super();
         mData = data;
         mHeader = header;

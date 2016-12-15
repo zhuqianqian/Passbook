@@ -59,18 +59,18 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_NUMBER};
 
     private class EntryHolder{
-        public EditText mNameField;
-        public EditText mValueField;
-        public Spinner mTypeField;
-        public ImageButton mAutoPwd;
-        public View mEntryLayout;
-        public View mEntryContainer;
-        public Entry mEntryItem;
+        EditText mNameField;
+        EditText mValueField;
+        Spinner mTypeField;
+        ImageButton mAutoPwd;
+        View mEntryLayout;
+        View mEntryContainer;
+        Entry mEntryItem;
     }
 
     private class TextWatcherEx implements TextWatcher {
         private EditText mHost;
-        public TextWatcherEx(EditText host) {
+        TextWatcherEx(EditText host) {
             mHost = host;
         }
         @Override
@@ -113,7 +113,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         private int mItemHeight;
         private int mAdjustScrollY, mScrollHeight;
 
-        public void startDrag(View v) {
+        void startDrag(View v) {
             mDragged = (EntryHolder)v.getTag();
             mDragged.mEntryContainer.setVisibility(View.INVISIBLE);
             mDragged.mEntryLayout.setAlpha(0.0f);

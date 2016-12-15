@@ -19,24 +19,28 @@ package com.z299studio.pb;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.common.ConnectionResult;
 
 /*
  * Abstract class for synchronization, as other sync service may be used in 
  * upcoming versions (like Dropbox?).
  */
-public abstract class SyncService {
+abstract class SyncService {
 
-    public static final int REQ_RESOLUTION = 299;
+    static final int REQ_RESOLUTION = 299;
     
-    public static class CA {
-        public static final int DATA_SENT = 1;
-        public static final int DATA_RECEIVED = 2;
-        public static final int CONNECTION = 3;
-        public static final int AUTH = 4;
-        public static final int NO_DATA = 5;
+    static class CA {
+        static final int DATA_SENT = 1;
+        static final int DATA_RECEIVED = 2;
+        static final int CONNECTION = 3;
+        static final int AUTH = 4;
+        static final int NO_DATA = 5;
     }
     
-    public interface SyncListener {
+    interface SyncListener {
+        void onConnectionFailed(@NonNull ConnectionResult result);
         void onSyncFailed(int errorCode);
         void onSyncProgress(int actionCode);
     }
@@ -44,12 +48,11 @@ public abstract class SyncService {
     private static SyncService __instance;
     
     protected SyncListener mListener;
-    protected Activity mContext;
-    protected int mLocalVersion;
-    protected byte[] mData;
-    protected Handler mHandler = new Handler();
+    int mLocalVersion;
+    byte[] mData;
+    Handler mHandler = new Handler();
     
-    public static SyncService getInstance(Activity context, int server) {
+    public static SyncService getInstance(int server) {
         if(__instance!=null) {
             __instance.disconnect();
         }
@@ -61,7 +64,6 @@ public abstract class SyncService {
             __instance = new GameSyncService();
             break;
         }
-        __instance.mContext = context;
         return __instance;
     }
     
@@ -69,7 +71,7 @@ public abstract class SyncService {
         return __instance;
     }
     
-    public abstract SyncService initialize();
+    public abstract SyncService initialize(Activity context);
     
     public abstract SyncService connect(int localVersion);
     
@@ -79,7 +81,7 @@ public abstract class SyncService {
     
     public abstract void send(byte[] data);
     
-    public byte[] requestData() {
+    byte[] requestData() {
         return mData;
     }
     

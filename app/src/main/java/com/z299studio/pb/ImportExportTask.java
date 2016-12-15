@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Hashtable;
 import java.util.List;
@@ -32,19 +31,19 @@ import java.util.List;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class ImportExportTask extends AsyncTask<String, Void, String> {
+class ImportExportTask extends AsyncTask<String, Void, String> {
     
-    public interface TaskListener {
+    interface TaskListener {
         void onFinish(boolean authenticate, int operation, String result);
     }
 
-    public static final int OPTION_OVERWRITE = 2;
-    public static final int OPTION_KEEPALL = 1;
-    public static final int OPTION_IGNORE = 0;
+    static final int OPTION_OVERWRITE = 2;
+    static final int OPTION_KEEPALL = 1;
+    static final int OPTION_IGNORE = 0;
 
-    public static final int FILE_PB_DATA = 0;
-    public static final int FILE_PB_CSV = 1;
-    public static final int FILE_AW_CSV = 2;
+    private static final int FILE_PB_DATA = 0;
+    private static final int FILE_PB_CSV = 1;
+    private static final int FILE_AW_CSV = 2;
     
     private boolean mAuthRequired = false;
     private static int mOperation;
@@ -54,7 +53,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
     private static String mPassword;
     private TaskListener mListener;
 
-    public ImportExportTask (TaskListener l, String filePath, String password,
+    ImportExportTask (TaskListener l, String filePath, String password,
                              int fileType, int operation, int option) {
         super();
         mListener = l;
@@ -65,7 +64,7 @@ public class ImportExportTask extends AsyncTask<String, Void, String> {
         mPassword = password;
     }
     
-    public ImportExportTask(TaskListener l, String password) {
+    ImportExportTask(TaskListener l, String password) {
         super();
         mListener = l;
         mPassword = password;

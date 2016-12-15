@@ -18,13 +18,12 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -37,7 +36,7 @@ import com.google.android.gms.games.snapshot.Snapshots;
 
 import java.io.IOException;
 
-public class GameSyncService extends SyncService implements 
+class GameSyncService extends SyncService implements
 ConnectionCallbacks, OnConnectionFailedListener {
 
     private static final String SAVED_DATA="Passbook-Saved-Data";
@@ -46,8 +45,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     private GoogleApiClient mGoogleApiClient;
     
     @Override
-    public SyncService initialize() {
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+    public SyncService initialize(Activity context) {
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
         .addApi(Games.API)
         .addScope(Games.SCOPE_GAMES)
         .addApi(Drive.API)
@@ -222,17 +221,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), mContext, 0).show();
-            mListener.onSyncFailed(CA.CONNECTION);
-            return;
-        }
-        try {
-            result.startResolutionForResult(mContext, REQ_RESOLUTION);
-        } catch (SendIntentException e) {
-            mListener.onSyncFailed(CA.CONNECTION);
-        }
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        mListener.onConnectionFailed(result);
     }
 
     @Override

@@ -24,10 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.M)
-public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallback {
+class FingerprintUiHelper extends FingerprintManager.AuthenticationCallback {
 
-    static final long ERROR_TIMEOUT_MILLIS = 800;
-    static final long SUCCESS_DELAY_MILLIS = 500;
+    private static final long ERROR_TIMEOUT_MILLIS = 800;
+    private static final long SUCCESS_DELAY_MILLIS = 500;
 
     private final FingerprintManager mFingerprintManager;
     private final ImageView mIcon;
@@ -35,7 +35,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
     private final Callback mCallback;
     private CancellationSignal mCancellationSignal;
 
-    boolean mSelfCancelled;
+    private boolean mSelfCancelled;
 
     public static FingerprintUiHelper build(FingerprintManager fingerprintManager, ImageView icon,
                                          TextView errorTextView, Callback callback) {
@@ -51,12 +51,12 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         mCallback = callback;
     }
 
-    public boolean isFingerprintAuthAvailable() {
+    private boolean isFingerprintAuthAvailable() {
         return mFingerprintManager.isHardwareDetected()
                 && mFingerprintManager.hasEnrolledFingerprints();
     }
 
-    public void startListening(FingerprintManager.CryptoObject cryptoObject) {
+    void startListening(FingerprintManager.CryptoObject cryptoObject) {
         if (!isFingerprintAuthAvailable()) {
             return;
         }
@@ -67,7 +67,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         mIcon.setImageResource(R.drawable.ic_fp_40px);
     }
 
-    public void stopListening() {
+    void stopListening() {
         if (mCancellationSignal != null) {
             mSelfCancelled = true;
             mCancellationSignal.cancel();
@@ -124,7 +124,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         mErrorTextView.postDelayed(mResetErrorTextRunnable, ERROR_TIMEOUT_MILLIS);
     }
 
-    Runnable mResetErrorTextRunnable = new Runnable() {
+    private Runnable mResetErrorTextRunnable = new Runnable() {
         @Override
         public void run() {
             mErrorTextView.setTextColor(
@@ -135,7 +135,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         }
     };
 
-    public interface Callback {
+    interface Callback {
 
         void onAuthenticated();
 

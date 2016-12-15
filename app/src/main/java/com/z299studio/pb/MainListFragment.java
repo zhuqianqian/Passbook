@@ -72,8 +72,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private ImageView mCategoryIconView;
 
     private static class AdapterHolder {
-        public MainListAdapter mAdapter;
-        public boolean mUpToDate;
+        MainListAdapter mAdapter;
+        boolean mUpToDate;
     }
     private static Hashtable<Integer, AdapterHolder> cachedAdapters = new Hashtable<>();
 

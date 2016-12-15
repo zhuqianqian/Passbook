@@ -16,7 +16,7 @@
 
 package com.z299studio.pb;
 
-public interface ItemFragmentListener {
+interface ItemFragmentListener {
     void onEdit(int categoryId, int accountId);
     void onDelete(int accountId);
     void onDeleted(int categoryId, int count);

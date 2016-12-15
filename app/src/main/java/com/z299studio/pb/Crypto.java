@@ -31,12 +31,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Crypto {
+class Crypto {
     
     private static final String PBKDF2_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA1";
     private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
     private static int KEY_LENGTH = 256;
-    public static final int SALT_LENGTH = KEY_LENGTH / 8;
+    static final int SALT_LENGTH = KEY_LENGTH / 8;
     private static SecureRandom random = new SecureRandom();
     
     private byte [] mSalt = null;
@@ -44,16 +44,16 @@ public class Crypto {
     private SecretKey mKey = null;
     private int mIterationCount;
 
-    public Crypto () {
+    Crypto () {
         mIterationCount = 800;
     }
 
-    public int getIterationCount() { return mIterationCount; }
+    int getIterationCount() { return mIterationCount; }
     
-    public int getIvLength() {return mIv.length; }
+    int getIvLength() {return mIv.length; }
     
     // Reset or set the password first time should call this.
-    public void resetPassword(String password) {
+    void resetPassword(String password) {
         mSalt = new byte[SALT_LENGTH];
         random.nextBytes(mSalt);
         deriveKey(password);
@@ -76,7 +76,7 @@ public class Crypto {
         }        
     }
     
-    public byte[] encrypt(byte [] data) {
+    byte[] encrypt(byte [] data) {
         byte cipherData[];
         if(mKey == null) {
             return null;
@@ -94,7 +94,7 @@ public class Crypto {
         return cipherData;
     }
     
-    public byte[] decrypt(byte [] data) throws GeneralSecurityException {
+    byte[] decrypt(byte [] data) throws GeneralSecurityException {
         byte plainData[];
         if(mKey == null ) {
             return null;
@@ -107,14 +107,14 @@ public class Crypto {
         return plainData;
     }
     
-    public byte[] getSaltAndIvBytes() {
+    byte[] getSaltAndIvBytes() {
         byte[] saltAndIv = new byte[mSalt.length + mIv.length];
         System.arraycopy(mSalt, 0, saltAndIv, 0, mSalt.length);
         System.arraycopy(mIv, 0, saltAndIv, mSalt.length, mIv.length);
         return saltAndIv;
     }
     
-    public void setPassword(String password, byte[] saltAndIvData, int offset, int total) {
+    void setPassword(String password, byte[] saltAndIvData, int offset, int total) {
         mSalt = new byte[SALT_LENGTH];
         mIv = new byte[total - SALT_LENGTH];
         System.arraycopy(saltAndIvData, offset, mSalt, 0, SALT_LENGTH);

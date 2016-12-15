@@ -16,7 +16,6 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -61,10 +60,10 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
     }
     
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnOptionSelected) activity;
+            mListener = (OnOptionSelected) context;
         }catch (ClassCastException e) {
             Log.e("PB:SettingListDialog",
                     "Activity must implement OnOptionSelected interface");
@@ -107,8 +106,8 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
     private class OptionAdapter extends BaseAdapter {
 
         private class ViewHolder {
-            public RadioButton mButton;
-            public TextView mText;
+            RadioButton mButton;
+            TextView mText;
             
         }
         private RadioButton mSelectedView;
@@ -162,7 +161,7 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
             return view;
         }
         
-        public void selectItem(View view, int position) {
+        void selectItem(View view, int position) {
             if(mSelectedView!=null) {
                 mSelectedView.setChecked(false);
             }

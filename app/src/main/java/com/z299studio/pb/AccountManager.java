@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class AccountManager {
     
-    public class EntryType {
+    class EntryType {
         public static final int SINGLETEXT = 1;
         public static final int PASSWORD = 2;
         public static final int WEBADDR = 3;
@@ -41,9 +41,9 @@ public class AccountManager {
     public static final int ALL_CATEGORY_ID = -1;
 
     public class Category {
-        public int mId;
-        public int mImgCode;
-        public String mName;
+        int mId;
+        int mImgCode;
+        String mName;
         public Category(int id, int imgCode, String name) {
             mId = id;
             mImgCode = imgCode;
@@ -53,12 +53,12 @@ public class AccountManager {
 
     public class Account {
         
-        public class Entry {
-            public int mType;
-            public String mName;
-            public String mValue;
+        class Entry {
+            int mType;
+            String mName;
+            String mValue;
 
-            public Entry(int type, String name, String value) {
+            Entry(int type, String name, String value) {
                 mType = type;
                 mName = name;
                 mValue = value;
@@ -80,7 +80,7 @@ public class AccountManager {
             setAccountData(accountData);            
         }
         
-        public String getAccountName() {
+        String getAccountName() {
             return mProfile;
         }
         
@@ -98,7 +98,7 @@ public class AccountManager {
             return account;
         }
         
-        public void setAccountData(String accountData) {
+        void setAccountData(String accountData) {
             String[] entrylist = accountData.split(ITEM_DELIMITER);
             String[] items;
             items = entrylist[0].split(FIELD_DELIMITER, 2);
@@ -111,7 +111,7 @@ public class AccountManager {
             }
         }
         
-        public ArrayList<Entry> getEntryList() {
+        ArrayList<Entry> getEntryList() {
             return mEntries;
         }
         
@@ -123,7 +123,7 @@ public class AccountManager {
             }
         }
 
-        public int addEntry(Entry entry) {
+        int addEntry(Entry entry) {
             if(mEntries == null) {
                 mEntries = new ArrayList<> ();
             }
@@ -131,7 +131,7 @@ public class AccountManager {
             return 0;
         }
 
-        public int addEntry(int type, String name, String value) {
+        int addEntry(int type, String name, String value) {
             Entry entry = new Entry(type, name, value);
             mEntries.add(entry);
             return 0;
@@ -149,30 +149,30 @@ public class AccountManager {
             mProfile = name;
         }
 
-        public void clearEntries() {
+        void clearEntries() {
             mEntries.clear();
         }
         
-        public byte[] getBytes() {
+        byte[] getBytes() {
             String ret;
             ret = String.format(Locale.ENGLISH, "%d%s%s\0", mCategoryId, FIELD_DELIMITER, mProfile);
             for(Entry e : mEntries) {
-                ret += String.format("%d%s%s%s%s\0", e.mType, FIELD_DELIMITER, e.mName, FIELD_DELIMITER, e.mValue);
+                ret += String.format(Locale.ENGLISH,"%d%s%s%s%s\0", e.mType, FIELD_DELIMITER, e.mName, FIELD_DELIMITER, e.mValue);
             }
             ret += "\0";
             return ret.getBytes();
         }
         
-        public Entry newEntry(String name, String value, int type) {
+        Entry newEntry(String name, String value, int type) {
             return new Entry(type, name, value);
         }
         
-        public String[] getStringList(AccountManager am) {
+        String[] getStringList(AccountManager am) {
             String[] result = new String[mEntries.size()+1];
             int i = 1;
             result[0] = String.format("%s\t%s", am.getCategory(this.mCategoryId).mName, mProfile);
             for(Entry e : mEntries) {
-                result[i++] = String.format("%d\t%s\t%s", e.mType, e.mName, e.mValue);
+                result[i++] = String.format(Locale.ENGLISH,"%d\t%s\t%s", e.mType, e.mName, e.mValue);
             }
             return result;
         }
@@ -201,7 +201,7 @@ public class AccountManager {
         }
     }
     
-    public void setDefaultCategory(int imgCode, String name) {
+    void setDefaultCategory(int imgCode, String name) {
         if(mCategories!=null) {
             mCategories.put(DEFAULT_CATEGORY_ID,
                     new Category(DEFAULT_CATEGORY_ID, imgCode, name));
@@ -252,12 +252,12 @@ public class AccountManager {
         }
     }
     
-    public ArrayList<Category> getCategoryList(boolean includeDefault, boolean sort) {
+    ArrayList<Category> getCategoryList(boolean includeDefault, boolean sort) {
         
         @SuppressWarnings("unchecked")
         Hashtable<Integer, Category> categories = (Hashtable<Integer, Category>) mCategories.clone();
         if(!includeDefault) {
-            categories.remove(Integer.valueOf(0));
+            categories.remove(0);
         }
         ArrayList<Category> result = new ArrayList<>(categories.values());
         if(sort) {
@@ -271,12 +271,12 @@ public class AccountManager {
         return result; 
     }
     
-    public int getAccountsCountByCategory(int id) {
+    int getAccountsCountByCategory(int id) {
         int size=0;
         if(id == ALL_CATEGORY_ID) {
             return (mAccounts.size() - mNullCount);
         }
-        ArrayList<Integer> intList = mMap.get(Integer.valueOf(id));
+        ArrayList<Integer> intList = mMap.get(id);
         if(intList==null) {
             return 0;
         }
@@ -295,11 +295,11 @@ public class AccountManager {
         return size;
     }
     
-    public ArrayList<Account> getAccountsByCategory(int categoryId) {
+    ArrayList<Account> getAccountsByCategory(int categoryId) {
         if(categoryId == ALL_CATEGORY_ID) {
             return getAllAccounts(true);
         }
-        ArrayList<Integer> intList = mMap.get(Integer.valueOf(categoryId));
+        ArrayList<Integer> intList = mMap.get(categoryId);
         ArrayList<Account> accounts = new ArrayList<>();
         
         Account a;
@@ -316,7 +316,7 @@ public class AccountManager {
         return accounts;
     }
     
-    public ArrayList<Account> getAllAccounts(boolean sort) {    
+    ArrayList<Account> getAllAccounts(boolean sort) {
         ArrayList<Account> copyOfAccounts = new ArrayList<>();
         for(Account account : mAccounts) {
             if(account!=null) {
@@ -334,7 +334,7 @@ public class AccountManager {
         String ret = "";
         if(categories.size() > 0) {
             for(Category c : categories) {
-                ret += String.format("%d%s%d%s%s\0", c.mId, FIELD_DELIMITER,c.mImgCode, FIELD_DELIMITER, c.mName);
+                ret += String.format(Locale.ENGLISH, "%d%s%d%s%s\0", c.mId, FIELD_DELIMITER,c.mImgCode, FIELD_DELIMITER, c.mName);
             }
             ret += ITEM_DELIMITER;
         }
@@ -352,7 +352,7 @@ public class AccountManager {
         return bytesList;
     }
     
-    public byte[] getBytes() {
+    byte[] getBytes() {
         byte[] categoryBytes = getCategoryBytes();
         ArrayList<byte[]> accountsBytes = getAccountBytesList();
         byte[] retBytes;
@@ -372,16 +372,16 @@ public class AccountManager {
         return retBytes;
     }
     
-    public Category getCategory(int categoryId) {
-        return mCategories.get(Integer.valueOf(categoryId));
+    Category getCategory(int categoryId) {
+        return mCategories.get(categoryId);
     }
     
-    public void addAccount(int categoryId, Account account) {
+    void addAccount(int categoryId, Account account) {
         account.mId = mAccounts.size();
         account.mCategoryId = categoryId;
         mAccounts.add(account);
         
-        ArrayList<Integer> intList = mMap.get(Integer.valueOf(categoryId));
+        ArrayList<Integer> intList = mMap.get(categoryId);
         if(intList==null) {
             intList = new ArrayList<>();
             intList.add(account.mId);
@@ -393,16 +393,16 @@ public class AccountManager {
         mChanged = true;
     }
     
-    public Account getAccountById(int id) {
+    Account getAccountById(int id) {
         return mAccounts.get(id);
     }
     
-    public int addCategory(int imgCode, String name) {        
+    int addCategory(int imgCode, String name) {
         int id = mCategories.size();
         if(id == 0) {
             id = 1;
         }
-        while(mCategories.get(Integer.valueOf(id))!=null) {
+        while(mCategories.get(id)!=null) {
             id++;
         }
         mCategories.put(id, new Category(id, imgCode, name));
@@ -410,38 +410,38 @@ public class AccountManager {
         return id;
     }
     
-    public void removeCategory(int id, boolean removeAccounts) {
+    void removeCategory(int id, boolean removeAccounts) {
         if(id < 1) {
             return;
         }
-        mCategories.remove(Integer.valueOf(id));
+        mCategories.remove(id);
         Account account;
-        ArrayList<Integer> intListi = mMap.get(Integer.valueOf(id));
+        ArrayList<Integer> intListi = mMap.get(id);
         if(intListi!=null) {
             if(removeAccounts) {
                 for(Integer i : intListi) {
-                    mAccounts.set(i.intValue(), null);
+                    mAccounts.set(i, null);
                     mNullCount++;
                 }
             }
             else {
-                ArrayList<Integer> intList0 = mMap.get(Integer.valueOf(0));
+                ArrayList<Integer> intList0 = mMap.get(0);
                 for(Integer i : intListi) {
-                    account = mAccounts.get(i.intValue());
+                    account = mAccounts.get(i);
                     account.mCategoryId = 0;
                     intList0.add(i);
                 }
             }
         }
-        mMap.remove(Integer.valueOf(id));
+        mMap.remove(id);
         mChanged = true;
     }
     
-    public Account getTemplate(int categoryId) {
+    Account getTemplate(int categoryId) {
         Account result = null;
         Account template;
         
-        ArrayList<Integer> intList = mMap.get(Integer.valueOf(categoryId));
+        ArrayList<Integer> intList = mMap.get(categoryId);
         if(intList!=null && intList.size() > 0) {
             template = mAccounts.get(intList.get(0));
             result = new Account(template.mCategoryId);
@@ -453,7 +453,7 @@ public class AccountManager {
         return result;
     }
     
-    public void removeAccount(Account account) {
+    void removeAccount(Account account) {
         mAccounts.set(account.mId, null);
         ArrayList<Integer> intList = mMap.get(account.mCategoryId);
         intList.remove(Integer.valueOf(account.mId));
@@ -464,9 +464,9 @@ public class AccountManager {
     public void setAccount(Account account) {
         Account previous = getAccountById(account.mId);
         if(previous.mCategoryId != account.mCategoryId) {
-            ArrayList<Integer> intList = mMap.get(Integer.valueOf(previous.mCategoryId));
+            ArrayList<Integer> intList = mMap.get(previous.mCategoryId);
             intList.remove(Integer.valueOf(account.mId));
-            ArrayList<Integer> target = mMap.get(Integer.valueOf(account.mCategoryId));
+            ArrayList<Integer> target = mMap.get(account.mCategoryId);
             if(target == null) {
                 target = new ArrayList<>();
                 mMap.put(account.mCategoryId, target);
@@ -477,11 +477,11 @@ public class AccountManager {
         mChanged = true;        
     }
     
-    public void moveAccount(int destCategory, Account account) {
-        ArrayList<Integer> intList = mMap.get(Integer.valueOf(account.mCategoryId));
+    void moveAccount(int destCategory, Account account) {
+        ArrayList<Integer> intList = mMap.get(account.mCategoryId);
         intList.remove(Integer.valueOf(account.mId));
         account.setCategory(destCategory);
-        ArrayList<Integer> target = mMap.get(Integer.valueOf(destCategory));
+        ArrayList<Integer> target = mMap.get(destCategory);
         if(target == null) {
             target = new ArrayList<>();
             mMap.put(destCategory, target);
@@ -490,7 +490,7 @@ public class AccountManager {
         mChanged = true;
     }
     
-    public boolean setCategory(int id, String name, int imgCode) {
+    boolean setCategory(int id, String name, int imgCode) {
         Category category = getCategory(id);
         if(category.mName.equals(name) && category.mImgCode == imgCode) {
             return false;
@@ -501,19 +501,19 @@ public class AccountManager {
         return true;
     }
     
-    public Account newAccount(int categoryId) {
+    Account newAccount(int categoryId) {
         return new Account(categoryId);
     }
     
-    public boolean saveRequired() {
+    boolean saveRequired() {
         return mChanged;
     }
     
-    public void onSaved() {
+    void onSaved() {
         mChanged = false;
     }
     
-    public String[] getCategoryNames() {
+    String[] getCategoryNames() {
         Collection<Category> categories = mCategories.values();
         String[] result = new String[categories.size()];
         int i = 0;

@@ -19,6 +19,7 @@ package com.z299studio.pb;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
@@ -38,6 +39,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -61,16 +65,16 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
     
     private class SettingItem {
-        public static final int TYPE_CATEGORY = 0;
-        public static final int TYPE_SWITCH = 1;
-        public static final int TYPE_SELECTION = 2;
-        public static final int TYPE_ACTION = 3;
-        public int mType;
-        public int mId;
-        public String mTitle;
-        public String mDescription;
+        static final int TYPE_CATEGORY = 0;
+        static final int TYPE_SWITCH = 1;
+        static final int TYPE_SELECTION = 2;
+        static final int TYPE_ACTION = 3;
+        int mType;
+        int mId;
+        String mTitle;
+        String mDescription;
         
-        public SettingItem(int id, String title, String description) { 
+        SettingItem(int id, String title, String description) {
             mId = id;
             mTitle = title;
             mDescription = description;
@@ -83,7 +87,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private class SettingItemSwitch extends SettingItem {
         private boolean mValue;
         
-        public SettingItemSwitch(int id, String title, String description) {
+        SettingItemSwitch(int id, String title, String description) {
             super(id, title, description);
             mType = TYPE_SWITCH;
         }
@@ -106,7 +110,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     private class SettingItemAction extends  SettingItem {
         private ActionListener mListener;
         
-        public SettingItemAction(int id, String title, String description) {
+        SettingItemAction(int id, String title, String description) {
             super(id, title, description);
             mType = TYPE_ACTION; 
         }
@@ -127,7 +131,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         private String[] mOptions;
         private int mSelection;
 
-        public SettingItemSelection(int id, String title, String description) {
+        SettingItemSelection(int id, String title, String description) {
             super(id, title, description);
             mType = TYPE_SELECTION; 
         }
@@ -229,12 +233,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             return view;
         }
         
-        public SettingItemAdapter(Context context, SettingItem[] items) {
+        SettingItemAdapter(Context context, SettingItem[] items) {
             mContext = context;
             mItems = items;           
         }
         
-        public void updateDescription(String text, int position, ListView listView) {
+        void updateDescription(String text, int position, ListView listView) {
             int firstVisible = listView.getFirstVisiblePosition();
             View view = listView.getChildAt(position - firstVisible);
             if(view != null) {
@@ -266,8 +270,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                     break;
                 case R.string.last_sync:
                     if(Application.Options.mSync != C.Sync.NONE) {
-                        SyncService.getInstance(Settings.this, Application.Options.mSync)
-                                .initialize().setListener(Settings.this)
+                        SyncService.getInstance(Application.Options.mSync)
+                                .initialize(Settings.this).setListener(Settings.this)
                                 .connect(Application.getInstance().getLocalVersion());
                     }
                     return;
@@ -497,7 +501,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                     editor.putInt(C.Sync.SERVER, Application.Options.mSync);
                 }
                 else {
-                    SyncService.getInstance(this, Application.Options.mSync).initialize()
+                    SyncService.getInstance(Application.Options.mSync).initialize(this)
                             .setListener(this).connect(Application.getInstance().getLocalVersion());
                     mRequestingPosition += 1;  // Bad design
                 }
@@ -589,6 +593,21 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 new ImportExportTask(this, mText, Application.getInstance().getPassword(),
                         mActionType, mOperation, mOption).execute();
             }
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        if (!result.hasResolution()) {
+            GoogleApiAvailability.getInstance()
+                    .getErrorDialog(this,result.getErrorCode(), 0).show();
+            onSyncFailed(SyncService.CA.CONNECTION);
+            return;
+        }
+        try {
+            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
+        } catch (IntentSender.SendIntentException e) {
+            onSyncFailed(SyncService.CA.CONNECTION);
         }
     }
 

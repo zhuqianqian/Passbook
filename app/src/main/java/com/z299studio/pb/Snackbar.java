@@ -87,25 +87,28 @@ public class Snackbar extends DialogFragment implements View.OnClickListener{
         super.onStart();
         if(getDialog() != null) {
             Window window = getDialog().getWindow();
-            window.setWindowAnimations(R.style.SnackbarAnimation);
-            Resources res = getResources();
-            int height = (int) (res.getDimension(R.dimen.snackbar_height_single) + 0.5f);
-            boolean leftAlign = res.getBoolean(R.bool.snackbar_left_align);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.gravity = Gravity.BOTTOM | Gravity.START ;
-            lp.x = 0;
-            lp.y = 0;
-            lp.height = height ;
-            if(!leftAlign) {
-                Point windowSize = new Point();
-                ((WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE))
-                        .getDefaultDisplay().getSize(windowSize);
-                lp.width = windowSize.x;
+            if(window!=null) {
+                window.setWindowAnimations(R.style.SnackbarAnimation);
+                Resources res = getResources();
+                int height = (int) (res.getDimension(R.dimen.snackbar_height_single) + 0.5f);
+                boolean leftAlign = res.getBoolean(R.bool.snackbar_left_align);
+                WindowManager.LayoutParams lp = window.getAttributes();
+                if(lp!=null) {
+                    lp.gravity = Gravity.BOTTOM | Gravity.START;
+                    lp.x = 0;
+                    lp.y = 0;
+                    lp.height = height;
+                    if (!leftAlign) {
+                        Point windowSize = new Point();
+                        ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE))
+                                .getDefaultDisplay().getSize(windowSize);
+                        lp.width = windowSize.x;
+                    } else {
+                        lp.height += (int) (res.getDimension(R.dimen.snackbar_horizontal_margin) + 0.5f);
+                    }
+                    window.setAttributes(lp);
+                }
             }
-            else {
-                lp.height += (int) (res.getDimension(R.dimen.snackbar_horizontal_margin) + 0.5f);
-            }
-            window.setAttributes(lp);
         }   
     }
 

@@ -110,13 +110,13 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
         private int mCheckedPos;
         private ImageView mCheckedView;
 
-        public ImageAdapter(Context context) {
+        ImageAdapter(Context context) {
             mContext = context;
             mIds= Application.getThemedIcons();
             mSize = (int) (getResources().getDimension(R.dimen.main_list_height) + 0.5f);
         }
         
-        public void checkItem(View view, int pos) {
+        void checkItem(View view, int pos) {
             if(mCheckedView!=null) {
                 mCheckedView.setBackgroundResource(R.drawable.oval_button);
             }
