@@ -374,6 +374,11 @@ public class Application{
         Options.mFpStatus = C.Fingerprint.DISABLED;
     }
 
+    void resetFpData() {
+        mFpData.edit().clear().apply();
+        Options.mFpStatus = C.Fingerprint.UNKNOWN;
+    }
+
     static AccountManager decrypt(Crypto crypto, String password,
                                          FileHeader header, byte[]data)
             throws GeneralSecurityException{

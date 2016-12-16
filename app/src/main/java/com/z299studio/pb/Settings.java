@@ -545,6 +545,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     @Override
+    public byte[] saveData() {
+        if(Application.getInstance().getAccountManager().saveRequired()) {
+            Application.getInstance().saveData(this);
+        }
+        return Application.getInstance().getData(this);
+    }
+
+    @Override
     public void onConfirm(String text, int type, int operation, int option) {
 
         if(operation == ActionDialog.ACTION_AUTHENTICATE) {

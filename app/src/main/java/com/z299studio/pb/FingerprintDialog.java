@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -70,6 +71,11 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
     public static FingerprintDialog build(boolean isFirstTime) {
         FingerprintDialog dialog = new FingerprintDialog();
         dialog.mIsFirstTime = isFirstTime ;
+        dialog.initCipher(isFirstTime ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE);
+        if(dialog.mCryptoObject == null) {
+            Application.getInstance().resetFpData();
+            return null;
+        }
         return dialog;
     }
     
@@ -86,7 +92,7 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
             mListener = (FingerprintListener) context;
         }catch (ClassCastException e) {
             Log.e("Pb:FingerprintDialog",
-                    "Activity must implement OnOptionSelected interface");
+                    "Activity must implement FingerprintListener interface");
         }
     }
 
@@ -98,7 +104,6 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
             ((TextView)rootView.findViewById(R.id.fp_desc)).setText(R.string.fp_confirm);
         }
         rootView.findViewById(R.id.cancel).setOnClickListener(this);
-        initCipher(mIsFirstTime ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE);
         FingerprintManager fpManager = (FingerprintManager)getContext().
                 getSystemService(Context.FINGERPRINT_SERVICE);
         mFingerprintUiHelper = FingerprintUiHelper.build(fpManager,
@@ -157,13 +162,17 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        mFingerprintUiHelper.startListening(mCryptoObject);
+        if(mFingerprintUiHelper!=null) {
+            mFingerprintUiHelper.startListening(mCryptoObject);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mFingerprintUiHelper.stopListening();
+        if(mFingerprintUiHelper!=null) {
+            mFingerprintUiHelper.stopListening();
+        }
     }
 
     @Override

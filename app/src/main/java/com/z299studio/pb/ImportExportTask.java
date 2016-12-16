@@ -35,6 +35,7 @@ class ImportExportTask extends AsyncTask<String, Void, String> {
     
     interface TaskListener {
         void onFinish(boolean authenticate, int operation, String result);
+        byte[] saveData();
     }
 
     static final int OPTION_OVERWRITE = 2;
@@ -317,10 +318,7 @@ class ImportExportTask extends AsyncTask<String, Void, String> {
 
     private String exportData() {
         String result;
-        if(Application.getInstance().getAccountManager().saveRequired()) {
-            Application.getInstance().saveData();
-        }
-        byte[] data = Application.getInstance().getData();
+        byte[] data = mListener.saveData();
         try {
             File file = new File(Environment.getExternalStorageDirectory(), "pbdata");
             FileOutputStream fos = new FileOutputStream(file);

@@ -181,8 +181,11 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                                            @NonNull int[] grantResult){
         if(requestCode == PERMISSION_REQ_CODE_FP &&
                 grantResult[0] == PackageManager.PERMISSION_GRANTED){
-            FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
-                    .show(getSupportFragmentManager(), "dialog_fp");
+            FingerprintDialog fpDialog = FingerprintDialog
+                    .build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN);
+            if(fpDialog!=null) {
+                fpDialog.show(getSupportFragmentManager(), "dialog_fp");
+            }
         }
     }
 
@@ -198,12 +201,15 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             }
             else if(mFingerprintManager.isHardwareDetected() &&
                     mFingerprintManager.hasEnrolledFingerprints()) {
-                if(mPwdEdit!=null) {
+                FingerprintDialog fpDialog = FingerprintDialog
+                        .build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN);
+                if(mPwdEdit!=null && fpDialog != null) {
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
                 }
-                FingerprintDialog.build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN)
-                        .show(getSupportFragmentManager(), "dialog_fp");
+                if(fpDialog != null) {
+                    fpDialog.show(getSupportFragmentManager(), "dialog_fp");
+                }
                 isHandled = true;
             }
         }
