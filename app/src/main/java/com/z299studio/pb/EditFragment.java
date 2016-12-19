@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -134,7 +135,6 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         @Override
         public boolean onDrag(View v, DragEvent event) {
             final int action = event.getAction();
-
             switch(action) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     return true;
@@ -375,9 +375,12 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     @Override
     public boolean onLongClick(View v) {
         ClipData not_used_clip = ClipData.newPlainText("", "");
-        v.startDrag(not_used_clip, new View.DragShadowBuilder(v), v, 0);
-        // DragEvent.ACTION_DRAG_STARTED not called in drag event dispatch.
-        // Handle it here.
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            v.startDrag(not_used_clip, new View.DragShadowBuilder(v), v, 0);
+        }
+        else {
+            v.startDragAndDrop(not_used_clip, new View.DragShadowBuilder(v), v, 0);
+        }
         mDragListener.startDrag(v);
         return true;
     }
