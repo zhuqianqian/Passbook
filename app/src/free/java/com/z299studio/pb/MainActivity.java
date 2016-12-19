@@ -153,8 +153,11 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mApp.getSortedCategoryNames();
         }
         if(mApp.queryChange(Application.DATA_ALL)) {
+            Application.reset();
             mApp.getSortedCategoryNames();
+            mNavigationDrawer.refreshCategoryCounters();
             MainListFragment.clearCache();
+            mMainList.updateDataImmediately();
         }
     }
 
