@@ -117,6 +117,7 @@ public class Application{
     private FileHeader mFileHeader;
     private long mLastPause;
     private boolean mIgnoreNextPause;
+    private boolean mTimedOut;
     private String mPassword;
     private int mLocalVersion;
     private Crypto mCrypto;
@@ -308,6 +309,10 @@ public class Application{
     }
     
     boolean needAuth() {
+        if(mTimedOut) {
+            mTimedOut = false;
+            return true;
+        }
         if(mIgnoreNextPause || Options.mAutoLock < 1) {
             mIgnoreNextPause = false;
             return false;
@@ -318,6 +323,9 @@ public class Application{
     void ignoreNextPause() {
         mIgnoreNextPause = true;
     }
+
+
+    void setTimedOut() { mTimedOut = true;   }
     
     void saveData(Context context, byte[] data, FileHeader fileHeader) {
         try {
