@@ -1,5 +1,5 @@
 #Passbook - A better password tool#
-[![Build Status][travis-image]][travis-url]  [![Dependency Status](https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2)
+[![Build Status][travis-image]][travis-url]  [![Dependency Status][dependency-image]][dependency-url]  [![API][api-image]][api-url]
 
 Passbook runs on Android 4.0+  and helps you to manage sensitive data securely with delightful Material experience[<sup>1</sup>](#note1) and powerful features.
 
@@ -73,3 +73,9 @@ Passbook is licensed under [Apache License 2.0](LICENSE).
 
 [travis-url]: https://travis-ci.org/zhuqianqian/Passbook 
 [travis-image]: https://travis-ci.org/zhuqianqian/Passbook.svg?branch=master
+
+[dependency-url]: https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2
+[dependency-image]:https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2/badge.svg?style=flat-square
+
+[api-url]:https://android-arsenal.com/api?level=14
+[api-image]:https://img.shields.io/badge/API-14%2B-blue.svg?style=flat
