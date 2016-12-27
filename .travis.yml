@@ -12,6 +12,7 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
-script:
-  - chmod +x ./gradlew 
-  - ./gradlew build
+before_install:
+  - chmod +x gradlew
+
+script: "./gradlew build"
