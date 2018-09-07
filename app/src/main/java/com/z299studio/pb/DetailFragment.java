@@ -24,6 +24,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -96,7 +97,7 @@ public class DetailFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         if(Application.getInstance() == null
@@ -104,7 +105,7 @@ public class DetailFragment extends Fragment implements
             return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        mList = (ListView)rootView.findViewById(android.R.id.list);
+        mList = rootView.findViewById(android.R.id.list);
         mAccount = Application.getInstance().getAccountManager().getAccountById(mAccountId);
         mColor = ContextCompat.getColor(getContext(), COLORS[mAccount.getCategoryId() & 0x0f]);
         setUpList();
@@ -117,7 +118,7 @@ public class DetailFragment extends Fragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(C.ACCOUNT, mAccountId);
         super.onSaveInstanceState(outState);
     }
@@ -150,11 +151,11 @@ public class DetailFragment extends Fragment implements
     private void setupToolbar(View rootView, String title) {
         Toolbar toolbar;
         TextView titleView;
-        toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        toolbar = rootView.findViewById(R.id.toolbar);
         View close = rootView.findViewById(R.id.close);
         close.setOnClickListener(this);
         View header = rootView.findViewById(R.id.header);
-        ImageButton fab = (ImageButton)rootView.findViewById(R.id.fab);
+        ImageButton fab = rootView.findViewById(R.id.fab);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             LayerDrawable background = (LayerDrawable) fab.getBackground();
             background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
@@ -162,7 +163,7 @@ public class DetailFragment extends Fragment implements
         }
         fab.setOnClickListener(this);
         header.setBackgroundColor(mColor);
-        titleView = (TextView)rootView.findViewById(android.R.id.title);
+        titleView = rootView.findViewById(android.R.id.title);
         titleView.setText(title);
         // Elevation to minus 1 so that fab would not be covered on 5.0
         float elevation = getResources().getDimension(R.dimen.fab_small_elevation) - 0.5f;
@@ -274,8 +275,8 @@ public class DetailFragment extends Fragment implements
                         Context.LAYOUT_INFLATER_SERVICE);
                 v = inflater.inflate(R.layout.account_view_item, parent, false);
 
-                holder.mName = (TextView)v.findViewById(R.id.field_name);
-                holder.mValue = (TextView)v.findViewById(R.id.field_value);
+                holder.mName = v.findViewById(R.id.field_name);
+                holder.mValue = v.findViewById(R.id.field_value);
                 v.setTag(holder);
 
             }

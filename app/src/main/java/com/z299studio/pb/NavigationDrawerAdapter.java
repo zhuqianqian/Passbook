@@ -137,9 +137,9 @@ public class NavigationDrawerAdapter extends BaseAdapter {
             else {
                 v = inflater.inflate(R.layout.nav_menu, parent, false);
             }
-            TextView titleView = (TextView) v.findViewById(R.id.menu_text);
-            ImageView img = (ImageView) v.findViewById(R.id.menu_icon);
-            TextView counter = (TextView) v.findViewById(R.id.menu_indicator);
+            TextView titleView = v.findViewById(R.id.menu_text);
+            ImageView img = v.findViewById(R.id.menu_icon);
+            TextView counter = v.findViewById(R.id.menu_indicator);
 
             holder.mTitleView = titleView;
             holder.mIconView = img;

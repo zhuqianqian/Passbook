@@ -19,7 +19,6 @@ package com.z299studio.pb;
 interface ItemFragmentListener {
     void onEdit(int categoryId, int accountId);
     void onDelete(int accountId);
-    void onDeleted(int categoryId, int count);
     void onSave(int categoryId);
     void onSelect(int id);
     void onSaveChanged(int account, int category, int oldCategory, boolean nameChanged);

@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,18 +42,18 @@ public class ConfirmCopy extends DialogFragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(Application.getInstance()== null
                 || Application.getInstance().getAccountManager() == null) {
             return null;
         }
         rootView = inflater.inflate(R.layout.dialog_confirm_copy, container);
-        Button button = (Button)rootView.findViewById(R.id.ok);
+        Button button = rootView.findViewById(R.id.ok);
         button.setOnClickListener(this);
-        button = (Button)rootView.findViewById(R.id.cancel);
+        button = rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
-        mCheckBox = (CheckBox)rootView.findViewById(R.id.checkbox);
+        mCheckBox = rootView.findViewById(R.id.checkbox);
         return rootView;
     }
 

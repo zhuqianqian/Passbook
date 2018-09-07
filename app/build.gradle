@@ -1,22 +1,26 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
 
     defaultConfig {
         applicationId "com.z299studio.pb"
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 270
-        versionName "2.7.0"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 280
+        versionName "2.8.0"
     }
+
+    flavorDimensions "version"
 
     productFlavors {
         paid {
-            applicationId "com.z299studio.pb"
+            dimension "version"
+            applicationIdSuffix ""
         }
         free {
+            dimension "version"
             applicationId "com.z299studio.pbfree"
         }
     }
@@ -34,13 +38,14 @@ android {
 }
 
 dependencies {
-    def slv ='25.3.1'
-    def gpsv = '10.2.1'
-    compile "com.android.support:design:$slv"
-    compile "com.android.support:cardview-v7:$slv"
-    compile "com.android.support:support-v13:$slv"
-    compile "com.google.android.gms:play-services-games:$gpsv"
-    compile "com.google.android.gms:play-services-drive:$gpsv"
-    freeCompile "com.google.android.gms:play-services-ads:$gpsv"
-    compile files('libs/opencsv-3.0.jar')
+    def slv ='27.1.1'
+    def gpsv = '15.0.1'
+    api "com.android.support:design:$slv"
+    api "com.android.support:customtabs:$slv"
+    api "com.android.support:cardview-v7:$slv"
+    api "com.android.support:support-v13:$slv"
+    api "com.google.android.gms:play-services-games:$gpsv"
+    api "com.google.android.gms:play-services-drive:$gpsv"
+    freeApi "com.google.android.gms:play-services-ads:$gpsv"
+    api "au.com.bytecode:opencsv:2.4"
 }

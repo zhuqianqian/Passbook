@@ -1,73 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinator_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground">
-    <RelativeLayout android:id="@+id/category_editor"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/card_margin"
-        android:elevation="@dimen/toolbar_elevation">
-        <ImageView android:id="@+id/category_icon"
-            android:layout_width="@dimen/main_list_height"
-            android:layout_height="@dimen/main_list_height"
-            android:scaleType="center"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/oval_button"/>
-
-        <EditText android:id="@+id/category_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/category_icon"
-            android:layout_toStartOf="@id/category_icon"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:hint="@string/new_category"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-        <TextView
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground">
+        <RelativeLayout android:id="@+id/category_editor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/category_icon"
-            android:text="@string/select_to_add"/>
+            android:visibility="gone"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/card_margin"
+            android:elevation="@dimen/toolbar_elevation">
+            <ImageView android:id="@+id/category_icon"
+                android:layout_width="@dimen/main_list_height"
+                android:layout_height="@dimen/main_list_height"
+                android:scaleType="center"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/oval_button"/>
+
+            <EditText android:id="@+id/category_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/category_icon"
+                android:layout_toStartOf="@id/category_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:hint="@string/new_category"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/category_icon"
+                android:text="@string/select_to_add"/>
+        </RelativeLayout>
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:drawSelectorOnTop="true"
+            android:layout_below="@id/category_editor"
+            android:longClickable="true"/>
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/no_accounts" />
+
     </RelativeLayout>
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:drawSelectorOnTop="true"
-        android:layout_below="@id/category_editor"
-        android:longClickable="true"/>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/no_accounts" />
-
-    <ImageButton android:id="@+id/fab"
-        android:layout_width="@dimen/fab"
-        android:layout_height="@dimen/fab"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/fab"
         android:src="@drawable/plus"
-        android:contentDescription="@string/new_account"
+        android:layout_margin="@dimen/navigation_icon_margin"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/navigation_icon_margin"
-        android:layout_marginRight="@dimen/navigation_icon_margin"
-        android:layout_marginBottom="@dimen/navigation_icon_margin"
-        android:tint="?attr/textColorNormal"
-        android:elevation="@dimen/fab_elevation"/>
-
-</RelativeLayout>
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"/>
+</android.support.design.widget.CoordinatorLayout>

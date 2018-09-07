@@ -207,8 +207,8 @@ class MainListAdapter extends BaseAdapter {
         ViewHolder holder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.account_list_item, parent, false);
-        holder.mIconView = (ImageButton) v.findViewById(R.id.item_icon);
-        holder.mTextView = (TextView) v.findViewById(R.id.item_name);
+        holder.mIconView = v.findViewById(R.id.item_icon);
+        holder.mTextView = v.findViewById(R.id.item_name);
         holder.mInflate = false;
         v.setTag(holder);
         return v;
@@ -408,22 +408,6 @@ class MainListAdapter extends BaseAdapter {
         for(int i = 0; i < total; i++) {
             mDeleted.set(indices[i], delete);
         }
-    }
-
-    void doDelete(int [] indices, int total) {
-        int end = total - 1;
-        AccountManager am = Application.getInstance().getAccountManager();
-        int pos;
-        for(int i = end; i >= 0; --i) {
-            pos = indices[i];
-            am.removeAccount(mEntries.get(pos));
-            mEntries.remove(pos);
-            mIcons.remove(pos);
-            mChecked.remove(pos);
-            mDeleted.remove(pos);
-        }
-        this.enableAnimation(false);
-        this.notifyDataSetChanged();
     }
     
     void markAll(ListView listView) {

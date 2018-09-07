@@ -16,8 +16,9 @@
 
 package com.z299studio.pb;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,8 @@ public class ScreenSlidePageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         int ids[] = { R.layout.fragment_tour0, R.layout.fragment_tour1,
                 R.layout.fragment_tour2, R.layout.fragment_tourend};
         return inflater.inflate(ids[mPageNumber], container, false);

@@ -18,14 +18,15 @@ package com.z299studio.pb;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -35,7 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class TourActivity extends Activity implements AnimatorListener{
+public class TourActivity extends FragmentActivity implements AnimatorListener{
 
     private static final int NUM_PAGES = 3;
     private int mCurrent;
@@ -65,7 +66,7 @@ public class TourActivity extends Activity implements AnimatorListener{
             
         }
         setContentView(R.layout.activity_welcome);
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         int ids[] = {R.id.indicator_0, R.id.indicator_1, R.id.indicator_2};
         mBackground= (LayerDrawable) mPager.getBackground();
         mBackground.getDrawable(0).setAlpha(255);
@@ -73,12 +74,12 @@ public class TourActivity extends Activity implements AnimatorListener{
         mBackground.getDrawable(2).setAlpha(0);
         mBackground.getDrawable(3).setAlpha(0);
         for(int i = 0; i < NUM_PAGES; ++i) {
-            mIndicators[i] = (ImageView)findViewById(ids[i]);
+            mIndicators[i] = findViewById(ids[i]);
         }
-        mSkip = (Button)findViewById(R.id.skip);
-        mNext = (Button)findViewById(R.id.next);
-        mContainer = (LinearLayout)findViewById(R.id.container);
-        mAppText = (TextView)findViewById(R.id.app);
+        mSkip = findViewById(R.id.skip);
+        mNext = findViewById(R.id.next);
+        mContainer = findViewById(R.id.container);
+        mAppText = findViewById(R.id.app);
         if(!mReady) {
             mAppText.animate().alpha(1.0f).setDuration(400).setListener(this);
         }
@@ -86,7 +87,7 @@ public class TourActivity extends Activity implements AnimatorListener{
             mPager.setAlpha(1.0f);
             mContainer.setAlpha(1.0f);
         }
-        PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -97,7 +98,7 @@ public class TourActivity extends Activity implements AnimatorListener{
         });
         mPager.setPageTransformer(true, new ViewPager.PageTransformer(){
             @Override
-            public void transformPage(View view, float position) {
+            public void transformPage(@NonNull View view, float position) {
                 int index = (Integer) view.getTag();
                 Drawable currentDrawableInLayerDrawable;
                 currentDrawableInLayerDrawable = mBackground.getDrawable(index);
@@ -158,6 +159,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putInt(C.PAGE_NUM, mCurrent);
         outState.putInt(C.ACTIVITY, mFromActivity);
         outState.putBoolean("ready", mReady);
@@ -165,7 +167,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     
     private void finishTour() {
         Application.Options.mTour = true;
-        Application.getInstance().mSP.edit().putBoolean(C.Keys.TOUR, true).commit();
+        Application.getInstance().mSP.edit().putBoolean(C.Keys.TOUR, true).apply();
         if(mFromActivity == C.Activity.HOME){
             Intent intent = new Intent(this, HomeActivity.class);
             this.startActivity(intent);
@@ -180,7 +182,7 @@ public class TourActivity extends Activity implements AnimatorListener{
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

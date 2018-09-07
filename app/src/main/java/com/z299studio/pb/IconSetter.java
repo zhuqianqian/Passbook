@@ -19,6 +19,7 @@ package com.z299studio.pb;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(Application.getInstance()==null || Application.getInstance().getAccountManager() == null) {
             return null;
@@ -60,15 +61,15 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
             mImg = savedInstanceState.getInt("img_code");
         }
         rootView = inflater.inflate(R.layout.dialog_choose_icon, container);
-        Button button = (Button)rootView.findViewById(R.id.ok);
+        Button button = rootView.findViewById(R.id.ok);
         button.setOnClickListener(this);
-        button = (Button)rootView.findViewById(R.id.cancel);
+        button = rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity());
         if(mImg > 0) {
             imageAdapter.checkItem(null, mImg);
         }
-        GridView gridView = (GridView) rootView.findViewById(R.id.icon);
+        GridView gridView = rootView.findViewById(R.id.icon);
         gridView.setAdapter(imageAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

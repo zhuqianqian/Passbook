@@ -27,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         setupToolbar();
         mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationDrawer.setUp(R.id.navigation_drawer, drawerLayout);
         mMainList = (MainListFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.panel_main);
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mTitle = getString(R.string.all_accounts);
         }
         getSupportActionBar().setTitle(mTitle);
-        mAds = (AdView)findViewById(R.id.ad);
+        mAds = findViewById(R.id.ad);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAds.loadAd(adRequest);
     }
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     }
     
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
         ViewCompat.setElevation(toolbar, elevation);
@@ -209,8 +208,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             menu.getItem(i).getIcon().setColorFilter(
                     C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
         }
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(
-                menu.findItem(R.id.action_search));
+        SearchView searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(this);
         return true;
@@ -421,21 +419,6 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(nameChanged) {
             mMainList.updateData(AccountManager.ALL_CATEGORY_ID);
             mMainList.updateData(category);
-        }
-    }
-    
-    @Override
-    public void onDeleted(int categoryId, int count) {
-        if(categoryId == AccountManager.ALL_CATEGORY_ID) {
-            mNavigationDrawer.refreshCategoryCounters();
-            for(int id : mApp.getSortedCategoryIds()) {
-                MainListFragment.resetAdapter(id);
-            }
-        }
-        else {
-            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
-            mNavigationDrawer.increaseCounterInMenu(categoryId, -count);
-            MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
         }
     }
     

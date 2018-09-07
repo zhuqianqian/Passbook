@@ -416,17 +416,17 @@ public class AccountManager {
         }
         mCategories.remove(id);
         Account account;
-        ArrayList<Integer> intListi = mMap.get(id);
-        if(intListi!=null) {
+        ArrayList<Integer> intList = mMap.get(id);
+        if(intList!=null) {
             if(removeAccounts) {
-                for(Integer i : intListi) {
+                for(Integer i : intList) {
                     mAccounts.set(i, null);
                     mNullCount++;
                 }
             }
             else {
                 ArrayList<Integer> intList0 = mMap.get(0);
-                for(Integer i : intListi) {
+                for(Integer i : intList) {
                     account = mAccounts.get(i);
                     account.mCategoryId = 0;
                     intList0.add(i);

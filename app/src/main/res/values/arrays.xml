@@ -157,6 +157,11 @@
         <item>1</item>
     </integer-array>
 
+    <integer-array name="defQQ"/>
+    <integer-array name="defWc"/>
+    <integer-array name="defAp"/>
+    <integer-array name="defTb"/>
+
     <string-array name="def_account_names">
         <item>@string/a_google</item>
         <item>@string/a_ms</item>

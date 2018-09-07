@@ -23,6 +23,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
@@ -266,17 +267,17 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(mApp == null || mApp.getAccountManager() == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_edit, container, false);
-        mContainer = (LinearLayout)rootView.findViewById(android.R.id.list);
+        mContainer = rootView.findViewById(android.R.id.list);
         View footer = inflater.inflate(R.layout.add_field, container, false);
         footer.setOnClickListener(this);
-        mNameEditText = (EditText)rootView.findViewById(android.R.id.title);
-        mScroll = (PbScrollView)rootView.findViewById(R.id.scroll);
+        mNameEditText = rootView.findViewById(android.R.id.title);
+        mScroll = rootView.findViewById(R.id.scroll);
         mNameEditText.addTextChangedListener(this);
         mToolbarContainer = rootView.findViewById(R.id.toolbar_container);
         if(mToolbarContainer!=null) {
@@ -284,7 +285,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             mScroll.setPbScrollListener(this);
         }
         setupToolbar(rootView);
-        mCategorySpinner = (Spinner)rootView.findViewById(R.id.category);
+        mCategorySpinner = rootView.findViewById(R.id.category);
         if(mAccountId >= 0) {
             mDummyAccount = mApp.getAccountManager().getAccountById(mAccountId).clone();
             mName = mDummyAccount.getAccountName();
@@ -443,7 +444,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void setupToolbar(View rootView) {
-        mToolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        mToolbar = rootView.findViewById(R.id.toolbar);
         if(mToolbarContainer!=null) {
             mToolbarContainer.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
@@ -455,7 +456,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
             MainActivity ma = (MainActivity) getActivity();
             ma.setStatusBarColor(0, 0, true);
         }
-        ImageButton close = (ImageButton)rootView.findViewById(R.id.close);
+        ImageButton close = rootView.findViewById(R.id.close);
         close.setOnClickListener(this);
         mElevation = (int) (getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f);
     }
@@ -466,10 +467,10 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         eh.mEntryLayout = getActivity().getLayoutInflater()
                 .inflate(R.layout.account_edit_item, mContainer, false);
         eh.mEntryContainer = eh.mEntryLayout.findViewById(R.id.field_container);
-        eh.mNameField = (EditText)eh.mEntryLayout.findViewById(R.id.field_name);
-        eh.mValueField = (EditText)eh.mEntryLayout.findViewById(R.id.field_value);
-        eh.mTypeField = (Spinner)eh.mEntryLayout.findViewById(R.id.field_type);
-        eh.mAutoPwd = (ImageButton)eh.mEntryLayout.findViewById(R.id.auto_gen);
+        eh.mNameField = eh.mEntryLayout.findViewById(R.id.field_name);
+        eh.mValueField = eh.mEntryLayout.findViewById(R.id.field_value);
+        eh.mTypeField = eh.mEntryLayout.findViewById(R.id.field_type);
+        eh.mAutoPwd = eh.mEntryLayout.findViewById(R.id.auto_gen);
         eh.mEntryItem = e;
         eh.mTypeField.setAdapter(mTypeAdapter);
         eh.mTypeField.setTag(eh);

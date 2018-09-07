@@ -16,15 +16,18 @@
 
 package com.z299studio.pb;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,7 +41,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     MainListAdapter.OnListItemCheckListener, Animation.AnimationListener,
     View.OnClickListener{
 
+    private CoordinatorLayout mLayoutRoot;
     private ItemFragmentListener mListener;
     private ListView mListView;
     private MainListAdapter mAdapter;
@@ -61,9 +64,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     private int [] mToBeRemoved;
     private int mRemoveCount;
     private boolean mActionModeDestroyed = false;
-    private ImageButton mFab;
+    private FloatingActionButton mFab;
     private Animation mFabIn, mFabOut;
-    private int mFabToPush;
     private boolean mIsEditing = false;
     private View mCategoryEditView;
     private int mCategoryIcon;
@@ -251,14 +253,15 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(Application.getInstance() == null
                 || Application.getInstance().getAccountManager() == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        mListView = (ListView)rootView.findViewById(android.R.id.list);
+        mListView = rootView.findViewById(android.R.id.list);
+        mLayoutRoot = rootView.findViewById(R.id.coordinator_layout);
         if((mAdapter = getAdapter(mCategoryId)) == null) {
             mAdapter = new MainListAdapter(getActivity(),
                     Application.getInstance().getAccountManager().getAccountsByCategory(mCategoryId),
@@ -277,21 +280,16 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mToBeRemoved = new int[mAdapter.getCount()];
-        mFab = (ImageButton)rootView.findViewById(R.id.fab);
+        mFab = rootView.findViewById(R.id.fab);
         mFab.setOnClickListener(this);
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             LayerDrawable background = (LayerDrawable) mFab.getBackground();
             background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
                     PorterDuff.Mode.SRC_ATOP);
         }
-        if(!getResources().getBoolean(R.bool.snackbar_left_align)) {
-            mFabToPush = (int)(getResources().getDimension(R.dimen.snackbar_height_single) + 0.5f);
-        }
-        else {
-            mFabToPush = 0;
-        }
+
         mCategoryEditView = rootView.findViewById(R.id.category_editor);
-        EditText editCategoryName = (EditText)rootView.findViewById(R.id.category_name);
+        EditText editCategoryName = rootView.findViewById(R.id.category_name);
         editCategoryName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -466,7 +464,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 mAdapter.animateDeletion(v, mToBeRemoved[i]);
             }
         }
-        showDeleteSnackbar((AppCompatActivity) getActivity(), mRemoveCount, viewHeight);
+        showDeleteSnackbar(mRemoveCount, viewHeight);
     }
     
     protected void showFab(boolean show) {
@@ -491,13 +489,12 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         cacheAdapter(mCategoryId, mAdapter);
     }
     
-    public void showDeleteSnackbar(AppCompatActivity activity, int count, final int rowHeight) {
-        new Snackbar()
-                .setText(getResources().getQuantityString(R.plurals.info_deleted, count, count))
-                .setActionText(getString(R.string.undo))
-                .setActionListener(new Snackbar.OnActionListener() {
+    public void showDeleteSnackbar(int count, final int rowHeight) {
+        Snackbar.make(mLayoutRoot,
+                getResources().getQuantityString(R.plurals.info_deleted, count, count), Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
-                    public void onAction() {
+                    public void onClick(View view) {
                         int firstVisiblePos = mListView.getFirstVisiblePosition();
                         int end = mRemoveCount - 1;
                         View v;
@@ -511,23 +508,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                         mRemoveCount = 0;
                     }
                 })
-                .setDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if(mFabToPush > 0) {
-                            mFab.animate().yBy(mFabToPush);
-                        }
-                        if(mRemoveCount > 0) {
-                            mAdapter.doDelete(mToBeRemoved, mRemoveCount);
-                            mListener.onDeleted(mCategoryId, mRemoveCount);
-                            mRemoveCount = 0;
-                        }
-                    }
-                })
-                .show(activity);
-        if(mFabToPush > 0) {
-            mFab.animate().yBy(-mFabToPush);
-        }
+                .show();
     }
     
     public void editCategory() {
@@ -536,8 +517,8 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
         mIsEditing = true;
         mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mEditCategoryCallback);
-        EditText editCategoryName = (EditText)mCategoryEditView.findViewById(R.id.category_name);
-        mCategoryIconView = (ImageView)mCategoryEditView.findViewById(R.id.category_icon);
+        EditText editCategoryName = mCategoryEditView.findViewById(R.id.category_name);
+        mCategoryIconView = mCategoryEditView.findViewById(R.id.category_icon);
         mCategoryEditView.setVisibility(View.VISIBLE);
         int[] icons = Application.getThemedIcons();
         AccountManager.Category category = Application.getInstance()
