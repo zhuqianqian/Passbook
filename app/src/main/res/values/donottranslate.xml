@@ -5,7 +5,7 @@
     <string name="digits">0&#8211;9</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="link_ap_help">https://github.com/zhuqianqian/Passbook/wiki/passbook-help</string>
+    <string name="link_app_help">https://github.com/zhuqianqian/Passbook/wiki/passbook-help</string>
 
     <string name="cc_xcx">Xuechen Xu</string>
     <string name="cc_yhc">Yonghui Chen</string>

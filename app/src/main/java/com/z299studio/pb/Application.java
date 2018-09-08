@@ -411,7 +411,7 @@ public class Application{
             LayoutInflater inflater = context.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast,
                     (ViewGroup)context.findViewById(R.id.toast_layout_root));
-            TextView desc = (TextView)layout.findViewById(R.id.description);
+            TextView desc = layout.findViewById(R.id.description);
             desc.setText(stringId);
             Toast toast = new Toast(context.getApplicationContext());
             toast.setView(layout);
@@ -428,7 +428,7 @@ public class Application{
             LayoutInflater inflater = context.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast,
                     (ViewGroup)context.findViewById(R.id.toast_layout_root));
-            TextView desc = (TextView)layout.findViewById(R.id.description);
+            TextView desc = layout.findViewById(R.id.description);
             desc.setText(text);
             Toast toast = new Toast(context.getApplicationContext());
             toast.setView(layout);

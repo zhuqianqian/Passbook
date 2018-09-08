@@ -16,7 +16,6 @@
 
 package com.z299studio.pb;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -218,7 +217,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mIsEditing = savedInstanceState.getBoolean("edit_category");
             mCategoryIcon = savedInstanceState.getInt("category_icon");
             mCategoryName = savedInstanceState.getString("category_name");
-            IconSetter dialog = (IconSetter)getFragmentManager().findFragmentByTag("set_icon");
+            IconSetter dialog = null;
+            if (getFragmentManager() != null) {
+                dialog = (IconSetter) getFragmentManager().findFragmentByTag("set_icon");
+            }
             if(dialog!=null) {
                 dialog.setListener(new IconSetter.OnIconChosen() {
                     @Override
@@ -243,7 +245,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("category_id", mCategoryId);
         outState.putInt("category_icon", mCategoryIcon);
         outState.putString("category_name", mCategoryName);
@@ -269,7 +271,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mListView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mAdapter.enableAnimation(false);
+                    mAdapter.disableAnimation();
                 }
             }, 100);
             cacheAdapter(mCategoryId, mAdapter);
@@ -311,7 +313,9 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             editCategory();
         }
         else if(mSelectionMode) {
-            mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+            if (getActivity() != null) {
+                mActionMode = ((MainActivity) getActivity()).startSupportActionMode(mActionModeCallback);
+            }
         }
         return rootView;
     }
@@ -357,7 +361,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 mListView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter.enableAnimation(false);
+                        mAdapter.disableAnimation();
                     }
                 }, 100);
                 cacheAdapter(mCategoryId, mAdapter);
@@ -375,7 +379,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     public void setSearch(ArrayList<AccountManager.Account> result) {
         mAdapter = new MainListAdapter(getActivity(), result,
                 Application.getThemedIcons(), R.drawable.pb_unknown);
-        mAdapter.enableAnimation(false);
+        mAdapter.disableAnimation();
         mAdapter.setListener(this);
         mListView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -410,7 +414,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         }
         if(!mActionModeDestroyed && !mIsEditing) {
             if(count > 0) {
-                if(mActionMode == null) {
+                if(mActionMode == null && getActivity() != null) {
                     mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mActionModeCallback);
                 }
             }
@@ -429,6 +433,9 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 }
                 break;
             case R.id.category_icon:
+                if (getFragmentManager() == null) {
+                    return;
+                }
                 new IconSetter().setInitImage(mCategoryIcon)
                         .setListener(new IconSetter.OnIconChosen() {
                             @Override
@@ -516,7 +523,9 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             return;
         }
         mIsEditing = true;
-        mActionMode = ((MainActivity)getActivity()).startSupportActionMode(mEditCategoryCallback);
+        if (getActivity() != null) {
+            mActionMode = ((MainActivity) getActivity()).startSupportActionMode(mEditCategoryCallback);
+        }
         EditText editCategoryName = mCategoryEditView.findViewById(R.id.category_name);
         mCategoryIconView = mCategoryEditView.findViewById(R.id.category_icon);
         mCategoryEditView.setVisibility(View.VISIBLE);

@@ -61,9 +61,11 @@ public class TourActivity extends FragmentActivity implements AnimatorListener{
         else {
             mCurrent = 0;
             mReady = false;
-            mFromActivity = getIntent().getExtras().getInt(C.ACTIVITY,
-                    C.Activity.SETTINGS);
-            
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                mFromActivity = getIntent().getExtras().getInt(C.ACTIVITY,
+                        C.Activity.SETTINGS);
+            }
         }
         setContentView(R.layout.activity_welcome);
         mPager = findViewById(R.id.pager);

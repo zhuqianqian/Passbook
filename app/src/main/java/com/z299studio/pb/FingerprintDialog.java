@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -97,18 +97,20 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dialog_fingerprint, container, false);
         if(!mIsFirstTime) {
             ((TextView)rootView.findViewById(R.id.fp_desc)).setText(R.string.fp_confirm);
         }
         rootView.findViewById(R.id.cancel).setOnClickListener(this);
-        FingerprintManager fpManager = (FingerprintManager)getContext().
-                getSystemService(Context.FINGERPRINT_SERVICE);
-        mFingerprintUiHelper = FingerprintUiHelper.build(fpManager,
-                (ImageView)rootView.findViewById(R.id.fp_icon),
-                (TextView)rootView.findViewById(R.id.fp_area), this);
+        if (getContext() != null) {
+            FingerprintManager fpManager = (FingerprintManager) getContext().
+                    getSystemService(Context.FINGERPRINT_SERVICE);
+            mFingerprintUiHelper = FingerprintUiHelper.build(fpManager,
+                    (ImageView) rootView.findViewById(R.id.fp_icon),
+                    (TextView) rootView.findViewById(R.id.fp_area), this);
+        }
         return rootView;
     }
 

@@ -42,7 +42,10 @@ public class ScreenSlidePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPageNumber = getArguments().getInt(C.PAGE_NUM);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mPageNumber = getArguments().getInt(C.PAGE_NUM);
+        }
     }
 
     @Override

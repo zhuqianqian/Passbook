@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -85,7 +86,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     private int mOption;
     private Button mSelectButton;
     
-    public static ActionDialog create(int type) {
+    public static @NonNull ActionDialog create(int type) {
         ActionDialog dialog = new ActionDialog();
         dialog.mDlgType = type;
         return dialog;
@@ -132,7 +133,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             R.layout.dialog_import, R.layout.dialog_reset_pwd, R.layout.dialog_credits,
             R.layout.dialog_license, R.layout.dialog_authenticate};
         rootView = inflater.inflate(layouts[mDlgType], container, false);
-        mOkButton = (Button)rootView.findViewById(R.id.ok);
+        mOkButton = rootView.findViewById(R.id.ok);
         if(mOkButton != null) {
             mOkButton.setOnClickListener(this);
         }
@@ -147,7 +148,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         switch(mDlgType) {
         case ACTION_EXPORT:
         case ACTION_IMPORT:
-            Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+            Spinner spinner = rootView.findViewById(R.id.spinner);
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
                     getActivity(), mDlgType == ACTION_EXPORT ? R.array.file_types :
                             R.array.file_types_import, android.R.layout.simple_spinner_dropdown_item);
@@ -157,13 +158,13 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             if(mDlgType == ACTION_IMPORT) {
                 int ids[] = {R.id.ignore, R.id.keepall, R.id.overwrite};
                 for (int i = 0; i < ids.length; ++i) {
-                    RadioButton rb = (RadioButton) rootView.findViewById(ids[i]);
+                    RadioButton rb = rootView.findViewById(ids[i]);
                     rb.setOnClickListener(this);
                     if (i == mOption) {
                         rb.setChecked(true);
                     }
                 }
-                mSelectButton = (Button) rootView.findViewById(R.id.select);
+                mSelectButton = rootView.findViewById(R.id.select);
                 mSelectButton.setOnClickListener(this);
             }
             break;
@@ -172,23 +173,23 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             ((Button)rootView.findViewById(R.id.cancel)).setText(R.string.discard);
             // no break to use the logic of authenticate
         case ACTION_AUTHENTICATE:
-            mPasswordEdits[1] = (EditText) rootView.findViewById(R.id.et_password);
+            mPasswordEdits[1] = rootView.findViewById(R.id.et_password);
             mPasswordEdits[1].addTextChangedListener(this);
             break;
         
         case ACTION_RESET_PWD:
             int ids[] = {R.id.et_cur_pwd, R.id.et_password, R.id.et_confirm};
             for (int i = 0; i < ids.length; ++i) {
-                mPasswordEdits[i] = (EditText) rootView.findViewById(ids[i]);
+                mPasswordEdits[i] = rootView.findViewById(ids[i]);
                 mPasswordEdits[i].addTextChangedListener(this);
             }
             break;
         
         case ACTION_CREDITS:
             rootView.findViewById(R.id.cancel).setOnClickListener(this);
-            TextView tv = (TextView) rootView.findViewById(R.id.testers);
+            TextView tv = rootView.findViewById(R.id.testers);
             tv.setText(R.string.cc_yhc);
-            tv = (TextView) rootView.findViewById(R.id.translators);
+            tv = rootView.findViewById(R.id.translators);
             String translators = String.format(Locale.getDefault(),
                     "%s: %s\n%s: %s\n%s: %s",
                     getString(R.string.lang_fr), getString(R.string.cc_xcx),
@@ -198,7 +199,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             break;
         
         case ACTION_LICENSE:
-            WebView wv = (WebView) rootView.findViewById(R.id.licence_page);
+            WebView wv = rootView.findViewById(R.id.licence_page);
             wv.loadUrl("file:///android_asset/licence.html");
             break;
         }

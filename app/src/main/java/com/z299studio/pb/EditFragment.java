@@ -243,6 +243,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         mApp = Application.getInstance();
         if(savedInstanceState == null) {
+            if (getArguments() == null) {
+                return;
+            }
             int categoryId = getArguments().getInt(C.CATEGORY, AccountManager.DEFAULT_CATEGORY_ID);
             mPosition = 0;
             int[] allIds = mApp.getSortedCategoryIds();
@@ -296,9 +299,11 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         }
         int spinnerLayout = android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.JELLY_BEAN ?
                 android.R.layout.simple_spinner_dropdown_item : R.layout.spinner_dropdown;
-        mTypeAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.field_types, android.R.layout.simple_spinner_dropdown_item);
-        mTypeAdapter.setDropDownViewResource(spinnerLayout);
+        if (getActivity() != null) {
+            mTypeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.field_types, android.R.layout.simple_spinner_dropdown_item);
+            mTypeAdapter.setDropDownViewResource(spinnerLayout);
+        }
         mEntries = new ArrayList<> ();
         mDeleteView = (ImageView)inflater.inflate(R.layout.delete_field, container, false);
         int pos = 0;
@@ -321,7 +326,7 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(C.CATEGORY, mOldCategoryId);
         outState.putInt(C.ACCOUNT, mAccountId);
@@ -345,9 +350,14 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     public void onPause() {
         super.onPause();
         mName = mNameEditText.getText().toString();
+        if (getActivity() == null) {
+            return;
+        }
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mNameEditText.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(mNameEditText.getWindowToken(), 0);
+        }
     }
     
     @Override
@@ -365,7 +375,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.close:
             case R.id.top_frame:
-                getActivity().onBackPressed();
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
                 break;
             default:
                 onAddField(mDummyAccount.newEntry("", "", 1), mEntries.size());
@@ -454,7 +466,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
         mToolbar.setOnMenuItemClickListener(this);
         if(rootView.findViewById(R.id.frame_box) == null) {
             MainActivity ma = (MainActivity) getActivity();
-            ma.setStatusBarColor(0, 0, true);
+            if (ma != null) {
+                ma.setStatusBarColor(0, 0, true);
+            }
         }
         ImageButton close = rootView.findViewById(R.id.close);
         close.setOnClickListener(this);
@@ -463,7 +477,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
 
     private void onAddField(Entry e, int index) {
         EntryHolder eh = new EntryHolder();
-
+        if (getActivity() == null) {
+            return;
+        }
         eh.mEntryLayout = getActivity().getLayoutInflater()
                 .inflate(R.layout.account_edit_item, mContainer, false);
         eh.mEntryContainer = eh.mEntryLayout.findViewById(R.id.field_container);
@@ -490,6 +506,9 @@ public class EditFragment extends Fragment implements View.OnClickListener,
     }
 
     private void requestPassword(EditText view, int type) {
+        if (getFragmentManager() == null) {
+            return;
+        }
         PasswordGenerator.build(type, view).show(getFragmentManager(), "generate");
     }
 
@@ -571,6 +590,8 @@ public class EditFragment extends Fragment implements View.OnClickListener,
                         name.equals(account.getAccountName()));
             }
         }
-        getActivity().onBackPressed();
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
 }

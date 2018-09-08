@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -72,8 +73,8 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         if(Application.getInstance() == null
                 || Application.getInstance().getAccountManager() == null) {
             return null;
@@ -91,7 +92,7 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(SELECTION_KEY, mCategory);
         super.onSaveInstanceState(outState);
     }
@@ -166,7 +167,7 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
+        mFragmentContainerView = getActivity() == null ? null : getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         if (mDrawerLayout != null) {
@@ -185,7 +186,7 @@ public class NavigationDrawerFragment extends Fragment implements
                     if (!isAdded()) {
                         return;
                     }
-                    getActivity().supportInvalidateOptionsMenu();
+                    getActivity().invalidateOptionsMenu();
                 }
 
                 @Override
@@ -194,7 +195,7 @@ public class NavigationDrawerFragment extends Fragment implements
                     if (!isAdded()) {
                         return;
                     }
-                    getActivity().supportInvalidateOptionsMenu();
+                    getActivity().invalidateOptionsMenu();
                 }
             };
 

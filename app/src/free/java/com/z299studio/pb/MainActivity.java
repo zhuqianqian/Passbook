@@ -119,7 +119,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         else {
             mTitle = getString(R.string.all_accounts);
         }
-        getSupportActionBar().setTitle(mTitle);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(mTitle);
+        }
         mAds = findViewById(R.id.ad);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAds.loadAd(adRequest);
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 mMainList.editCategory();
                 break;
             case R.id.action_help:
-                uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                uri = Uri.parse(getResources().getString(R.string.link_app_help));
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 try {  startActivity(intent); }
                 catch (ActivityNotFoundException e) {
@@ -308,7 +310,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mCategoryId = id;
             mTitle = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
                      : mApp.getAccountManager().getCategory(mCategoryId).mName;
-            getSupportActionBar().setTitle(mTitle);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(mTitle);
+            }
         }
         else {
             switch(id) {
@@ -316,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                     startActivity(new Intent(this, Settings.class));
                     break;
                 case R.string.help:
-                    Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                    Uri uri = Uri.parse(getResources().getString(R.string.link_app_help));
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     try {  startActivity(intent); }
                     catch (ActivityNotFoundException e) {
@@ -531,7 +535,10 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             if(!mApp.getPassword().equals(password)) {
                 mApp.setPassword(password, false);
                 if(Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
-                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                    FingerprintDialog dialog = FingerprintDialog.build(true);
+                    if (dialog != null) {
+                        dialog.show(getSupportFragmentManager(), "dialog_fp");
+                    }
                 }
             }
         }

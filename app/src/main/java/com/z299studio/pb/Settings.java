@@ -196,6 +196,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             final SettingItem item = mItems[position];
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
+            assert inflater != null;
             View view;
             switch (item.mType) {
                 default:
@@ -210,7 +211,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                     view = inflater.inflate(R.layout.list_item_selection, parent, false);
                     break;
             }
-            TextView description = (TextView)view.findViewById(R.id.description);
+            TextView description = view.findViewById(R.id.description);
             ((TextView)view.findViewById(R.id.title)).setText(item.mTitle);
             if(item.mDescription!=null) {
                 description.setText(item.mDescription);
@@ -222,7 +223,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 }
             }
             if(item.mType == SettingItem.TYPE_SWITCH) {
-                SwitchCompat sc = (SwitchCompat)view.findViewById(R.id.switch_ctrl);
+                SwitchCompat sc = view.findViewById(R.id.switch_ctrl);
                 sc.setChecked((boolean) item.getValue());
                 view.setTag(sc);
                 sc.setOnClickListener(new View.OnClickListener() {
@@ -406,7 +407,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mListView = (ListView)findViewById(R.id.list);
+        mListView = findViewById(R.id.list);
         mListView.setAdapter(initSettings());
         mListView.setOnItemClickListener(this);
     }
@@ -558,7 +559,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         }
         else if(operation == ActionDialog.ACTION_RESET_PWD && Application.Options.mFpStatus ==
                 C.Fingerprint.ENABLED) {
-            FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+            showFingerprintDialogIfPossible();
         }
         else if(operation == ActionDialog.ACTION_AUTHENTICATE2) {
             Application.FileHeader header = Application.FileHeader.parse(mData);
@@ -678,7 +679,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             if( !app.getPassword().equals(password)) {
                 app.setPassword(password, false);
                 if(Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
-                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                    showFingerprintDialogIfPossible();
                 }
             }
         }
@@ -686,6 +687,13 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             mData = data;
             ActionDialog.create(ActionDialog.ACTION_AUTHENTICATE2).show(
                     getSupportFragmentManager(), "dialog_auth2");
+        }
+    }
+
+    private void showFingerprintDialogIfPossible() {
+        FingerprintDialog fingerprintDialog = FingerprintDialog.build(true);
+        if (fingerprintDialog != null) {
+            fingerprintDialog.show(getSupportFragmentManager(), "dialog_fp");
         }
     }
 
@@ -710,7 +718,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 break;
             case R.string.fp_title:
                 if(value) {
-                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                    showFingerprintDialogIfPossible();
                 }
                 else {
                     Application.getInstance().clearFpData();

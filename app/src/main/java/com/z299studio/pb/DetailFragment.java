@@ -92,7 +92,9 @@ public class DetailFragment extends Fragment implements
             mAccountId = savedInstanceState.getInt(C.ACCOUNT);
         }
         else {
-            mAccountId = getArguments().getInt(C.ACCOUNT);
+            if (getArguments() != null) {
+                mAccountId = getArguments().getInt(C.ACCOUNT);
+            }
         }
     }
 
@@ -107,7 +109,9 @@ public class DetailFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mList = rootView.findViewById(android.R.id.list);
         mAccount = Application.getInstance().getAccountManager().getAccountById(mAccountId);
-        mColor = ContextCompat.getColor(getContext(), COLORS[mAccount.getCategoryId() & 0x0f]);
+        if (getContext() != null) {
+            mColor = ContextCompat.getColor(getContext(), COLORS[mAccount.getCategoryId() & 0x0f]);
+        }
         setUpList();
         setupToolbar(rootView, mAccount.mProfile);
         View top = rootView.findViewById(R.id.top_frame);
@@ -170,7 +174,9 @@ public class DetailFragment extends Fragment implements
         ViewCompat.setElevation(header, elevation);
         if(rootView.findViewById(R.id.frame_box)==null) {
             MainActivity ma = (MainActivity) getActivity();
-            ma.setStatusBarColor(mColor, 200, false);
+            if (ma != null) {
+                ma.setStatusBarColor(mColor, 200, false);
+            }
         }
         toolbar.inflateMenu(R.menu.menu_detail);
         toolbar.getMenu().getItem(0).getIcon().setColorFilter(
@@ -183,7 +189,7 @@ public class DetailFragment extends Fragment implements
         if(view.getId() == R.id.fab) {
             mListener.onEdit(mAccount.getCategoryId(), mAccountId);
         }
-        else {
+        else if (getActivity() != null) {
             getActivity().onBackPressed();
         }
     }
@@ -193,7 +199,9 @@ public class DetailFragment extends Fragment implements
         if(menuItem.getItemId() == R.id.action_delete) {
             if(mListener!=null) {
                 mListener.onDelete(mAccountId);
-                getActivity().onBackPressed();
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
             }
         }
         return true;
@@ -206,7 +214,9 @@ public class DetailFragment extends Fragment implements
         if(entry.mType == AccountManager.EntryType.PASSWORD ||
                 entry.mType == AccountManager.EntryType.PIN) {
             if(Application.Options.mWarnCopyPwd) {
-                new ConfirmCopy().setListener(this).show(getFragmentManager(), "confirm_copy");
+                if (getFragmentManager() != null) {
+                    new ConfirmCopy().setListener(this).show(getFragmentManager(), "confirm_copy");
+                }
                 mEntryToCopy = entry;
             }
             else {
@@ -273,6 +283,7 @@ public class DetailFragment extends Fragment implements
                 holder = new ViewHolder();
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
+                assert inflater != null;
                 v = inflater.inflate(R.layout.account_view_item, parent, false);
 
                 holder.mName = v.findViewById(R.id.field_name);
@@ -340,10 +351,15 @@ public class DetailFragment extends Fragment implements
     }
     
     private void copyToClipboard(String label, String text) {
+        if (getActivity() == null) {
+            return;
+        }
         ClipboardManager clipboardManager = (ClipboardManager)(getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE));
         ClipData clipData = ClipData.newPlainText(label, text);
-        clipboardManager.setPrimaryClip(clipData);
-        Application.showToast(getActivity(), R.string.text_copied, Toast.LENGTH_SHORT);
+        if (clipboardManager != null) {
+            clipboardManager.setPrimaryClip(clipData);
+            Application.showToast(getActivity(), R.string.text_copied, Toast.LENGTH_SHORT);
+        }
     }
 }

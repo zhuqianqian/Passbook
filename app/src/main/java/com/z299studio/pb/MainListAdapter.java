@@ -206,6 +206,7 @@ class MainListAdapter extends BaseAdapter {
         View v;
         ViewHolder holder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         v = inflater.inflate(R.layout.account_list_item, parent, false);
         holder.mIconView = v.findViewById(R.id.item_icon);
         holder.mTextView = v.findViewById(R.id.item_name);
@@ -270,8 +271,8 @@ class MainListAdapter extends BaseAdapter {
         mListener = l;
     }
     
-    void enableAnimation(boolean enable) {
-        mAnimationEnabled = enable;
+    void disableAnimation() {
+        mAnimationEnabled = false;
     }
 
     int getItemPosition(int accountId, int startFrom) {

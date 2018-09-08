@@ -27,9 +27,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         setupToolbar();
         mNavigationDrawer = (NavigationDrawerFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationDrawer.setUp(R.id.navigation_drawer, drawerLayout);
         mMainList = (MainListFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.panel_main);
@@ -117,7 +117,10 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         else {
             mTitle = getString(R.string.all_accounts);
         }
-        getSupportActionBar().setTitle(mTitle);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar!=null) {
+            actionBar.setTitle(mTitle);
+        }
     }
 
     @Override
@@ -181,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     }
     
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         float elevation = getResources().getDimension(R.dimen.toolbar_elevation) + 0.5f;
         ViewCompat.setElevation(toolbar, elevation);
@@ -195,8 +198,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             menu.getItem(i).getIcon().setColorFilter(
                     C.ThemedColors[C.colorTextNormal], PorterDuff.Mode.SRC_ATOP);
         }
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(
-                menu.findItem(R.id.action_search));
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(this);
         return true;
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 mMainList.editCategory();
                 break;
             case R.id.action_help:
-                uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                uri = Uri.parse(getResources().getString(R.string.link_app_help));
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 try {  startActivity(intent); } 
                 catch (ActivityNotFoundException e) {
@@ -287,7 +289,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mCategoryId = id;
             mTitle = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
                      : mApp.getAccountManager().getCategory(mCategoryId).mName;
-            getSupportActionBar().setTitle(mTitle);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(mTitle);
+            }
         }
         else {
             switch(id) {
@@ -295,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                     startActivity(new Intent(this, Settings.class));
                     break;
                 case R.string.help:
-                    Uri uri = Uri.parse(getResources().getString(R.string.link_ap_help));
+                    Uri uri = Uri.parse(getResources().getString(R.string.link_app_help));
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     try {  startActivity(intent); }
                     catch (ActivityNotFoundException e) {
@@ -387,21 +391,6 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(nameChanged) {
             mMainList.updateData(AccountManager.ALL_CATEGORY_ID);
             mMainList.updateData(category);
-        }
-    }
-    
-    @Override
-    public void onDeleted(int categoryId, int count) {
-        if(categoryId == AccountManager.ALL_CATEGORY_ID) {
-            mNavigationDrawer.refreshCategoryCounters();
-            for(int id : mApp.getSortedCategoryIds()) {
-                MainListFragment.resetAdapter(id);
-            }
-        }
-        else {
-            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
-            mNavigationDrawer.increaseCounterInMenu(categoryId, -count);
-            MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
         }
     }
     
@@ -514,7 +503,10 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             if(!mApp.getPassword().equals(password)) {
                 mApp.setPassword(password, false);
                 if(Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
-                    FingerprintDialog.build(true).show(getSupportFragmentManager(), "dialog_fp");
+                    FingerprintDialog fingerprintDialog = FingerprintDialog.build(true);
+                    if (fingerprintDialog != null) {
+                        fingerprintDialog.show(getSupportFragmentManager(), "dialog_fp");
+                    }
                 }
             }
         }

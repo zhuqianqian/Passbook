@@ -62,11 +62,11 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
             mPosition = savedInstanceState.getInt("category");
         }
         rootView = inflater.inflate(R.layout.dialog_delete_category, container);
-        Button button = (Button)rootView.findViewById(R.id.ok);
+        Button button = rootView.findViewById(R.id.ok);
         button.setOnClickListener(this);
-        button = (Button)rootView.findViewById(R.id.cancel);
+        button = rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
-        Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+        Spinner spinner = rootView.findViewById(R.id.spinner);
         String[] allNames = Application.getInstance().getSortedCategoryNames();
         String[] deletableNames = new String[allNames.length-1];
         int i, j = 0;
@@ -89,7 +89,7 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(mPosition);
         spinner.setOnItemSelectedListener(this);
-        mCheckBox = (CheckBox)rootView.findViewById(R.id.checkbox);
+        mCheckBox = rootView.findViewById(R.id.checkbox);
         return rootView;
     }
     

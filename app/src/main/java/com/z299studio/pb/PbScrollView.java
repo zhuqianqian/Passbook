@@ -43,6 +43,7 @@ public class PbScrollView extends ScrollView {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressWarnings("unused")
     public PbScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }

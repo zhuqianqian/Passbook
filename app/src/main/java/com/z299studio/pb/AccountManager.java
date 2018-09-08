@@ -99,13 +99,13 @@ public class AccountManager {
         }
         
         void setAccountData(String accountData) {
-            String[] entrylist = accountData.split(ITEM_DELIMITER);
+            String[] entryList = accountData.split(ITEM_DELIMITER);
             String[] items;
-            items = entrylist[0].split(FIELD_DELIMITER, 2);
+            items = entryList[0].split(FIELD_DELIMITER, 2);
             mCategoryId = Integer.parseInt(items[0]);
             mProfile = items[1];
-            for(int i = 1; i < entrylist.length; ++i) {
-                items = entrylist[i].split(FIELD_DELIMITER, 3);
+            for(int i = 1; i < entryList.length; ++i) {
+                items = entryList[i].split(FIELD_DELIMITER, 3);
                 Entry entry = new Entry(Integer.parseInt(items[0]), items[1], items[2]);
                 mEntries.add(entry);
             }
@@ -331,14 +331,14 @@ public class AccountManager {
     
     private byte[] getCategoryBytes() {
         ArrayList<Category> categories = getCategoryList(false, false);
-        String ret = "";
+        StringBuilder ret = new StringBuilder("");
         if(categories.size() > 0) {
             for(Category c : categories) {
-                ret += String.format(Locale.ENGLISH, "%d%s%d%s%s\0", c.mId, FIELD_DELIMITER,c.mImgCode, FIELD_DELIMITER, c.mName);
+                ret.append(c.mId).append(FIELD_DELIMITER).append(c.mImgCode).append(FIELD_DELIMITER).append(c.mName);
             }
-            ret += ITEM_DELIMITER;
+            ret.append(ITEM_DELIMITER);
         }
-        return ret.getBytes();
+        return ret.toString().getBytes();
     }
     
     private ArrayList<byte[]> getAccountBytesList() {
@@ -452,15 +452,7 @@ public class AccountManager {
         }
         return result;
     }
-    
-    void removeAccount(Account account) {
-        mAccounts.set(account.mId, null);
-        ArrayList<Integer> intList = mMap.get(account.mCategoryId);
-        intList.remove(Integer.valueOf(account.mId));
-        mChanged = true;
-        mNullCount += 1;
-    }
-    
+
     public void setAccount(Account account) {
         Account previous = getAccountById(account.mId);
         if(previous.mCategoryId != account.mCategoryId) {

@@ -20,6 +20,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -50,22 +51,22 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(Application.getInstance() == null
                 || Application.getInstance().getAccountManager() == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.dialog_pwd_generator, container, false);
-        Button ok = (Button)rootView.findViewById(R.id.ok);
+        Button ok = rootView.findViewById(R.id.ok);
         ok.setOnClickListener(this);
-        mPasswordView = (TextView)rootView.findViewById(R.id.text_pwd);
+        mPasswordView = rootView.findViewById(R.id.text_pwd);
         mPasswordView.setOnClickListener(this);
-        Button button = (Button)rootView.findViewById(R.id.cancel);
+        Button button = rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
-        button = (Button)rootView.findViewById(R.id.refresh);
+        button = rootView.findViewById(R.id.refresh);
         button.setOnClickListener(this);
-        SeekBar sb = (SeekBar)rootView.findViewById(R.id.sb_length);
+        SeekBar sb = rootView.findViewById(R.id.sb_length);
         tintSeekBar(sb);
         sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
@@ -82,11 +83,11 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {	}
         });
-        mLengthTitle = (TextView)rootView.findViewById(R.id.tv_length);
+        mLengthTitle = rootView.findViewById(R.id.tv_length);
         mCheckBoxes = new CheckBox[4];
         int ids[] = {R.id.cb_uppercase, R.id.cb_lowercase, R.id.cb_digit,R.id.cb_char};
         for(int i = 0; i < mCheckBoxes.length; ++i) {
-            mCheckBoxes[i] = (CheckBox)rootView.findViewById(ids[i]);
+            mCheckBoxes[i] = rootView.findViewById(ids[i]);
         }
         if(mType == AccountManager.EntryType.PIN) {
             mCheckBoxes[0].setChecked(false);
@@ -129,14 +130,24 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
 
     private void tintSeekBar(SeekBar sb) {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable thumb = ContextCompat.getDrawable(getContext(), R.drawable.thumb);
+            if( getContext() == null) {
+                return;
+            }
             LayerDrawable progress = (LayerDrawable)ContextCompat.getDrawable(getContext(),
                     R.drawable.progress);
+            if (progress == null) {
+                return;
+            }
             progress.getDrawable(0).setColorFilter(C.ThemedColors[C.colorIconNormal],
                     PorterDuff.Mode.SRC_ATOP);
             progress.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
                     PorterDuff.Mode.SRC_ATOP);
             sb.setProgressDrawable(progress);
+
+            Drawable thumb = ContextCompat.getDrawable(getContext(), R.drawable.thumb);
+            if (thumb == null) {
+                return;
+            }
             thumb.setColorFilter(C.ThemedColors[C.colorAccent], PorterDuff.Mode.SRC_ATOP);
             sb.setThumb(thumb);
         }

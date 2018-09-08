@@ -18,15 +18,12 @@ package com.z299studio.pb;
 
 /* 
  * Constants definitions. The keys or values used through out the shared 
- * preferences and instance bundles are enumerated here. For fast input, 
- * use just 'C' as the class name.
+ * preferences and instance bundles are enumerated here.
  */
 public final class C {
-    
-    public static final int APP_VERSION = 2;
+
     public static final String ACTIVITY = "activity";
     public static final String PAGE_NUM = "page";
-    public static final String ACTION = "action";
     public static final String ACCOUNT = "account";
     public static final String CATEGORY = "category";
     

@@ -92,7 +92,7 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(SELECTION_KEY, mCategory);
         super.onSaveInstanceState(outState);
     }
@@ -167,6 +167,9 @@ public class NavigationDrawerFragment extends Fragment implements
     }
 
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+        if (getActivity() == null) {
+            return;
+        }
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
@@ -186,7 +189,7 @@ public class NavigationDrawerFragment extends Fragment implements
                     if (!isAdded()) {
                         return;
                     }
-                    getActivity().supportInvalidateOptionsMenu();
+                    getActivity().invalidateOptionsMenu();
                 }
 
                 @Override
@@ -195,7 +198,7 @@ public class NavigationDrawerFragment extends Fragment implements
                     if (!isAdded()) {
                         return;
                     }
-                    getActivity().supportInvalidateOptionsMenu();
+                    getActivity().invalidateOptionsMenu();
                 }
             };
 

@@ -54,6 +54,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.lang.ref.WeakReference;
+
 public class HomeActivity extends AppCompatActivity implements
 AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListener,
         DecryptTask.OnTaskFinishListener{
@@ -123,7 +125,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             startSync(false);
         }
         else {
-            mPwdEdit = (EditText)findViewById(R.id.password);
+            mPwdEdit = findViewById(R.id.password);
         }
     }
     
@@ -144,6 +146,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         if(mPwdEdit!=null) {
             mPwdEdit.clearFocus();
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
         }
         super.onPause();
@@ -156,13 +159,15 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             return;
         }
         if(mStage == SET_PWD) {
-            EditText et_confirm = (EditText) findViewById(R.id.confirm);
+            EditText et_confirm = findViewById(R.id.confirm);
             if(password.equals(et_confirm.getText().toString())) {
                 et_confirm.clearFocus();
-                ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(et_confirm.getWindowToken(), 0);
+                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                        imm.hideSoftInputFromWindow(et_confirm.getWindowToken(), 0);
+                }
                 mApp.setPassword(password, true);
-                new InitTask().execute();
+                new InitTask(this).execute();
             }
             else {
                 et_confirm.setText("");
@@ -204,8 +209,10 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 FingerprintDialog fpDialog = FingerprintDialog
                         .build(Application.Options.mFpStatus == C.Fingerprint.UNKNOWN);
                 if(mPwdEdit!=null && fpDialog != null) {
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(mPwdEdit.getWindowToken(), 0);
+                    }
                 }
                 if(fpDialog != null) {
                     fpDialog.show(getSupportFragmentManager(), "dialog_fp");
@@ -244,10 +251,10 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         else {
             mButtonContainer.setVisibility(View.INVISIBLE);
         }
-        mSyncText = (TextView)findViewById(R.id.sync_hint);
+        mSyncText = findViewById(R.id.sync_hint);
         mSyncText.setText(r.getString(R.string.contacting, 
                 r.getString(strRes[Application.Options.mSync])));
-        ProgressBar pb = (ProgressBar)findViewById(R.id.pb);
+        ProgressBar pb = findViewById(R.id.pb);
         if(animationOn) {
             pb.animate().alpha(1.0f).setStartDelay(300);
             mSyncText.animate().alpha(1.0f).setStartDelay(300);
@@ -269,7 +276,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPwdEdit = (EditText)findViewById(R.id.password);
+                mPwdEdit = findViewById(R.id.password);
                 popInput();
             }
             
@@ -298,6 +305,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 public void run() {
                     mPwdEdit.requestFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    assert imm != null;
                     imm.showSoftInput(mPwdEdit, InputMethodManager.SHOW_FORCED);
                 }                
             }, 100);
@@ -312,7 +320,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                     return false;
                 }
             };
-            EditText et_confirm = (EditText)findViewById(R.id.confirm);
+            EditText et_confirm = findViewById(R.id.confirm);
             if(et_confirm.getVisibility() == View.VISIBLE) {
                 mPwdEdit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
                 et_confirm.setOnEditorActionListener(eal);
@@ -325,8 +333,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
 
     @Override
     public void preExecute() {
-        Button okButton = (Button)HomeActivity.this.findViewById(R.id.unlock);
-        mProgress = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+        Button okButton = HomeActivity.this.findViewById(R.id.unlock);
+        mProgress = HomeActivity.this.findViewById(R.id.pb);
         okButton.setEnabled(false);
         mProgress.setVisibility(View.VISIBLE);
         mApp.onStart();
@@ -359,7 +367,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         
         public HomeFragment() {}
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             int layout;
             if(mStage == LOADING || mStage == SELECT_SYNC) {
@@ -372,7 +380,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             View rootView = inflater.inflate(layout, container, false);
             
             if(layout == R.layout.fragment_home) {
-                final Button unlock = (Button)rootView.findViewById(R.id.unlock); 
+                final Button unlock = rootView.findViewById(R.id.unlock);
                 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     unlock.getBackground().setColorFilter(C.ThemedColors[C.colorAccent],
                             PorterDuff.Mode.SRC_ATOP);
@@ -395,14 +403,14 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                     public void onTextChanged(CharSequence s, int start,
                             int before, int count) { }
                 };                
-                EditText password = (EditText)rootView.findViewById(R.id.password);
+                EditText password = rootView.findViewById(R.id.password);
                 password.addTextChangedListener(tw);
                 if(mStage == AUTH) {
-                    EditText confirm = (EditText)rootView.findViewById(R.id.confirm);
+                    EditText confirm = rootView.findViewById(R.id.confirm);
                     confirm.setVisibility(View.GONE);
                 }
                 else if(mStage == SET_PWD) {
-                    TextView tv = (TextView)rootView.findViewById(R.id.title);
+                    TextView tv = rootView.findViewById(R.id.title);
                     tv.setText(R.string.set_pwd);
                     unlock.setText(R.string.get_started);
                 }
@@ -503,23 +511,29 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         }
     }
 
-    private class InitTask extends AsyncTask<String, Void, String> {
+    private static class InitTask extends AsyncTask<String, Void, String> {
+
+        private WeakReference<HomeActivity> activityRef;
+
+        InitTask(HomeActivity homeActivity) {
+            this.activityRef = new WeakReference<>(homeActivity);
+        }
 
         @Override
         protected void onPreExecute() {
-            Button okButton = (Button)HomeActivity.this.findViewById(R.id.unlock);
-            ProgressBar pb = (ProgressBar)HomeActivity.this.findViewById(R.id.pb);
+            Button okButton = activityRef.get().findViewById(R.id.unlock);
+            ProgressBar pb = activityRef.get().findViewById(R.id.pb);
             okButton.setEnabled(false);
             pb.setVisibility(View.VISIBLE);
         }
         @Override
         protected String doInBackground(String... params) {
-            mApp.onStart();
-            Resources r = getResources();
+            activityRef.get().mApp.onStart();
+            Resources r = activityRef.get().getResources();
             String[] defCategories = r.getStringArray(R.array.category_names);
             int i = 0;
             AccountManager am = new AccountManager(null);
-            mApp.setAccountManager(am, -1, getString(R.string.def_category));
+            activityRef.get().mApp.setAccountManager(am, -1, activityRef.get().getString(R.string.def_category));
             for(String s : defCategories) {
                 am.addCategory(i++, s);
             }
@@ -553,8 +567,8 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         protected void onPostExecute(String result) {
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
                     || Application.Options.mFpStatus == C.Fingerprint.ENABLED
-                    || !tryUseFingerprint())  {
-                startMain();
+                    || !activityRef.get().tryUseFingerprint())  {
+                activityRef.get().startMain();
             }
         }
     }

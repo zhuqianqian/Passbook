@@ -18,6 +18,7 @@ package com.z299studio.pb;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,14 +80,14 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(Application.getInstance() == null ||
                 Application.getInstance().getAccountManager() == null) {
             return null;
         }
         View rootView = inflater.inflate(R.layout.dialog_setting_list, container, false);
-        ListView listView = (ListView)rootView.findViewById(R.id.list);
+        ListView listView = rootView.findViewById(R.id.list);
         listView.setAdapter(mAdapter = new OptionAdapter());
         ((TextView)rootView.findViewById(R.id.title)).setText(mTitle);
         listView.setOnItemClickListener(this);
@@ -129,15 +130,19 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            if (getActivity() == null) {
+                return null;
+            }
             LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
             View view;
             ViewHolder vh;
+            assert inflater != null;
             if(convertView == null) {
                 view = inflater.inflate(R.layout.setting_option, parent, false);
                 vh = new ViewHolder();
-                vh.mButton = (RadioButton)view.findViewById(R.id.radio);
-                vh.mText = (TextView)view.findViewById(android.R.id.text1);
+                vh.mButton = view.findViewById(R.id.radio);
+                vh.mText = view.findViewById(android.R.id.text1);
                 view.setTag(vh);
             }
             else {

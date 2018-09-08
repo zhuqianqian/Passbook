@@ -128,6 +128,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new NavItemHolder();
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert inflater != null;
             if(type == NavMenuItem.MENU_SEPARATOR) {
                 v = inflater.inflate(R.layout.nav_separator, parent, false);
             }
