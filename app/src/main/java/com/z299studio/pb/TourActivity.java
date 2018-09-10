@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -98,23 +97,20 @@ public class TourActivity extends FragmentActivity implements AnimatorListener{
                 invalidateOptionsMenu();
             }
         });
-        mPager.setPageTransformer(true, new ViewPager.PageTransformer(){
-            @Override
-            public void transformPage(@NonNull View view, float position) {
-                int index = (Integer) view.getTag();
-                Drawable currentDrawableInLayerDrawable;
-                currentDrawableInLayerDrawable = mBackground.getDrawable(index);
-                if(position <= -1 || position >= 1) {
-                    currentDrawableInLayerDrawable.setAlpha(0);
-                }
-                else if( position == 0 ) {
-                    currentDrawableInLayerDrawable.setAlpha(255);
-                } 
-                else { 
-                    currentDrawableInLayerDrawable.setAlpha((int)(255 - Math.abs(position*255)));
-                }
+        mPager.setPageTransformer(true, (view, position) -> {
+            int index = (Integer) view.getTag();
+            Drawable currentDrawableInLayerDrawable;
+            currentDrawableInLayerDrawable = mBackground.getDrawable(index);
+            if(position <= -1 || position >= 1) {
+                currentDrawableInLayerDrawable.setAlpha(0);
             }
-        });    
+            else if( position == 0 ) {
+                currentDrawableInLayerDrawable.setAlpha(255);
+            }
+            else {
+                currentDrawableInLayerDrawable.setAlpha((int)(255 - Math.abs(position*255)));
+            }
+        });
         if(mCurrent > 0) {
             mPager.setCurrentItem(mCurrent);
         }
@@ -216,12 +212,7 @@ public class TourActivity extends FragmentActivity implements AnimatorListener{
         mAppText.animate().alpha(0.0f).setDuration(600);
         mPager.animate().alpha(1.0f).setStartDelay(200).setDuration(500);
         mContainer.animate().alpha(1.0f).setStartDelay(200).setDuration(500);
-        mContainer.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mReady = true;
-            }            
-        }, 500);
+        mContainer.postDelayed(() -> mReady = true, 500);
     }
 
     @Override

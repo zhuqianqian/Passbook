@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -38,11 +38,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Application{
+public class Application {
     
     private static final String DATA_FILE = "data";
     private static final int APP_VERSION = 2;
@@ -410,7 +409,7 @@ public class Application{
         else {
             LayoutInflater inflater = context.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast,
-                    (ViewGroup)context.findViewById(R.id.toast_layout_root));
+                    context.findViewById(R.id.toast_layout_root));
             TextView desc = layout.findViewById(R.id.description);
             desc.setText(stringId);
             Toast toast = new Toast(context.getApplicationContext());
@@ -426,8 +425,7 @@ public class Application{
         }
         else {
             LayoutInflater inflater = context.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.toast,
-                    (ViewGroup)context.findViewById(R.id.toast_layout_root));
+            View layout = inflater.inflate(R.layout.toast, context.findViewById(R.id.toast_layout_root));
             TextView desc = layout.findViewById(R.id.description);
             desc.setText(text);
             Toast toast = new Toast(context.getApplicationContext());
@@ -455,7 +453,7 @@ public class Application{
     String[] getSortedCategoryNames() {
         if(sCategoryNames == null) {
             int size;
-            ArrayList<AccountManager.Category> categories =
+            List<AccountManager.Category> categories =
                     mAccountManager.getCategoryList(false, true);
             size = categories.size() + 1;
             sCategoryNames = new String[size];

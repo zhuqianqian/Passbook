@@ -17,6 +17,7 @@
 package com.z299studio.pb;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class DeleteCategory extends DialogFragment implements View.OnClickListen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
         if(Application.getInstance()==null
                 || Application.getInstance().getAccountManager() == null) {

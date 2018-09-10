@@ -18,245 +18,159 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.tasks.Task;
 
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-class DriveSyncService extends SyncService implements
-    ConnectionCallbacks, OnConnectionFailedListener {
-    
-    private GoogleApiClient mGoogleApiClient;
+class DriveSyncService extends SyncService {
+
+    private GoogleSignInClient mGoogleSignClient;
     private DriveId mDriveId;
+    private DriveResourceClient mDriveResourceClient;
 
     private static final String SAVED_DATA="pb-drive-data";
     private static final String LOG_TAG = "PB:DriveSyncService";
+
+    private GoogleSignInAccount mSignInAccount;
     
     @Override
     public SyncService initialize(Activity context) {
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
-            .addApi(Drive.API)
-            .addScope(Drive.SCOPE_APPFOLDER)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+                .requestScopes(Drive.SCOPE_APPFOLDER).build();
+        mGoogleSignClient = GoogleSignIn.getClient(context, gso);
+        mSignInAccount = GoogleSignIn.getLastSignedInAccount(context);
         return this;
     }
 
     @Override
-    public SyncService connect(int localVersion) {
+    public SyncService connect(Activity context, int localVersion) {
         mLocalVersion = localVersion;
-        mGoogleApiClient.connect();
+        if (mSignInAccount == null) {
+            Intent intent = mGoogleSignClient.getSignInIntent();
+            context.startActivityForResult(intent, CA.AUTH);
+        } else {
+            new Thread(()-> {
+                mDriveResourceClient = Drive.getDriveResourceClient(context, mSignInAccount);
+                read();
+            }).start();
+        }
         return this;
     }
 
     @Override
-    public void disconnect() {
-        mGoogleApiClient.disconnect();
-    }
+    public void disconnect() {  }
     
     @Override
     public void read() {
-        mDriveId.asDriveFile()
-                .open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
-                .setResultCallback(contentsResultCallback);
+        if (mDriveResourceClient == null) {
+            mListener.onSyncFailed(CA.CONNECTION);
+        }
+        final Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
+        final Query query = new Query.Builder().build();
+        appFolderTask.continueWithTask(t -> mDriveResourceClient.queryChildren(t.getResult(), query))
+                .continueWithTask(t -> {
+                    Task<DriveContents> contentsTask = null;
+                    for (Metadata metadata : t.getResult()) {
+                        if (SAVED_DATA.equalsIgnoreCase(metadata.getTitle())) {
+                            mDriveId = metadata.getDriveId();
+                            contentsTask= mDriveResourceClient.openFile(mDriveId.asDriveFile(), DriveFile.MODE_READ_ONLY);
+                            break;
+                        }
+                    }
+                    if (contentsTask == null) {
+                        return mDriveResourceClient.createContents();
+                    }
+                    return contentsTask;
+                })
+                .addOnSuccessListener(c -> {
+                    try {
+                        InputStream fis = c.getInputStream();
+                        if (fis.available() < 1) {
+                            throw new IOException();
+                        }
+                        mData = new byte[fis.available()];
+                        int totalBytesRead = fis.read(mData);
+                        fis.close();
+                        if (totalBytesRead < mData.length) {
+                            throw new IOException();
+                        }
+                        mListener.onSyncProgress(CA.DATA_RECEIVED);
+
+                    } catch (IllegalStateException | IOException e) {
+                        Log.e(LOG_TAG, "read: ", e.getCause());
+                        mListener.onSyncFailed(CA.NO_DATA);
+                    }
+                })
+                .addOnFailureListener(f -> mListener.onSyncFailed(CA.NO_DATA));
     }
     
     @Override
     public void send(byte[] data) {
-        if(data !=null) {
+        if(data != null) {
             mData = data;
-            if(mGoogleApiClient.isConnected()) {
-                if (mDriveId == null) {
-                    Drive.DriveApi.newDriveContents(mGoogleApiClient)
-                            .setResultCallback(driveContentsCallback);
-                } else {
-                    mDriveId.asDriveFile()
-                            .open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
-                            .setResultCallback(contentsResultCallbackToWrite);
-                }
+            if (mDriveResourceClient == null) {
+                mListener.onSyncFailed(CA.AUTH);
+                return;
             }
+            Task<DriveContents> contentsTask;
+            if (mDriveId == null) {
+                contentsTask = mDriveResourceClient.getAppFolder()
+                        .continueWithTask(t -> {
+                            MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                    .setTitle(SAVED_DATA)
+                                    .setMimeType("application/bin")
+                                    .build();
+                            DriveFile file = mDriveResourceClient.createFile(t.getResult(), changeSet, null).getResult();
+                            mDriveId = file.getDriveId();
+                            return mDriveResourceClient.openFile(file, DriveFile.MODE_WRITE_ONLY);
+                        });
+            } else {
+                contentsTask = mDriveResourceClient.openFile(mDriveId.asDriveFile(), DriveFile.MODE_WRITE_ONLY);
+            }
+            contentsTask
+                    .continueWithTask(t -> {
+                        DriveContents contents = t.getResult();
+                        OutputStream outputStream = contents.getOutputStream();
+                        outputStream.write(mData);
+                        return mDriveResourceClient.commitContents(contents, null);
+                    })
+                    .addOnFailureListener(e -> mListener.onSyncFailed(CA.DATA_SENT))
+                    .addOnSuccessListener(s -> mListener.onSyncProgress(CA.DATA_SENT));
         }
     }
     
     @Override
-    public boolean onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == REQ_RESOLUTION) {
-            if (resultCode == Activity.RESULT_OK) {
-                mGoogleApiClient.connect();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onSyncProgress(CA.AUTH);
-                    }});
-            }
-            else {
-                mHandler.post(new Runnable(){
-                    @Override
-                    public void run() {
-                        mListener.onSyncFailed(CA.AUTH);
-                    }});
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        mListener.onConnectionFailed(result);
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.d(LOG_TAG, "Connected");
-        DriveFolder folder = Drive.DriveApi.getAppFolder(mGoogleApiClient);
-        folder.listChildren(mGoogleApiClient).setResultCallback(childrenRetrievedCallback);
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) { }
-    
-    private ResultCallback<DriveApi.MetadataBufferResult> childrenRetrievedCallback = new
-            ResultCallback<DriveApi.MetadataBufferResult>() {
-        @Override
-        public void onResult(@NonNull DriveApi.MetadataBufferResult result) {
-            if(!result.getStatus().isSuccess()) {
-                Log.w(LOG_TAG, "Retrieving files received error");
-            }
-            else {
-                for(Metadata data : result.getMetadataBuffer()) {
-                    String fileName = data.getTitle();
-                    if(fileName != null && fileName.equalsIgnoreCase(SAVED_DATA)) {
-                        mDriveId = data.getDriveId();
-                        break;
-                    }
-                }
-            }
-            if(mDriveId!=null) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data){
+        if (requestCode == CA.AUTH) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                mSignInAccount = task.getResult(ApiException.class);
+                mDriveResourceClient = Drive.getDriveResourceClient(activity, mSignInAccount);
                 read();
-            }
-            else {
-                mListener.onSyncFailed(CA.NO_DATA);
-            }
-            result.release();
-        }
-    };
-    
-    private ResultCallback<DriveApi.DriveContentsResult> contentsResultCallback = new
-            ResultCallback<DriveApi.DriveContentsResult>() {
-        @Override
-        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
-            if(result.getStatus().isSuccess()) {
-                try {
-                    FileDescriptor file = result.getDriveContents()
-                            .getParcelFileDescriptor().getFileDescriptor();
-                    FileInputStream fis = new FileInputStream(file);
-                    mData = new byte[fis.available()];
-                    int nbr = fis.read(mData);
-                    fis.close();
-                    if(nbr < mData.length) {
-                        mListener.onSyncFailed(CA.DATA_RECEIVED);
-                        return;
-                    }
-                    mListener.onSyncProgress(CA.DATA_RECEIVED);
-                }catch(IOException e) {
-                    mListener.onSyncFailed(CA.DATA_RECEIVED);
-                    Log.w(LOG_TAG, "Reading contents received IOException");
-                }
-            }
-            else {
-                mListener.onSyncFailed(CA.NO_DATA);
-                Log.w(LOG_TAG, "Retrieving contents received error");
+            } catch (ApiException e) {
+                Log.e(LOG_TAG, "onActivityResult: ",  e);
+                mListener.onSyncFailed(CA.CONNECTION);
             }
         }
-    };
+    }
 
-    private ResultCallback<DriveApi.DriveContentsResult> contentsResultCallbackToWrite = new
-            ResultCallback<DriveApi.DriveContentsResult>() {
-        @Override
-        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
-            if(result.getStatus().isSuccess()) {
-                try {
-                    FileDescriptor file = result.getDriveContents()
-                            .getParcelFileDescriptor().getFileDescriptor();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(mData);
-                    fos.close();
-                    result.getDriveContents().commit(mGoogleApiClient, null);
-                    mListener.onSyncProgress(CA.DATA_SENT);
-                }catch(IOException e) {
-                    mListener.onSyncFailed(CA.DATA_SENT);
-                    Log.w(LOG_TAG, "Writing contents received IOException");
-                }
-            }
-            else {
-                mListener.onSyncFailed(CA.DATA_SENT);
-                Log.w(LOG_TAG, "Writing contents received error");
-            }
-        }
-    };
 
-    private ResultCallback<DriveApi.DriveContentsResult> driveContentsCallback = new
-            ResultCallback<DriveApi.DriveContentsResult>() {
-        @Override
-        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
-            if (!result.getStatus().isSuccess()) {
-                Log.w(LOG_TAG, "Error while trying to create new file contents");
-                return;
-            }
-            final DriveContents driveContents = result.getDriveContents();
-            new Thread() {
-                @Override
-                public void run() {
-                    FileDescriptor file = driveContents
-                            .getParcelFileDescriptor().getFileDescriptor();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    try {
-                        fos.write(mData);
-                        fos.close();
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, e.getMessage());
-                    }
-                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                            .setTitle(SAVED_DATA)
-                            .setMimeType("application/bin")
-                            .build();
-                    Drive.DriveApi.getAppFolder(mGoogleApiClient)
-                            .createFile(mGoogleApiClient, changeSet, driveContents)
-                            .setResultCallback(fileCreateCallback);
-                }
-            }.start();
-        }
-    };
-
-    private ResultCallback<DriveFolder.DriveFileResult> fileCreateCallback = new
-            ResultCallback<DriveFolder.DriveFileResult>() {
-        @Override
-        public void onResult(@NonNull DriveFolder.DriveFileResult result) {
-            if (!result.getStatus().isSuccess()) {
-                Log.w(LOG_TAG, "Error while trying to create the file");
-                return;
-            }
-            mDriveId = result.getDriveFile().getDriveId();
-        }
-    };
 }

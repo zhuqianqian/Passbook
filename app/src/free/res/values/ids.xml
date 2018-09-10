@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="admob_ad_unit" translatable="false">ADMOD_AD_UNIT_ID</string>
+    <string name="ad_app_id" translatable="false">ADMOB_AD_APP_ID</string>
+    <string name="admob_ad_unit" translatable="false">ADMOB_AD_UNIT_ID</string>
 </resources>

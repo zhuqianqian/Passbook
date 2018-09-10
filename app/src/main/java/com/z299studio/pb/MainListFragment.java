@@ -222,13 +222,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                 dialog = (IconSetter) getFragmentManager().findFragmentByTag("set_icon");
             }
             if(dialog!=null) {
-                dialog.setListener(new IconSetter.OnIconChosen() {
-                    @Override
-                    public void onChosen(int id) {
-                        mCategoryIcon = id;
-                        mCategoryIconView.setImageResource(
-                                Application.getThemedIcons()[mCategoryIcon]);
-                    }
+                dialog.setListener(id -> {
+                    mCategoryIcon = id;
+                    mCategoryIconView.setImageResource(
+                            Application.getThemedIcons()[mCategoryIcon]);
                 });
             }
         }
@@ -268,12 +265,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
             mAdapter = new MainListAdapter(getActivity(),
                     Application.getInstance().getAccountManager().getAccountsByCategory(mCategoryId),
                     Application.getThemedIcons(), R.drawable.pb_unknown);
-            mListView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.disableAnimation();
-                }
-            }, 100);
+            mListView.postDelayed(() -> mAdapter.disableAnimation(), 100);
             cacheAdapter(mCategoryId, mAdapter);
         }
         mAdapter.setListener(this);
@@ -358,12 +350,7 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                         Application.getInstance().getAccountManager()
                                 .getAccountsByCategory(mCategoryId),
                         Application.getThemedIcons(), R.drawable.pb_unknown);
-                mListView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.disableAnimation();
-                    }
-                }, 100);
+                mListView.postDelayed(() -> mAdapter.disableAnimation(), 100);
                 cacheAdapter(mCategoryId, mAdapter);
             }
             mAdapter.setListener(this);
@@ -437,13 +424,10 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                     return;
                 }
                 new IconSetter().setInitImage(mCategoryIcon)
-                        .setListener(new IconSetter.OnIconChosen() {
-                            @Override
-                            public void onChosen(int id) {
-                                mCategoryIcon = id;
-                                mCategoryIconView.setImageResource(
-                                        Application.getThemedIcons()[mCategoryIcon]);
-                            }
+                        .setListener(id -> {
+                            mCategoryIcon = id;
+                            mCategoryIconView.setImageResource(
+                                    Application.getThemedIcons()[mCategoryIcon]);
                         })
                         .show(getFragmentManager(), "set_icon");
                 break;
@@ -499,21 +483,18 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     public void showDeleteSnackbar(int count, final int rowHeight) {
         Snackbar.make(mLayoutRoot,
                 getResources().getQuantityString(R.plurals.info_deleted, count, count), Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int firstVisiblePos = mListView.getFirstVisiblePosition();
-                        int end = mRemoveCount - 1;
-                        View v;
-                        for(int i = end; i >= 0; --i){
-                            v = mListView.getChildAt(mToBeRemoved[i] - firstVisiblePos);
-                            if(v!=null) {
-                                mAdapter.undoDelete(v, rowHeight);
-                            }
+                .setAction(R.string.undo, view -> {
+                    int firstVisiblePos = mListView.getFirstVisiblePosition();
+                    int end = mRemoveCount - 1;
+                    View v;
+                    for(int i = end; i >= 0; --i){
+                        v = mListView.getChildAt(mToBeRemoved[i] - firstVisiblePos);
+                        if(v!=null) {
+                            mAdapter.undoDelete(v, rowHeight);
                         }
-                        mAdapter.markDeletion(mToBeRemoved, mRemoveCount, false);
-                        mRemoveCount = 0;
                     }
+                    mAdapter.markDeletion(mToBeRemoved, mRemoveCount, false);
+                    mRemoveCount = 0;
                 })
                 .show();
     }

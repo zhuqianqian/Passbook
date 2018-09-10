@@ -20,7 +20,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
@@ -31,7 +30,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,9 +39,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -226,12 +221,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 SwitchCompat sc = view.findViewById(R.id.switch_ctrl);
                 sc.setChecked((boolean) item.getValue());
                 view.setTag(sc);
-                sc.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onItemClick(null, null, position, item.mId);
-                    }
-                });
+                sc.setOnClickListener(v -> onItemClick(null, null, position, item.mId));
             }            
             return view;
         }
@@ -251,42 +241,39 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         }
     }
 
-    private ActionListener mActionListener = new ActionListener() {
-        @Override
-        public void onAction(SettingItem sender) {
-            int type = 0;
-            switch(sender.mId) {
-                case R.string.export_data:
-                    type = ActionDialog.ACTION_EXPORT;
-                    break;
-                case R.string.import_data:
-                    type = ActionDialog.ACTION_IMPORT;
-                    break;
-                case R.string.change_pwd:
-                    type = ActionDialog.ACTION_RESET_PWD;
-                    break;
-                case R.string.licence:
-                    type = ActionDialog.ACTION_LICENSE;
-                    break;
-                case R.string.credits:
-                    type = ActionDialog.ACTION_CREDITS;
-                    break;
-                case R.string.last_sync:
-                    if(Application.Options.mSync != C.Sync.NONE) {
-                        SyncService.getInstance(Application.Options.mSync)
-                                .initialize(Settings.this).setListener(Settings.this)
-                                .connect(Application.getInstance().getLocalVersion());
-                    }
-                    return;
-                case R.string.guide:
-                    Intent intent = new Intent(Settings.this, TourActivity.class);
-                    intent.putExtra(C.ACTIVITY, C.Activity.SETTINGS);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    return;
-            }
-            ActionDialog.create(type).show(getSupportFragmentManager(), TAG_DIALOG);
+    private ActionListener mActionListener = sender -> {
+        int type = 0;
+        switch(sender.mId) {
+            case R.string.export_data:
+                type = ActionDialog.ACTION_EXPORT;
+                break;
+            case R.string.import_data:
+                type = ActionDialog.ACTION_IMPORT;
+                break;
+            case R.string.change_pwd:
+                type = ActionDialog.ACTION_RESET_PWD;
+                break;
+            case R.string.licence:
+                type = ActionDialog.ACTION_LICENSE;
+                break;
+            case R.string.credits:
+                type = ActionDialog.ACTION_CREDITS;
+                break;
+            case R.string.last_sync:
+                if(Application.Options.mSync != C.Sync.NONE) {
+                    SyncService.getInstance(Application.Options.mSync)
+                            .initialize(Settings.this).setListener(Settings.this)
+                            .connect(this, Application.getInstance().getLocalVersion());
+                }
+                return;
+            case R.string.guide:
+                Intent intent = new Intent(Settings.this, TourActivity.class);
+                intent.putExtra(C.ACTIVITY, C.Activity.SETTINGS);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                return;
         }
+        ActionDialog.create(type).show(getSupportFragmentManager(), TAG_DIALOG);
     };
     
     private SettingItemAdapter mAdapter;
@@ -401,7 +388,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             v.setBackgroundColor(C.ThemedColors[C.colorPrimary]);
         }
         mShowOtherInitial = Application.Options.mShowOther;
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar(findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -455,7 +442,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     protected void onActivityResult(final int requestCode, final int resultCode, Intent data) {
         switch (requestCode) {
             case SyncService.REQ_RESOLUTION:
-                SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
+                SyncService.getInstance().onActivityResult(this, requestCode, resultCode, data);
                 break;
             case ActionDialog.REQ_CODE_FILE_SELECTION:
                 ActionDialog dialog = (ActionDialog)getSupportFragmentManager()
@@ -503,7 +490,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 }
                 else {
                     SyncService.getInstance(Application.Options.mSync).initialize(this)
-                            .setListener(this).connect(Application.getInstance().getLocalVersion());
+                            .setListener(this).connect(this, Application.getInstance().getLocalVersion());
                     mRequestingPosition += 1;  // Bad design
                 }
                 break;
@@ -608,21 +595,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 new ImportExportTask(this, mText, Application.getInstance().getPassword(),
                         mActionType, mOperation, mOption).execute();
             }
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GoogleApiAvailability.getInstance()
-                    .getErrorDialog(this,result.getErrorCode(), 0).show();
-            onSyncFailed(SyncService.CA.CONNECTION);
-            return;
-        }
-        try {
-            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            onSyncFailed(SyncService.CA.CONNECTION);
         }
     }
 

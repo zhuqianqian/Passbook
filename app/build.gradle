@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
-
     defaultConfig {
         applicationId "com.z299studio.pb"
         minSdkVersion 15
@@ -11,9 +10,7 @@ android {
         versionCode 280
         versionName "2.8.0"
     }
-
     flavorDimensions "version"
-
     productFlavors {
         paid {
             dimension "version"
@@ -24,28 +21,31 @@ android {
             applicationId "com.z299studio.pbfree"
         }
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-
     lintOptions {
         abortOnError false
     }
 }
 
 dependencies {
-    def slv ='27.1.1'
+    def slv = '27.1.1'
     def gpsv = '15.0.1'
     api "com.android.support:design:$slv"
     api "com.android.support:customtabs:$slv"
     api "com.android.support:cardview-v7:$slv"
     api "com.android.support:support-v13:$slv"
+    api 'com.google.android.gms:play-services-auth:16.0.0'
     api "com.google.android.gms:play-services-games:$gpsv"
     api "com.google.android.gms:play-services-drive:$gpsv"
     freeApi "com.google.android.gms:play-services-ads:$gpsv"
-    api "au.com.bytecode:opencsv:2.4"
+    api 'au.com.bytecode:opencsv:2.4'
 }

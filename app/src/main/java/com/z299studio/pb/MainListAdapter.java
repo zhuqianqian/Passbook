@@ -101,12 +101,7 @@ class MainListAdapter extends BaseAdapter {
         }
         if(mDeleted.get(position)) {
             final View deletedView = view;
-            view.post(new Runnable() {
-                @Override
-                public void run() {
-                    animateDeletion(deletedView, position);
-                }
-            });
+            view.post(() -> animateDeletion(deletedView, position));
         }
         holder = (ViewHolder) view.getTag();
         holder.mTextView.setText(account.getAccountName());
@@ -117,17 +112,14 @@ class MainListAdapter extends BaseAdapter {
         holder.mIconView.setBackgroundResource(background);
         holder.mIconView.setTag(position);
         final View currentView = view;
-        holder.mIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.clearAnimation();
-                v.setAnimation(FLIP1);
-                v.startAnimation(FLIP1);
-                AnimationListener listener = getAnimListener(currentView, (ImageButton) v,
-                        Integer.parseInt(v.getTag().toString()), FLIP1, FLIP2);
-                FLIP1.setAnimationListener(listener);
-                FLIP2.setAnimationListener(listener);
-            }
+        holder.mIconView.setOnClickListener(v -> {
+            v.clearAnimation();
+            v.setAnimation(FLIP1);
+            v.startAnimation(FLIP1);
+            AnimationListener listener = getAnimListener(currentView, (ImageButton) v,
+                    Integer.parseInt(v.getTag().toString()), FLIP1, FLIP2);
+            FLIP1.setAnimationListener(listener);
+            FLIP2.setAnimationListener(listener);
         });
         if(mAnimationEnabled) {
             long timestamp = System.currentTimeMillis();

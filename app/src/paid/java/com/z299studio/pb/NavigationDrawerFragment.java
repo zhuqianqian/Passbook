@@ -173,9 +173,12 @@ public class NavigationDrawerFragment extends Fragment implements
         if (mDrawerLayout != null) {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if(actionBar!=null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
+            if (getActivity() != null) {
+
+                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                }
             }
 
             mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
@@ -199,12 +202,7 @@ public class NavigationDrawerFragment extends Fragment implements
                 }
             };
 
-            mDrawerLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mDrawerToggle.syncState();
-                }
-            });
+            mDrawerLayout.post(() -> mDrawerToggle.syncState());
 
             mDrawerLayout.addDrawerListener(mDrawerToggle);
         }

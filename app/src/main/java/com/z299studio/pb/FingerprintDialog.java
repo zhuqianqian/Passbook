@@ -29,7 +29,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -108,8 +107,8 @@ public class FingerprintDialog extends DialogFragment implements View.OnClickLis
             FingerprintManager fpManager = (FingerprintManager) getContext().
                     getSystemService(Context.FINGERPRINT_SERVICE);
             mFingerprintUiHelper = FingerprintUiHelper.build(fpManager,
-                    (ImageView) rootView.findViewById(R.id.fp_icon),
-                    (TextView) rootView.findViewById(R.id.fp_area), this);
+                    rootView.findViewById(R.id.fp_icon),
+                    rootView.findViewById(R.id.fp_area), this);
         }
         return rootView;
     }

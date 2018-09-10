@@ -98,7 +98,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
         try {
             mListener = (ActionDialogListener)context;
         }
-        catch (ClassCastException e) {   }
+        catch (ClassCastException ignored) {   }
     }
     
     @Override
@@ -122,7 +122,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
     }
     
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(Application.getInstance() == null
                 || Application.getInstance().getAccountManager() == null) {

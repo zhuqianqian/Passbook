@@ -20,7 +20,6 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.TargetApi;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -38,7 +37,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +48,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.lang.ref.WeakReference;
 
@@ -264,7 +259,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             mSyncText.setAlpha(1.0f);
         }
         SyncService ss = SyncService.getInstance(Application.Options.mSync);
-        ss.initialize(this).setListener(this).connect(0);
+        ss.initialize(this).setListener(this).connect(this, 0);
     }
     
     private void startHome() {
@@ -273,13 +268,9 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             .replace(R.id.container, HomeFragment.create(), null)            
             .commit();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPwdEdit = findViewById(R.id.password);
-                popInput();
-            }
-            
+        handler.postDelayed(() -> {
+            mPwdEdit = findViewById(R.id.password);
+            popInput();
         },300);
     }
     
@@ -295,30 +286,24 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
+        SyncService.getInstance().onActivityResult(this, requestCode, resultCode, data);
     }
     
     private void popInput() {
         if(mPwdEdit!=null) {
-            mPwdEdit.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPwdEdit.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    assert imm != null;
-                    imm.showSoftInput(mPwdEdit, InputMethodManager.SHOW_FORCED);
-                }                
+            mPwdEdit.postDelayed(() -> {
+                mPwdEdit.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.showSoftInput(mPwdEdit, InputMethodManager.SHOW_FORCED);
             }, 100);
             
-            OnEditorActionListener eal = new OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView edit, int id, KeyEvent event) {
-                    if(id == EditorInfo.IME_ACTION_DONE) {
-                        onConfirm(null);
-                        return true;
-                    }
-                    return false;
+            OnEditorActionListener eal = (edit, id, event) -> {
+                if(id == EditorInfo.IME_ACTION_DONE) {
+                    onConfirm(null);
+                    return true;
                 }
+                return false;
             };
             EditText et_confirm = findViewById(R.id.confirm);
             if(et_confirm.getVisibility() == View.VISIBLE) {
@@ -440,24 +425,9 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     public void onAnimationRepeat(Animator animation) {}
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GoogleApiAvailability.getInstance()
-                    .getErrorDialog(this,result.getErrorCode(), 0).show();
-            onSyncFailed(SyncService.CA.CONNECTION);
-            return;
-        }
-        try {
-            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            onSyncFailed(SyncService.CA.CONNECTION);
-        }
-    }
-
-    @Override
     public void onSyncFailed(int errorCode) {
         mStage = SET_PWD;
-        if(errorCode== SyncService.CA.AUTH) {
+        if(errorCode == SyncService.CA.AUTH) {
             Application.Options.mSync = C.Sync.NONE;
             mApp.mSP.edit().putInt(C.Sync.SERVER, C.Sync.NONE).apply();
         }

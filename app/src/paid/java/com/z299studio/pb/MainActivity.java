@@ -18,12 +18,10 @@ package com.z299studio.pb;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,9 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 
@@ -105,12 +100,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             DeleteCategory dialog = (DeleteCategory)getSupportFragmentManager()
                     .findFragmentByTag("delete_category");
             if(dialog!=null) {
-                dialog.setListener(new DeleteCategory.OnDeleteConfirmListener() {
-                    @Override
-                    public void onConfirmed(int category, boolean alsoDelAccounts) {
-                        deleteCategory(category, alsoDelAccounts);
-                    }
-                });
+                dialog.setListener(this::deleteCategory);
             }
             mTitle = savedInstanceState.getString("pb_title");
         }
@@ -164,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         if(Application.Options.mSync != C.Sync.NONE) {
             SyncService.getInstance(Application.Options.mSync)
                     .initialize(this).setListener(this)
-                    .connect(mApp.getLocalVersion());
+                    .connect(this, mApp.getLocalVersion());
         }
     }
     
@@ -217,12 +207,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             case R.id.action_delete_category:
                 new DeleteCategory()
                         .setCategory(mCategoryId)
-                        .setListener(new DeleteCategory.OnDeleteConfirmListener() {
-                            @Override
-                            public void onConfirmed(int category, boolean alsoDelAccounts) {
-                                deleteCategory(category, alsoDelAccounts);
-                            }
-                        })
+                        .setListener(this::deleteCategory)
                         .show(getSupportFragmentManager(), "delete_category");
                 break;
             case R.id.action_edit_category:
@@ -433,22 +418,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        SyncService.getInstance().onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GoogleApiAvailability.getInstance()
-                    .getErrorDialog(this,result.getErrorCode(), 0).show();
-            onSyncFailed(SyncService.CA.CONNECTION);
-            return;
-        }
-        try {
-            result.startResolutionForResult(this, SyncService.REQ_RESOLUTION);
-        } catch (IntentSender.SendIntentException e) {
-            onSyncFailed(SyncService.CA.CONNECTION);
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+        SyncService.getInstance().onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override

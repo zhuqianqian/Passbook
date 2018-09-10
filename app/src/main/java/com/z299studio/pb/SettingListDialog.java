@@ -157,12 +157,7 @@ public class SettingListDialog extends DialogFragment implements AdapterView.OnI
                 vh.mButton.setChecked(false);
             }
             final View finalView = view;
-            vh.mButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClick(null, finalView, position, position);
-                }
-            });
+            vh.mButton.setOnClickListener(v -> onItemClick(null, finalView, position, position));
             return view;
         }
         

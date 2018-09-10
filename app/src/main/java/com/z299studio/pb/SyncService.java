@@ -40,7 +40,6 @@ abstract class SyncService {
     }
     
     interface SyncListener {
-        void onConnectionFailed(@NonNull ConnectionResult result);
         void onSyncFailed(int errorCode);
         void onSyncProgress(int actionCode);
     }
@@ -73,7 +72,7 @@ abstract class SyncService {
     
     public abstract SyncService initialize(Activity context);
     
-    public abstract SyncService connect(int localVersion);
+    public abstract SyncService connect(Activity context, int localVersion);
     
     public abstract void disconnect();
     
@@ -90,6 +89,6 @@ abstract class SyncService {
         return this;
     }
     
-    public abstract boolean onActivityResult(int requestCode, int resultCode, Intent data);
+    public abstract void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data);
 
 }

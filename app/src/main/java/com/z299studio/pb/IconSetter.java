@@ -24,7 +24,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -71,12 +70,9 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
         }
         GridView gridView = rootView.findViewById(R.id.icon);
         gridView.setAdapter(imageAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                mImg = pos;
-                imageAdapter.checkItem(view, pos);
-            }
+        gridView.setOnItemClickListener((parent, view, pos, id) -> {
+            mImg = pos;
+            imageAdapter.checkItem(view, pos);
         });
         
         return rootView;
