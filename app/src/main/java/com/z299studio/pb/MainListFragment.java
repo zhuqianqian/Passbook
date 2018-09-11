@@ -276,11 +276,6 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
         mToBeRemoved = new int[mAdapter.getCount()];
         mFab = rootView.findViewById(R.id.fab);
         mFab.setOnClickListener(this);
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            LayerDrawable background = (LayerDrawable) mFab.getBackground();
-            background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
-                    PorterDuff.Mode.SRC_ATOP);
-        }
 
         mCategoryEditView = rootView.findViewById(R.id.category_editor);
         EditText editCategoryName = rootView.findViewById(R.id.category_name);

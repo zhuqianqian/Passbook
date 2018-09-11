@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    def slv = '27.1.1'
+    def slv = '28.0.0-rc02'
     def gpsv = '15.0.1'
     api "com.android.support:design:$slv"
     api "com.android.support:customtabs:$slv"

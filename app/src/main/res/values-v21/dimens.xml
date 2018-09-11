@@ -3,7 +3,6 @@
     <dimen name="card_padding">4dp</dimen>
     <dimen name="window_elevation">8dp</dimen>
     <dimen name="fab_small">40dp</dimen>
-    <dimen name="fab_small_margin">-20dp</dimen>
     <dimen name="fab">56dp</dimen>
     <dimen name="fab_margin">-28dp</dimen>
 

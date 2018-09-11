@@ -160,11 +160,7 @@ public class DetailFragment extends Fragment implements
         close.setOnClickListener(this);
         View header = rootView.findViewById(R.id.header);
         ImageButton fab = rootView.findViewById(R.id.fab);
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            LayerDrawable background = (LayerDrawable) fab.getBackground();
-            background.getDrawable(1).setColorFilter(C.ThemedColors[C.colorAccent],
-                    PorterDuff.Mode.SRC_ATOP);
-        }
+
         fab.setOnClickListener(this);
         header.setBackgroundColor(mColor);
         titleView = rootView.findViewById(android.R.id.title);
