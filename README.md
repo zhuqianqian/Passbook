@@ -1,4 +1,5 @@
-#Passbook - A better password tool#
+### Passbook - A better password tool
+
 [![Build Status][travis-image]][travis-url]  [![Dependency Status][dependency-image]][dependency-url]  [![API][api-image]][api-url]
 
 Passbook runs on Android 4.0+  and helps you to manage sensitive data securely with delightful Material experience[<sup>1</sup>](#note1) and powerful features.

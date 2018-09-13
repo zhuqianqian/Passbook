@@ -42,7 +42,7 @@ class GameSyncService extends SyncService {
 
     @Override
     public SyncService initialize(Activity context) {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestScopes(Drive.SCOPE_APPFOLDER)
                 //.requestScopes(Games.SCOPE_GAMES)
                 .build();
