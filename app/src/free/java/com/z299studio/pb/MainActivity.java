@@ -411,6 +411,21 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mMainList.updateData(category);
         }
     }
+
+    @Override
+    public void onDeleted(int categoryId, int count) {
+        if(categoryId == AccountManager.ALL_CATEGORY_ID) {
+            mNavigationDrawer.refreshCategoryCounters();
+            for(int id : mApp.getSortedCategoryIds()) {
+                MainListFragment.resetAdapter(id);
+            }
+        }
+        else {
+            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
+            mNavigationDrawer.increaseCounterInMenu(categoryId, -count);
+            MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
+        }
+    }
     
     @Override
     public void onCategorySaved() {

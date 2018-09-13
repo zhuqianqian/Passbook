@@ -442,8 +442,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                  Application.Options.mSync == C.Sync.GDRIVE ? 
                      r.getString(R.string.sync_gdrive) : r.getString(R.string.sync_gpg)));
             mApp.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
-        }
-        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+        } else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             byte[] data = SyncService.getInstance().requestData();
             Application.getInstance().onSyncSucceed();
             Application.FileHeader fh = Application.FileHeader.parse(data);

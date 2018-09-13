@@ -40,3 +40,7 @@ proguard/
 # Android libs
 /libs/android-support-v4.jar
 /libs/android-support-v13.jar
+
+#Android Studio output
+*/free/release/
+*/paid/release/

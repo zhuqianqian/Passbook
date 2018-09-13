@@ -448,6 +448,14 @@ public class AccountManager {
         return result;
     }
 
+    void removeAccount(Account account) {
+        mAccounts.set(account.mId, null);
+        ArrayList<Integer> intList = mMap.get(account.mCategoryId);
+        intList.remove(Integer.valueOf(account.mId));
+        mChanged = true;
+        mNullCount += 1;
+    }
+
     public void setAccount(Account account) {
         Account previous = getAccountById(account.mId);
         if(previous.mCategoryId != account.mCategoryId) {

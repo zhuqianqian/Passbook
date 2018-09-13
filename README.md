@@ -74,8 +74,8 @@ Passbook is licensed under [Apache License 2.0](LICENSE).
 [travis-url]: https://travis-ci.org/zhuqianqian/Passbook 
 [travis-image]: https://travis-ci.org/zhuqianqian/Passbook.svg?branch=master
 
-[dependency-url]: https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2
-[dependency-image]:https://www.versioneye.com/user/projects/586240ce44ae0d0050ad34e2/badge.svg?style=flat-square
+[dependency-url]:https://snyk.io/test/github/zhuqianqian/Passbook?targetFile=app%2Fbuild.gradle
+[dependency-image]:https://snyk.io/test/github/zhuqianqian/Passbook/badge.svg?targetFile=app%2Fbuild.gradle
 
 [api-url]:https://android-arsenal.com/api?level=14
 [api-image]:https://img.shields.io/badge/API-14%2B-blue.svg?style=flat

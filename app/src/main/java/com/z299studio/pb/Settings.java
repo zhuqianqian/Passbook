@@ -447,7 +447,9 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             case ActionDialog.REQ_CODE_FILE_SELECTION:
                 ActionDialog dialog = (ActionDialog)getSupportFragmentManager()
                         .findFragmentByTag(TAG_DIALOG);
-                dialog.onFileSelected(this, resultCode, data);
+                if (dialog != null) {
+                    dialog.onFileSelected(this, resultCode, data);
+                }
                 Application.getInstance().ignoreNextPause();
                 break;
         }
@@ -608,8 +610,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         app.mSP.edit().putInt(C.Sync.SERVER, Application.Options.mSync).apply();
         if(actionCode == SyncService.CA.AUTH) {
             app.ignoreNextPause();
-        }
-        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+        } else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             time = app.onSyncSucceed();
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
@@ -622,8 +623,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
             if(fh.revision != Application.Options.mSyncVersion) {
                 app.onVersionUpdated(fh.revision);
             }
-        }
-        else if(actionCode == SyncService.CA.DATA_SENT) {
+        } else if(actionCode == SyncService.CA.DATA_SENT) {
             time = app.onSyncSucceed();
             Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
             app.onVersionUpdated(app.getLocalVersion());

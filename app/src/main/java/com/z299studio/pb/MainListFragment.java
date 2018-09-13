@@ -19,8 +19,6 @@ package com.z299studio.pb;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -490,6 +488,16 @@ implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
                     }
                     mAdapter.markDeletion(mToBeRemoved, mRemoveCount, false);
                     mRemoveCount = 0;
+                })
+                .addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        if(mRemoveCount > 0) {
+                            mAdapter.doDelete(mToBeRemoved, mRemoveCount);
+                            mListener.onDeleted(mCategoryId, mRemoveCount);
+                            mRemoveCount = 0;
+                        }
+                    }
                 })
                 .show();
     }

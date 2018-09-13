@@ -402,6 +402,22 @@ class MainListAdapter extends BaseAdapter {
             mDeleted.set(indices[i], delete);
         }
     }
+
+    void doDelete(int [] indices, int total) {
+        int end = total - 1;
+        AccountManager am = Application.getInstance().getAccountManager();
+        int pos;
+        for(int i = end; i >= 0; --i) {
+            pos = indices[i];
+            am.removeAccount(mEntries.get(pos));
+            mEntries.remove(pos);
+            mIcons.remove(pos);
+            mChecked.remove(pos);
+            mDeleted.remove(pos);
+        }
+        this.disableAnimation();
+        this.notifyDataSetChanged();
+    }
     
     void markAll(ListView listView) {
         int firstVisible = listView.getFirstVisiblePosition();

@@ -86,7 +86,7 @@ class ImportExportTask extends AsyncTask<String, Void, String> {
                 fis.close();
                 Application.FileHeader header = Application.FileHeader.parse(buffer);
                 if(header.valid) {
-                    AccountManager am = Application.decrypt(new Crypto(), mPassword, header, buffer);
+                    AccountManager am = Application.decrypt(new Crypto(header.iterationCount), mPassword, header, buffer);
                     process(am);
                     result = mFilePath;
                 }

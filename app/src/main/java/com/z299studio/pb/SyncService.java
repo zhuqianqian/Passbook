@@ -23,6 +23,9 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /*
  * Abstract class for synchronization, as other sync service may be used in 
  * upcoming versions (like Dropbox?).
@@ -45,11 +48,12 @@ abstract class SyncService {
     }
     
     private static SyncService __instance;
-    
+
+    protected ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+
     protected SyncListener mListener;
     int mLocalVersion;
     byte[] mData;
-    Handler mHandler = new Handler();
     
     public static SyncService getInstance(int server) {
         if(__instance!=null) {

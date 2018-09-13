@@ -45,7 +45,11 @@ class Crypto {
     private int mIterationCount;
 
     Crypto () {
-        mIterationCount = 800;
+        mIterationCount = 1600;
+    }
+
+    Crypto (int iteration) {
+        mIterationCount = iteration;
     }
 
     int getIterationCount() { return mIterationCount; }

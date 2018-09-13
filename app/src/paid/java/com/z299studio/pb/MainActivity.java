@@ -378,7 +378,22 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             mMainList.updateData(category);
         }
     }
-    
+
+    @Override
+    public void onDeleted(int categoryId, int count) {
+        if(categoryId == AccountManager.ALL_CATEGORY_ID) {
+            mNavigationDrawer.refreshCategoryCounters();
+            for(int id : mApp.getSortedCategoryIds()) {
+                MainListFragment.resetAdapter(id);
+            }
+        }
+        else {
+            mNavigationDrawer.increaseCounterInMenu(AccountManager.ALL_CATEGORY_ID, -count);
+            mNavigationDrawer.increaseCounterInMenu(categoryId, -count);
+            MainListFragment.resetAdapter(AccountManager.ALL_CATEGORY_ID);
+        }
+    }
+
     @Override
     public void onCategorySaved() {
         Application.reset();
@@ -434,8 +449,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     public void onSyncProgress(int actionCode) {
         if(actionCode == SyncService.CA.AUTH) {
             mApp.ignoreNextPause();
-        }
-        else if(actionCode == SyncService.CA.DATA_RECEIVED) {
+        } else if(actionCode == SyncService.CA.DATA_RECEIVED) {
             mApp.onSyncSucceed();
             byte[] data = SyncService.getInstance().requestData();
             Application.FileHeader fh = Application.FileHeader.parse(data);
@@ -448,8 +462,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             if(fh.revision != Application.Options.mSyncVersion) {
                 mApp.onVersionUpdated(fh.revision);
             }
-        }
-        else if(actionCode == SyncService.CA.DATA_SENT) {
+        } else if(actionCode == SyncService.CA.DATA_SENT) {
             mApp.onSyncSucceed();
             Application.showToast(this, R.string.sync_success_server, Toast.LENGTH_SHORT);
             mApp.onVersionUpdated(mApp.getLocalVersion());

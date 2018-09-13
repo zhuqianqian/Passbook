@@ -65,7 +65,7 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
         button = rootView.findViewById(R.id.cancel);
         button.setOnClickListener(this);
         final ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-        if(mImg > 0) {
+        if(mImg >= 0) {
             imageAdapter.checkItem(null, mImg);
         }
         GridView gridView = rootView.findViewById(R.id.icon);
@@ -79,7 +79,7 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
     }
     
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("img_code", mImg);
         super.onSaveInstanceState(outState);
     }
@@ -114,10 +114,10 @@ public class IconSetter extends DialogFragment implements View.OnClickListener {
         }
         
         void checkItem(View view, int pos) {
-            if(mCheckedView!=null) {
+            if(mCheckedView != null) {
                 mCheckedView.setBackgroundResource(R.drawable.oval_button);
             }
-            if(view !=null) {
+            if(view != null) {
                 mCheckedView = (ImageView)view;
                 mCheckedView.setBackgroundResource(R.drawable.oval);
                 mCheckedView.getBackground().setColorFilter(C.ThemedColors[C.colorAccent],

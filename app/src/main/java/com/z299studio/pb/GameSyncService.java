@@ -62,6 +62,7 @@ class GameSyncService extends SyncService {
                 if (task.isSuccessful()) {
                     mSignInAccount = task.getResult();
                     mSnapshotClient = Games.getSnapshotsClient(context, mSignInAccount);
+                    mExecutorService.submit(this::read);
                 } else {
                     context.startActivityForResult(mGoogleSignClient.getSignInIntent(), CA.AUTH);
                 }
@@ -90,7 +91,11 @@ class GameSyncService extends SyncService {
                 .addOnFailureListener(t -> mListener.onSyncFailed(CA.NO_DATA))
                 .addOnCompleteListener(t -> {
                     mData = t.getResult();
-                    mListener.onSyncProgress(CA.DATA_RECEIVED);
+                    if (mData.length < 1) {
+                        mListener.onSyncFailed(CA.NO_DATA);
+                    } else {
+                        mListener.onSyncProgress(CA.DATA_RECEIVED);
+                    }
                 });
     }
     
@@ -121,6 +126,8 @@ class GameSyncService extends SyncService {
             try {
                 mSignInAccount = task.getResult(ApiException.class);
                 mSnapshotClient = Games.getSnapshotsClient(activity, mSignInAccount);
+                mListener.onSyncProgress(CA.AUTH);
+                read();
             } catch (ApiException e) {
                 mListener.onSyncFailed(CA.CONNECTION);
             }

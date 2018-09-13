@@ -36,7 +36,7 @@ class DecryptTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         try {
             if(mData!=null) {
-                mCrypto = new Crypto();
+                mCrypto = new Crypto(mHeader.iterationCount);
                 int total = mHeader.keyLength + mHeader.ivLength;
                 mPassword = params[0];
                 mCrypto.setPassword(params[0], mData, mHeader.size, total);

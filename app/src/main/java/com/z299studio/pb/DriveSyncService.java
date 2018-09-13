@@ -39,6 +39,8 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class DriveSyncService extends SyncService {
 
@@ -50,6 +52,7 @@ class DriveSyncService extends SyncService {
     private static final String LOG_TAG = "PB:DriveSyncService";
 
     private GoogleSignInAccount mSignInAccount;
+
     
     @Override
     public SyncService initialize(Activity context) {
@@ -67,10 +70,8 @@ class DriveSyncService extends SyncService {
             Intent intent = mGoogleSignClient.getSignInIntent();
             context.startActivityForResult(intent, CA.AUTH);
         } else {
-            new Thread(()-> {
-                mDriveResourceClient = Drive.getDriveResourceClient(context, mSignInAccount);
-                read();
-            }).start();
+            mDriveResourceClient = Drive.getDriveResourceClient(context, mSignInAccount);
+            mExecutorService.submit(this::read);
         }
         return this;
     }
@@ -164,6 +165,7 @@ class DriveSyncService extends SyncService {
             try {
                 mSignInAccount = task.getResult(ApiException.class);
                 mDriveResourceClient = Drive.getDriveResourceClient(activity, mSignInAccount);
+                mListener.onSyncProgress(CA.AUTH);
                 read();
             } catch (ApiException e) {
                 Log.e(LOG_TAG, "onActivityResult: ",  e);
