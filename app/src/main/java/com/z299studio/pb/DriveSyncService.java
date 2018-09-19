@@ -56,7 +56,7 @@ class DriveSyncService extends SyncService {
     
     @Override
     public SyncService initialize(Activity context) {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(Drive.SCOPE_APPFOLDER).build();
         mGoogleSignClient = GoogleSignIn.getClient(context, gso);
         mSignInAccount = GoogleSignIn.getLastSignedInAccount(context);

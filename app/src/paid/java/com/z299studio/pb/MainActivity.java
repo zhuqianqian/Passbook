@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
                 .setCustomAnimations(R.anim.slide_in_bottom, 0, 0, R.anim.slide_out_bottom)
                 .replace(R.id.detail_panel, DetailFragment.create(id), "detail")
                 .addToBackStack("detail")
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     @Override
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
         }
         ft.replace(R.id.detail_panel, EditFragment.create(categoryId, accountId), "edit")
                 .addToBackStack("edit")
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     @Override

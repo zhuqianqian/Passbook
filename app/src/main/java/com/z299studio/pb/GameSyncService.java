@@ -80,7 +80,7 @@ class GameSyncService extends SyncService {
         if (mSnapshotClient == null) {
             mListener.onSyncFailed(CA.CONNECTION);
         }
-        mSnapshotClient.open(SAVED_DATA, true)
+        mSnapshotClient.open(SAVED_DATA, true, SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED)
                 .continueWith((task) -> {
                     Snapshot snapshot = task.getResult().getData();
                     if (snapshot != null) {

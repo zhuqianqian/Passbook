@@ -93,7 +93,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                 mStage = AUTH;
             }
             getSupportFragmentManager().beginTransaction().add(R.id.container,
-                HomeFragment.create()).commit();
+                HomeFragment.create()).commitAllowingStateLoss();
         }
         else {
             mStage = savedInstanceState.getInt("home_stage");
@@ -266,7 +266,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
         getSupportFragmentManager().beginTransaction()                        
             .setCustomAnimations(R.anim.expand_from_right, R.anim.collapse_to_left)
             .replace(R.id.container, HomeFragment.create(), null)            
-            .commit();
+            .commitAllowingStateLoss();
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             mPwdEdit = findViewById(R.id.password);
