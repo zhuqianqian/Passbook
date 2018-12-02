@@ -210,7 +210,7 @@ class MainListAdapter extends BaseAdapter {
                 boolean checking = mChecked.get(position);
                 AccountManager.Account account = mEntries.get(position);
                 int srcId = checking ? mIcons.get(position) : R.drawable.checkmark;
-                button.setPressed(!checking);
+                button.setSelected(!checking);
                 if(anim == prev) {
                     String iconUrl = checking ? account.getIconUrl() : null;
                     Picasso.get().load(iconUrl).placeholder(srcId)

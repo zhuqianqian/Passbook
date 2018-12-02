@@ -19,6 +19,8 @@ package com.z299studio.pb;
 import android.net.Uri;
 import android.util.SparseArray;
 
+import com.google.android.gms.common.util.Strings;
+
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,7 +128,7 @@ public class AccountManager {
 
         private String getFaviconUrl(String value) {
             Uri uri = Uri.parse(value);
-            if ("https".equalsIgnoreCase(uri.getScheme())) {
+            if (Strings.isEmptyOrWhitespace(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) {
                 return "http://" + uri.getHost() + "/favicon.ico";
             }
             return uri.getScheme() + "://" + uri.getHost() + "/favicon.ico";

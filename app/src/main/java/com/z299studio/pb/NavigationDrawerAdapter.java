@@ -110,11 +110,12 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     }
 
     void selectItem(View view, int position) {
-        if(mSelected!=null) {
+        if(mSelected != null) {
             mSelected.mIconView.setColorFilter(mIconColor);
         }
-        if(view!=null) {
+        if(view != null) {
             mSelected = (NavItemHolder)view.getTag();
+            mSelected.mIconView.setColorFilter(mTintColor);
         }
         mSelection = position;
     }
