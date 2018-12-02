@@ -7,9 +7,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="link_app_help">https://github.com/zhuqianqian/Passbook/wiki/passbook-help</string>
 
-    <string name="cc_xcx">Xuechen Xu</string>
-    <string name="cc_yhc">Yonghui Chen</string>
-    <string name="cc_qqz">Qianqian Zhu</string>
+    <string name="cc_xcx">Xu, Xuechen</string>
+    <string name="cc_yhc">Chen, Yonghui</string>
+    <string name="cc_qqz">Zhu, Qianqian</string>
     <string name="cc_jh">José Herrera</string>
 
     <string name="lang_zhcn">简体中文</string>

@@ -17,6 +17,10 @@
 package com.z299studio.pb;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +32,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,7 +50,6 @@ class MainListAdapter extends BaseAdapter {
     }
 
     private static final long TIME_INTERVAL = 50;
-    private static int COLORS[];
     private static Animation FLIP1, FLIP2;
 
     private ArrayList<AccountManager.Account> mEntries;
@@ -70,18 +75,8 @@ class MainListAdapter extends BaseAdapter {
     }
 
     private void prepareResources() {
-        if(COLORS == null) {
-            COLORS = new int[] {
-//When Android 4.0.x is not supported, the drawables can be created dynamically to setBackground
-                    R.drawable.oval_00, R.drawable.oval_01, R.drawable.oval_02, R.drawable.oval_03,
-                    R.drawable.oval_04, R.drawable.oval_05, R.drawable.oval_06, R.drawable.oval_07,
-                    R.drawable.oval_08, R.drawable.oval_09, R.drawable.oval_0a, R.drawable.oval_0b,
-                    R.drawable.oval_0c, R.drawable.oval_0d, R.drawable.oval_0e, R.drawable.oval_0f
-            };
-
-            FLIP1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
-            FLIP2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
-        }
+        FLIP1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
+        FLIP2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
     }
 
     @Override
@@ -89,28 +84,28 @@ class MainListAdapter extends BaseAdapter {
         View view = convertView;
         ViewHolder holder;
         AccountManager.Account account = mEntries.get(position);
-        boolean status = mChecked.get(position);
+        boolean checked = mChecked.get(position);
         if (convertView == null) {
             view = inflate(parent);
         }
-        else{
+        else {
             holder = (ViewHolder) view.getTag();
             if(holder.mInflate) {
                 view = inflate(parent);
             }
         }
-        if(mDeleted.get(position)) {
+        if (mDeleted.get(position)) {
             final View deletedView = view;
             view.post(() -> animateDeletion(deletedView, position));
         }
         holder = (ViewHolder) view.getTag();
         holder.mTextView.setText(account.getAccountName());
-        int srcId = status ? R.drawable.checkmark : mIcons.get(position);
-        holder.mIconView.setImageResource(srcId);
-        int background = status ? R.drawable.oval_selected :
-                COLORS[account.getCategoryId() & 0x0f];
-        holder.mIconView.setBackgroundResource(background);
+        holder.mIconView.setPressed(checked);
         holder.mIconView.setTag(position);
+        int srcId = checked ? R.drawable.checkmark : mIcons.get(position);
+        String iconUrl = checked ? null : account.getIconUrl();
+        Picasso.get().load(iconUrl).placeholder(srcId)
+                .transform(new CircleTransform()).fit().into(holder.mIconView);
         final View currentView = view;
         holder.mIconView.setOnClickListener(v -> {
             v.clearAnimation();
@@ -141,7 +136,7 @@ class MainListAdapter extends BaseAdapter {
             }
             view.startAnimation(animation);
         }
-        view.setActivated(status);
+        view.setActivated(checked);
         mLastPosition = position;
         return view;
     }
@@ -212,21 +207,22 @@ class MainListAdapter extends BaseAdapter {
         return new AnimationListener() {
             @Override
             public void onAnimationStart(Animation anim) {
-                boolean status = mChecked.get(position);
-                int srcId = status ? mIcons.get(position) : R.drawable.checkmark;
-                int bkg = status ? COLORS[mEntries.get(position).getCategoryId() & 0x0f]
-                        : R.drawable.oval_selected;
+                boolean checking = mChecked.get(position);
+                AccountManager.Account account = mEntries.get(position);
+                int srcId = checking ? mIcons.get(position) : R.drawable.checkmark;
+                button.setPressed(!checking);
                 if(anim == prev) {
-                    button.setImageResource(srcId);
-                    button.setBackgroundResource(bkg);
+                    String iconUrl = checking ? account.getIconUrl() : null;
+                    Picasso.get().load(iconUrl).placeholder(srcId)
+                            .fit().transform(new CircleTransform()).into(button);
                     button.clearAnimation();
                     button.setAnimation(next);
                     button.startAnimation(next);
                 } else {
-                    mChecked.set(position, !status);
+                    mChecked.set(position, !checking);
                     checkCount(position);
-                    setActionMode(!status);
-                    view.setActivated(!status);
+                    setActionMode(!checking);
+                    view.setActivated(!checking);
                 }
             }
 
@@ -447,8 +443,7 @@ class MainListAdapter extends BaseAdapter {
         }
     }
     
-    int moveData(int categoryId) {
-        int result = 0;
+    void moveData(int categoryId) {
         AccountManager.Account account;
         boolean marked;
         AccountManager am = Application.getInstance().getAccountManager();
@@ -457,13 +452,45 @@ class MainListAdapter extends BaseAdapter {
             marked = mChecked.get(i);
             if(marked && account.getCategoryId() != categoryId) {
                 am.moveAccount(categoryId, account);
-                result++;
             }
             else if(!marked && account.getCategoryId()==categoryId) {
                 am.moveAccount(AccountManager.DEFAULT_CATEGORY_ID, account);
-                result++;
             }
         }
-        return result;        
+    }
+
+    public class CircleTransform implements com.squareup.picasso.Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap,
+                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
     }
 }

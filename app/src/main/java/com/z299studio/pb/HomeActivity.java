@@ -275,7 +275,6 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
     }
     
     public void startMain() {
-        System.gc();
         Application.reset();
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         mApp.ignoreNextPause();
@@ -513,7 +512,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
             TypedArray defAccountData = r.obtainTypedArray(R.array.def_account_data);
             int[] dataDetails;
             AccountManager.Account a;
-            for(i = 0; i < defAccountNames.length; ++i) {
+            for (i = 0; i < defAccountNames.length; ++i) {
                 dataDetails = r.getIntArray(defAccountData.getResourceId(i, 0));
                 a = am.newAccount(dataDetails[0]);
                 a.mProfile = defAccountNames[i];
@@ -522,7 +521,7 @@ AnimatorListener, SyncService.SyncListener, FingerprintDialog.FingerprintListene
                         a.addEntry(defTypes[dataDetails[j + 2]],
                                 defNames[dataDetails[j]],
                                 defValues[dataDetails[j + 1]]);
-                    }catch(ArrayIndexOutOfBoundsException e) {
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         Log.e("Passbook", "This should really not happen.");
                     }
                 }

@@ -16,6 +16,7 @@
 
 package com.z299studio.pb;
 
+import android.net.Uri;
 import android.util.SparseArray;
 
 import java.text.Collator;
@@ -58,6 +59,12 @@ public class AccountManager {
     }
 
     public class Account {
+
+        private String mIconUrl;
+
+        public String getIconUrl() {
+            return mIconUrl;
+        }
 
         class Entry {
             int mType;
@@ -113,8 +120,16 @@ public class AccountManager {
             for(int i = 1; i < entryList.length; ++i) {
                 items = entryList[i].split(FIELD_DELIMITER, 3);
                 Entry entry = new Entry(Integer.parseInt(items[0]), items[1], items[2]);
-                mEntries.add(entry);
+                addEntry(entry);
             }
+        }
+
+        private String getFaviconUrl(String value) {
+            Uri uri = Uri.parse(value);
+            if ("https".equalsIgnoreCase(uri.getScheme())) {
+                return "http://" + uri.getHost() + "/favicon.ico";
+            }
+            return uri.getScheme() + "://" + uri.getHost() + "/favicon.ico";
         }
 
         ArrayList<Entry> getEntryList() {
@@ -129,18 +144,19 @@ public class AccountManager {
             }
         }
 
-        int addEntry(Entry entry) {
+        void addEntry(Entry entry) {
             if(mEntries == null) {
                 mEntries = new ArrayList<> ();
             }
             mEntries.add(entry);
-            return 0;
+            if (entry.mType == EntryType.WEBADDR && entry.mValue != null) {
+                this.mIconUrl = getFaviconUrl(entry.mValue);
+            }
         }
 
-        int addEntry(int type, String name, String value) {
+        void addEntry(int type, String name, String value) {
             Entry entry = new Entry(type, name, value);
             mEntries.add(entry);
-            return 0;
         }
 
         public ArrayList<Entry> getAccount() {

@@ -292,7 +292,9 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     @Override
     public void onNavigationDrawerItemSelected(int type, int id) {
         if(type == NavigationDrawerAdapter.NavMenuItem.MENU_SELECTION) {
-            mMainList.selectCategory(id, false);
+            if (mMainList != null) {
+                mMainList.selectCategory(id, false);
+            }
             mCategoryId = id;
             mTitle = id == AccountManager.ALL_CATEGORY_ID ? getString(R.string.all_accounts)
                      : mApp.getAccountManager().getCategory(mCategoryId).mName;

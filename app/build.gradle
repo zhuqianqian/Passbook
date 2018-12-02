@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.z299studio.pb"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 281
-        versionName "2.8.1"
+        versionCode 290
+        versionName "2.9.0"
     }
     flavorDimensions "version"
     productFlavors {
@@ -37,15 +37,16 @@ android {
 }
 
 dependencies {
-    def slv = '28.0.0-rc02'
-    def gpsv = '15.0.1'
-    api "com.android.support:design:$slv"
-    api "com.android.support:customtabs:$slv"
-    api "com.android.support:cardview-v7:$slv"
-    api "com.android.support:support-v13:$slv"
-    api 'com.google.android.gms:play-services-auth:16.0.0'
-    api "com.google.android.gms:play-services-games:$gpsv"
-    api "com.google.android.gms:play-services-drive:$gpsv"
+    def slv = '28.0.0'
+    def gpsv = '16.0.0'
+    implementation "com.android.support:design:$slv"
+    implementation "com.android.support:customtabs:$slv"
+    implementation "com.android.support:cardview-v7:$slv"
+    implementation "com.android.support:support-v13:$slv"
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation "com.google.android.gms:play-services-games:$gpsv"
+    implementation "com.google.android.gms:play-services-drive:$gpsv"
     freeApi "com.google.android.gms:play-services-ads:$gpsv"
-    api 'au.com.bytecode:opencsv:2.4'
+    implementation 'au.com.bytecode:opencsv:2.4'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

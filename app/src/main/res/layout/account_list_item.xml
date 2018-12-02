@@ -12,7 +12,9 @@
 	    android:layout_marginLeft="@dimen/navigation_icon_margin"
         android:layout_centerVertical="true"
         android:gravity="center"
-	    android:contentDescription="@null"/>
+		android:background="@drawable/oval_button"
+	    android:contentDescription="@null"
+		android:layout_marginStart="@dimen/navigation_icon_margin" />
 	
 	<TextView android:id="@+id/item_name"
 	    android:gravity="center_vertical"
@@ -21,5 +23,7 @@
         android:layout_height="@dimen/main_list_height"
 	    android:layout_marginLeft="@dimen/navigation_text_margin"
         android:layout_marginRight="@dimen/navigation_icon_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+		android:layout_marginStart="@dimen/navigation_text_margin"
+		android:layout_marginEnd="@dimen/navigation_icon_margin" />
 </RelativeLayout>
