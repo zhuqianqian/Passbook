@@ -9,6 +9,15 @@
             </item>
         </ripple>
     </item>
+    <item android:state_selected="true">
+        <ripple android:color="?android:attr/colorControlHighlight">
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="?attr/iconColorNormal"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
     <item>
         <shape android:shape="oval">
             <solid android:color="@android:color/transparent"/>

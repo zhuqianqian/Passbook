@@ -51,7 +51,7 @@ class MainListAdapter extends BaseAdapter {
 
     private static final long TIME_INTERVAL = 50;
     private static Animation FLIP1, FLIP2;
-
+    private static int[] COLORS;
     private ArrayList<AccountManager.Account> mEntries;
     private ArrayList<Integer> mIcons;
     private ArrayList<Boolean> mChecked;
@@ -75,6 +75,11 @@ class MainListAdapter extends BaseAdapter {
     }
 
     private void prepareResources() {
+        if (COLORS == null) {
+            COLORS = new int[] { 0xffc62828, 0xfff06292, 0xffd500f9, 0xff651fff, 0xff9fa8da,
+                    0xff2979ff, 0xff03a9f4, 0xff00b8d4, 0xff00bfa5, 0xff4caf50,
+                    0xff64dd17, 0xffcddc39, 0xffffc400,0xff607d8b, 0xffff9100, 0xffffd600};
+        }
         FLIP1 = AnimationUtils.loadAnimation(mContext, R.anim.shrink_to_middle);
         FLIP2 = AnimationUtils.loadAnimation(mContext, R.anim.expand_from_middle);
     }
@@ -104,6 +109,11 @@ class MainListAdapter extends BaseAdapter {
         holder.mIconView.setTag(position);
         int srcId = checked ? R.drawable.checkmark : mIcons.get(position);
         String iconUrl = checked ? null : account.getIconUrl();
+        if (iconUrl == null && !checked) {
+            holder.mIconView.setColorFilter(COLORS[account.getCategoryId() & 0x0f]);
+        } else {
+            holder.mIconView.clearColorFilter();
+        }
         Picasso.get().load(iconUrl).placeholder(srcId)
                 .transform(new CircleTransform()).fit().into(holder.mIconView);
         final View currentView = view;
@@ -211,8 +221,13 @@ class MainListAdapter extends BaseAdapter {
                 AccountManager.Account account = mEntries.get(position);
                 int srcId = checking ? mIcons.get(position) : R.drawable.checkmark;
                 button.setSelected(!checking);
+                String iconUrl = checking ? account.getIconUrl() : null;
+                if (iconUrl == null && checking) {
+                    button.setColorFilter(COLORS[account.getCategoryId() & 0x0f]);
+                } else {
+                    button.clearColorFilter();
+                }
                 if(anim == prev) {
-                    String iconUrl = checking ? account.getIconUrl() : null;
                     Picasso.get().load(iconUrl).placeholder(srcId)
                             .fit().transform(new CircleTransform()).into(button);
                     button.clearAnimation();
