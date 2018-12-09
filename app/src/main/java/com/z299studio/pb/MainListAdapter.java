@@ -30,9 +30,11 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.Transformation;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -109,13 +111,25 @@ class MainListAdapter extends BaseAdapter {
         holder.mIconView.setTag(position);
         int srcId = checked ? R.drawable.checkmark : mIcons.get(position);
         String iconUrl = checked ? null : account.getIconUrl();
-        if (iconUrl == null && !checked) {
+        if (!checked) {
             holder.mIconView.setColorFilter(COLORS[account.getCategoryId() & 0x0f]);
         } else {
             holder.mIconView.clearColorFilter();
         }
+        final ImageView iconView = holder.mIconView;
         Picasso.get().load(iconUrl).placeholder(srcId)
-                .transform(new CircleTransform()).fit().into(holder.mIconView);
+                .transform(new CircleTransform())
+                .fit().into(holder.mIconView, new Callback() {
+            @Override
+            public void onSuccess() {
+                iconView.clearColorFilter();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
         final View currentView = view;
         holder.mIconView.setOnClickListener(v -> {
             v.clearAnimation();

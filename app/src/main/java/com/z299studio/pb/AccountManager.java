@@ -157,8 +157,7 @@ public class AccountManager {
         }
 
         void addEntry(int type, String name, String value) {
-            Entry entry = new Entry(type, name, value);
-            mEntries.add(entry);
+            addEntry(new Entry(type, name, value));
         }
 
         public ArrayList<Entry> getAccount() {
