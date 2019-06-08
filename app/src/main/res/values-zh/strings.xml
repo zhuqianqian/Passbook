@@ -98,6 +98,7 @@
     <string name="sync_success_server">数据同步到服务器。</string>
     <string name="invalid_file">请选择一个有效的文件以继续。</string>
     <string name="remember_choice">记住我的选择并不再询问。</string>
+    <string name="smart">不使用难以辨认字符</string>
     <string name="warning_copy">粘贴上的内容可以被设备上的所有应用访问，确定要复制吗？</string>
     <string name="auth_required">原始文件用一个不同的密码加密，请输入它的密码以解锁。</string>
     <!-- String arrays -->

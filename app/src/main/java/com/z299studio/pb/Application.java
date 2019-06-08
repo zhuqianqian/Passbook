@@ -493,7 +493,7 @@ public class Application {
 
     private static Random random = new Random();
     private static char[] candidates = new char[96];
-    static String generate(boolean hasA2Z, boolean has_a2z, boolean hasDigits,
+    static String generate(boolean smart, boolean hasA2Z, boolean has_a2z, boolean hasDigits,
                                   boolean hasChars, boolean hasSpace, int minLen, int maxLen) {
         if(!hasA2Z && !has_a2z && !hasDigits && !hasChars && !hasSpace) {
             return "";
@@ -515,16 +515,25 @@ public class Application {
         char result[] = new char[length];
         if(hasA2Z) {
             for(i = 0; i < 26; ++i) {
-                candidates[index++] = (char) ('A' + i) ;
+                char c = (char)('A' + i);
+                if (smart && (c == 'O' || c == 'I')) {
+                    continue;
+                }
+                candidates[index++] = c ;
             }
         }
         if(has_a2z) {
             for(i = 0; i < 26; ++i) {
-                candidates[index++] = (char)('a'+i);
+                char c = (char)('a'+i);
+                if (smart && (c == 'o' || c == 'l')) {
+                    continue;
+                }
+                candidates[index++] = c;
             }
         }
         if(hasDigits) {
-            for(i = 0; i < 10; ++i) {
+            int start = smart ? 1 : 0;
+            for(i = start; i < 10; ++i) {
                 candidates[index++] = (char)('0' + i);
             }
         }
@@ -532,7 +541,7 @@ public class Application {
             System.arraycopy(specChars, 0, candidates, index, specChars.length);
             index += specChars.length;
         }
-        if(hasSpace) {
+        if(!smart && hasSpace) {
             candidates[index++] = 0x20;
         }
         for(i = 0; i < length; ++i) {

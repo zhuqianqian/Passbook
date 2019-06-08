@@ -100,6 +100,7 @@
     <string name="sync_success_server">Data sent to server.</string>
     <string name="invalid_file">Please select a valid file to continue.</string>
     <string name="remember_choice">Remember my choice and do not ask again.</string>
+    <string name="smart">Avoid ambiguous characters</string>
     <string name="warning_copy">Text in clipboard can be accessed by any apps in your device. Are you sure to copy?</string>
     <string name="auth_required">The source file is encrypted with a different password, please input the password to unlock it.</string>
     <!-- String arrays -->

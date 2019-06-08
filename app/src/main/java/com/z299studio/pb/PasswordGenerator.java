@@ -84,8 +84,8 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
             public void onStopTrackingTouch(SeekBar seekBar) {	}
         });
         mLengthTitle = rootView.findViewById(R.id.tv_length);
-        mCheckBoxes = new CheckBox[4];
-        int ids[] = {R.id.cb_uppercase, R.id.cb_lowercase, R.id.cb_digit,R.id.cb_char};
+        mCheckBoxes = new CheckBox[5];
+        int ids[] = {R.id.cb_uppercase, R.id.cb_lowercase, R.id.cb_digit,R.id.cb_char, R.id.cb_smart};
         for(int i = 0; i < mCheckBoxes.length; ++i) {
             mCheckBoxes[i] = rootView.findViewById(ids[i]);
         }
@@ -93,13 +93,14 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
             mCheckBoxes[0].setChecked(false);
             mCheckBoxes[1].setChecked(false);
             mCheckBoxes[3].setChecked(false);
+            mCheckBoxes[4].setChecked(false);
             mLength = 6;
-            mPasswordView.setText(Application.generate(false, false, true, false, false, 6, 6));
+            mPasswordView.setText(Application.generate(false,false, false, true, false, false, 6, 6));
             sb.setProgress(2);
             mLengthTitle.setText(getResources().getString(R.string.length, 6));
         }
         else {
-            mPasswordView.setText(Application.generate(true, true, true, true, true, 10, 10));
+            mPasswordView.setText(Application.generate(true, true, true, true, true, true, 10, 10));
             sb.setProgress(6);
             mLength = 10;
             mLengthTitle.setText(getResources().getString(R.string.length, 10));
@@ -112,7 +113,7 @@ public class PasswordGenerator extends DialogFragment implements View.OnClickLis
         switch (v.getId()) {
             case R.id.refresh:
             case R.id.text_pwd:
-            mPasswordView.setText(Application.generate(mCheckBoxes[0].isChecked(),
+            mPasswordView.setText(Application.generate(mCheckBoxes[4].isChecked(), mCheckBoxes[0].isChecked(),
                     mCheckBoxes[1].isChecked(), mCheckBoxes[2].isChecked(),
                     mCheckBoxes[3].isChecked(), mCheckBoxes[3].isChecked(),
                     mLength, mLength));

@@ -98,6 +98,7 @@
     <string name="sync_success_server">數據同步到伺服器。</string>
     <string name="invalid_file">請選擇一個有效檔案以繼續。</string>
     <string name="remember_choice">記住我的選擇并不再詢問。</string>
+    <string name="smart">不使用難辨字符</string>
     <string name="warning_copy">剪貼簿上的內容可以被設備上的所有應用程式訪問，確定要複製嗎？</string>
     <string name="auth_required">原始檔案使用一個不同的密碼加密，請輸入它的密碼以解鎖。</string>
     <!-- String arrays -->
