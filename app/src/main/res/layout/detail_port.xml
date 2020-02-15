@@ -5,7 +5,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_extend">
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -36,7 +36,7 @@
         android:dividerHeight="4dp"
         android:drawSelectorOnTop="true"/>
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/fab"
         android:layout_width="@dimen/fab"
         android:layout_height="@dimen/fab"
         android:src="@drawable/ic_action_edit"

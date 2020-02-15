@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <android.support.v7.widget.SwitchCompat android:id="@+id/switch_ctrl"
+    <androidx.appcompat.widget.SwitchCompat android:id="@+id/switch_ctrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

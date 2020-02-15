@@ -28,8 +28,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -178,7 +178,7 @@ public class ActionDialog extends DialogFragment implements View.OnClickListener
             break;
         
         case ACTION_RESET_PWD:
-            int ids[] = {R.id.et_cur_pwd, R.id.et_password, R.id.et_confirm};
+            int[] ids = {R.id.et_cur_pwd, R.id.et_password, R.id.et_confirm};
             for (int i = 0; i < ids.length; ++i) {
                 mPasswordEdits[i] = rootView.findViewById(ids[i]);
                 mPasswordEdits[i].addTextChangedListener(this);

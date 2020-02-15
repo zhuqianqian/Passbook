@@ -13,7 +13,7 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
     android:drawableTop="@drawable/ic_launcher"
     />
-<android.support.v4.view.ViewPager 
+<androidx.viewpager.widget.ViewPager
     android:id="@+id/pager"
     android:alpha="0.0"
     android:background="@drawable/welcome"

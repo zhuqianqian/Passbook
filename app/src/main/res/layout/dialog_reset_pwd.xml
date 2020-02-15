@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             style="@style/DialogTitle"
             android:text="@string/change_pwd"/>
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
             <EditText android:id="@+id/et_cur_pwd"
@@ -31,9 +31,9 @@
                 android:inputType="textPassword"
                 android:hint="@string/current_pwd"
                 android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText android:id="@+id/et_password"
@@ -41,9 +41,9 @@
                 android:inputType="textPassword"
                 android:hint="@string/new_pwd"
                 android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText android:id="@+id/et_confirm"
@@ -51,7 +51,7 @@
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"
                 android:hint="@string/repeat_pwd"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button android:id="@+id/ok"

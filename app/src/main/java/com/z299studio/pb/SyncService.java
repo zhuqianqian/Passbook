@@ -18,10 +18,8 @@ package com.z299studio.pb;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 
-import com.google.android.gms.common.ConnectionResult;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
