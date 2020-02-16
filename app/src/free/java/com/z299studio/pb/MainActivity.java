@@ -22,6 +22,8 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -43,7 +45,7 @@ import com.google.android.gms.ads.AdView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ItemFragmentListener,
-        NavigationDrawerFragment.NavigationDrawerCallbacks, FingerprintDialog.FingerprintListener,
+        NavigationDrawerFragment.NavigationDrawerCallbacks, BiometricAuthHelper.BiometricListener,
         SearchView.OnQueryTextListener, SyncService.SyncListener,
         DecryptTask.OnTaskFinishListener, ActionDialog.ActionDialogListener{
 
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("pb_title", mTitle);
     }
@@ -524,10 +526,8 @@ public class MainActivity extends AppCompatActivity implements ItemFragmentListe
             if(!mApp.getPassword().equals(password)) {
                 mApp.setPassword(password, false);
                 if(Application.Options.mFpStatus == C.Fingerprint.ENABLED) {
-                    FingerprintDialog dialog = FingerprintDialog.build(true);
-                    if (dialog != null) {
-                        dialog.show(getSupportFragmentManager(), "dialog_fp");
-                    }
+                    BiometricAuthHelper dialog = new BiometricAuthHelper(true, this, this);
+                    dialog.authenticate();
                 }
             }
         }

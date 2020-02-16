@@ -180,10 +180,6 @@
     <string name="category_saved">Categoría Guardada.</string>
     <string name="fp_title">Autenticación de Huella Digital</string>
     <string name="fp_ask">¿Quieres utilizar tu huella digital para desbloquear sus datos? Toque el sensor para continuar.</string>
-    <string name="fp_confirm">Confirmar tu huella digital para desbloquear.</string>
-    <string name="fp_touch">Sensor de contacto</string>
-    <string name="fp_ok">Reconocidos la huella digital</string>
-    <string name="fp_fail">No reconocida la huella digital.</string>
     <string name="fp_desc">Utilizar tu huella digital para desbloquear los datos.</string>
     <string name="discard">Deseche el</string>
 </resources>

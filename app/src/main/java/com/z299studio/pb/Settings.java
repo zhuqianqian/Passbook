@@ -46,7 +46,7 @@ import java.util.Date;
 public class Settings extends AppCompatActivity implements AdapterView.OnItemClickListener,
         SettingListDialog.OnOptionSelected, ImportExportTask.TaskListener,
         ActionDialog.ActionDialogListener, SyncService.SyncListener,
-        FingerprintDialog.FingerprintListener, DecryptTask.OnTaskFinishListener{
+        BiometricAuthHelper.BiometricListener, DecryptTask.OnTaskFinishListener{
     
     private static final String TAG_DIALOG = "action_dialog";
     private static final int PERMISSION_REQUEST = 1;
@@ -319,7 +319,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
         items[index++] = new SettingItemSwitch(R.string.sync_msg, getString(R.string.sync_msg), 
                 null).setValue(Application.Options.mSyncMsg);
         items[index++] = new SettingItem(0, getString(R.string.security), null);
-        int lock_options[] = {1000, 5*60 * 1000, 30*60 * 1000, 0};
+        int[] lock_options = {1000, 5 * 60 * 1000, 30 * 60 * 1000, 0};
         int selection = 0;
         int saved = Application.Options.mAutoLock;
         for(int i = 0; i < lock_options.length; ++i) {
@@ -430,16 +430,15 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return true;
     }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case SyncService.REQ_RESOLUTION:
                 SyncService.getInstance().onActivityResult(this, requestCode, resultCode, data);
@@ -497,7 +496,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
                 }
                 break;
             case R.string.auto_lock:
-                int lock_options[] = {1000, 5*60*1000, 30 * 60 * 1000, 0};
+                int[] lock_options = {1000, 5 * 60 * 1000, 30 * 60 * 1000, 0};
                 Application.Options.mAutoLock = lock_options[(int)item.getValue()];
                 editor.putInt(C.Keys.AUTO_LOCK_TIME, Application.Options.mAutoLock);
                 break;
@@ -663,10 +662,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     private void showFingerprintDialogIfPossible() {
-        FingerprintDialog fingerprintDialog = FingerprintDialog.build(true);
-        if (fingerprintDialog != null) {
-            fingerprintDialog.show(getSupportFragmentManager(), "dialog_fp");
-        }
+        BiometricAuthHelper authHelper = new BiometricAuthHelper(true, this, this);
+        authHelper.authenticate();
     }
 
     private void handleSwitchOption(int id, boolean value) {

@@ -179,10 +179,6 @@
     <string name="category_saved">類別已儲存。</string>
     <string name="fp_title">指紋身份驗證</string>
     <string name="fp_ask">你想要通過您的指紋來解鎖您的資料嗎?觸摸感應器繼續。</string>
-    <string name="fp_confirm">驗證您的指紋繼續</string>
-    <string name="fp_touch">輕觸指紋感應器</string>
-    <string name="fp_ok">已識別指紋</string>
-    <string name="fp_fail">未識別指紋</string>
     <string name="fp_desc">使用指紋來保護你的資料。</string>
     <string name="a_google">谷歌（Google）</string>
     <string name="a_ms">微軟帳戶（Outlook/Hotmail）</string>

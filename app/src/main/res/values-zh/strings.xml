@@ -168,10 +168,6 @@
     <string name="category_saved">类别已保存。</string>
     <string name="fp_title">指纹识别</string>
     <string name="fp_ask">是否启用指纹识别以解锁数据？轻触指纹传感器继续。</string>
-    <string name="fp_confirm">验证你的指纹进行解锁。</string>
-    <string name="fp_touch">轻触指纹传感器</string>
-    <string name="fp_ok">指纹已识别</string>
-    <string name="fp_fail">指纹未识别</string>
     <string name="fp_desc">通过指纹来保护数据。</string>
     <string name="a_google">谷歌（Google）</string>
     <string name="a_ms">微软账号（Live/Hotmail账号）</string>
