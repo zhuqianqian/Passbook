@@ -83,6 +83,7 @@ public final class BiometricAuthHelper extends BiometricPrompt.AuthenticationCal
                 | InvalidAlgorithmParameterException | NoSuchPaddingException e) {
             Log.e("Pb:FingerprintDialog", "Runtime error in initCipher.");
             Log.e("Pb:FingerprintDialog", e.toString());
+            Application.getInstance().resetFpData();
         }
     }
 
@@ -103,6 +104,9 @@ public final class BiometricAuthHelper extends BiometricPrompt.AuthenticationCal
     }
 
     public void authenticate() {
+        if (mCryptoObject == null) {
+            return;
+        }
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(mTitle)
                 .setDescription(mDesc)

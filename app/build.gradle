@@ -5,10 +5,10 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.z299studio.pb"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
-        versionCode 290
-        versionName "2.9.0"
+        versionCode 292
+        versionName "2.9.2"
         multiDexEnabled true
     }
     flavorDimensions "version"
