@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Theme">
-        <attr name="defaultButtonDrawable" format="reference"/>
-        <attr name="accentButtonDrawable" format="reference"/>
-        <attr name="flatButtonDrawable" format="reference"/>
-        <attr name="accentTextColor" format="reference|color"/>
-        <attr name="navigationMenuSeparator" format="reference"/>
-        <attr name="listItemBackground" format="reference"/>
-        <attr name="settingItemBackground" format="reference"/>
-        <attr name="iconColorNormal" format="color|reference"/>
-        <attr name="textColorNormal" format="color|reference"/>
-        <attr name="cardViewDrawable" format="reference"/>
-    </declare-styleable>    
+        <attr name="searchBarColor" format="reference|color"/>
+    </declare-styleable>
 </resources>

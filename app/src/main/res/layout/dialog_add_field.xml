@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.z299studio.pbfree.data.ValueType"/>
+        <variable
+            name="field"
+            type="com.z299studio.pbfree.viewmodels.FieldViewModel" />
+        <variable
+            name="onRadioClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/close"
+            android:padding="@dimen/icon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@android:string/cancel"
+            android:background="?android:attr/actionBarItemBackground"
+            app:srcCompat="@drawable/close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_field"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toEndOf="@id/close"
+            app:layout_constraintTop_toTopOf="@id/close"
+            app:layout_constraintBottom_toBottomOf="@+id/close" />
+
+        <RadioGroup
+            android:id="@+id/type_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dialog_content_begin"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintStart_toStartOf="parent">
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_text"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type_text"
+                android:checked="@{field.type == ValueType.Text}"
+                android:onClick="@{onRadioClick}"
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_password"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type_password"
+                android:checked="@{field.type == ValueType.Password}"
+                android:onClick="@{onRadioClick}"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_url"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type_url"
+                android:checked="@{field.type == ValueType.Url}"
+                android:onClick="@{onRadioClick}"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_email"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type_email"
+                android:checked="@{field.type == ValueType.Email}"
+                android:onClick="@{onRadioClick}"
+                />
+        </RadioGroup>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/field_name"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type_group"
+            tools:hint="Field Name" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={field.key}"
+                android:inputType="text"
+                android:imeOptions="actionDone"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/edit_margin"
+            android:contentDescription="@string/add_field"
+            android:background="?android:attr/actionBarItemBackground"
+            android:animateLayoutChanges="true"
+            app:visible="@{field.key.length() > 0}"
+            app:srcCompat="@drawable/check"
+            app:layout_constraintEnd_toEndOf="@id/edit"
+            app:layout_constraintTop_toTopOf="@id/edit"
+            app:layout_constraintBottom_toBottomOf="@id/edit"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggestion_labels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            app:layout_constraintStart_toStartOf="@id/type_group"
+            app:layout_constraintTop_toBottomOf="@id/edit"
+            tools:listitem="@layout/label"
+            tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            tools:itemCount="3"
+            tools:orientation="horizontal"
+            tools:spanCount="2"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

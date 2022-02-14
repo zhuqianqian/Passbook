@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="credits">Remerciements</string>
-    <string name="thanks">Un grand merci à tous les contributeurs!</string>
-    <string name="testing">Tests</string>
-    <string name="translation">Traductions</string>
-    <string name="build">Version</string>
-    <string name="version">Version: %s</string>
-</resources>

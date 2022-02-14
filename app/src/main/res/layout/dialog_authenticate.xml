@@ -1,57 +1,71 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dlg_action_margin"
-    android:paddingLeft="@dimen/dlg_action_margin"
-    android:paddingRight="@dimen/dlg_action_margin"
-    android:paddingBottom="@dimen/dlg_bottom_margin">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="auth"
+            type="com.z299studio.pbfree.viewmodels.AuthenticateViewModel" />
 
-    <LinearLayout
-        android:id="@+id/container" 
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dlg_content_margin"
-        android:paddingRight="@dimen/dlg_content_margin"
-        android:paddingLeft="@dimen/dlg_content_margin"
-        android:paddingBottom="@dimen/dlg_action_margin"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
-
+        android:padding="@dimen/activity_horizontal_margin">
         <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/reason"
+            android:text="@{auth.prompt}"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/DialogTitle"
-            android:text="@string/enter_pwd"/>
-        <TextView android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/auth_desc"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:text="@string/auth_required"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/export_provide_password"/>
 
-        <EditText android:id="@+id/et_password"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/password"
             android:layout_width="match_parent"
-            android:inputType="textPassword"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:hint="@string/a_password"
+            app:layout_constraintTop_toBottomOf="@id/reason"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ok">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={auth.password}"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="@android:string/cancel"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:onClick="@{auth.onCancel}"
+            app:layout_constraintBottom_toBottomOf="@id/ok"
+            app:layout_constraintEnd_toStartOf="@id/ok"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/ok"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok"
+            android:onClick="@{auth.onOk}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
-
-    </LinearLayout>
-
-    <Button android:id="@+id/ok"
-        style="@style/Button.Flat.Accent"
-        android:layout_width="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/container"
-        android:text="@android:string/ok"
-        android:layout_height="wrap_content" />
-
-    <Button android:id="@+id/cancel"
-        style="@style/Button.Flat.Accent"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/container"
-        android:layout_toLeftOf="@id/ok"
-        android:text="@android:string/cancel"
-        android:layout_height="wrap_content" />
-
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

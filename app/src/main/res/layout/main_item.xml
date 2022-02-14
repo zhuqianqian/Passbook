@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="item"
+            type="com.z299studio.pbfree.viewmodels.MainItemViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:onClick="@{clickListener}">
+
+        <TextView
+            android:id="@+id/item_icon_text"
+            android:layout_width="@dimen/main_item_icon_size"
+            android:layout_height="@dimen/main_item_icon_size"
+            android:gravity="center"
+            android:text="@{item.iconText}"
+            android:textStyle="bold"
+            android:textSize="@dimen/icon_text_size"
+            android:textColor="?attr/colorPrimary"
+            android:background="@drawable/rounded_box"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_title"
+            app:layout_constraintBottom_toBottomOf="@+id/item_title"
+            tools:text="P"
+            tools:ignore="SpUsage" />
+
+        <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="@dimen/main_item_icon_size"
+            android:layout_height="@dimen/main_item_icon_size"
+            android:contentDescription="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_title"
+            app:layout_constraintBottom_toBottomOf="@+id/item_title"
+            app:imageFromUrl="@{item.iconUrl}"
+            app:placeholderView="@{itemIconText}"
+            app:radius="@{@dimen/icon_radius}"/>
+
+        <LinearLayout
+            android:id="@+id/item_title"
+            android:layout_width="0dp"
+            android:layout_height="?android:attr/actionBarSize"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/icon_text_margin"
+            android:background="@{item.lastRow ? null : @drawable/bottom_line}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_icon_text"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@{item.title}"
+                style="@style/TextAppearance.AppCompat.Medium"
+                tools:text="Passbook" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

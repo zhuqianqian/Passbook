@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <bool name="hide_drawer">true</bool>
-    <bool name="snackbar_left_align">false</bool>
-</resources>

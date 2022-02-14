@@ -1,180 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="title_accounts">
-        <item quantity="other">%d个账号</item>
-    </plurals>
-    <plurals name="info_deleted">
-        <item quantity="other">删除%d项。</item>
-    </plurals>
-    <!-- App strings -->
     <string name="app_name">密码本</string>
-    <string name="app_copy">版权所有 &#169; 2015, 299Studio</string>
+    <string name="app_copy">2022, 299Studio &#169;版权所有</string>
     <string name="app_welcome">欢迎使用密码本</string>
-    <string name="app_intro">安全管理你的账号密码并在多个设备之间同步。\n\n请选择一个服务器进行同步。</string>
-    <!-- Action/Menu/Button/Label/Title strings -->
-    <string name="edit_category">编辑类别</string>
-    <string name="del_category">删除类别</string>
-    <string name="new_category">添加新类别</string>
-    <string name="edit_account">修改账号</string>
-    <string name="del_account">删除账号</string>
-    <string name="new_account">新加账号</string>
-    <string name="help">帮助与常见问题</string>
-    <string name="settings">设置</string>
-    <string name="about">关于</string>
-    <string name="all_accounts">所有账号</string>
-    <string name="rate">评价与反馈</string>
-    <string name="set_icon">设置图标</string>
-    <string name="copy_pwd">复制密码</string>
-    <string name="change_pwd">更换主密码</string>
-    <string name="import_data">导入数据</string>
-    <string name="export_data">导出数据</string>
-    <string name="sync">数据同步</string>
-    <string name="general">常规设置</string>
-    <string name="security">安全</string>
-    <string name="sync_none">不使用同步</string>
-    <string name="sync_gpg">Google Play游戏</string>
-    <string name="sync_gdrive">Google云端硬盘</string>
-    <string name="sync_server">同步服务器</string>
-    <string name="sync_msg">显示同步消息</string>
-    <string name="last_sync">最后同步时间</string>
-    <string name="never">从未发生</string>
-    <string name="show_password">总是显示密码</string>
-    <string name="show_ungrouped">显示未分组类别</string>
-    <string name="auto_lock">进入后台时自动上锁</string>
-    <string name="warn_copy">复制密码时显示警告</string>
-    <string name="theme">应用主题</string>
-    <string name="file_loc">文件位置：</string>
-    <string name="export_type">导出文件格式：</string>
-    <string name="import_type">导入文件格式：</string>
-    <string name="licence">开源许可协议</string>
-    <string name="enter_pwd">输入主密码</string>
-    <string name="set_pwd">设置主密码</string>
-    <string name="repeat_pwd">重复密码</string>
-    <string name="current_pwd">当前密码</string>
-    <string name="new_pwd">新密码</string>
-    <string name="select_file">选择文件</string>
-    <string name="def_category">其他</string>
-    <string name="field_name">字段名称</string>
-    <string name="field_value">值</string>
-    <string name="add_field">添加一行信息</string>
-    <string name="undo">撤消</string>
-    <string name="start">开始</string>
-    <string name="change">更改</string>
-    <string name="delete">删除</string>
+    <string name="app_set_password">首先，请设置一个主密码</string>
+    <string name="action_category">编辑/新建分类</string>
+    <string name="action_settings">设置</string>
+    <string name="action_delete">删除</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_new">新密码</string>
+    <string name="action_undo">撤销</string>
+    <string name="confirm">确定</string>
     <string name="unlock">解锁</string>
-    <string name="get_started">开始使用</string>
-    <string name="option_label">如何处理重复项目：</string>
-    <string name="option_ignore">忽略</string>
-    <string name="option_keepall">保留所有项目</string>
-    <string name="option_overwrite">覆盖已有项目</string>
-    <string name="copy">复制</string>
-    <string name="auto_gen">密码自动生成</string>
-    <string name="other">其他</string>
-    <string name="accept">接受</string>
-    <string name="refresh">重新生成</string>
-    <string name="length">长度：%d</string>
+    <string name="start_use">开始使用</string>
     <string name="save">保存</string>
-    <string name="close">关闭</string>
-    <string name="search">在密码本中搜索…</string>
-    <!-- Tips/Messages -->
-    <string name="empty_search">没有找到匹配结果。</string>
-    <string name="select_to_add">选择要添加的条目：</string>
-    <string name="delete_ask">确定要删除吗？你不能撤消删除。</string>
-    <string name="also_del_account">同时删除类别下的所有账号。</string>
-    <string name="no_file_explorer">没有可用的文件管理器。</string>
-    <string name="no_accounts">你还未添加任何账号。\n\n点击添加。</string>
-    <string name="loading">尝试从%s加载数据…</string>
-    <string name="pwd_changed">密码已更改。</string>
-    <string name="category_deleted">类别已删除。</string>
-    <string name="pwd_wrong">密码错误。</string>
-    <string name="pwd_unmatch">两次密码不一致。</string>
-    <string name="export_failed">数据导出失败。</string>
-    <string name="import_failed">数据导入失败。</string>
-    <string name="sync_failed">数据同步失败。</string>
-    <string name="text_copied">文字已复制到粘贴板。</string>
-    <string name="export_success">数据导出到%s。</string>
-    <string name="import_success">数据导入成功。</string>
-    <string name="sync_success_local">数据从服务器同步到本地。</string>
-    <string name="sync_success_server">数据同步到服务器。</string>
-    <string name="invalid_file">请选择一个有效的文件以继续。</string>
-    <string name="remember_choice">记住我的选择并不再询问。</string>
-    <string name="smart">不使用难以辨认字符</string>
-    <string name="warning_copy">粘贴上的内容可以被设备上的所有应用访问，确定要复制吗？</string>
-    <string name="auth_required">原始文件用一个不同的密码加密，请输入它的密码以解锁。</string>
-    <!-- String arrays -->
-    <string-array name="theme_names">
-    <!-- String arrays -->
-        <item>默认淡色主题</item>
-    <!-- String arrays -->
-        <item>默认深色主题</item>
-    <!-- String arrays -->
-        <item>蓝灰淡色</item>
-    <!-- String arrays -->
-        <item>蓝灰深色</item>
-    <!-- String arrays -->
-        <item>靛青淡色</item>
-    <!-- String arrays -->
-        <item>靛青深色</item>
-    <!-- String arrays -->
-        <item>紫色淡色</item>
-    <!-- String arrays -->
-        <item>紫色深色</item>
-    <!-- String arrays -->
-        <item>蓝绿淡色</item>
-    <!-- String arrays -->
-        <item>蓝绿深色</item>
-    </string-array>
-    <string-array name="category_names">
-        <item>银行账号</item>
-        <item>信用卡</item>
-        <item>设备</item>
-        <item>电子银行</item>
-        <item>电子邮箱</item>
-        <item>网络账号</item>
-    </string-array>
-    <string-array name="field_types">
-        <item>文本</item>
-        <item>密码</item>
-        <item>网址</item>
-        <item>电子邮箱</item>
-        <item>PIN</item>
-    </string-array>
-    <string-array name="file_types">
-        <item>密码本文件（密文）</item>
-        <item>密码本逗号分隔文件（明文）</item>
-    </string-array>
-    <string-array name="file_types_import">
-        <item>密码本文件（密文）</item>
-        <item>密码本逗号分隔文件（明文）</item>
-        <item>aWallet逗号分隔文件（明文）</item>
-    </string-array>
-    <string-array name="lock_options">
-        <item>立即</item>
-        <item>5分钟</item>
-        <item>30分钟</item>
-        <item>从不</item>
-    </string-array>
-    <string name="skip">跳过</string>
-    <string name="next">下一个</string>
-    <string name="done">完成</string>
-    <string name="guide">应用介绍</string>
-    <string name="title_tour0">安全保存</string>
-    <string name="title_tour1">随时访问</string>
-    <string name="title_tour2">简单易用</string>
-    <string name="desc_tour0">密码本加密存储保证你的数据安全。</string>
-    <string name="desc_tour1">随时从任一设备通过密码本查看数据。</string>
-    <string name="desc_tour2">获取强密码并轻松使用变得易如反掌。</string>
-    <string name="contacting">与%s取得联系…</string>
-    <string name="category_saved">类别已保存。</string>
-    <string name="fp_title">指纹识别</string>
-    <string name="fp_ask">是否启用指纹识别以解锁数据？轻触指纹传感器继续。</string>
-    <string name="fp_desc">通过指纹来保护数据。</string>
-    <string name="a_google">谷歌（Google）</string>
-    <string name="a_ms">微软账号（Live/Hotmail账号）</string>
-    <string name="a_twitter">Twitter</string>
-    <string name="a_fb">Facebook</string>
-    <string name="a_li">领英（LinkedIn）</string>
-    <string name="a_amazon">亚马逊</string>
-    <string name="diff_pwd">在你的同步服务器上检测到一份较新的数据文件，但是当前密码不能解锁。如果需要使用这份新的数据，请输入一个密码，否则丢弃它而继续使用本地的数据。\n注意，如果选择使用服务器版本，你的密码会被你现在输入的密码替换。</string>
-    <string name="discard">丢弃</string>
+    <string name="item_deleted">已删除</string>
+    <string name="search">搜索你的密码</string>
+    <string name="generate_password">生成密码</string>
+    <string name="remove_field">删除此条数据</string>
+    <string name="add_field">添加一条数据</string>
+    <string name="choose_icon">选择图标</string>
+
+    <string name="delete_ask">确定要永久性删除吗？</string>
+    <string name="all_accounts">所有密码</string>
+    <string name="empty">空空如也。\n点击下方的浮动按钮添加数据。</string>
+    <string name="no_empty">密码不可以为空。</string>
+    <string name="password">输入你的密码</string>
+    <string name="a_password">输入一个密码</string>
+    <string name="current_password">输入当前密码</string>
+    <string name="new_password">输入新密码</string>
+    <string name="confirm_password">确认你的密码</string>
+    <string name="wrong_password">密码错误！</string>
+    <string name="password_not_match">确认密码与输入密码不一致！</string>
+
+    <string name="export_failed">导出数据失败。</string>
+    <string name="import_failed">导入数据失败。</string>
+    <string name="text_copied">已复制到粘贴板。</string>
+    <string name="export_success">数据成功导出到%s。</string>
+    <string name="import_success">成功导入数据。</string>
+    <string name="field_name">字段名</string>
+    <string name="select_category">选择分类</string>
+    <string name="title">名称（可不填）</string>
+    <string name="arrange_fields">你可以在此随意调整字段</string>
+    <string name="length">密码长度：</string>
+    <string name="field_username">用户名</string>
+    <string name="field_password">密码</string>
+    <string name="field_website">网站</string>
+
+    <string name="type_text">文本</string>
+    <string name="type_url">网址</string>
+    <string name="type_password">密码</string>
+    <string name="type_email">邮箱</string>
+
+    <string name="upper_case">大写字母</string>
+    <string name="lower_case">小写字母</string>
+    <string name="digits">数字</string>
+    <string name="chars">特殊符号</string>
+    <string name="identifiable">避开难以辨认的字符</string>
+    <string name="refresh">换一个</string>
+
+    <string name="security">安全</string>
+    <string name="auto_lock">进入后台自动上锁</string>
+    <string name="biometric_auth">使用生物身份验证解锁</string>
+    <string name="change_pwd">修改密码</string>
+    <string name="change_pwd_summary">修改你的主密码</string>
+    <string name="data">数据</string>
+    <string name="about">关于</string>
+    <string name="sync_ask">你需要使用谷歌账号登录以进行云端数据备份与同步吗？</string>
+    <string name="sync_prepare">正在准备谷歌账号登录，请稍后…</string>
+    <string name="sync_wait">正在从尝试加载云端数据，请稍后…</string>
+    <string name="sync_fail">加载你的云端数据出错了。</string>
+    <string name="sync_title">云端数据备份与同步</string>
+    <string name="syncing">同步更新中…</string>
+    <string name="sync_enable_failure">异常情况，不能启用云端同步</string>
+    <string name="keep_local">保留本地数据</string>
+    <string name="keep_cloud">保留云端数据</string>
+    <string name="import_data">导入数据</string>
+    <string name="import_summary">从备份的密码本数据中导入数据</string>
+    <string name="export_data">导出数据</string>
+    <string name="export_summary">导出数据以进行备份</string>
+    <string name="theme">设置应用主题</string>
+    <string name="credits">致谢</string>
+    <string name="thanks">向以下人员致以感谢！</string>
+    <string name="build">版本</string>
+    <string name="version">版本号：%s</string>
+    <string name="auth_required">你需要输入密码以继续。</string>
+    <string name="sync_require_password">输入云端备份数据的密码以接受云端数据。</string>
+    <string name="import_require_password">数据经过加密，你需要输入密码才能导入。</string>
+    <string name="export_provide_password">请提供一个密码用于加密保存导出的数据，如果不输入，则使用你的主密码。</string>
+    <string name="credit_message">特别感谢他们的翻译：\n\nFrançais: Xu, Xuechen\nEspañol: José Herrera\n中文: Zhu, Qianqian\n\n</string>
+    <string name="fp_title">生物身份验证解锁</string>
+    <string name="fp_ask">你想启用生物身份验证（如指纹、面部）来解锁吗？</string>
+    <string name="fp_desc">使用如指纹、面部等生物身份验证解锁你的数据</string>
+    <string name="fp_use_pwd">使用密码</string>
+    <string name="sync_done">你的云端数据已成功加载到本地。</string>
+    <string name="sync_no_data">没有找到云端数据备份，请继续设置主密码以使用密码本。</string>
+    <string name="sync_resolve">密码本成功加载到你的云端数据，但是它和本地数据均有修改而不能自动决定哪一份数据适合保留，你想保留哪一份数据？</string>
+    <string name="sync_now">点击以与云端同步数据</string>
+    <string name="fp_error">启用生物身份验证解锁失败，请在设置中关闭后重新启用。</string>
 </resources>

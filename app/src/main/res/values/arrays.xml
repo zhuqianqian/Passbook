@@ -1,183 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="sync_methods">
-        <item>@string/sync_none</item>
-        <item>@string/sync_gpg</item>
-        <item>@string/sync_gdrive</item>
+    <string-array name="lock_options">
+        <item>Immediately</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>Never</item>
     </string-array>
 
-    <integer-array name="def_field_types">
-        <item>1</item>
-        <item>2</item>
-        <item>4</item>
-        <item>3</item>
-        <item>1</item>
-        <item>5</item>
-        <item>1</item>
-        <item>1</item>
-        <item>5</item>
-    </integer-array>
-    
-    <integer-array name="index_0">
-        <!-- Bank Account --> 
-        <item>7</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </integer-array>
-    
-    <integer-array name="index_1">
-        <!-- Credit Card --> 
-        <item>7</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>8</item>
-    </integer-array>
-    
-    <integer-array name="index_2">
-        <!-- Device --> 
+    <string-array name="lock_values">
+        <item>1000</item>
+        <item>300000</item>
+        <item>1800000</item>
         <item>0</item>
-        <item>1</item>
-        <item>6</item>
-    </integer-array>
-    
-    <integer-array name="index_3">
-        <!-- E-Bank --> 
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>6</item>
-    </integer-array>
-    
-    <integer-array name="index_4">
-        <!-- Email --> 
-        <item>2</item>
-        <item>1</item>
-        <item>6</item>
-    </integer-array>
-    
-    <integer-array name="index_5">
-        <!-- Web Account/Default -->
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>6</item>
-    </integer-array>
-
-    <string-array name="def_values">
-        <item>http://www.google.com</item>
-        <item>http://www.microsoft.com</item>
-        <item>https://www.facebook.com</item>
-        <item>https://www.twitter.com</item>
-        <item>https://www.linkedin.com</item>
-        <item>your_account@gmail.com</item>
-        <item>your_account@live.com</item>
-        <item>1234abcd*()</item>
-        <item>https://www.amazon.com</item>
     </string-array>
 
-    <integer-array name="defGoogle">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>0</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>5</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defMs">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>1</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>6</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defFb">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>2</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>5</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defTwitter">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>3</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>5</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defLi">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>4</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>5</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defAmazon">
-        <item>6</item> <!-- Category: Web -->
-        <item>3</item> <!-- Field Name -->
-        <item>8</item> <!-- Value -->
-        <item>3</item> <!-- Type -->
-        <item>2</item>
-        <item>5</item>
-        <item>2</item>
-        <item>1</item>
-        <item>7</item>
-        <item>1</item>
-    </integer-array>
-
-    <integer-array name="defQQ"/>
-    <integer-array name="defWc"/>
-    <integer-array name="defAp"/>
-    <integer-array name="defTb"/>
-
-    <string-array name="def_account_names">
-        <item>@string/a_google</item>
-        <item>@string/a_ms</item>
-        <item>@string/a_fb</item>
-        <item>@string/a_twitter</item>
-        <item>@string/a_li</item>
-        <item>@string/a_amazon</item>
+    <string-array name="theme_names">
+        <item>Automatic (by system)</item>
+        <item>Light</item>
+        <item>Dark mode</item>
     </string-array>
 
-    <array name="def_account_data">
-        <item>@array/defGoogle</item>
-        <item>@array/defMs</item>
-        <item>@array/defFb</item>
-        <item>@array/defTwitter</item>
-        <item>@array/defLi</item>
-        <item>@array/defAmazon</item>
-    </array>
-
+    <string-array name="theme_ids">
+        <item>System</item>
+        <item>Light</item>
+        <item>Night</item>
+    </string-array>
 </resources>

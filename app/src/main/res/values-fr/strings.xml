@@ -1,191 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="title_accounts">
-        <item quantity="one">%d Compte</item>
-        <item quantity="other">%d Comptes</item>
-    </plurals>
-    <plurals name="info_deleted">
-        <item quantity="one">%d élément supprimé.</item>
-        <item quantity="other">%d éléments supprimés.</item>
-    </plurals>
-    <!-- App strings -->
     <string name="app_name">Passbook</string>
-    <string name="app_copy">Droit D\'auteur  &#169; 2015, 299Studio</string>
+    <string name="app_copy">Droit D\'auteur  &#169; 2022, 299Studio</string>
     <string name="app_welcome">Bienvenue sur Passbook</string>
-    <string name="app_intro">Votre lieu central pour stocker en toute sécurité vos données sensibles et les synchroniser entre plusieurs périphériques.\n\n\nChoisissez l\'emplacement où vous souhaitez synchroniser vos données.</string>
-    <!-- Action/Menu/Button/Label/Title strings -->
-    <string name="edit_category">Modifier la Catégorie</string>
-    <string name="del_category">Supprimer la Catégorie</string>
-    <string name="new_category">Ajouter une Catégorie</string>
-    <string name="edit_account">Modifier le Compte</string>
-    <string name="del_account">Supprimer le Compte</string>
-    <string name="new_account">Ajouter un Compte</string>
-    <string name="help">Aide et Questions</string>
-    <string name="settings">Paramètres</string>
-    <string name="about">À Propos</string>
-    <string name="all_accounts">Tous les Comptes</string>
-    <string name="rate">Estimes et Commentaires</string>
-    <string name="set_icon">Choisir Une Icône</string>
-    <string name="copy_pwd">Copier le Mot de Passe</string>
-    <string name="change_pwd">Changer le Mot de Passe</string>
-    <string name="import_data">Importer les Données</string>
-    <string name="export_data">Exporter les Données</string>
-    <string name="sync">Synchroniser les Données</string>
-    <string name="general">Généralité</string>
-    <string name="security">Sécurité</string>
-    <string name="sync_none">Ne pas synchroniser</string>
-    <string name="sync_gpg">Google Play Games</string>
-    <string name="sync_gdrive">Google Drive</string>
-    <string name="sync_server">Serveur de Synchronisation</string>
-    <string name="sync_msg">Afficher le Message de Synchronisation</string>
-    <string name="last_sync">Dernières Synchronisation Horaire</string>
-    <string name="never">N\'est jamais arrivé</string>
-    <string name="show_password">Afficher les Mots de Passe</string>
-    <string name="show_ungrouped">Afficher la Catégorie «Autre»</string>
-    <string name="auto_lock">Verrouiller en entrant l\'Arrière-Plan</string>
-    <string name="warn_copy">Avertir en copiant les Mots de Passe</string>
-    <string name="theme">App Thème</string>
-    <string name="file_loc">Emplacement du Fichier:</string>
-    <string name="export_type">Exporter les Fichiers Comme:</string>
-    <string name="import_type">Type de Fichiers Importé:</string>
-    <string name="licence">Licences Open Source</string>
-    <string name="enter_pwd">Inscrire vos Mots de Passe</string>
-    <string name="set_pwd">Définir le Mot de Passe Principal</string>
-    <string name="repeat_pwd">Répétez votre Mot de Passe</string>
-    <string name="current_pwd">Le Mot de Passe Actuel</string>
-    <string name="new_pwd">Nouveau Mot de Passe</string>
-    <string name="select_file">Choisir un Fichier</string>
-    <string name="def_category">Autre</string>
-    <string name="field_name">Nom du Champ</string>
-    <string name="field_value">Valeur du Champ</string>
-    <string name="add_field">Ajouter un Autre Champ</string>
-    <string name="undo">Annuler</string>
-    <string name="start">Démarrer</string>
-    <string name="change">Modifier</string>
-    <string name="delete">Supprimer</string>
+    <string name="app_set_password">Pour commencer, veuillez définir un mot de passe principal.</string>
+    <string name="action_category">Modifier/Ajouter la Catégorie</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_new">Ajouter de Passe</string>
+    <string name="action_undo">Annuler</string>
+    <string name="confirm">Confirmer</string>
     <string name="unlock">Déverrouiller</string>
-    <string name="get_started">Commencer</string>
-    <string name="option_label">Options pour traiter les doublons:</string>
-    <string name="option_ignore">Ignorer</string>
-    <string name="option_keepall">Garder les Deux</string>
-    <string name="option_overwrite">Remplacer</string>
-    <string name="copy">Copier</string>
-    <string name="auto_gen">Générateur de Mot de passe</string>
-    <string name="other">Autre</string>
-    <string name="accept">Accepter</string>
-    <string name="refresh">Rafraîchir</string>
-    <string name="length">Longueur: %d</string>
+    <string name="start_use">Commencer</string>
     <string name="save">Enregistrer</string>
-    <string name="close">Fermer</string>
-    <string name="search">Rechercher dans Passbook…</string>
-    <!-- Tips/Messages -->
-    <string name="empty_search">Pas de correspondances trouvées.</string>
-    <string name="select_to_add">Sélectionnez les éléments à inclure:</string>
-    <string name="delete_ask">Êtes-vous sûr(e) de vouloir le supprimer? Vous ne pouvez pas annuler cette action!</string>
-    <string name="also_del_account">Supprimer également les comptes dans cette catégorie.</string>
-    <string name="no_file_explorer">Aucun explorateur de fichiers disponible.</string>
-    <string name="no_accounts">Vous n\'avez Rien eu Ici!</string>
-    <string name="loading">Chargement des données du %s…</string>
-    <string name="pwd_changed">Mot de passe modifié.</string>
-    <string name="category_deleted">Catégorie supprimée.</string>
-    <string name="pwd_wrong">Mot de passe incorrect.</string>
-    <string name="pwd_unmatch">Vous avez donné des différents mots de passe!</string>
-    <string name="export_failed">Impossible d\'exporter les données.</string>
-    <string name="import_failed">Impossible d\'importer les données.</string>
-    <string name="sync_failed">Impossible de synchroniser les données.</string>
-    <string name="text_copied">Le texte est copié dans le presse-papiers.</string>
+    <string name="item_deleted">Supprimé</string>
+    <string name="search">Rechercher vos mots de passe</string>
+    <string name="generate_password">Générateur de Mot de passe</string>
+    <string name="remove_field">Supprimer ce champ</string>
+    <string name="add_field">Ajouter un Autre Champ</string>
+    <string name="choose_icon">Choisir Une Icône</string>
+
+    <string name="delete_ask">Supprimer définitivement, êtes-vous sûr ?</string>
+    <string name="all_accounts">Tous les mots de passe</string>
+    <string name="empty">Rien ici.\nAppuyez sur le bouton flottant pour en ajouter un.</string>
+    <string name="no_empty">Un mot de passe vide n\'est pas autorisé.</string>
+    <string name="password">Inscrire vos Mots de Passe</string>
+    <string name="a_password">Entrer un mot de passe</string>
+    <string name="current_password">Entrer votre mot de passe actuel</string>
+    <string name="new_password">Entrer un nouveau mot de passe</string>
+    <string name="confirm_password">Confirmer votre mot de passe</string>
+    <string name="wrong_password">Mot de passe incorrect!</string>
+    <string name="password_not_match">Vous avez donné des différents mots de passe!</string>
+
+    <string name="export_failed">Impossible d\\\'exporter les données.</string>
+    <string name="import_failed">Impossible d\\\'importer les données</string>
+    <string name="text_copied">Copié dans le presse-papier.</string>
     <string name="export_success">Les données exportées vers: %s.</string>
-    <string name="import_success">L\'importation des données réussie. .</string>
-    <string name="sync_success_local">Données récupérées à partir du serveur.</string>
-    <string name="sync_success_server">Les données envoyées au serveur.</string>
-    <string name="invalid_file">Sélectionnez un fichier valide pour continuer, SVP!</string>
-    <string name="remember_choice">Se souvenir de mon choix et ne me le demander pas à nouveau.</string>
-    <string name="warning_copy">Le texte dans le presse-papiers peut être consulté par toute les applications de votre appareil. Vous êtes sûr(e) de le copier?</string>
-    <string name="auth_required">Le fichier source nécessite un mot de passe pour déverrouiller.</string>
-    <!-- String arrays -->
-    <string-array name="theme_names">
-    <!-- String arrays -->
-        <item>Thème Claire par Défaut</item>
-    <!-- String arrays -->
-        <item>Thème Sombre par Défaut</item>
-    <!-- String arrays -->
-        <item>Thème Claire Bleu-Gris</item>
-    <!-- String arrays -->
-        <item>Thème Sombre Bleu-Gris</item>
-    <!-- String arrays -->
-        <item>Thème Claire Indigo</item>
-    <!-- String arrays -->
-        <item>Thème Sombre Indigo</item>
-    <!-- String arrays -->
-        <item>Thème Claire pourpre</item>
-    <!-- String arrays -->
-        <item>Thème Sombre pourpre</item>
-    <!-- String arrays -->
-        <item>Thème Claire Sarcelle</item>
-    <!-- String arrays -->
-        <item>Thème Sombre Sarcelle</item>
-    </string-array>
-    <string-array name="category_names">
-        <item>Compte Bancaire</item>
-        <item>Carte de Crédit</item>
-        <item>Périphériques</item>
-        <item>E-banque</item>
-        <item>Email</item>
-        <item>Achats en Ligne</item>
-    </string-array>
-    <string-array name="field_types">
-        <item>Texte</item>
-        <item>Mots de Passe</item>
-        <item>Lien web</item>
-        <item>Email</item>
-        <item>Code</item>
-    </string-array>
-    <string-array name="file_types">
-        <item>Fichier de données de Passbook (encodé)</item>
-        <item>Fichier de CSV de Passbook (Texte brut)</item>
-    </string-array>
-    <string-array name="file_types_import">
-        <item>Fichier de données de Passbook (encodé)</item>
-        <item>Fichier de CSV de Passbook (Texte brut)</item>
-        <item>Fichier de CSV d\'aWallet (Texte brut)</item>
-    </string-array>
-    <string-array name="def_field_names">
-        <item>Pseudo</item>
-        <item>Mots de Passe</item>
-        <item>Email</item>
-        <item>Adresse Web</item>
-        <item>Numéro de Carte</item>
-        <item>Code</item>
-        <item>Note</item>
-        <item>Nom de Banque</item>
-        <item>CVC</item>
-    </string-array>
-    <string-array name="lock_options">
-        <item>Immédiatement</item>
-        <item>5 minutes</item>
-        <item>30 minutes</item>
-        <item>Jamais</item>
-    </string-array>
-    <string name="skip">Sauter</string>
-    <string name="next">Suivant</string>
-    <string name="done">Fini</string>
-    <string name="guide">L\'introduction de Cette App</string>
-    <string name="title_tour0">Restez Sécurisé</string>
-    <string name="title_tour1">Accessible partout</string>
-    <string name="title_tour2">Facile à utiliser</string>
-    <string name="desc_tour0">Passbook encode tout pour sauvegarder vos données en toute sécurité.</string>
-    <string name="desc_tour1">Vous pouvez vérifier vos mots de passe de toutes les périphéries avec Passbook.</string>
-    <string name="desc_tour2">Des mots de passe solides sont simples à obtenir et à utiliser avec peu de peine.</string>
-    <string name="contacting">Contacter les %s…</string>
-    <string name="category_saved">Catégorie ajoutée.</string>
-    <string name="fp_title">Authentification par Empreinte</string>
-    <string name="fp_ask">Vous voulez utiliser votre empreinte digitale pour déverrouiller vos données ? Touchez le capteur pour continuer.</string>
-    <string name="fp_desc">Utilisez vos empreintes digitales pour protéger les données.</string>
-    <string name="a_google">Google</string>
-    <string name="a_ms">Microsoft/Hotmail</string>
-    <string name="a_twitter">Twitter</string>
-    <string name="a_fb">Facebook</string>
-    <string name="a_li">LinkedIn</string>
-    <string name="a_amazon">Amazon</string>
-    <string name="discard">jeter</string>
+    <string name="import_success">L\\\'importation des données réussie.</string>
+    <string name="field_name">Nom du Champ</string>
+    <string name="select_category">Choisir une catégorie</string>
+    <string name="title">Nom: (optionnel)</string>
+    <string name="arrange_fields">Vous pouvez organiser vos propres champs ici</string>
+    <string name="length">Longueur:</string>
+    <string name="field_username">Nom d\'utilisateur</string>
+    <string name="field_password">Mot de passe</string>
+    <string name="field_website">Site Internet</string>
+
+    <string name="type_text">Texte</string>
+    <string name="type_url">URL</string>
+    <string name="type_password">Mot de passe</string>
+    <string name="type_email">E-mail</string>
+
+    <string name="upper_case">A-Z</string>
+    <string name="lower_case">a-z</string>
+    <string name="digits">0–9</string>
+    <string name="chars">*.?</string>
+    <string name="identifiable">Évitez les caractères ambigus</string>
+    <string name="refresh">Rafraîchir</string>
+
+    <string name="security">Sécurité</string>
+    <string name="auto_lock">Verrouiller en entrant l\\\'Arrière-Plan</string>
+    <string name="biometric_auth">Activer l\'authentification biométrique pour déverrouiller</string>
+    <string name="change_pwd">Changer le Mot de Passe</string>
+    <string name="change_pwd_summary">Modifier votre mot de passe principal</string>
+    <string name="data">Donnés</string>
+    <string name="about">À Propos</string>
+    <string name="sync_ask">Voulez-vous vous connecter avec votre compte Google pour activer la sauvegarde et la synchronisation dans le cloud?</string>
+    <string name="sync_prepare">Veuillez patienter pendant la préparation de Google Sign in…</string>
+    <string name="sync_wait">Veuillez patienter pendant le chargement des données…</string>
+    <string name="sync_done">Votre sauvegarde cloud a été synchronisée avec succès.</string>
+    <string name="sync_fail">Échec du chargement de votre sauvegarde cloud.</string>
+    <string name="sync_no_data">Aucune donnée trouvée, veuillez continuer en définissant un mot de passe principal.</string>
+    <string name="sync_title">Sauvegarde et synchronisation dans le cloud</string>
+    <string name="sync_resolve">Une copie de la sauvegarde cloud a été trouvée, mais Passbook n\'est pas en mesure de décider laquelle doit être conservée. Lequel souhaitez-vous conserver ?</string>
+    <string name="sync_now">Synchronize your data now</string>
+    <string name="syncing">Synchronisation…</string>
+    <string name="sync_enable_failure">Erreur inattendue, impossible d\'activer la sauvegarde dans le cloud</string>
+    <string name="keep_local">Rester Local</string>
+    <string name="keep_cloud">Rester Cloud</string>
+    <string name="import_data">Importer des données</string>
+    <string name="import_summary">Importer à partir des données de sauvegarde précédentes</string>
+    <string name="export_data">Exporter des données</string>
+    <string name="export_summary">Exporter les données du Passbook pour la sauvegarde</string>
+    <string name="theme">Définir l\'apparence de l\'application</string>
+    <string name="credits">Remerciements</string>
+    <string name="thanks">Un grand merci à tous les contributeurs!</string>
+    <string name="build">Version</string>
+    <string name="version">Version: %s</string>
+    <string name="auth_required">Pour continuer, entrez votre mot de passe</string>
+    <string name="sync_require_password">Entrez le mot de passe pour accepter la sauvegarde cloud.</string>
+    <string name="import_require_password">Le fichier source nécessite un mot de passe pour déverrouiller.</string>
+    <string name="export_provide_password">Fournissez un mot de passe pour crypter vos données pour l\'exportation. Votre mot de passe principal est utilisé si vous le laissez vide !</string>
+    <string name="credit_message">Remerciement spécial à:\n\nFrançais: Xu, Xuechen\nEspañol: José Herrera\n中文: Zhu, Qianqian\n\nfor the translations!</string>
+    <string name="fp_title">Authentification Biométrique</string>
+    <string name="fp_ask">Voulez-vous activer l\'authentification biométrique pour déverrouiller vos données ?</string>
+    <string name="fp_desc">Déverrouillez vos données avec vos identifiants biométriques</string>
+    <string name="fp_use_pwd">Utiliser le mot de Passe</string>
+    <string name="fp_error">Impossible d\'utiliser votre authentification biométrique. Veuillez déverrouiller vos données avec votre mot de passe et réactiver l\'authentification biométrique dans les paramètres.</string>
 </resources>

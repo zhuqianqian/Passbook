@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:padding="@dimen/icon_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/choose_icon"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="?attr/actionBarItemBackground"
+        app:tint="@drawable/foreground_selector"
+        tools:src="@drawable/label"/>
+</layout>

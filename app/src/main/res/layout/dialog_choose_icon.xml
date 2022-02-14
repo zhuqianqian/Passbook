@@ -1,57 +1,56 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dlg_action_margin"
-    android:paddingLeft="@dimen/dlg_action_margin"
-    android:paddingRight="@dimen/dlg_action_margin"
-    android:paddingBottom="@dimen/dlg_bottom_margin">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/container" 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dlg_content_margin"
-        android:paddingRight="@dimen/dlg_content_margin"
-        android:paddingLeft="@dimen/dlg_content_margin"
-        android:paddingBottom="@dimen/dlg_action_margin"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/ok"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/close"
+            android:padding="@dimen/icon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@android:string/cancel"
+            android:background="?android:attr/actionBarItemBackground"
+            app:srcCompat="@drawable/close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/DialogTitle"
-            android:text="@string/set_icon"/>
-        <GridView android:id="@+id/icon"
+            android:gravity="center"
+            android:text="@string/choose_icon"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toEndOf="@id/close"
+            app:layout_constraintTop_toTopOf="@id/close"
+            app:layout_constraintBottom_toBottomOf="@+id/close" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnWidth="@dimen/main_list_height"
-            android:stretchMode="none"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="8dp"
-            android:horizontalSpacing="8dp"
-            android:gravity="center"
-            android:drawSelectorOnTop="true"/>
-        
-    </LinearLayout>
-
-    <Button android:id="@id/ok"
-        style="@style/Button.Flat.Accent"
-        android:layout_width="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:text="@string/accept"
-        android:layout_height="wrap_content" />
-
-    <Button android:id="@+id/cancel"
-        style="@style/Button.Flat.Accent"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/ok"
-        android:text="@android:string/cancel"
-        android:layout_height="wrap_content" />
-
-</RelativeLayout>
+            android:layout_marginTop="@dimen/dialog_content_begin"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:listitem="@layout/icon"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:itemCount="30"
+            tools:spanCount="5"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ok"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icons"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

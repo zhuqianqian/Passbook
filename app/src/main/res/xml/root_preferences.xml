@@ -1,0 +1,70 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/security">
+
+        <ListPreference
+            app:icon="@drawable/lock"
+            app:defaultValue="300000"
+            app:entries="@array/lock_options"
+            app:entryValues="@array/lock_values"
+            app:key="@string/pref_lock_time"
+            app:title="@string/auto_lock"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/fingerprint"
+            app:key="@string/pref_biometric"
+            app:defaultValue="false"
+            app:title="@string/fp_title"/>
+        <Preference
+            app:key="@string/key_reset_password"
+            app:summary="@string/change_pwd_summary"
+            app:title="@string/change_pwd"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/data">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/cloud_sync"
+            app:key="@string/key_sync"
+            app:title="@string/sync_title"
+            app:defaultValue="false"/>
+        <Preference
+            app:icon="@drawable/refresh"
+            app:key="@string/key_sync_time"
+            app:title="@string/sync_now"/>
+
+        <Preference
+            app:key="@string/key_import"
+            app:summary="@string/import_summary"
+            app:title="@string/import_data"/>
+
+        <Preference
+            app:key="@string/key_export"
+            app:summary="@string/export_summary"
+            app:title="@string/export_data"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/about">
+
+        <ListPreference
+            app:isPreferenceVisible="false"
+            app:key="@string/pref_theme"
+            app:defaultValue="System"
+            app:entries="@array/theme_names"
+            app:entryValues="@array/theme_ids"
+            app:title="@string/theme"
+            app:useSimpleSummaryProvider="true"/>
+
+        <Preference
+            app:key="@string/key_credits"
+            app:title="@string/credits"/>
+
+        <Preference
+            app:icon="@drawable/info"
+            app:key="@string/key_about"
+            app:summary="@string/version"
+            app:title="@string/build"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

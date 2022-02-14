@@ -1,0 +1,15 @@
+<resources>
+    <string-array name="lock_options">
+        <item>Enseguida</item>
+        <item>5 minutos</item>
+        <item>30 minutos</item>
+        <item>Nunca</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>Automatic (by system)</item>
+        <item>Light</item>
+        <item>Dark mode</item>
+    </string-array>
+
+</resources>

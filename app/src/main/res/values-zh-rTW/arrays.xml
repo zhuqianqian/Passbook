@@ -1,0 +1,15 @@
+<resources>
+    <string-array name="lock_options">
+        <item>立即上鎖</item>
+        <item>5分鐘</item>
+        <item>30分鐘</item>
+        <item>不上鎖</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>隨系統</item>
+        <item>淡色</item>
+        <item>暗色</item>
+    </string-array>
+
+</resources>

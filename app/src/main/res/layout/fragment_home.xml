@@ -1,56 +1,93 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".HomeActivity$HomeFragment" >
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="60dp"
-        android:text="@string/enter_pwd"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-    <com.google.android.material.textfield.TextInputLayout
+    <data>
+        <variable
+            name="homeView"
+            type="com.z299studio.pbfree.viewmodels.HomeViewModel"/>
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
-        <EditText android:id="@+id/password"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:inputType="textPassword"
-            android:hint="@string/enter_pwd"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
-        <EditText android:id="@+id/confirm"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/empty"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:drawableTopCompat="@drawable/empty"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:visible="@{homeView.empty}"
+                tools:text="@string/empty" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context="com.z299studio.pbfree.MainActivity"
+                tools:listitem="@layout/main_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="@android:color/transparent"
             android:layout_width="match_parent"
-            android:inputType="textPassword"
             android:layout_height="wrap_content"
-            android:hint="@string/repeat_pwd"
-            android:imeOptions="actionDone"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button android:id="@+id/unlock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Button.Accent"
-        android:onClick="onConfirm"
-        android:layout_marginTop="8dp"
-        android:text="@string/unlock"
-        android:enabled="false"/>
-
-    <ProgressBar android:id="@+id/pb"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignBottom="@id/unlock"
-        android:visibility="invisible"/>
-</LinearLayout>
+            app:elevation="0dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_bar_height"
+                android:background="@drawable/search_box"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/search_bar_vertical_margin"
+                android:elevation="@dimen/search_bar_elevation"
+                app:elevation="@dimen/search_bar_elevation"
+                app:layout_scrollFlags="enterAlways|scroll|noScroll"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:id="@+id/drawer"
+                    android:padding="@dimen/icon_padding"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/search_bar_edge"
+                    android:background="?attr/actionBarItemBackground"
+                    android:contentDescription="@string/nav_app_bar_open_drawer_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:srcCompat="@drawable/drawer"/>
+                <EditText
+                    android:paddingHorizontal="@dimen/edit_margin"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/search"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textAutoComplete"
+                    android:autofillHints="password"
+                    android:text="@={homeView.searchText}"
+                    app:layout_constraintStart_toEndOf="@id/drawer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

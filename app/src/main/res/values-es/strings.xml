@@ -1,185 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="title_accounts">
-        <item quantity="one">%d Cuentas</item>
-        <item quantity="other">%d Cuentas</item>
-    </plurals>
-    <plurals name="info_deleted">
-        <item quantity="one">%d elemento eliminado.</item>
-        <item quantity="other">%d elementos eliminados.</item>
-    </plurals>
-    <!-- App strings -->
     <string name="app_name">Passbook</string>
-    <string name="app_copy">Copyright &#169; 2015, 299Studio</string>
+    <string name="app_copy">Copyright &#169; 2022, 299Studio</string>
     <string name="app_welcome">Bienvenido a Passbook</string>
-    <string name="app_intro">Su central para almacenar de forma segura sus datos sensibles y sincronizarlos entre sus dispositivos.\n\nSeleccione dónde desea sincronizar sus datos</string>
-    <!-- Action/Menu/Button/Label/Title strings -->
-    <string name="edit_category">Editar Caterogía</string>
-    <string name="del_category">Eliminar Categoría</string>
-    <string name="new_category">Añadir Categoría</string>
-    <string name="edit_account">Modificar Cuenta</string>
-    <string name="del_account">Eliminar Cuenta</string>
-    <string name="new_account">Nueva Cuenta</string>
-    <string name="help">Ayuda y FAQ</string>
-    <string name="settings">Ajustes</string>
-    <string name="about">Acerca</string>
-    <string name="all_accounts">Todas Las Cuentas</string>
-    <string name="rate">Valorar y Feedback</string>
-    <string name="set_icon">Seleccione un icono</string>
-    <string name="copy_pwd">Copiar Contraseña</string>
-    <string name="change_pwd">Cambiar Contraseña Maestra</string>
-    <string name="import_data">Importar Datos</string>
-    <string name="export_data">Exportar Datos</string>
-    <string name="sync">Sincronizar Datos</string>
-    <string name="general">General</string>
-    <string name="security">Seguridad</string>
-    <string name="sync_none">No se Sincronizan</string>
-    <string name="sync_gpg">Google Play Juegos</string>
-    <string name="sync_gdrive">Google Drive</string>
-    <string name="sync_server">Servidor Sincronizan</string>
-    <string name="sync_msg">Mostrar sincronización de mensajes</string>
-    <string name="last_sync">Tiempo de última sincronización</string>
-    <string name="never">Nunca sucedió</string>
-    <string name="show_password">Siempre Mostrar Contraseñas</string>
-    <string name="show_ungrouped">Mostrar \'Otros\' Categoría</string>
-    <string name="auto_lock">Bloquear automáticamente</string>
-    <string name="warn_copy">Advertir sobre la copia de contraseñas</string>
-    <string name="theme">App Theme</string>
-    <string name="file_loc">Ubicación del archivo:</string>
-    <string name="export_type">Exportar archivo como:</string>
-    <string name="import_type">Tipo de archivo al importar:</string>
-    <string name="licence">Licencias De Código Abierto</string>
-    <string name="enter_pwd">Ingrese su Contraseña</string>
-    <string name="set_pwd">Establezca su Contraseña Maestra</string>
-    <string name="repeat_pwd">Repita la Contraseña</string>
-    <string name="current_pwd">Contraseña Actual</string>
-    <string name="new_pwd">Nueva Contraseña</string>
-    <string name="select_file">Seleccione un archivo</string>
-    <string name="def_category">Otros</string>
-    <string name="field_name">Etiqueta de Campo</string>
-    <string name="field_value">Valor Del Campo</string>
-    <string name="add_field">Añadir Otro Campo</string>
-    <string name="undo">Deshacer</string>
-    <string name="start">Empezar</string>
-    <string name="change">Cambiar</string>
-    <string name="delete">Borrar</string>
+    <string name="app_set_password">Para empezar, establezca una contraseña maestra.</string>
+    <string name="action_category">Editar/Añadir Caterogía</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_new">Añadir Contraseña</string>
+    <string name="action_undo">Deshacer</string>
+    <string name="confirm">Confirmar</string>
     <string name="unlock">Desbloquear</string>
-    <string name="get_started">Empezar</string>
-    <string name="option_label">Opciones para hacer frente a duplicados:</string>
-    <string name="option_ignore">Ignorar</string>
-    <string name="option_keepall">Mantener Ambos</string>
-    <string name="option_overwrite">Sobrescribir Existentes</string>
-    <string name="copy">Copia</string>
-    <string name="auto_gen">Generador de contraseñas</string>
-    <string name="other">Otros</string>
-    <string name="accept">Aceptar</string>
-    <string name="refresh">Actualizar</string>
-    <string name="length">Longitud: %d</string>
+    <string name="start_use">Empezar</string>
     <string name="save">Guardar</string>
-    <string name="close">Cerca</string>
-    <string name="search">Buscar en Passbook…</string>
-    <!-- Tips/Messages -->
-    <string name="empty_search">No se encontraron coincidencias.</string>
-    <string name="select_to_add">Seleccione los elementos que se incluirán:</string>
-    <string name="delete_ask">¿Seguro? No se puedrá restaurar esto.</string>
-    <string name="also_del_account">También eliminar las cuentas bajo la categoría.</string>
-    <string name="no_file_explorer">El explorador de archivos no está disponible.</string>
-    <string name="no_accounts">Usted no ha añadido nada aquí.</string>
-    <string name="loading">Cargando datos de %s…</string>
-    <string name="pwd_changed">Contraseña cambiada.</string>
-    <string name="category_deleted">Categoría eliminada.</string>
-    <string name="pwd_wrong">Contraseña incorrecta.</string>
-    <string name="pwd_unmatch">Usted ha dado diferentes contraseñas.</string>
+    <string name="item_deleted">Eliminada</string>
+    <string name="search">Busca tus contraseñas</string>
+    <string name="generate_password">Generar contraseña</string>
+    <string name="remove_field">Eliminar este campo</string>
+    <string name="add_field">Añadir Otro Campo</string>
+    <string name="choose_icon">Seleccione un icono</string>
+
+    <string name="delete_ask">Eliminar definitivamente, ¿estás seguro?</string>
+    <string name="all_accounts">Todas las Contraseñas</string>
+    <string name="empty">Aquí no hay nada.\nToca el botón flotante para agregar uno.</string>
+    <string name="no_empty">No se permite la contraseña vacía.</string>
+    <string name="password">Ingrese su Contraseña</string>
+    <string name="a_password">Ingrese una contraseña</string>
+    <string name="current_password">Ingrese su contraseña actual</string>
+    <string name="new_password">Ingrese una nueva contraseña</string>
+    <string name="confirm_password">Confirmar la contraseña</string>
+    <string name="wrong_password">¡Contraseña incorrecta!</string>
+    <string name="password_not_match">Usted ha dado diferentes contraseñas.</string>
+
     <string name="export_failed">Error al exportar datos.</string>
     <string name="import_failed">Error al importar datos.</string>
-    <string name="sync_failed">Error al sincronizar los datos.</string>
-    <string name="text_copied">Texto copiado al portapapeles.</string>
+    <string name="text_copied">Copiado al portapapeles.</string>
     <string name="export_success">Los datos exportados a %s.</string>
     <string name="import_success">Datos importados correctamente.</string>
-    <string name="sync_success_local">Datos recuperados con éxito del servidor.</string>
-    <string name="sync_success_server">Datos envíados al servidor.</string>
-    <string name="invalid_file">Por favor, seleccione un archivo válido para continuar.</string>
-    <string name="remember_choice">Recordar mi elección y no volver a preguntar.</string>
-    <string name="warning_copy">Texto en el portapapeles se puede acceder mediante cualquier aplicacion en el dispositivo. ¿Está seguro de que deseas copiar?</string>
-    <string name="auth_required">El archivo de origen se cifra con una contraseña diferente, por favor, introduzca la contraseña para desbloquearlo.</string>
-    <!-- String arrays -->
-    <string-array name="theme_names">
-    <!-- String arrays -->
-        <item>Predeterminado (Ligero)</item>
-    <!-- String arrays -->
-        <item>Predeterminado (Oscuro)</item>
-    <!-- String arrays -->
-        <item>Gris azulado (Ligero)</item>
-    <!-- String arrays -->
-        <item>Gris azulado (Oscuro)</item>
-    <!-- String arrays -->
-        <item>Indigo (Ligero)</item>
-    <!-- String arrays -->
-        <item>Indigo (Oscuro)</item>
-    <!-- String arrays -->
-        <item>Morado (Ligero)</item>
-    <!-- String arrays -->
-        <item>Morado (Oscuro)</item>
-    <!-- String arrays -->
-        <item>Cerceta (Ligero)</item>
-    <!-- String arrays -->
-        <item>Cerceta (Oscuro)</item>
-    </string-array>
-    <string-array name="category_names">
-        <item>Cuentas Bancarias</item>
-        <item>Tarjetas De Crédito</item>
-        <item>Dispositivos</item>
-        <item>E-Banking</item>
-        <item>Cuentas De Email</item>
-        <item>Cuentas Web</item>
-    </string-array>
-    <string-array name="field_types">
-        <item>Texto</item>
-        <item>Clave</item>
-        <item>Enlace Web</item>
-        <item>Email</item>
-        <item>PIN</item>
-    </string-array>
-    <string-array name="file_types">
-        <item>Archivo de datos de libretas (Cifrado)</item>
-        <item>Archivo CSV Passbook (texto plano)</item>
-    </string-array>
-    <string-array name="file_types_import">
-        <item>Archivo de datos de libretas (Cifrado)</item>
-        <item>Archivo CSV Passbook (texto plano)</item>
-        <item>aWallet Archivo CSV (texto plano)</item>
-    </string-array>
-    <string-array name="def_field_names">
-        <item>Usuario</item>
-        <item>Contraseña</item>
-        <item>Email</item>
-        <item>Dirección Web</item>
-        <item>Tarjeta No.</item>
-        <item>PIN</item>
-        <item>Nota</item>
-        <item>Nombre Del Banco</item>
-        <item>CVC</item>
-    </string-array>
-    <string-array name="lock_options">
-        <item>Enseguida</item>
-        <item>5 minutos</item>
-        <item>30 minutos</item>
-        <item>Nunca</item>
-    </string-array>
-    <string name="skip">Saltar</string>
-    <string name="next">Siguiente</string>
-    <string name="done">Hecho</string>
-    <string name="guide">App Introducciones</string>
-    <string name="title_tour0">Permanece Seguro</string>
-    <string name="title_tour1">Accede desde cualquier lugar</string>
-    <string name="title_tour2">Muy Fácil</string>
-    <string name="desc_tour0">Passbook lo encripta todo por lo que sus datos están a salvo.</string>
-    <string name="desc_tour1">Usted puede revisar sus contraseñas en cualquier dispositivo con Passbook.</string>
-    <string name="desc_tour2">Las contraseñas seguras son fáciles de conseguir y de usar, con muy poco esfuerzo.</string>
-    <string name="contacting">Contacta %s…</string>
-    <string name="category_saved">Categoría Guardada.</string>
-    <string name="fp_title">Autenticación de Huella Digital</string>
-    <string name="fp_ask">¿Quieres utilizar tu huella digital para desbloquear sus datos? Toque el sensor para continuar.</string>
-    <string name="fp_desc">Utilizar tu huella digital para desbloquear los datos.</string>
-    <string name="discard">Deseche el</string>
+    <string name="field_name">Nombre del Campo</string>
+    <string name="select_category">Seleccione una categoría</string>
+    <string name="title">Nombre: (Opcional)</string>
+    <string name="arrange_fields">Puede organizar sus propios campos aquí</string>
+    <string name="length">Longitud:</string>
+    <string name="field_username">Nombre de Usuario</string>
+    <string name="field_password">Contraseña</string>
+    <string name="field_website">Sitio web</string>
+
+    <string name="type_text">Texto</string>
+    <string name="type_url">URL</string>
+    <string name="type_password">Contraseña</string>
+    <string name="type_email">Correo Electrónico</string>
+
+    <string name="upper_case">A-Z</string>
+    <string name="lower_case">a-z</string>
+    <string name="digits">0–9</string>
+    <string name="chars">*.?</string>
+    <string name="identifiable">Evitar caracteres ambiguos</string>
+    <string name="refresh">Actualizar</string>
+
+    <string name="security">Seguridad</string>
+    <string name="auto_lock">Bloquear automáticamente</string>
+    <string name="biometric_auth">Habilite la autenticación biométrica para desbloquear</string>
+    <string name="change_pwd">Cambia la contraseña</string>
+    <string name="change_pwd_summary">Cambiar Contraseña Maestra</string>
+    <string name="data">Datos</string>
+    <string name="about">Acerca</string>
+    <string name="sync_ask">¿Desea iniciar sesión con su cuenta de Google para habilitar la copia de seguridad y la sincronización en la nube?</string>
+    <string name="sync_prepare">Espere mientras prepara el inicio de sesión de Google…</string>
+    <string name="sync_wait">Espere mientras se cargan los datos…</string>
+    <string name="sync_done">Su copia de seguridad en la nube se sincronizó correctamente.</string>
+    <string name="sync_fail">No se pudo cargar la copia de seguridad en la nube.</string>
+    <string name="sync_no_data">No se encontraron datos, continúe configurando una contraseña maestra.</string>
+    <string name="sync_title">Copia de seguridad y sincronización en la nube</string>
+    <string name="sync_resolve">Se encontró una copia de la copia de seguridad en la nube, pero Passbook no puede decidir cuál debe conservarse. ¿Cuál quieres conservar?</string>
+    <string name="sync_now">Sincroniza tus datos ahora</string>
+    <string name="syncing">Sincronizando…</string>
+    <string name="sync_enable_failure">Error inesperado, no se puede habilitar la copia de seguridad en la nube</string>
+    <string name="keep_local">Mantener Local</string>
+    <string name="keep_cloud">Mantener Cloud</string>
+    <string name="import_data">Datos de importacion</string>
+    <string name="import_summary">Importar desde datos de copia de seguridad anteriores</string>
+    <string name="export_data">Exportar datos</string>
+    <string name="export_summary">Exportar datos de Passbook para copia de seguridad</string>
+    <string name="theme">Establecer la apariencia de la aplicación</string>
+    <string name="credits">Reconocimiento</string>
+    <string name="thanks">Muchas gracias a todos los colaboradores!</string>
+    <string name="build">Versión</string>
+    <string name="version">Versión: %s</string>
+    <string name="auth_required">Para continuar, ingrese su contraseña</string>
+    <string name="sync_require_password">Introduzca la contraseña para aceptar la copia de seguridad en la nube.</string>
+    <string name="import_require_password">Los datos están encriptados, ingrese la contraseña para desbloquearlos.</string>
+    <string name="export_provide_password">Proporcione una contraseña para cifrar sus datos para la exportación. ¡Su contraseña maestra se usa si la deja vacía!</string>
+    <string name="credit_message">Agradecimientos especiales a:\n\nFrançais: Xu, Xuechen\nEspañol: José Herrera\n中文: Zhu, Qianqian\n\nfor the translations!</string>
+    <string name="fp_title">Autenticación Biométrica</string>
+    <string name="fp_ask">¿Desea habilitar la autenticación biométrica para desbloquear sus datos?</string>
+    <string name="fp_desc">Desbloquee sus datos con sus credenciales biométricas</string>
+    <string name="fp_use_pwd">Usar contraseña</string>
+    <string name="fp_error">No se pudo usar su autenticación biométrica. Desbloquee sus datos con su contraseña y vuelva a habilitar la autenticación biométrica en la configuración.</string>
 </resources>

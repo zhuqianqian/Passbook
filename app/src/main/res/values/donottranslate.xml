@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="upper_case">A&#8211;Z</string>
-    <string name="lower_case">a&#8211;z</string>
-    <string name="digits">0&#8211;9</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="link_app_help">https://github.com/zhuqianqian/Passbook/wiki/passbook-help</string>
+    <!-- Preference keys used in V2, for upgrade -->
+    <string name="lock_time_v2">AutoLockTime</string>
+    <string name="biometric_v2">Status</string>
+    <string name="sync_v2">SyncServer</string>
+    <!-- Preference keys used in V3 that has conflicts with v2 -->
+    <string name="pref_lock_time">lock_time</string>
+    <string name="pref_biometric">enable_biometric</string>
 
-    <string name="cc_xcx">Xu, Xuechen</string>
-    <string name="cc_yhc">Chen, Yonghui</string>
-    <string name="cc_qqz">Zhu, Qianqian</string>
-    <string name="cc_jh">José Herrera</string>
+    <!-- Additional keys used in Preference -->
+    <string name="bio_iv">PbIv</string>
+    <string name="bio_data">PbData</string>
 
-    <string name="lang_zhcn">简体中文</string>
-    <string name="lang_zhtw">繁體中文</string>
-    <string name="lang_fr">Français</string>
-    <string name="lang_th">ไทย</string>
-    <string name="lang_es">Español</string>
+    <string name="pref_theme">app_theme</string>
+    <string name="key_reset_password">app_reset_password</string>
+    <string name="key_sync">app_sync</string>
+    <string name="key_sync_time">LastSyncTime</string>
+    <string name="key_import">app_import</string>
+    <string name="key_export">app_export</string>
+    <string name="key_credits">app_credits</string>
+    <string name="key_about">app_about</string>
 </resources>

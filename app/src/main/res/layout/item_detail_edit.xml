@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.z299studio.pbfree.data.ValueType"/>
+        <variable
+            name="generatePassword"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="removeField"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="field"
+            type="com.z299studio.pbfree.viewmodels.FieldViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/detail_margin_vertical">
+
+        <ImageView
+            android:id="@+id/remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/remove_field"
+            android:onClick="@{removeField}"
+            app:srcCompat="@drawable/remove"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/edit"
+            app:layout_constraintBottom_toBottomOf="@id/edit"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@{field.key}"
+            android:layout_marginStart="@dimen/icon_text_margin"
+            app:layout_constraintStart_toEndOf="@id/remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:hint="Field Name" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={field.value}"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:padding="@dimen/icon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/generate_password"
+            android:layout_marginEnd="@dimen/edit_margin"
+            android:onClick="@{generatePassword}"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/actionBarItemBackground"
+            app:visible="@{field.type == ValueType.Password || field.type == ValueType.Pin}"
+            app:srcCompat="@drawable/generator"
+            app:layout_constraintEnd_toEndOf="@id/edit"
+            app:layout_constraintTop_toTopOf="@id/edit"
+            app:layout_constraintBottom_toBottomOf="@id/edit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

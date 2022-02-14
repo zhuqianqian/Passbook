@@ -1,0 +1,4 @@
+<resources>
+   <integer name="icon_dialog_span">6</integer>
+   <integer name="suggest_label_columns">4</integer>
+</resources>

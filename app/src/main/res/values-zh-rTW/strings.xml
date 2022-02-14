@@ -1,191 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="title_accounts">
-        <item quantity="other">%d个賬號</item>
-    </plurals>
-    <plurals name="info_deleted">
-        <item quantity="other">刪除%d項。</item>
-    </plurals>
-    <!-- App strings -->
     <string name="app_name">密碼簿</string>
     <string name="app_copy">&#169; 299Studio 2015， 版權所有</string>
     <string name="app_welcome">歡迎使用密碼簿</string>
-    <string name="app_intro">安全管理你的賬號密碼並在多個裝置之間同步。\n\n請選擇一個伺服器進行同步。</string>
-    <!-- Action/Menu/Button/Label/Title strings -->
-    <string name="edit_category">編輯類別</string>
-    <string name="del_category">刪除類別</string>
-    <string name="new_category">新增類別</string>
-    <string name="edit_account">修改賬號</string>
-    <string name="del_account">刪除賬號</string>
-    <string name="new_account">新增賬號</string>
-    <string name="help">幫助與常見問題</string>
-    <string name="settings">設定</string>
-    <string name="about">關於</string>
-    <string name="all_accounts">全部賬號</string>
-    <string name="rate">評價與意見反映</string>
-    <string name="set_icon">設定圖標</string>
-    <string name="copy_pwd">複製密碼</string>
-    <string name="change_pwd">更改主密碼</string>
-    <string name="import_data">導入數據</string>
-    <string name="export_data">導出數據</string>
-    <string name="sync">數據同步</string>
-    <string name="general">常規設定</string>
-    <string name="security">安全</string>
-    <string name="sync_none">不使用同步</string>
-    <string name="sync_gpg">Google Play遊戲</string>
-    <string name="sync_gdrive">Google雲端硬碟</string>
-    <string name="sync_server">同步伺服器</string>
-    <string name="sync_msg">顯示同步訊息</string>
-    <string name="last_sync">最近一次同步時間</string>
-    <string name="never">還沒有發生過</string>
-    <string name="show_password">總是顯示密碼</string>
-    <string name="show_ungrouped">顯示未分組類別</string>
-    <string name="auto_lock">進入後臺時自動鎖定</string>
-    <string name="warn_copy">複製密碼時顯示警告</string>
-    <string name="theme">應用程式主題</string>
-    <string name="file_loc">檔案位置：</string>
-    <string name="export_type">導出檔案格式：</string>
-    <string name="import_type">導入檔案格式：</string>
-    <string name="licence">開放原始碼授權</string>
-    <string name="enter_pwd">輸入主密碼</string>
-    <string name="set_pwd">設定主密碼</string>
-    <string name="repeat_pwd">再次輸入密碼</string>
-    <string name="current_pwd">當前密碼</string>
-    <string name="new_pwd">新的密碼</string>
-    <string name="select_file">選擇檔案</string>
-    <string name="def_category">其他</string>
-    <string name="field_name">名稱</string>
-    <string name="field_value">值</string>
-    <string name="add_field">新增一條信息</string>
-    <string name="undo">撤消</string>
-    <string name="start">復原</string>
-    <string name="change">更改</string>
-    <string name="delete">刪除</string>
+    <string name="app_set_password">首先，請設定一個主密碼</string>
+    <string name="action_category">編輯/新建分类</string>
+    <string name="action_settings">設定</string>
+    <string name="action_delete">刪除</string>
+    <string name="action_edit">編輯</string>
+    <string name="action_new">新密碼</string>
+    <string name="action_undo">撤消</string>
+    <string name="confirm">確認</string>
     <string name="unlock">解鎖</string>
-    <string name="get_started">開始使用</string>
-    <string name="option_label">如何處置重複條目：</string>
-    <string name="option_ignore">忽略</string>
-    <string name="option_keepall">保留全部條目</string>
-    <string name="option_overwrite">覆蓋已有條目</string>
-    <string name="copy">複製</string>
-    <string name="auto_gen">自動產生密碼</string>
-    <string name="other">其他</string>
-    <string name="accept">接受</string>
-    <string name="refresh">重新生成</string>
-    <string name="length">長度：%d</string>
-    <string name="save">儲存</string>
-    <string name="close">關閉</string>
-    <string name="search">在密碼簿中搜尋…</string>
-    <!-- Tips/Messages -->
-    <string name="empty_search">未搜尋到匹配條目。</string>
-    <string name="select_to_add">選擇要增加的條目：</string>
-    <string name="delete_ask">確定要刪除嗎？你不能復原刪除。</string>
-    <string name="also_del_account">同時刪除類別下的全部賬號。</string>
-    <string name="no_file_explorer">未找到可用的檔案管理器。</string>
-    <string name="no_accounts">還沒有增加任何賬號。</string>
-    <string name="loading">嘗試從%s載入數據…</string>
-    <string name="pwd_changed">密碼已更改。</string>
-    <string name="category_deleted">類別已刪除。</string>
-    <string name="pwd_wrong">密碼不正確。</string>
-    <string name="pwd_unmatch">兩次密碼不一樣。</string>
-    <string name="export_failed">數據導出失敗。</string>
-    <string name="import_failed">數據導入失敗。</string>
-    <string name="sync_failed">數據同步失敗。</string>
-    <string name="text_copied">文字已複製到剪貼簿。</string>
+    <string name="start_use">開始使用</string>
+    <string name="save">保存</string>
+    <string name="item_deleted">已刪除</string>
+    <string name="search">搜索密碼</string>
+    <string name="generate_password">生成密碼</string>
+    <string name="remove_field">刪除此字段</string>
+    <string name="add_field">添加一個字段</string>
+    <string name="choose_icon">設定圖標</string>
+
+    <string name="delete_ask">永久刪除。 你確定嗎？</string>
+    <string name="all_accounts">全部密碼</string>
+    <string name="empty">空空如也。\n點擊下方的浮動按鈕添加數據。</string>
+    <string name="no_empty">密碼不可以为空。</string>
+    <string name="password">輸入你的密碼</string>
+    <string name="a_password">輸入密碼</string>
+    <string name="current_password">輸入當前密碼</string>
+    <string name="new_password">輸入新的密碼</string>
+    <string name="confirm_password">確認你的密碼</string>
+    <string name="wrong_password">密碼錯誤！</string>
+    <string name="password_not_match">確認密碼不匹配！</string>
+
+    <string name="export_failed">無法導出數據。</string>
+    <string name="import_failed">無法導入數據。</string>
+    <string name="text_copied">複製到剪貼板。</string>
     <string name="export_success">數據導出到%s。</string>
     <string name="import_success">數據成功導入。</string>
-    <string name="sync_success_local">數據從伺服器同步到本地。</string>
-    <string name="sync_success_server">數據同步到伺服器。</string>
-    <string name="invalid_file">請選擇一個有效檔案以繼續。</string>
-    <string name="remember_choice">記住我的選擇并不再詢問。</string>
-    <string name="smart">不使用難辨字符</string>
-    <string name="warning_copy">剪貼簿上的內容可以被設備上的所有應用程式訪問，確定要複製嗎？</string>
-    <string name="auth_required">原始檔案使用一個不同的密碼加密，請輸入它的密碼以解鎖。</string>
-    <!-- String arrays -->
-    <string-array name="theme_names">
-    <!-- String arrays -->
-        <item>默認淡色主題</item>
-    <!-- String arrays -->
-        <item>默認深色主題</item>
-    <!-- String arrays -->
-        <item>藍灰淡色</item>
-    <!-- String arrays -->
-        <item>藍灰深色</item>
-    <!-- String arrays -->
-        <item>靛青淡色</item>
-    <!-- String arrays -->
-        <item>靛青深色</item>
-    <!-- String arrays -->
-        <item>紫色淡色</item>
-    <!-- String arrays -->
-        <item>紫色深色</item>
-    <!-- String arrays -->
-        <item>藍綠淡色</item>
-    <!-- String arrays -->
-        <item>藍綠深色</item>
-    </string-array>
-    <string-array name="category_names">
-        <item>銀行賬號</item>
-        <item>信用卡</item>
-        <item>設備</item>
-        <item>電子銀行</item>
-        <item>電子郵箱</item>
-        <item>網絡賬號</item>
-    </string-array>
-    <string-array name="field_types">
-        <item>文字</item>
-        <item>密碼</item>
-        <item>網址</item>
-        <item>電子郵箱</item>
-        <item>PIN</item>
-    </string-array>
-    <string-array name="file_types">
-        <item>密碼簿數據檔案（密文）</item>
-        <item>密碼簿逗號分隔檔案（明文）</item>
-    </string-array>
-    <string-array name="file_types_import">
-        <item>密碼簿數據檔案（密文）</item>
-        <item>密碼簿逗號分隔檔案（明文）</item>
-        <item>aWallet逗號分隔檔案（明文）</item>
-    </string-array>
-    <string-array name="def_field_names">
-        <item>用戶名</item>
-        <item>密碼</item>
-        <item>電子郵箱</item>
-        <item>網址</item>
-        <item>卡號</item>
-        <item>PIN</item>
-        <item>說明</item>
-        <item>銀行名稱</item>
-        <item>檢驗碼</item>
-    </string-array>
-    <string-array name="lock_options">
-        <item>立刻</item>
-        <item>5分鐘</item>
-        <item>30分鐘</item>
-        <item>從不</item>
-    </string-array>
-    <string name="skip">略過</string>
-    <string name="next">下一個</string>
-    <string name="done">完成</string>
-    <string name="guide">應用程式導覽</string>
-    <string name="title_tour0">安全存儲</string>
-    <string name="title_tour1">隨時訪問</string>
-    <string name="title_tour2">簡單易用</string>
-    <string name="desc_tour0">密碼簿加密存儲保證你的數據安全。</string>
-    <string name="desc_tour1">你可以用密碼薄在任何設備上查看數據。</string>
-    <string name="desc_tour2">獲取強密碼并輕鬆使用變得易如反掌。</string>
-    <string name="contacting">與%s取得通訊…</string>
-    <string name="category_saved">類別已儲存。</string>
-    <string name="fp_title">指紋身份驗證</string>
-    <string name="fp_ask">你想要通過您的指紋來解鎖您的資料嗎?觸摸感應器繼續。</string>
-    <string name="fp_desc">使用指紋來保護你的資料。</string>
-    <string name="a_google">谷歌（Google）</string>
-    <string name="a_ms">微軟帳戶（Outlook/Hotmail）</string>
-    <string name="a_twitter">推特（Twitter）</string>
-    <string name="a_fb">Facebook</string>
-    <string name="a_li">LinkedIn</string>
-    <string name="a_amazon">亞馬遜</string>
-    <string name="diff_pwd">在你的同步伺服器上檢測到新的數據檔案，但是當前的密碼不能解密。你需要提供一個正確的密碼進行解密，否則請選擇丟棄新的數據檔案。\n注意，如果使用新的數據檔案，你當前的密碼會被替換成現在輸入的密碼。</string>
-    <string name="discard">丟棄</string>
+    <string name="field_name">字段名稱</string>
+    <string name="select_category">選擇類別</string>
+    <string name="title">名稱（可不填）</string>
+    <string name="arrange_fields">你可以在此隨意調整字段</string>
+    <string name="length">密碼長度：</string>
+    <string name="field_username">用戶名</string>
+    <string name="field_password">密碼</string>
+    <string name="field_website">網站</string>
+
+    <string name="type_text">文本</string>
+    <string name="type_url">網絡地址</string>
+    <string name="type_password">密碼</string>
+    <string name="type_email">電子郵件</string>
+
+    <string name="upper_case">大寫字母</string>
+    <string name="lower_case">小寫字母</string>
+    <string name="digits">數字</string>
+    <string name="chars">特殊符號</string>
+    <string name="identifiable">避開難以辨認的字符</string>
+    <string name="refresh">換一個</string>
+
+    <string name="security">安全</string>
+    <string name="auto_lock">進入後台自動上鎖</string>
+    <string name="biometric_auth">使用生物識別身份驗證解鎖</string>
+    <string name="change_pwd">更改密碼</string>
+    <string name="change_pwd_summary">更改您的主密碼</string>
+    <string name="data">數據</string>
+    <string name="about">關於</string>
+    <string name="sync_ask">您是否想使用Google帳戶登錄以啟用雲備份和同步？</string>
+    <string name="sync_prepare">準備谷歌登錄中，請等待…</string>
+    <string name="sync_wait">數據正在加載，請等待…</string>
+    <string name="sync_fail">無法加載雲備份。</string>
+    <string name="sync_title">雲備份和同步</string>
+    <string name="syncing">同步中…</string>
+    <string name="sync_enable_failure">意外錯誤，無法啟用雲備份</string>
+    <string name="keep_local">保留本地存檔</string>
+    <string name="keep_cloud">保留雲備份</string>
+    <string name="import_data">導入數據</string>
+    <string name="import_summary">從以前的備份數據導入</string>
+    <string name="export_data">導出數據</string>
+    <string name="export_summary">導出存摺數據用於備份</string>
+    <string name="theme">設置應用外觀</string>
+    <string name="credits">致謝</string>
+    <string name="thanks">向以下人員致以感謝！</string>
+    <string name="build">版本</string>
+    <string name="version">版本号：%s</string>
+    <string name="auth_required">你需要輸入密碼以繼續。</string>
+    <string name="sync_require_password">輸入雲備份的密碼以接受雲備份。</string>
+    <string name="import_require_password">數據已加密，請輸入密碼以解鎖。</string>
+    <string name="export_provide_password">提供密碼以加密您的導出數據。 如果您將其留空，則使用您的主密碼！</string>
+    <string name="credit_message">特別感謝他們的翻譯：\n\nFrançais: Xu, Xuechen\nEspañol: José Herrera\n漢語: Zhu, Qianqian\n\n</string>
+    <string name="fp_title">生物識別身份驗證</string>
+    <string name="fp_ask">您是否希望啟用生物識別身份驗證以解鎖您的數據？</string>
+    <string name="fp_desc">使用生物識別憑據解鎖您的數據</string>
+    <string name="fp_use_pwd">使用密碼</string>
+    <string name="sync_done">您的雲備份已成功同步。</string>
+    <string name="sync_no_data">找不到雲數據，請設置主密碼繼續使用。</string>
+    <string name="sync_resolve">找到了雲備份副本，但密碼簿無法決定應保留哪一個。 你想保留哪一個？</string>
+    <string name="sync_now">立即同步數據</string>
+    <string name="fp_error">無法使用您的生物識別身份驗證。 請使用密碼解鎖您的數據並在設置中重新啟用生物識別身份驗證。</string>
 </resources>

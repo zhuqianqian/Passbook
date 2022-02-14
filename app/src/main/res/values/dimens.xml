@@ -1,57 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="action_bar_size">56dp</dimen>
-    <dimen name="action_bar_extend">112dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="icon_padding">4dp</dimen>
+    <dimen name="icon_radius">4dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="navigation_drawer_width">280dp</dimen>
-    <dimen name="navigation_menu_icon">24dp</dimen>
-    <dimen name="navigation_menu_height">48dp</dimen>
-    <dimen name="navigation_icon_margin">16dp</dimen>
-    <dimen name="navigation_text_margin">72dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">72dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dialog_content_begin">32dp</dimen>
     <dimen name="toolbar_elevation">12dp</dimen>
-    <dimen name="main_list_height">56dp</dimen>
-    <dimen name="list_avatar_size">40dp</dimen>
-    <dimen name="card_padding">0dp</dimen>
-    <dimen name="card_margin">4dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="detail_margin_vertical">6dp</dimen>
+    <dimen name="menu_vertical_margin">8dp</dimen>
+    <!--    <dimen name="quarter_margin">4dp</dimen>-->
+    <dimen name="label_margin">4dp</dimen>
+    <dimen name="main_item_icon_size">28dp</dimen>
+    <dimen name="icon_text_margin">12dp</dimen>
+    <dimen name="edit_margin">12dp</dimen>
 
-    <dimen name="fab_small">54dp</dimen>
-    <dimen name="fab">56dp</dimen>
-    <dimen name="fab_margin">-42dp</dimen>
-    <dimen name="fab_small_elevation">4dp</dimen>
-    <dimen name="fab_elevation">8dp</dimen>
-    <dimen name="fab_shadow_top">8dp</dimen>
-    <dimen name="fab_shadow_bottom">12dp</dimen>
-    <dimen name="fab_shadow_left">10dp</dimen>
-    <dimen name="fab_shadow_right">10dp</dimen>
-    <!-- small fab use the same padding, to avoid too obvious alignment problem -->
-    <dimen name="fab_small_shadow">7dp</dimen>
+    <!--    Font Sizes   -->
+    <dimen name="icon_text_size">17dp</dimen>
 
-    <dimen name="button_elevation_material">1dp</dimen>
-    <dimen name="button_pressed_z_material">2dp</dimen>
-    <dimen name="button_inset_vertical_material">6dp</dimen>
-    <dimen name="button_inset_horizontal_material">@dimen/control_inset_material</dimen>
-    <dimen name="button_padding_vertical_material">@dimen/control_padding_material</dimen>
-    <dimen name="button_padding_horizontal_material">8dp</dimen>
-    <dimen name="control_inset_material">4dp</dimen>
-    <dimen name="control_padding_material">4dp</dimen>
-    <dimen name="control_corner_material">2dp</dimen>
-
-    <dimen name="dlg_content_margin">8dp</dimen>
-    <dimen name="dlg_action_margin">16dp</dimen>
-    <dimen name="dlg_bottom_margin">8dp</dimen>
-    <dimen name="snackbar_horizontal_margin">24dp</dimen>
-    <dimen name="snackbar_height_single">48dp</dimen>
-    <dimen name="snackbar_min_width">288dp</dimen>
-    <dimen name="snackbar_max_width">568dp</dimen>
-    <dimen name="snackbar_corner">0dp</dimen>
-    
-    <dimen name="setting_margin">16dp</dimen>
-
-    <dimen name="app_tour_image_margin">60dp</dimen>
-    <dimen name="app_tour_title_margin">180dp</dimen>
-    <dimen name="app_tour_desc_padding">120dp</dimen>
-    <dimen name="app_tour_padding">16dp</dimen>
-    <dimen name="start_title_size">24sp</dimen>
-    <dimen name="start_intro_size">13sp</dimen>
-
+    <dimen name="search_bar_height">48dp</dimen>
+    <dimen name="search_bar_radius">24dp</dimen>
+    <dimen name="search_bar_edge">12dp</dimen>
+    <dimen name="search_bar_vertical_margin">8dp</dimen>
+    <dimen name="placeholder_size">64dp</dimen>
+    <dimen name="search_bar_elevation">8dp</dimen>
 </resources>

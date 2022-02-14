@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single" android:id="@+id/menu_main">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/account"
+            android:orderInCategory="0"
+            android:title="@string/all_accounts"/>
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/edit"
+            android:orderInCategory="1001"
+            android:title="@string/action_category" />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/menu_additional">
+        <item
+            android:id="@+id/nav_settings"
+            android:orderInCategory="10001"
+            android:icon="@drawable/settings"
+            android:title="@string/action_settings"/>
+    </group>
+</menu>
