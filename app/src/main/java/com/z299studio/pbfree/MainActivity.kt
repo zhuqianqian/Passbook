@@ -22,6 +22,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.navigation.NavigationView
 import com.z299studio.pbfree.data.AccountRepository
 import com.z299studio.pbfree.data.DataProcessor
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
-        binding.appBarMain.fab.setOnClickListener {
+        binding.appBarMain.contentMain.fab.setOnClickListener {
             itemViewModel.reset2CategoryTemplate(homeViewModel.category.value)
             findNavController(R.id.nav_host).navigate(R.id.action_add_new)
         }
@@ -100,17 +101,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     binding.appBarMain.toolbar.visibility = View.GONE
-                    binding.appBarMain.fab.show()
+                    binding.appBarMain.contentMain.fab.show()
+                    binding.appBarMain.contentMain.ad.visibility = View.VISIBLE
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 }
                 in LOCK_DRAWER_FRAGMENTS -> {
                     binding.appBarMain.toolbar.visibility = View.VISIBLE
-                    binding.appBarMain.fab.hide()
+                    binding.appBarMain.contentMain.fab.hide()
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.appBarMain.contentMain.ad.visibility =
+                        if (destination.id == R.id.nav_detail) { View.VISIBLE } else { View.GONE }
                 }
                 else -> {
                     binding.appBarMain.toolbar.visibility = View.GONE
-                    binding.appBarMain.fab.visibility = View.GONE
+                    binding.appBarMain.contentMain.fab.visibility = View.GONE
+                    binding.appBarMain.contentMain.ad.visibility = View.GONE
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
             }
@@ -128,6 +133,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navView.setNavigationItemSelectedListener(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.appBarMain.contentMain.ad.loadAd(adRequest)
+
         subscribeUi()
     }
 
@@ -171,6 +179,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                navController.navigate(R.id.nav_login, args, navOptionsBuilder.build())
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.appBarMain.contentMain.ad.destroy()
     }
 
     fun openDrawer() {

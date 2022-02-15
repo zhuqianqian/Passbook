@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_id" translatable="false">REPLACE_ME</string>
+    <string name="ad_app_id" translatable="false">REPLACE_ME</string>
+    <string name="admob_ad_unit" translatable="false">REPLACE_ME</string>
 </resources>
