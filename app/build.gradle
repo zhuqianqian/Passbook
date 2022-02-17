@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -68,6 +69,8 @@ dependencies {
     implementation 'com.google.api-client:google-api-client-android:1.33.1'
     implementation 'com.google.apis:google-api-services-drive:v3-rev197-1.25.0'
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.http-client:google-http-client-gson:1.41.1'
     runtimeOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     testImplementation 'junit:junit:4.13.2'
