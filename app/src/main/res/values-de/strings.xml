@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Passbook</string>
+    <string name="app_copy">Urheberrecht &#169; 2022, 299 Studio</string>
+    <string name="app_welcome">Willkommen bei Passbook</string>
+    <string name="app_set_password">Legen Sie zunächst ein Master-Passwort fest.</string>
+    <string name="action_category">Bearbeiten/Neue Kategorie</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_new">Neues Kennwort</string>
+    <string name="action_undo">Rückgängig machen</string>
+    <string name="confirm">OK</string>
+    <string name="unlock">Freischalten</string>
+    <string name="start_use">Loslegen</string>
+    <string name="save">Speichern</string>
+    <string name="item_deleted">Gelöscht</string>
+    <string name="search">Suchen Sie Ihre Passwörter</string>
+    <string name="generate_password">Generiere Passwort</string>
+    <string name="remove_field">Entfernen Sie dieses Feld</string>
+    <string name="add_field">Fügen Sie ein Feld hinzu</string>
+    <string name="choose_icon">Wählen Sie Symbol</string>
+
+    <string name="delete_ask">Dauerhaft löschen. Bist du sicher?</string>
+    <string name="all_accounts">Alle Passwörter</string>
+    <string name="empty">Nichts hier.\nTippen Sie auf die schwebende Schaltfläche, um eine hinzuzufügen.</string>
+    <string name="no_empty">Leeres Passwort ist nicht erlaubt.</string>
+    <string name="password">Geben Sie Ihr Passwort ein</string>
+    <string name="a_password">Geben Sie ein Passwort ein</string>
+    <string name="current_password">Gib dein aktuelles Passwort ein</string>
+    <string name="new_password">Geben Sie ein neues Kennwort ein</string>
+    <string name="confirm_password">Bestätigen Sie Ihr Passwort</string>
+    <string name="wrong_password">Falsches Passwort!</string>
+    <string name="password_not_match">Passwort bestätigen stimmt nicht überein!</string>
+
+    <string name="export_failed">Daten konnten nicht exportiert werden.</string>
+    <string name="import_failed">Daten konnten nicht importiert werden.</string>
+    <string name="text_copied">In die Zwischenablage kopiert.</string>
+    <string name="export_success">Daten nach %s exportiert.</string>
+    <string name="import_success">Daten erfolgreich importiert.</string>
+    <string name="field_name">Feldname</string>
+    <string name="select_category">Wählen Sie eine Kategorie aus</string>
+    <string name="title">Name: (Optional)</string>
+    <string name="arrange_fields">Hier können Sie Ihre eigenen Felder anordnen</string>
+    <string name="length">Länge:</string>
+    <string name="field_username">Nutzername</string>
+    <string name="field_password">Passwort</string>
+    <string name="field_website">Webseite</string>
+
+    <string name="type_text">Text</string>
+    <string name="type_url">URL</string>
+    <string name="type_password">Passwort</string>
+    <string name="type_email">E-mail</string>
+
+    <string name="upper_case">A-Z</string>
+    <string name="lower_case">a-z</string>
+    <string name="digits">0–9</string>
+    <string name="chars">*.?</string>
+    <string name="identifiable">Vermeiden Sie mehrdeutige Zeichen</string>
+    <string name="refresh">Aktualisierung</string>
+
+    <string name="security">Sicherheit</string>
+    <string name="auto_lock">Beim Betreten des Hintergrunds sperren</string>
+    <string name="biometric_auth">Aktivieren Sie zum Entsperren die biometrische Authentifizierung</string>
+    <string name="change_pwd">Passwort ändern</string>
+    <string name="change_pwd_summary">Ändern Sie Ihr Master-Passwort</string>
+    <string name="data">Daten</string>
+    <string name="about">Über</string>
+    <string name="sync_ask">Möchten Sie sich mit Ihrem Google-Konto anmelden, um Cloud-Sicherung und -Synchronisierung zu aktivieren?</string>
+    <string name="sync_prepare">Bitte warten Sie, während die Google-Anmeldung vorbereitet wird…</string>
+    <string name="sync_wait">Bitte warten Sie, während die Daten geladen werden…</string>
+    <string name="sync_done">Ihr Cloud-Backup wurde erfolgreich synchronisiert.</string>
+    <string name="sync_fail">Ihre Cloud-Sicherung konnte nicht geladen werden.</string>
+    <string name="sync_no_data">Keine Daten gefunden, bitte fahren Sie fort, indem Sie ein Master-Passwort einrichten.</string>
+    <string name="sync_title">Cloud-Backup und -Synchronisierung</string>
+    <string name="sync_resolve">Eine Kopie der Cloud-Sicherung wurde gefunden, aber Passbook kann nicht entscheiden, welche aufbewahrt werden soll. Welche möchten Sie behalten?</string>
+    <string name="sync_now">Synchronisieren Sie jetzt Ihre Daten</string>
+    <string name="syncing">Synchronisieren…</string>
+    <string name="sync_enable_failure">Unerwarteter Fehler, Cloud-Sicherung kann nicht aktiviert werden</string>
+    <string name="keep_local">Bleiben Sie lokal</string>
+    <string name="keep_cloud">Wolke behalten</string>
+    <string name="import_data">Daten importieren</string>
+    <string name="import_summary">Import aus früheren Sicherungsdaten</string>
+    <string name="export_data">Daten exportieren</string>
+    <string name="export_summary">Passbook-Daten zur Sicherung exportieren</string>
+    <string name="theme">Aussehen der App festlegen</string>
+    <string name="credits">Danke</string>
+    <string name="thanks">Vielen Dank an alle Mitwirkenden!</string>
+    <string name="build">Ausführung</string>
+    <string name="version">Ausführung: %s</string>
+    <string name="auth_required">Geben Sie Ihr Passwort ein, um fortzufahren</string>
+    <string name="sync_require_password">Geben Sie das Passwort des Cloud-Backups ein, um die Remote-Daten zu akzeptieren.</string>
+    <string name="import_require_password">Die Daten sind verschlüsselt, bitte geben Sie das Passwort ein, um sie zu entsperren.</string>
+    <string name="export_provide_password">Geben Sie ein Passwort ein, um Ihre Daten für den Export zu verschlüsseln. Wenn Sie es leer lassen, wird Ihr Master-Passwort verwendet!</string>
+    <string name="credit_message">Besonderer Dank an:\n\nFrançais: Xu, Xuechen\nEspañol: José Herrera\n中文: Zhu, Qianqian\n\nfor the translations!</string>
+    <string name="fp_title">Biometrische Authentifizierung</string>
+    <string name="fp_ask">Möchten Sie die biometrische Authentifizierung aktivieren, um Ihre Daten zu entsperren?</string>
+    <string name="fp_desc">Entsperren Sie Ihre Daten mit Ihren biometrischen Anmeldeinformationen</string>
+    <string name="fp_use_pwd">Passwort verwenden</string>
+    <string name="fp_error">Ihre biometrische Authentifizierung konnte nicht verwendet werden. Bitte entsperren Sie Ihre Daten mit Ihrem Passwort und aktivieren Sie die biometrische Authentifizierung in den Einstellungen wieder.</string>
+
+    <string-array name="lock_options">
+        <item>Sofort</item>
+        <item>5 Minuten</item>
+        <item>30 Minuten</item>
+        <item>Noch nie</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>Automatisch</item>
+        <item>Light</item>
+        <item>Dark mode</item>
+    </string-array>
+</resources>

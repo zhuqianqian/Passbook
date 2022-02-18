@@ -97,4 +97,17 @@
     <string name="sync_resolve">密码本成功加载到你的云端数据，但是它和本地数据均有修改而不能自动决定哪一份数据适合保留，你想保留哪一份数据？</string>
     <string name="sync_now">点击以与云端同步数据</string>
     <string name="fp_error">启用生物身份验证解锁失败，请在设置中关闭后重新启用。</string>
+
+    <string-array name="lock_options">
+        <item>立刻</item>
+        <item>5分钟</item>
+        <item>30分钟</item>
+        <item>不上锁</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>跟随系统</item>
+        <item>淡色</item>
+        <item>深色</item>
+    </string-array>
 </resources>

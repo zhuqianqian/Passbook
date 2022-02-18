@@ -97,4 +97,17 @@
     <string name="fp_desc">Desbloquee sus datos con sus credenciales biométricas</string>
     <string name="fp_use_pwd">Usar contraseña</string>
     <string name="fp_error">No se pudo usar su autenticación biométrica. Desbloquee sus datos con su contraseña y vuelva a habilitar la autenticación biométrica en la configuración.</string>
+
+    <string-array name="lock_options">
+        <item>Enseguida</item>
+        <item>5 minutos</item>
+        <item>30 minutos</item>
+        <item>Nunca</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>Automatic (by system)</item>
+        <item>Light</item>
+        <item>Dark mode</item>
+    </string-array>
 </resources>

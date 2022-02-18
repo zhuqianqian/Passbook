@@ -86,14 +86,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         subscribeImportExport()
         syncViewModel.status.observe(viewLifecycleOwner) {
+            if (it == SyncStatus.Ready) {
+                return@observe
+            }
             val enableSync = syncViewModel.connected
             findPreference<SwitchPreferenceCompat>(getString(R.string.key_sync))?.isChecked = enableSync
             if (!enableSync) {
-                Snackbar.make(view!!, R.string.sync_enable_failure, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, R.string.sync_enable_failure, Snackbar.LENGTH_LONG).show()
             }
             PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
                 .putBoolean(getString(R.string.key_sync), enableSync).apply()

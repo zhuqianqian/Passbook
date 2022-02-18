@@ -97,4 +97,17 @@
     <string name="fp_desc">Déverrouillez vos données avec vos identifiants biométriques</string>
     <string name="fp_use_pwd">Utiliser le mot de Passe</string>
     <string name="fp_error">Impossible d\'utiliser votre authentification biométrique. Veuillez déverrouiller vos données avec votre mot de passe et réactiver l\'authentification biométrique dans les paramètres.</string>
+
+    <string-array name="lock_options">
+        <item>Immédiatement</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>Jamais</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>Automatique</item>
+        <item>Light</item>
+        <item>Dark mode</item>
+    </string-array>
 </resources>

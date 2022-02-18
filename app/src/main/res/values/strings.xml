@@ -97,4 +97,17 @@
     <string name="fp_error">Failed to use your biometric authentication. Please unlock your data with your password and re-enable biometric authentication in the settings.</string>
     <string name="sync_wait">Please wait while data is being loaded…</string>
     <string name="fp_use_pwd">Use Password</string>
+
+    <string-array name="lock_options">
+        <item>Immediately</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>Never</item>
+    </string-array>
+
+    <string-array name="theme_names">
+        <item>Automatic (by system)</item>
+        <item>Light</item>
+        <item>Dark mode</item>
+    </string-array>
 </resources>

@@ -1,22 +1,9 @@
 <resources>
-    <string-array name="lock_options">
-        <item>Immediately</item>
-        <item>5 minutes</item>
-        <item>30 minutes</item>
-        <item>Never</item>
-    </string-array>
-
     <string-array name="lock_values">
         <item>1000</item>
         <item>300000</item>
         <item>1800000</item>
         <item>0</item>
-    </string-array>
-
-    <string-array name="theme_names">
-        <item>Automatic (by system)</item>
-        <item>Light</item>
-        <item>Dark mode</item>
     </string-array>
 
     <string-array name="theme_ids">

@@ -51,7 +51,7 @@ class CloudSyncDialog : BottomSheetDialogFragment() {
                 SyncStatus.Preparing -> syncViewModel.message.value = getString(R.string.sync_prepare)
                 SyncStatus.Loading -> syncViewModel.message.value = getString(R.string.sync_wait)
                 SyncStatus.Ready -> syncViewModel.message.value = getString(R.string.sync_ask)
-                SyncStatus.Failed -> syncViewModel.message.value = getString(R.string.sync_fail)
+                SyncStatus.Canceled, SyncStatus.Failed -> syncViewModel.message.value = getString(R.string.sync_fail)
                 SyncStatus.Done -> {
                     syncViewModel.message.value = if (syncViewModel.content?.isNotEmpty() == true) {
                         getString(R.string.sync_done)
