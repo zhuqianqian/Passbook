@@ -14,8 +14,8 @@ android {
         applicationId "com.z299studio.pbfree"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 305
-        versionName "3.0 (20220214)"
+        versionCode 306
+        versionName "3.0 (20220220)"
 
         vectorDrawables.useSupportLibrary = true
 
