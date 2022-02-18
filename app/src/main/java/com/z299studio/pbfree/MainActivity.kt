@@ -26,6 +26,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.material.navigation.NavigationView
 import com.z299studio.pbfree.data.AccountRepository
 import com.z299studio.pbfree.data.DataProcessor
+import com.z299studio.pbfree.data.ValueTuple
+import com.z299studio.pbfree.data.ValueType
 import com.z299studio.pbfree.databinding.ActivityMainBinding
 import com.z299studio.pbfree.tool.DriveSyncService
 import com.z299studio.pbfree.tool.SyncStatus
@@ -33,6 +35,7 @@ import com.z299studio.pbfree.viewmodels.AuthSource
 import com.z299studio.pbfree.viewmodels.AuthStatus
 import com.z299studio.pbfree.viewmodels.AuthenticateViewModel
 import com.z299studio.pbfree.viewmodels.BiometricViewModel
+import com.z299studio.pbfree.viewmodels.FieldViewModel
 import com.z299studio.pbfree.viewmodels.HomeViewModel
 import com.z299studio.pbfree.viewmodels.ItemViewModel
 import com.z299studio.pbfree.viewmodels.SyncViewModel
@@ -70,7 +73,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
         binding.appBarMain.contentMain.fab.setOnClickListener {
-            itemViewModel.reset2CategoryTemplate(homeViewModel.category.value)
+            if (!itemViewModel.reset2CategoryTemplate(homeViewModel.category.value)) {
+                itemViewModel.addFallbackValues(listOf(
+                    FieldViewModel(ValueTuple(getString(R.string.field_username), "", ValueType.Text)),
+                FieldViewModel(ValueTuple(getString(R.string.field_password), "", ValueType.Password)),
+                    FieldViewModel(ValueTuple(getString(R.string.field_website), "", ValueType.Url))
+                ))
+            }
             findNavController(R.id.nav_host).navigate(R.id.action_add_new)
         }
         // TODO: Move the AppBar to HomeFragment.

@@ -30,16 +30,21 @@ class ItemViewModel: ViewModel() {
         }
     }
 
-    fun reset2CategoryTemplate(category: String?) {
+    fun reset2CategoryTemplate(category: String?): Boolean {
         this.index = -1
         this.title = ""
         this.category = category
         this.values.value?.clear()
-        AccountRepository.get().getAllEntries().find {
+        return AccountRepository.get().getAllEntries().find {
             it.category == category
         }?.let {  entry ->
             this.values.value?.addAll(entry.values.map { FieldViewModel(it) })
             this.values.value?.forEach { it.value = "" }
-        }
+            true
+        } ?: false
+    }
+
+    fun addFallbackValues(fields: Collection<FieldViewModel>) {
+        this.values.value?.addAll(fields)
     }
 }
