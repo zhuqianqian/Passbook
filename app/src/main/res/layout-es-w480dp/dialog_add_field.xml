@@ -44,16 +44,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="fill_horizontal"
+            android:gravity="center"
             android:layout_marginTop="@dimen/dialog_content_begin"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <com.google.android.material.radiobutton.MaterialRadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/type_text"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -62,32 +57,27 @@
                 android:checked="@{field.type == ValueType.Text}"
                 android:onClick="@{onRadioClick}"
                 />
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/type_url"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/type_url"
-                    android:checked="@{field.type == ValueType.Url}"
-                    android:onClick="@{onRadioClick}"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    />
-            </LinearLayout>
-            <LinearLayout
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_password"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/type_password"
+                android:checked="@{field.type == ValueType.Password}"
+                android:onClick="@{onRadioClick}"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/type_url"
                 android:layout_weight="1"
-                android:orientation="vertical">
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/type_password"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/type_password"
-                    android:checked="@{field.type == ValueType.Password}"
-                    android:onClick="@{onRadioClick}"
-                    />
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type_url"
+                android:checked="@{field.type == ValueType.Url}"
+                android:onClick="@{onRadioClick}"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                />
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/type_email"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -96,7 +86,6 @@
                 android:checked="@{field.type == ValueType.Email}"
                 android:onClick="@{onRadioClick}"
                 />
-            </LinearLayout>
         </RadioGroup>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -106,8 +95,7 @@
             android:hint="@string/field_name"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/type_group"
-            tools:hint="Field Name" >
+            app:layout_constraintTop_toBottomOf="@id/type_group">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_input"
                 android:layout_width="match_parent"
