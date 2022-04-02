@@ -14,8 +14,8 @@ android {
         applicationId "com.z299studio.pbfree"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 307
-        versionName "3.0 (20220220)"
+        versionCode 309
+        versionName "3.0.1 (20220402)"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -44,8 +44,8 @@ android {
             excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/license.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/notice.txt', 'META-INF/ASL2.0']
         }
     }
-    lintOptions {
-        baseline(file("lint-baseline.xml"))
+    lint {
+        baseline file('lint-baseline.xml')
     }
 }
 
@@ -61,7 +61,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.android.billingclient:billing-ktx:4.0.0'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation "com.google.android.gms:play-services-ads:20.5.0"
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
@@ -70,7 +69,7 @@ dependencies {
     implementation 'com.google.apis:google-api-services-drive:v3-rev197-1.25.0'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx: 20.1.2'
     implementation 'com.google.http-client:google-http-client-gson:1.41.1'
     runtimeOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     testImplementation 'junit:junit:4.13.2'

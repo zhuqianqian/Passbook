@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.z299studio.pbfree.data.Entry
 import com.z299studio.pbfree.data.ValueType
 import java.net.URI
+import java.net.URISyntaxException
 
 data class MainItemViewModel(val index: Int, val entry: Entry) : ViewModel() {
 
@@ -14,12 +15,14 @@ data class MainItemViewModel(val index: Int, val entry: Entry) : ViewModel() {
         entry.key.isNotBlank() -> entry.key
         iconUrl.isNullOrBlank() -> "#"
         else -> {
-            val host = URI(iconUrl).host
-            if (host.startsWith("www.")) {
-                host.substring(4)
-            } else {
-                host
-            }
+            try {
+                val host = URI(iconUrl).host
+                if (host.startsWith("www.")) {
+                    host.substring(4)
+                } else {
+                    host
+                }
+            } catch (error: URISyntaxException) { "#" }
         }
     }
 
